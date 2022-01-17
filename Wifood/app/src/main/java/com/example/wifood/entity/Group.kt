@@ -1,4 +1,3 @@
 package com.example.wifood.entity
 
-class Group {
-}
+data class Group (val name:String = "Name", val color:String = "0.0.0")
