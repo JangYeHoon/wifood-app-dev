@@ -9,9 +9,9 @@ class FoodGroupDao (private val foodGroupDatabase: DatabaseReference = FirebaseD
     fun getGroupList() : LiveData<MutableList<Group>> {
         val foodGroupList = MutableLiveData<MutableList<Group>>()
         foodGroupDatabase.addValueEventListener(object: ValueEventListener {
-            val groupList : MutableList<Group> = mutableListOf()
             // Called only when there is a data change
             override fun onDataChange(snapshot: DataSnapshot) {
+                val groupList : MutableList<Group> = mutableListOf()
                 if (snapshot.exists()) {
                     for (foodGroupSnapshot in snapshot.children) {
                         val getFoodGroup = foodGroupSnapshot.getValue(Group::class.java)
@@ -26,5 +26,10 @@ class FoodGroupDao (private val foodGroupDatabase: DatabaseReference = FirebaseD
             }
         })
         return foodGroupList
+    }
+
+    fun foodGroupInsert(group: Group) {
+        // create table using id and add data
+        foodGroupDatabase.child(group.id.toString()).setValue(group)
     }
 }

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.EditFoodGroup">
+
+    <ImageView
+        android:id="@+id/pinImage1"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#F44336"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
+        app:tint="#F44336" />
+
+    <ImageView
+        android:id="@+id/pinImage6"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#009688"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.311"
+        app:tint="#009688" />
+
+    <ImageView
+        android:id="@+id/pinImage7"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#4CAF50"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.311"
+        app:tint="#4CAF50" />
+
+    <ImageView
+        android:id="@+id/pinImage8"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#CDDC39"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.311"
+        app:tint="#CDDC39" />
+
+    <ImageView
+        android:id="@+id/pinImage9"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#FFC107"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.311"
+        app:tint="#FFC107" />
+
+    <ImageView
+        android:id="@+id/pinImage10"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#FF9800"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.311"
+        app:tint="#FF9800" />
+
+    <ImageView
+        android:id="@+id/pinImage2"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#E91E63"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
+        app:tint="#E91E63" />
+
+    <ImageView
+        android:id="@+id/pinImage3"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#9C27B0"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
+        app:tint="#9C27B0" />
+
+    <ImageView
+        android:id="@+id/pinImage4"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#3F51B5"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.736"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
+        app:tint="#3F51B5" />
+
+    <ImageView
+        android:id="@+id/pinImage5"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#E91E63"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215"
+        app:tint="#E91E63" />
+
+    <TextView
+        android:id="@+id/pageText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="맛집 그룹 추가"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.01999998" />
+
+    <EditText
+        android:id="@+id/groupTitle"
+        android:layout_width="366dp"
+        android:layout_height="48dp"
+        android:hint="그룹명을 입력해주세요."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="367dp"
+        android:layout_height="48dp"
+        android:text="저장"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.94" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

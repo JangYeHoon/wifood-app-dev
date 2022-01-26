@@ -8,13 +8,17 @@ import com.example.wifood.entity.Group
 // Connect DAO and ViewModel
 // Class to prevent direct DB access from view
 class FoodGroupDto {
-    private val foodDto = FoodGroupDao()
+    private val foodDao = FoodGroupDao()
 
     fun getGroupList() : LiveData<MutableList<Group>> {
         val mutableFoodGroup = MutableLiveData<MutableList<Group>>()
-        foodDto.getGroupList().observeForever {
+        foodDao.getGroupList().observeForever {
             mutableFoodGroup.value = it
         }
         return mutableFoodGroup
+    }
+
+    fun groupInsert(group: Group) {
+        foodDao.foodGroupInsert(group)
     }
 }
