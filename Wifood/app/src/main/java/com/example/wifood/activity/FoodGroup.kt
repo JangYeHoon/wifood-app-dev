@@ -2,8 +2,8 @@ package com.example.wifood.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FoodGroupActivity : ComponentActivity() {
+class FoodGroup : AppCompatActivity() {
     private lateinit var foodGroupAdapter: FoodGroupAdapter
     lateinit var foodGroupViewModel : FoodGroupViewModel
 
@@ -39,7 +39,7 @@ class FoodGroupActivity : ComponentActivity() {
 
         val groupAddButton : FloatingActionButton = findViewById(R.id.groupAddButton)
         groupAddButton.setOnClickListener {
-            val intent = Intent(this@FoodGroupActivity, EditFoodGroup::class.java).apply {
+            val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestActivity.launch(intent)

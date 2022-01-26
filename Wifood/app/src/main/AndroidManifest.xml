@@ -13,7 +13,7 @@
             android:name=".activity.EditFoodGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.FoodGroupActivity"
+            android:name=".activity.FoodGroup"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
