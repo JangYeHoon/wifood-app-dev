@@ -65,8 +65,9 @@ class FoodGroup : AppCompatActivity() {
             // type 0 : add, 1 : edit, 2 : delete
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
+                    val maxId = foodGroupAdapter.getGroupIdList().maxOrNull() ?: 0
                     // create a group to add using the value received from EditFoodGroup Activity
-                    val group = Group(foodGroupAdapter.itemCount + 1, it.data?.getSerializableExtra("name") as String,
+                    val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
                         it.data?.getSerializableExtra("color") as String)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
