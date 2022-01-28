@@ -18,6 +18,27 @@ class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodG
         foodGroupList = data
     }
 
+    fun getGroupNameList() : MutableList<String> {
+        var nameList = mutableListOf<String>()
+        for (l in foodGroupList)
+            nameList.add(l.name)
+        return nameList
+    }
+
+    fun getGroupIdList() : MutableList<Int> {
+        var nameList = mutableListOf<Int>()
+        for (l in foodGroupList)
+            nameList.add(l.id)
+        return nameList
+    }
+
+    fun getGroupColorList() : MutableList<String> {
+        var nameList = mutableListOf<String>()
+        for (l in foodGroupList)
+            nameList.add(l.color)
+        return nameList
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupAdapter.FoodGroupViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.food_group_list, parent, false)
         return FoodGroupViewHolder(view)

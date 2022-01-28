@@ -2,6 +2,8 @@ package com.example.wifood.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +39,7 @@ class FoodGroup : AppCompatActivity() {
             foodGroupAdapter.notifyDataSetChanged()
         }
 
+        // group add btn
         val groupAddButton : FloatingActionButton = findViewById(R.id.groupAddButton)
         groupAddButton.setOnClickListener {
             val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
@@ -44,19 +47,38 @@ class FoodGroup : AppCompatActivity() {
             }
             requestActivity.launch(intent)
         }
+
+        // group del btn
+        val groupDeleteButton : ImageButton = findViewById(R.id.groupDeleteButton)
+        groupDeleteButton.setOnClickListener {
+            val intent = Intent(this@FoodGroup, DeleteFoodGroup::class.java).apply {
+                putExtra("groupName", ArrayList(foodGroupAdapter.getGroupNameList()))
+                putExtra("groupId", ArrayList(foodGroupAdapter.getGroupIdList()))
+                putExtra("groupColor", ArrayList(foodGroupAdapter.getGroupColorList()))
+            }
+            requestActivity.launch(intent)
+        }
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
-            // create a group to add using the value received from EditFoodGroup Activity
-            val group = Group(foodGroupAdapter.itemCount + 1, it.data?.getSerializableExtra("name") as String,
-                it.data?.getSerializableExtra("color") as String)
-            // type 0 : add, 1 : edit
+            // type 0 : add, 1 : edit, 2 : delete
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
+                    // create a group to add using the value received from EditFoodGroup Activity
+                    val group = Group(foodGroupAdapter.itemCount + 1, it.data?.getSerializableExtra("name") as String,
+                        it.data?.getSerializableExtra("color") as String)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
                     }
+                }
+                2 -> {
+                    val groupId = it.data?.getIntegerArrayListExtra("id")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (groupId != null)
+                            foodGroupViewModel.groupDelete(groupId)
+                    }
+                    Log.d("groupDelete", groupId.toString())
                 }
             }
         }

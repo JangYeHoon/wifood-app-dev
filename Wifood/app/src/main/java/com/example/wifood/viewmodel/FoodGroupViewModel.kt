@@ -18,4 +18,8 @@ class FoodGroupViewModel :ViewModel() {
     fun groupInsert(group : Group) {
         foodGroupDto.groupInsert(group)
     }
+
+    fun groupDelete(groupIdList: ArrayList<Int>) {
+        foodGroupDto.groupDelete(groupIdList)
+    }
 }

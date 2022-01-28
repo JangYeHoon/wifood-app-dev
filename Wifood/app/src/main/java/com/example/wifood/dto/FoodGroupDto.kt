@@ -21,4 +21,9 @@ class FoodGroupDto {
     fun groupInsert(group: Group) {
         foodDao.foodGroupInsert(group)
     }
+
+    fun groupDelete(groupIdList: ArrayList<Int>) {
+        for (i in groupIdList)
+            foodDao.foodGroupDelete(i)
+    }
 }

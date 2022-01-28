@@ -32,4 +32,8 @@ class FoodGroupDao (private val foodGroupDatabase: DatabaseReference = FirebaseD
         // create table using id and add data
         foodGroupDatabase.child(group.id.toString()).setValue(group)
     }
+
+    fun foodGroupDelete(groupId : Int) {
+        foodGroupDatabase.child(groupId.toString()).removeValue()
+    }
 }
