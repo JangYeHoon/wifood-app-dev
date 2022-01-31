@@ -2,10 +2,8 @@ package com.example.wifood.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -104,7 +102,6 @@ class FoodGroup : AppCompatActivity() {
                         if (groupId != null)
                             foodGroupViewModel.groupDelete(groupId)
                     }
-                    Log.d("groupDelete", groupId.toString())
                 }
             }
         }

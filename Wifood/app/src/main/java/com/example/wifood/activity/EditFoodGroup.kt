@@ -3,7 +3,6 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.wifood.databinding.ActivityEditFoodGroupBinding
 
 class EditFoodGroup : AppCompatActivity() {
