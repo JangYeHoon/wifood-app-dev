@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -39,7 +40,7 @@ class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodG
         return nameList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupAdapter.FoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.food_group_list, parent, false)
         return FoodGroupViewHolder(view)
     }
@@ -48,6 +49,9 @@ class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodG
         val foodGroup : Group = foodGroupList[position]
         holder.group_name.text = foodGroup.name
         holder.group_pin.setColorFilter(Color.parseColor(foodGroup.color))
+        holder.group_edit.setOnClickListener {
+            groupEditClickListener.onClick(it, position, foodGroup.id)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -57,5 +61,16 @@ class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodG
     inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val group_name : TextView = itemView.findViewById(R.id.group_name)
         val group_pin : ImageView = itemView.findViewById(R.id.imageView)
+        val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)
+    }
+
+    interface GroupEditClickListener {
+        fun onClick(view: View, position: Int, groupId: Int)
+    }
+
+    private lateinit var groupEditClickListener: GroupEditClickListener
+
+    fun setGroupEditClickListener(groupEditClickListener: GroupEditClickListener) {
+        this.groupEditClickListener = groupEditClickListener
     }
 }

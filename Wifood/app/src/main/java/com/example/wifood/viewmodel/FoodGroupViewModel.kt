@@ -22,4 +22,9 @@ class FoodGroupViewModel :ViewModel() {
     fun groupDelete(groupIdList: ArrayList<Int>) {
         foodGroupDto.groupDelete(groupIdList)
     }
+
+    fun getGroup(pos: Int): Group {
+        val groupList = foodGroupList.value
+        return groupList!![pos]
+    }
 }

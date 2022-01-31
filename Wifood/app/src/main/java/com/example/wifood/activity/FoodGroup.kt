@@ -3,7 +3,9 @@ package com.example.wifood.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -58,6 +60,22 @@ class FoodGroup : AppCompatActivity() {
             }
             requestActivity.launch(intent)
         }
+
+        // group edit btn
+        foodGroupAdapter.setGroupEditClickListener(object: FoodGroupAdapter.GroupEditClickListener {
+            override fun onClick(view: View, position: Int, groupId: Int) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val group: Group = foodGroupViewModel.getGroup(position)
+                    val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
+                        putExtra("type", "EDIT")
+                        putExtra("groupId", group.id)
+                        putExtra("groupName", group.name)
+                        putExtra("groupColor", group.color)
+                    }
+                    requestActivity.launch(intent)
+                }
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -68,6 +86,13 @@ class FoodGroup : AppCompatActivity() {
                     val maxId = foodGroupAdapter.getGroupIdList().maxOrNull() ?: 0
                     // create a group to add using the value received from EditFoodGroup Activity
                     val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
+                        it.data?.getSerializableExtra("color") as String)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        foodGroupViewModel.groupInsert(group)
+                    }
+                }
+                1 -> {
+                    val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
                         it.data?.getSerializableExtra("color") as String)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
