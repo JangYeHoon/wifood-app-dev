@@ -162,6 +162,8 @@
         android:layout_width="366dp"
         android:layout_height="48dp"
         android:hint="그룹명을 입력해주세요."
+        android:singleLine="true"
+        android:maxLength="30"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
