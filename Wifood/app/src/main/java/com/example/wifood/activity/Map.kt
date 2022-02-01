@@ -21,6 +21,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
+        // 예훈이형 메뉴로 Go
         val btn = findViewById<Button>(R.id.goGroupSelect) as Button
         btn.setOnClickListener {
             val intent = Intent(this, GroupSelect::class.java)
