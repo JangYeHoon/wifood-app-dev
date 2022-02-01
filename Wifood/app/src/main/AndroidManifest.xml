@@ -10,16 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wifood">
         <activity
-            android:name=".activity.EditFoodGroup"
+            android:name=".activity.WishGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.FoodGroupActivity"
+            android:name=".activity.GroupSelect"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.DeleteFoodGroup"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditFoodGroup"
+            android:exported="false" />
+        <activity
+            android:name=".activity.FoodGroup"
+            android:exported="false"></activity>
     </application>
 
 </manifest>
