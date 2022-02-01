@@ -9,8 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
-import com.example.wifood.adapter.FoodGroupAdapter
-import com.example.wifood.adapter.WishGroupAdapter
+import com.example.wifood.adapter.GroupAdapter
 import com.example.wifood.databinding.ActivityWishGroupBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.WishGroupViewModel
@@ -22,7 +21,7 @@ import kotlinx.coroutines.launch
 class WishGroup : AppCompatActivity() {
     lateinit var binding : ActivityWishGroupBinding
     lateinit var wishGroupViewModel : WishGroupViewModel
-    private lateinit var wishGroupAdapter : WishGroupAdapter
+    private lateinit var wishGroupAdapter : GroupAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +29,7 @@ class WishGroup : AppCompatActivity() {
         setContentView(binding.root)
 
         wishGroupViewModel = ViewModelProvider(this).get(WishGroupViewModel::class.java)
-        wishGroupAdapter = WishGroupAdapter(this)
+        wishGroupAdapter = GroupAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = wishGroupAdapter
 
@@ -60,7 +59,7 @@ class WishGroup : AppCompatActivity() {
         }
 
         // group edit btn
-        wishGroupAdapter.setGroupEditClickListener(object: WishGroupAdapter.GroupEditClickListener {
+        wishGroupAdapter.setGroupEditClickListener(object: GroupAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, groupId: Int) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val group: Group = wishGroupViewModel.getGroup(position)

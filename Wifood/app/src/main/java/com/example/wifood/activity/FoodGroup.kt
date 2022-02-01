@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.adapter.FoodGroupAdapter
+import com.example.wifood.adapter.GroupAdapter
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.FoodGroupViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FoodGroup : AppCompatActivity() {
-    private lateinit var foodGroupAdapter: FoodGroupAdapter
+    private lateinit var foodGroupAdapter: GroupAdapter
     lateinit var foodGroupViewModel : FoodGroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +28,7 @@ class FoodGroup : AppCompatActivity() {
 
         // Connecting RecyclerView and Adapter
         foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
-        foodGroupAdapter = FoodGroupAdapter(this)
+        foodGroupAdapter = GroupAdapter(this)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = foodGroupAdapter
@@ -60,7 +60,7 @@ class FoodGroup : AppCompatActivity() {
         }
 
         // group edit btn
-        foodGroupAdapter.setGroupEditClickListener(object: FoodGroupAdapter.GroupEditClickListener {
+        foodGroupAdapter.setGroupEditClickListener(object: GroupAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, groupId: Int) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val group: Group = foodGroupViewModel.getGroup(position)

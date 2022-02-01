@@ -2,12 +2,12 @@ package com.example.wifood.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.wifood.dto.WishGroupDto
+import com.example.wifood.dto.GroupDto
 import com.example.wifood.entity.Group
 
 class WishGroupViewModel: ViewModel() {
     var wishGroupList: LiveData<MutableList<Group>>
-    private val wishGroupDto: WishGroupDto = WishGroupDto()
+    private val wishGroupDto: GroupDto = GroupDto("wish")
 
     init {
         wishGroupList = wishGroupDto.getGroupList()

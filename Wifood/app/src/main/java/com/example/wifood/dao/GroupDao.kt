@@ -5,18 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.entity.Group
 import com.google.firebase.database.*
 
-class FoodGroupDao (private val foodGroupDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("FoodGroup")){
+class GroupDao (groupType: String){
+    private var groupDatabase: DatabaseReference =
+        if (groupType == "food") FirebaseDatabase.getInstance().getReference("FoodGroup")
+        else FirebaseDatabase.getInstance().getReference("WishGroup")
+
     fun getGroupList() : LiveData<MutableList<Group>> {
-        val foodGroupList = MutableLiveData<MutableList<Group>>()
-        foodGroupDatabase.addValueEventListener(object: ValueEventListener {
+        val groupList = MutableLiveData<MutableList<Group>>()
+        groupDatabase.addValueEventListener(object: ValueEventListener {
             // Called only when there is a data change
             override fun onDataChange(snapshot: DataSnapshot) {
-                val groupList : MutableList<Group> = mutableListOf()
+                val dbList : MutableList<Group> = mutableListOf()
                 if (snapshot.exists()) {
                     for (foodGroupSnapshot in snapshot.children) {
-                        val getFoodGroup = foodGroupSnapshot.getValue(Group::class.java)
-                        groupList.add(getFoodGroup!!)
-                        foodGroupList.value = groupList
+                        val group = foodGroupSnapshot.getValue(Group::class.java)
+                        dbList.add(group!!)
+                        groupList.value = dbList
                     }
                 }
             }
@@ -25,15 +29,15 @@ class FoodGroupDao (private val foodGroupDatabase: DatabaseReference = FirebaseD
                 TODO("Not yet implemented")
             }
         })
-        return foodGroupList
+        return groupList
     }
 
     fun foodGroupInsert(group: Group) {
         // create table using id and add data
-        foodGroupDatabase.child(group.id.toString()).setValue(group)
+        groupDatabase.child(group.id.toString()).setValue(group)
     }
 
     fun foodGroupDelete(groupId : Int) {
-        foodGroupDatabase.child(groupId.toString()).removeValue()
+        groupDatabase.child(groupId.toString()).removeValue()
     }
 }
