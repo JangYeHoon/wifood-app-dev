@@ -12,41 +12,41 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Group
 
-class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodGroupAdapter.FoodGroupViewHolder>() {
-    private var foodGroupList = mutableListOf<Group>()
+class WishGroupAdapter(private val context: Context): RecyclerView.Adapter<WishGroupAdapter.WishGroupViewHolder>() {
+    private var wishGroupList = mutableListOf<Group>()
 
-    fun setListData(data:MutableList<Group>) {
-        foodGroupList = data
+    fun setListData(data: MutableList<Group>) {
+        wishGroupList = data
     }
 
     fun getGroupNameList() : MutableList<String> {
         var nameList = mutableListOf<String>()
-        for (l in foodGroupList)
+        for (l in wishGroupList)
             nameList.add(l.name)
         return nameList
     }
 
     fun getGroupIdList() : MutableList<Int> {
         var nameList = mutableListOf<Int>()
-        for (l in foodGroupList)
+        for (l in wishGroupList)
             nameList.add(l.id)
         return nameList
     }
 
     fun getGroupColorList() : MutableList<String> {
         var nameList = mutableListOf<String>()
-        for (l in foodGroupList)
+        for (l in wishGroupList)
             nameList.add(l.color)
         return nameList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishGroupAdapter.WishGroupViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.group_list, parent, false)
-        return FoodGroupViewHolder(view)
+        return WishGroupViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FoodGroupAdapter.FoodGroupViewHolder, position: Int) {
-        val foodGroup : Group = foodGroupList[position]
+    override fun onBindViewHolder(holder: WishGroupViewHolder, position: Int) {
+        val foodGroup : Group = wishGroupList[position]
         holder.group_name.text = foodGroup.name
         holder.group_pin.setColorFilter(Color.parseColor(foodGroup.color))
         holder.group_edit.setOnClickListener {
@@ -55,10 +55,10 @@ class FoodGroupAdapter(private val context: Context): RecyclerView.Adapter<FoodG
     }
 
     override fun getItemCount(): Int {
-        return foodGroupList.size
+        return wishGroupList.size
     }
 
-    inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class WishGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val group_name : TextView = itemView.findViewById(R.id.group_name)
         val group_pin : ImageView = itemView.findViewById(R.id.imageView)
         val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)

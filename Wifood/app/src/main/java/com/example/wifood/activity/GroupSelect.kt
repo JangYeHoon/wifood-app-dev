@@ -16,5 +16,10 @@ class GroupSelect : AppCompatActivity() {
             val intent = Intent(this@GroupSelect, FoodGroup::class.java)
             startActivity(intent)
         }
+
+        binding.wishGroupBtn.setOnClickListener {
+            val intent = Intent(this@GroupSelect, WishGroup::class.java)
+            startActivity(intent)
+        }
     }
 }
