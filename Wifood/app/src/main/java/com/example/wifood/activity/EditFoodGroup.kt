@@ -21,6 +21,7 @@ class EditFoodGroup : AppCompatActivity() {
 
         // Initialize the value in case of edit
         if (type == "EDIT") {
+            supportActionBar?.title = "그룹 수정"
             val name: String = intent.getStringExtra("groupName") as String
             val color = intent.getStringExtra("groupColor") as String
             binding.groupTitle.setText(name)
@@ -32,7 +33,7 @@ class EditFoodGroup : AppCompatActivity() {
                     break
                 }
             }
-        }
+        } else supportActionBar?.title = "그룹 추가"
 
         // click image size conversion
         for (i in pinArray) {

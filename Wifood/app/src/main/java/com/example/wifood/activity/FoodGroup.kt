@@ -3,35 +3,35 @@ package com.example.wifood.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
+import com.example.wifood.databinding.ActivityFoodGroupBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.FoodGroupViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FoodGroup : AppCompatActivity() {
+    lateinit var binding : ActivityFoodGroupBinding
     private lateinit var foodGroupAdapter: GroupAdapter
     lateinit var foodGroupViewModel : FoodGroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_food_group)
+        binding = ActivityFoodGroupBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportActionBar?.title = "맛집 그룹"
 
         // Connecting RecyclerView and Adapter
         foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
         foodGroupAdapter = GroupAdapter(this)
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = foodGroupAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = foodGroupAdapter
 
         // Automatically change bindings when data changes
         foodGroupViewModel.foodGroupList.observe(this) {
@@ -40,8 +40,7 @@ class FoodGroup : AppCompatActivity() {
         }
 
         // group add btn
-        val groupAddButton : FloatingActionButton = findViewById(R.id.groupAddButton)
-        groupAddButton.setOnClickListener {
+        binding.groupAddButton.setOnClickListener {
             val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
@@ -49,8 +48,7 @@ class FoodGroup : AppCompatActivity() {
         }
 
         // group del btn
-        val groupDeleteButton : ImageButton = findViewById(R.id.groupDeleteButton)
-        groupDeleteButton.setOnClickListener {
+        binding.groupDeleteButton.setOnClickListener {
             val intent = Intent(this@FoodGroup, DeleteFoodGroup::class.java).apply {
                 putExtra("groupName", ArrayList(foodGroupAdapter.getGroupNameList()))
                 putExtra("groupId", ArrayList(foodGroupAdapter.getGroupIdList()))

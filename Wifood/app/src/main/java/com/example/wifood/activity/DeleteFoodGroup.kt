@@ -18,6 +18,8 @@ class DeleteFoodGroup : AppCompatActivity() {
         binding = ActivityDeleteFoodGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "그룹 삭제"
+
         val nameList = intent.getStringArrayListExtra("groupName")
         val idList = intent.getIntegerArrayListExtra("groupId")
         val colorList = intent.getStringArrayListExtra("groupColor")

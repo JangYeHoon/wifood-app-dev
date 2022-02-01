@@ -4,16 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
 import com.example.wifood.databinding.ActivityWishGroupBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.WishGroupViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +25,8 @@ class WishGroup : AppCompatActivity() {
         binding = ActivityWishGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "위시 그룹"
+
         wishGroupViewModel = ViewModelProvider(this).get(WishGroupViewModel::class.java)
         wishGroupAdapter = GroupAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -39,8 +38,7 @@ class WishGroup : AppCompatActivity() {
         }
 
         // group add btn
-        val groupAddButton : FloatingActionButton = findViewById(R.id.groupAddButton)
-        groupAddButton.setOnClickListener {
+        binding.groupAddButton.setOnClickListener {
             val intent = Intent(this@WishGroup, EditFoodGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
@@ -48,8 +46,7 @@ class WishGroup : AppCompatActivity() {
         }
 
         // group del btn
-        val groupDeleteButton : ImageButton = findViewById(R.id.groupDeleteButton)
-        groupDeleteButton.setOnClickListener {
+        binding.groupDeleteButton.setOnClickListener {
             val intent = Intent(this@WishGroup, DeleteFoodGroup::class.java).apply {
                 putExtra("groupName", ArrayList(wishGroupAdapter.getGroupNameList()))
                 putExtra("groupId", ArrayList(wishGroupAdapter.getGroupIdList()))
