@@ -12,16 +12,39 @@ import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.FusedLocationSource
+import androidx.core.view.GravityCompat
 
-class Map : AppCompatActivity(), OnMapReadyCallback {
+import androidx.drawerlayout.widget.DrawerLayout
+import android.widget.Toast
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.navigation.NavigationView
+
+class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
+    private lateinit var navigationView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        // 예훈이형 메뉴로 Go
+        // 툴바를 Activity의 앱바로 적용
+        val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24)  // 툴바 三버튼 이미지 변경
+        supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
+
+        // 네비게이션 Drawer 생성
+        drawerLayout = findViewById(R.id.main_drawer_layout)
+
+        // 네비게이션 Drawer에 있는 화면의 Event를 처리하기 위해 생성
+        navigationView = findViewById(R.id.main_navigationView)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
         val btn = findViewById<Button>(R.id.goGroupSelect) as Button
         btn.setOnClickListener {
             val intent = Intent(this, GroupSelect::class.java)
@@ -43,10 +66,15 @@ class Map : AppCompatActivity(), OnMapReadyCallback {
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    // 위치정보 사용자 권한 설정
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             // 권한 거부됨
-            if(!locationSource.isActivated) {
+            if (!locationSource.isActivated) {
                 naverMap.locationTrackingMode = LocationTrackingMode.None
             }
             return
@@ -63,7 +91,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback {
         // 현재위치 표시
         val uiSettings = naverMap.uiSettings
         uiSettings.isLocationButtonEnabled = true
-        naverMap.locationTrackingMode = LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
+        naverMap.locationTrackingMode =
+            LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
 
         // 지도상에 마커 표시 → 맛집 표시로 활용하면 될 듯
     }
@@ -71,4 +100,39 @@ class Map : AppCompatActivity(), OnMapReadyCallback {
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
+
+    // 툴바의 버튼 클릭 시 호출 함수
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // 클릭한 툴바 메뉴 아이템의 id마다 다르게 실행하도록 설정
+        when (item.itemId) {
+            android.R.id.home -> {
+                // 三메뉴 버튼 클릭 시 네비게이션 Drawer 열기
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    // Drawer 내 아이템 클릭 시 처리하는 함수
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // 강직이형 User 메뉴 여기서 연결시키면 될 듯 합니다.
+        when (item.itemId) {
+            R.id.menu_item1 -> Toast.makeText(this, "메뉴1 실행", Toast.LENGTH_SHORT).show()
+            R.id.menu_item2 -> Toast.makeText(this, "메뉴2 실행", Toast.LENGTH_SHORT).show()
+            R.id.menu_item3 -> Toast.makeText(this, "메뉴3 실행", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
+    // 뒤로가기 할 시 사이드, Nav바 닫는 기능 (Drawer Close)
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers()
+            //
+            Toast.makeText(this, "뒤로가기", Toast.LENGTH_SHORT).show()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 }

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--최상위 레이아웃. DrawerLayout-->
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".activity.Map">
 
     <!-- MapView 방식 -->
@@ -14,27 +18,37 @@
 
     <!-- Fragment 방식 -->
     <fragment
-        android:id="@+id/map_fragment"
+        android:id="@+id/map"
         android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:id="@+id/map"
-        android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <!-- 개발 임시 버튼 -->
         <android.widget.Button
             android:id="@+id/goGroupSelect"
-            android:layout_width="140dp"
+            android:layout_width="139dp"
             android:layout_height="45dp"
             android:layout_gravity="bottom|right"
             android:background="@drawable/group_selector"
             android:text="위시/맛집 그룹 GO"
             android:textColor="#000000"
             android:textSize="16sp" />
-    </FrameLayout>
+    </fragment>
 
+    <!--메인 레이아웃-->
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/map_layout" />
+
+    <!--자식 레이아웃. Navigation Drawer & (Nav바 메뉴 연결)-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        app:headerLayout="@layout/menu_nav_header"
+        app:menu="@menu/menu_nav">
+    </com.google.android.material.navigation.NavigationView>
 
     <!--    <com.naver.maps.map.widget.LocationButtonView-->
     <!--        android:id="@+id/navermap_location_button"-->
@@ -42,4 +56,4 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        android:layout_margin="12dp" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
