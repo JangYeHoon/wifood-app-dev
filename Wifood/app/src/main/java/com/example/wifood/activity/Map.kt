@@ -3,6 +3,7 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
 import com.example.wifood.R
@@ -19,6 +20,9 @@ import android.widget.Toast
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.navigation.NavigationView
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.util.MarkerIcons
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var locationSource: FusedLocationSource
@@ -26,6 +30,11 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
 
+    // Marker 예제
+    private val foodMarker = Marker()
+    private val wishMarker = Marker()
+
+    // onCreate()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -82,6 +91,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    // 호출 시 Map에 뿌려주기
     @UiThread
     override fun onMapReady(naverMap: NaverMap) {
         // naverMap 객체 받아서 naverMap 객체에 위치 소스 지정
@@ -94,11 +104,27 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         naverMap.locationTrackingMode =
             LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
 
+        // Marker 예제
         // 지도상에 마커 표시 → 맛집 표시로 활용하면 될 듯
+        foodMarker.position = LatLng(37.55285848882371, 127.14371145563707)
+        foodMarker.map = naverMap
+        foodMarker.icon = MarkerIcons.RED
+        foodMarker.captionText = "하남돼지집 명일역"
+
+        wishMarker.position = LatLng(37.55125881330635, 127.14665918080502)
+        wishMarker.map = naverMap
+        wishMarker.icon = MarkerIcons.BLUE
+        wishMarker.captionText = "회밀리"
     }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    }
+
+    // 검색, 공유 Event 버튼 툴바에 집어 넣기
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
     }
 
     // 툴바의 버튼 클릭 시 호출 함수
@@ -108,6 +134,21 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
             android.R.id.home -> {
                 // 三메뉴 버튼 클릭 시 네비게이션 Drawer 열기
                 drawerLayout.openDrawer(GravityCompat.START)
+            }
+            R.id.action_search -> {
+                //검색 버튼 눌렀을 때
+                Toast.makeText(applicationContext, "검색 이벤트 실행", Toast.LENGTH_LONG).show()
+                return super.onOptionsItemSelected(item)
+                // 검색 함수
+                // EditText에 입력한 텍스트(주소, 지역, 가게이름)을 Geocoding 변환
+                // * Geocoding : 주소 → 위도,경도
+                // * ReverseCoding : 위도,경도 → 주소
+
+            }
+            R.id.action_share -> {
+                //공유 버튼 눌렀을 때
+                Toast.makeText(applicationContext, "공유 이벤트 실행", Toast.LENGTH_LONG).show()
+                return super.onOptionsItemSelected(item)
             }
         }
         return super.onOptionsItemSelected(item)
