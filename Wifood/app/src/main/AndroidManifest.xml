@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wifood">
         <activity
+            android:name=".activity.WishList"
+            android:exported="false" />
+        <activity
             android:name=".activity.WishGroup"
             android:exported="false" />
         <activity
@@ -29,7 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.FoodGroup"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

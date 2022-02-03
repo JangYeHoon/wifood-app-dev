@@ -70,6 +70,16 @@ class WishGroup : AppCompatActivity() {
                 }
             }
         })
+
+        // group go btn
+        wishGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
+            override fun onClick(view: View, position: Int, groupId: Int) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val intent = Intent(this@WishGroup, WishList::class.java).apply { putExtra("groupId", groupId) }
+                    startActivity(intent)
+                }
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
