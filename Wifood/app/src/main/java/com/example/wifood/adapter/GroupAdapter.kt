@@ -2,6 +2,7 @@ package com.example.wifood.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,9 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         holder.group_edit.setOnClickListener {
             groupEditClickListener.onClick(it, position, foodGroup.id)
         }
+        holder.group_go.setOnClickListener {
+            groupGoClickListener.onClick(it, position, foodGroup.id)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -62,6 +66,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         val group_name : TextView = itemView.findViewById(R.id.group_name)
         val group_pin : ImageView = itemView.findViewById(R.id.imageView)
         val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)
+        val group_go : ImageButton = itemView.findViewById(R.id.goBtn)
     }
 
     interface GroupEditClickListener {
@@ -72,5 +77,15 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     fun setGroupEditClickListener(groupEditClickListener: GroupEditClickListener) {
         this.groupEditClickListener = groupEditClickListener
+    }
+
+    interface GroupGoClickListener {
+        fun onClick(view: View, position: Int, groupId: Int)
+    }
+
+    private lateinit var groupGoClickListener: GroupGoClickListener
+
+    fun setGroupGoClickListener(groupGoClickListener: GroupGoClickListener) {
+        this.groupGoClickListener = groupGoClickListener
     }
 }
