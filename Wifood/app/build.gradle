@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.wifood"
-        minSdk 29
+        minSdk 27   // minSdk 버전 조정(박지훈)
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -60,4 +60,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation "android.arch.lifecycle:extensions:1.1.0"
     implementation "android.arch.lifecycle:viewmodel:1.1.0"
+
+    // 네이버 지도 SDK
+    implementation 'com.naver.maps:map-sdk:3.13.0'
+    // 네이버 지도 위치추적
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    // DrawerLayout
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // NavigationView
+    implementation 'com.google.android.material:material:1.0.0'
 }
