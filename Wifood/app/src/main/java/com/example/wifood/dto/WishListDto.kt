@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.dao.WishListDao
 import com.example.wifood.entity.Wish
 
-class WishListDto {
-    private val wishListDao = WishListDao()
+class WishListDto(groupId : Int) {
+    private val wishListDao = WishListDao(groupId)
 
     fun getWishList() : LiveData<MutableList<Wish>> {
         val mutableWishList = MutableLiveData<MutableList<Wish>>()
