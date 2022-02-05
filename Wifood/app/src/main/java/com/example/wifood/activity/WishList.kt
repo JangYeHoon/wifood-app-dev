@@ -1,5 +1,6 @@
 package com.example.wifood.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -35,6 +36,12 @@ class WishList : AppCompatActivity() {
         wishListViewModel.wishList.observe(this) {
             wishListAdapter.setListData(it)
             wishListAdapter.notifyDataSetChanged()
+        }
+
+        // wishlist add btn
+        binding.groupAddButton.setOnClickListener {
+            val intent = Intent(this@WishList, SearchPlace::class.java)
+            startActivity(intent)
         }
     }
 
