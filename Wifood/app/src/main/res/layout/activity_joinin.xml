@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Joinin">
+
+    <EditText
+        android:id="@+id/editTextJoinEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="57dp"
+        android:ems="10"
+        android:hint="hongildong@naver.com"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="47dp"
+        android:text="이메일"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="28dp"
+        android:text="비밀번호"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="13dp"
+        android:text="비밀번호 재입력"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextJoinPasswordCheck"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextJoinPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:ems="10"
+        android:hint="비밀번호 입력"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:password="true"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinEmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinEmail" />
+
+    <EditText
+        android:id="@+id/editTextJoinPasswordCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="비밀번호 재입력"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:password="true"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinPassword" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinNickName"
+        app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintStart_toStartOf="@+id/textView19" />
+
+    <EditText
+        android:id="@+id/editTextJoinNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:ems="10"
+        android:hint="닉네임을 입력하세요"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinPasswordCheck"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinPasswordCheck" />
+
+    <EditText
+        android:id="@+id/editTextJoinPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="'-'을 포함해서 입력하세요"
+        android:inputType="phone"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinNickName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinNickName" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="핸드폰 번호"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinPhone"
+        app:layout_constraintEnd_toStartOf="@+id/editTextJoinPhone"
+        app:layout_constraintStart_toStartOf="@+id/textView16" />
+
+    <EditText
+        android:id="@+id/editTextJoinCoarseAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="주소를 입력하세요"
+        android:inputType="textPostalAddress"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinPhone"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinPhone" />
+
+    <EditText
+        android:id="@+id/editTextJoinFineAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:ems="10"
+        android:hint="상세 주소를 입력하세요"
+        android:inputType="textPostalAddress"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinCoarseAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinCoarseAddress" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="46dp"
+        android:text="주소"
+        app:layout_constraintBottom_toTopOf="@+id/textView21"
+        app:layout_constraintEnd_toEndOf="@+id/textView23"
+        app:layout_constraintStart_toStartOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:text="상세주소"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinFineAddress"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoJoinInFoodInfo"
+        app:layout_constraintStart_toStartOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="10dp"
+        android:text="회원가입"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinEmail"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnGoJoinInFoodInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="130dp"
+        android:layout_marginBottom="11dp"
+        android:enabled="false"
+        android:text="완료"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="56dp"
+        android:text="성별"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupJoinGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/editTextJoinFineAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextJoinFineAddress">
+
+        <RadioButton
+            android:id="@+id/radioButtonJoinMale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/radioButtonJoinFemale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Femail" />
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>

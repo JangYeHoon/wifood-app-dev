@@ -2,11 +2,16 @@
 <!-- 메뉴 생성(menu_nav_header.xml 의 메뉴와 연동) -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id = "@+id/menu_item1"
-        android:title = "메뉴1" />
-    <item android:id = "@+id/menu_item2"
-        android:title = "메뉴2" />
-    <item android:id = "@+id/menu_item3"
-        android:title = "메뉴3" />
+    <item
+        android:id="@+id/menu_item1"
+        android:title="맛집리스트" />
+    <item
+        android:id="@+id/menu_item2"
+        android:title="위시리스트" />
+    <item
+        android:id="@+id/menu_item3"
+        android:title="팔로워" />
+    <item android:title="설정" />
+    <item android:title="로그아웃" />
 
 </menu>

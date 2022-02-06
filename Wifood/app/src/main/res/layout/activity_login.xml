@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Login">
+    <Button
+        android:id="@+id/btnGoHomeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="48dp"
+        android:enabled="false"
+        android:text="로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnGoJoinIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:text="회원가입"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnFindPwd"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="66dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toEndOf="@+id/editTextId"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
+
+    <Button
+        android:id="@+id/btnFindPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="20dp"
+        android:text="비밀번호 찾기"
+        app:layout_constraintStart_toEndOf="@+id/btnGoJoinIn"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="215dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="36dp"
+        android:text="Naver Login"
+        app:layout_constraintEnd_toStartOf="@+id/btnFindPwd"
+        app:layout_constraintStart_toStartOf="@+id/btnFindPwd"
+        app:layout_constraintTop_toBottomOf="@+id/btnFindPwd" />
+
+    <EditText
+        android:id="@+id/editTextId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:ems="10"
+        android:hint="아이디를 입력하세요"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnGoHomeButton"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
+        app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton"
+        app:layout_constraintVertical_bias="0.416" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
+        android:ems="10"
+        android:hint="비밀번호를 입력하세요"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:password="true"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
+        app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
