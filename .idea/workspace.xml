@@ -1,39 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c4c5acb-f6ae-41fd-bd79-3b457aaf533b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="2b9443bc-b145-4bf7-a5ac-e82f3b990da2" name="Default Changelist" comment="change item id of menu_nav.xml">
+      <change afterPath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/JoinIn.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wifood/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Joinin.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\user33\.android\avd\Pixel_2_API_30.avd]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/Wifood">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="layoutResourceFile" />
+        <option value="resourceFile" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="D:\Android\key\wifoodKey.jks" />
+    <option name="KEY_ALIAS" value="key0" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="merge_project" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="24j4oNjM44NSfGsL94N28eWbtqJ" />
+  <component name="ProjectId" id="24Vs9mHzj0pPsgLhyqMdJHMTw8C" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ApkExportedModule" value="Wifood.app" />
+    <property name="ExportApk.ApkPath" value="D:\Android\wifood-app-dev\Wifood\app" />
+    <property name="ExportApk.BuildVariants" value="release" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Wifood" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Wifood/app/src/main/res/layout" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2741117" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
-  <component name="RunDashboard">
-    <option name="configurationTypes">
-      <set>
-        <option value="AndroidRunConfigurationType" />
-      </set>
-    </option>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Android\wifood-app-dev\Wifood\app\src\main\res\layout" />
+    </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
+    <configuration name="Wifood.app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="Wifood.app" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -48,7 +107,7 @@
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
       <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
       <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
       <option name="DEBUGGER_TYPE" value="Auto" />
@@ -86,22 +145,54 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-        <option name="MakeProject" enabled="true" />
-        <option name="MakeNoErrorCheck" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6c4c5acb-f6ae-41fd-bd79-3b457aaf533b" name="Default Changelist" comment="" />
-      <created>1644130836759</created>
+      <changelist id="2b9443bc-b145-4bf7-a5ac-e82f3b990da2" name="Default Changelist" comment="" />
+      <created>1643726939141</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1644130836759</updated>
+      <updated>1643726939141</updated>
     </task>
+    <task id="LOCAL-00001" summary="merge project">
+      <created>1643733353442</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1643733353442</updated>
+    </task>
+    <task id="LOCAL-00002" summary="merge project">
+      <created>1643733722130</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1643733722130</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Menu bar &amp; Search">
+      <created>1643793059488</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1643793059488</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Menu bar &amp; Search">
+      <created>1643793341303</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1643793341303</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Menu bar &amp; Search">
+      <created>1643804619380</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1643804619380</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -109,10 +200,29 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="merge project" />
+    <MESSAGE value="Menu bar &amp; Search" />
+    <MESSAGE value="change item id of menu_nav.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="change item id of menu_nav.xml" />
   </component>
 </project>

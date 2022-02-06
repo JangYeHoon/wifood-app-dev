@@ -158,9 +158,11 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // 강직이형 User 메뉴 여기서 연결시키면 될 듯 합니다.
         when (item.itemId) {
-            R.id.menu_item1 -> Toast.makeText(this, "메뉴1 실행", Toast.LENGTH_SHORT).show()
-            R.id.menu_item2 -> Toast.makeText(this, "메뉴2 실행", Toast.LENGTH_SHORT).show()
-            R.id.menu_item3 -> Toast.makeText(this, "메뉴3 실행", Toast.LENGTH_SHORT).show()
+            R.id.foodList -> Toast.makeText(this, "맛집리스트", Toast.LENGTH_SHORT).show()
+            R.id.wishList -> Toast.makeText(this, "위시리스트", Toast.LENGTH_SHORT).show()
+            R.id.followers -> Toast.makeText(this, "팔로워", Toast.LENGTH_SHORT).show()
+            R.id.userSettings -> Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
+            R.id.userLogout -> Toast.makeText(this, "로그아웃", Toast.LENGTH_SHORT).show()
         }
         return false
     }
