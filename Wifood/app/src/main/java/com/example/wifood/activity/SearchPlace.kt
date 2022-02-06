@@ -1,8 +1,9 @@
 package com.example.wifood.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.adapter.SearchPlaceAdapter
@@ -35,18 +36,26 @@ class SearchPlace : AppCompatActivity() {
 
 
         binding.searchButton.setOnClickListener {
-            Log.d("searchButton", binding.keywordText.text.toString())
             searchPlace(binding.keywordText.text.toString(), 20)
         }
+
+        searchPlaceAdapter.setSearchResultClickListener(object: SearchPlaceAdapter.SearchResultClickListener{
+            override fun onClick(view: View, position: Int, item: Search) {
+                val intent = Intent().apply {
+                    putExtra("searchResult", item)
+                }
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+        })
     }
 
-    fun searchPlace(keyword: String, page: Int) {
+    private fun searchPlace(keyword: String, page: Int) {
         val search : MutableList<Search> = mutableListOf()
         val tmapData = TMapData()
         tmapData.findTitlePOI(keyword, TMapData.FindTitlePOIListenerCallback {
             for (i in it) {
                 val poiItem:TMapPOIItem = i
-                Log.d("searchPlace", poiItem.poiPoint.latitude.toString())
                 search.add(Search(poiItem.poiAddress.replace("null", ""),
                     poiItem.poiName.toString(), poiItem.poiPoint.latitude, poiItem.poiPoint.longitude))
                 searchResult.postValue(search)

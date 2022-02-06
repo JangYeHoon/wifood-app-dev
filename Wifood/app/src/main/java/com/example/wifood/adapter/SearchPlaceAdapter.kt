@@ -28,9 +28,9 @@ class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<Se
         val search: Search = searchPlaceList[position]
         holder.searchName.text = search.name
         holder.searchAddress.text = search.fullAddress
-//        holder.itemView.setOnClickListener {
-//            searchResultClickListener.onClick(it, position, search)
-//        }
+        holder.itemView.setOnClickListener {
+            searchResultClickListener.onClick(it, position, search)
+        }
     }
 
     override fun getItemCount(): Int {

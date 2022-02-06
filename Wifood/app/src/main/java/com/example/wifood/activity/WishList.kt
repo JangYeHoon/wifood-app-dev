@@ -4,13 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.WishListAdapter
 import com.example.wifood.databinding.ActivityWishListBinding
+import com.example.wifood.entity.Group
+import com.example.wifood.entity.Search
+import com.example.wifood.entity.Wish
 import com.example.wifood.viewmodel.WishListViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WishList : AppCompatActivity() {
     lateinit var binding : ActivityWishListBinding
@@ -40,8 +47,20 @@ class WishList : AppCompatActivity() {
 
         // wishlist add btn
         binding.groupAddButton.setOnClickListener {
-            val intent = Intent(this@WishList, SearchPlace::class.java)
-            startActivity(intent)
+            val intent = Intent(this@WishList, AddWishList::class.java)
+            requestActivity.launch(intent)
+        }
+    }
+
+    private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
+            val memo = it.data?.getStringExtra("memo")
+            val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, searchResult.fullAddress,
+                memo!!, searchResult.latitude, searchResult.longitude)
+            CoroutineScope(Dispatchers.IO).launch {
+                wishListViewModel.wishListInsert(wish)
+            }
         }
     }
 

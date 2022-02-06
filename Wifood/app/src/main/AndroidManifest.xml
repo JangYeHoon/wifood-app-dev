@@ -14,9 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wifood">
         <activity
+            android:name=".activity.AddWishList"
+            android:exported="false" />
+        <activity
             android:name=".activity.SearchPlace"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.WishList"
             android:exported="false" />
@@ -43,9 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.FoodGroup"
-            android:exported="false" />
-
-        <!--네이버 지도 api 인증키-->
+            android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="28l8cj5f00" />

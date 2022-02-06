@@ -28,4 +28,8 @@ class WishListDao(groupId : Int) {
         })
         return wishList
     }
+
+    fun wishListInsert(wish: Wish) {
+        wishListDatabase.child(wish.id.toString()).setValue(wish)
+    }
 }
