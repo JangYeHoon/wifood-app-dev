@@ -29,6 +29,8 @@ class Joinin : AppCompatActivity() {
     var fineAddressValid = true
     var phoneNumberValid = false
     var nickNameValid = false
+    var genderValue = ""
+
     val TAG = "JoinInUserInfoActivity : "
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
     private val nicknameStringLambda = "^[a-zA-Z0-9가-힣]*\$"
@@ -41,8 +43,6 @@ class Joinin : AppCompatActivity() {
         val db = Firebase.database;
         val dbRootPath = "kg_test_db";
         val dbRef = db.getReference(dbRootPath);
-
-
 
         // email check
         editTextJoinEmail.addTextChangedListener(object : TextWatcher {
@@ -135,6 +135,10 @@ class Joinin : AppCompatActivity() {
         })
         // gender check
         radioGroupJoinGender.setOnCheckedChangeListener{group,checkedId->
+            if (radioButtonJoinMale.isChecked)
+                genderValue = "Male"
+            else if (radioButtonJoinFemale.isChecked)
+                genderValue = "Female"
             genderValid = true
             checkValid()
         }
@@ -186,9 +190,22 @@ class Joinin : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
+            val userEmail = editTextJoinEmail.text.toString().replace(".com","_com")
+            // TODO("should password security")
             // go food info after check
             if(checkValid()){
-                //TODO("db adding event")
+                val userInfoObject = UserInfo(
+                    //TODO("add correct code for user home lat lon using api")
+                    password = editTextJoinPasswordCheck.text.toString(),
+                    nickname = editTextJoinNickName.text.toString(),
+                    phoneNumber = editTextJoinPhone.text.toString().toInt(),
+                    coarseAddress = "노량진 제 1동 만양로 39",
+                    fineAddress = "B01호",
+                    gender = genderValue,
+                    homeLatitude = 37.50786489934014,
+                    homeLongitude = 126.94754349105091
+                )
+                dbRef.child(userEmail).child("info").setValue(userInfoObject)
                 val intent = Intent(this@Joinin,JoininFoodInfo::class.java)
                 startActivity(intent)
             }
@@ -202,3 +219,14 @@ class Joinin : AppCompatActivity() {
         return btnGoJoinInFoodInfo.isEnabled
     }
 }
+
+data class UserInfo(
+                    val password : String?=null,
+                    val nickname : String?=null,
+                    val phoneNumber : Int?=null,
+                    val coarseAddress : String?=null,
+                    val fineAddress : String?=null,
+                    val gender : String?=null,
+                    val homeLatitude : Double?=null,
+                    val homeLongitude : Double?=null,
+)
