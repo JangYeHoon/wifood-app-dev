@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        // Attributes from material Theme
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        // Attributes from android framework
+        <item name="android:windowBackground">#ffffff</item>
+        <item name="android:windowActivityTransitions">true</item>
+
+        // Attributes that I've defined
+        <item name="colorImagePlaceHolder">@color/GR80</item>
+    </style>
+</resources>
