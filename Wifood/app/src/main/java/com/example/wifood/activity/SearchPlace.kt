@@ -3,8 +3,10 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.adapter.SearchPlaceAdapter
 import com.example.wifood.databinding.ActivitySearchPlaceBinding
@@ -26,6 +28,7 @@ class SearchPlace : AppCompatActivity() {
         searchPlaceAdapter = SearchPlaceAdapter(this)
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.searchResultRecyclerView.adapter = searchPlaceAdapter
+        binding.searchResultRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         searchResult.observe(this) {
             searchPlaceAdapter.setListData(it)
             searchPlaceAdapter.notifyDataSetChanged()
@@ -56,8 +59,9 @@ class SearchPlace : AppCompatActivity() {
         tmapData.findTitlePOI(keyword, TMapData.FindTitlePOIListenerCallback {
             for (i in it) {
                 val poiItem:TMapPOIItem = i
+                val bizName: String = poiItem.middleBizName.toString() + "," + poiItem.lowerBizName + "," + poiItem.detailBizName
                 search.add(Search(poiItem.poiAddress.replace("null", ""),
-                    poiItem.poiName.toString(), poiItem.poiPoint.latitude, poiItem.poiPoint.longitude))
+                    poiItem.poiName.toString(), poiItem.poiPoint.latitude, poiItem.poiPoint.longitude, bizName))
                 searchResult.postValue(search)
             }
         })

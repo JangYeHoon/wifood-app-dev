@@ -28,6 +28,7 @@ class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<Se
         val search: Search = searchPlaceList[position]
         holder.searchName.text = search.name
         holder.searchAddress.text = search.fullAddress
+        holder.searchBizName.text = search.bizName
         holder.itemView.setOnClickListener {
             searchResultClickListener.onClick(it, position, search)
         }
@@ -40,6 +41,7 @@ class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<Se
     inner class SearchPlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val searchName : TextView = itemView.findViewById(R.id.searchName)
         val searchAddress : TextView = itemView.findViewById(R.id.searchAddress)
+        val searchBizName : TextView = itemView.findViewById(R.id.searchBizName)
     }
 
     interface SearchResultClickListener {
