@@ -4,29 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".activity.DeleteFoodGroup">
+    tools:context=".activity.AddWishList">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/deleteRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="552dp"
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="376dp"
+        android:layout_height="48dp"
+        android:hint="음식점 검색"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <EditText
+        android:id="@+id/memoText"
+        android:layout_width="376dp"
+        android:layout_height="200dp"
+        android:hint="Memo"
+        android:ems="10"
+        android:gravity="top"
+        android:background="@drawable/memo_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchText"
+        app:layout_constraintVertical_bias="0.110000014" />
 
     <Button
-        android:id="@+id/deleteBtn"
+        android:id="@+id/saveBtn"
         android:layout_width="367dp"
         android:layout_height="48dp"
-        android:text="삭제"
+        android:text="저장"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.94" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

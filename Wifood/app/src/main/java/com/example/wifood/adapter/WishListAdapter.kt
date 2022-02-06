@@ -26,6 +26,7 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         val wish: Wish = wishList[position]
         holder.wishName.text = wish.name
         holder.wishAddress.text = wish.address
+        holder.wishMemo.text = wish.memo
     }
 
     override fun getItemCount(): Int {
@@ -35,5 +36,6 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
     inner class WishListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val wishName : TextView = itemView.findViewById(R.id.wishName)
         val wishAddress : TextView = itemView.findViewById(R.id.wishAddress)
+        val wishMemo : TextView = itemView.findViewById(R.id.wishMemo)
     }
 }

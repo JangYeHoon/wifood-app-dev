@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.entity.Wish
 import com.google.firebase.database.*
 
-class WishListDao(private var wishListDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("WishGroup/1/wishlist")) {
+class WishListDao(groupId : Int) {
+    private var wishListDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("WishGroup/$groupId/wishlist")
+
     fun getWishList() : LiveData<MutableList<Wish>> {
         val wishList = MutableLiveData<MutableList<Wish>>()
         wishListDatabase.addValueEventListener(object: ValueEventListener {
@@ -25,5 +27,9 @@ class WishListDao(private var wishListDatabase: DatabaseReference = FirebaseData
             }
         })
         return wishList
+    }
+
+    fun wishListInsert(wish: Wish) {
+        wishListDatabase.child(wish.id.toString()).setValue(wish)
     }
 }
