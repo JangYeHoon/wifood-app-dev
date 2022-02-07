@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
@@ -50,16 +51,37 @@ class WishList : AppCompatActivity() {
             val intent = Intent(this@WishList, AddWishList::class.java)
             requestActivity.launch(intent)
         }
+
+        // wishlist edit btn
+        wishListAdapter.setWishListClickListener(object: WishListAdapter.WishListClickListener{
+            override fun onClick(view: View, position: Int, item: Wish) {
+                val intent = Intent(this@WishList, EditWishList::class.java).apply {
+                    putExtra("wish", item)
+                }
+                requestActivity.launch(intent)
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
-            val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
-            val memo = it.data?.getStringExtra("memo")
-            val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, searchResult.fullAddress,
-                memo!!, searchResult.latitude, searchResult.longitude)
-            CoroutineScope(Dispatchers.IO).launch {
-                wishListViewModel.wishListInsert(wish)
+            when(it.data?.getIntExtra("type", -1)) {
+                0 -> {
+                    val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
+                    val memo = it.data?.getStringExtra("memo")
+                    val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, searchResult.fullAddress,
+                        memo!!, searchResult.latitude, searchResult.longitude)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        wishListViewModel.insertWishList(wish)
+                    }
+                }
+                1 -> {
+                    val memo = it.data?.getStringExtra("memo")
+                    val editWish = it.data?.getParcelableExtra<Wish>("wish")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        wishListViewModel.insertWishList(editWish!!)
+                    }
+                }
             }
         }
     }

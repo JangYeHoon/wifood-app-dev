@@ -23,8 +23,8 @@ class WishListViewModel(groupId : Int): ViewModel() {
         return maxValue
     }
 
-    fun wishListInsert(wish: Wish) {
-        wishListDto.wishListInsert(wish)
+    fun insertWishList(wish: Wish) {
+        wishListDto.insertWishList(wish)
     }
 
     class Factory(val groupId : Int) : ViewModelProvider.Factory {

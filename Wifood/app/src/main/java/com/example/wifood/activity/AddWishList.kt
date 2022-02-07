@@ -36,6 +36,7 @@ class AddWishList : AppCompatActivity() {
                 val intent = Intent().apply {
                     putExtra("searchResult", searchResult)
                     putExtra("memo", memo)
+                    putExtra("type", 0)
                 }
                 setResult(RESULT_OK, intent)
                 finish()

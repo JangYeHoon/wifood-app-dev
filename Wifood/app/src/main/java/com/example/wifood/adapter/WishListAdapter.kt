@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
@@ -27,6 +26,9 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         holder.wishName.text = wish.name
         holder.wishAddress.text = wish.address
         holder.wishMemo.text = wish.memo
+        holder.itemView.setOnClickListener {
+            wishListClickListener.onClick(it, position, wish)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -37,5 +39,15 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         val wishName : TextView = itemView.findViewById(R.id.wishName)
         val wishAddress : TextView = itemView.findViewById(R.id.wishAddress)
         val wishMemo : TextView = itemView.findViewById(R.id.wishMemo)
+    }
+
+    interface WishListClickListener {
+        fun onClick(view: View, position: Int, item: Wish)
+    }
+
+    private lateinit var wishListClickListener: WishListClickListener
+
+    fun setWishListClickListener(wishListClickListener: WishListClickListener) {
+        this.wishListClickListener = wishListClickListener
     }
 }
