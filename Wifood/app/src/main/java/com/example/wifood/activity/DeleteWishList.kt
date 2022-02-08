@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.SparseBooleanArray
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.DeleteWishListAdapter
@@ -34,6 +35,7 @@ class DeleteWishList : AppCompatActivity() {
         deleteWishListAdapter = DeleteWishListAdapter(this)
         binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.deleteRecyclerView.adapter = deleteWishListAdapter
+        binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         deleteWishListAdapter.setListData(wishlist!!)
 
         binding.deleteBtn.setOnClickListener {
