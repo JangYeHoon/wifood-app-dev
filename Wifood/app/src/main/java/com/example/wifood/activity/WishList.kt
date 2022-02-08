@@ -19,6 +19,7 @@ import com.example.wifood.viewmodel.WishListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 class WishList : AppCompatActivity() {
     lateinit var binding : ActivityWishListBinding
@@ -52,6 +53,14 @@ class WishList : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
+        // wishlist delete btn
+        binding.groupDeleteButton.setOnClickListener {
+            val intent = Intent(this@WishList, DeleteWishList::class.java).apply {
+                putParcelableArrayListExtra("wishlist", wishListViewModel.getWishList())
+            }
+            requestActivity.launch(intent)
+        }
+
         // wishlist edit btn
         wishListAdapter.setWishListClickListener(object: WishListAdapter.WishListClickListener{
             override fun onClick(view: View, position: Int, item: Wish) {
@@ -80,6 +89,12 @@ class WishList : AppCompatActivity() {
                     val editWish = it.data?.getParcelableExtra<Wish>("wish")
                     CoroutineScope(Dispatchers.IO).launch {
                         wishListViewModel.insertWishList(editWish!!)
+                    }
+                }
+                2 -> {
+                    val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        wishListViewModel.deleteWishList(deleteIdList!!)
                     }
                 }
             }

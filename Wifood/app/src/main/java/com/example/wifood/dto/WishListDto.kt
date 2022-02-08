@@ -19,4 +19,9 @@ class WishListDto(groupId : Int) {
     fun insertWishList(wish: Wish) {
         wishListDao.insertWishList(wish)
     }
+
+    fun deleteWishList(wishIdList: ArrayList<Int>) {
+        for (i in wishIdList)
+            wishListDao.deleteWishList(i)
+    }
 }

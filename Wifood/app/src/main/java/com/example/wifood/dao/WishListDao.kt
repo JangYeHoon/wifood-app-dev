@@ -32,4 +32,8 @@ class WishListDao(groupId : Int) {
     fun insertWishList(wish: Wish) {
         wishListDatabase.child(wish.id.toString()).setValue(wish)
     }
+
+    fun deleteWishList(wishId : Int) {
+        wishListDatabase.child(wishId.toString()).removeValue()
+    }
 }
