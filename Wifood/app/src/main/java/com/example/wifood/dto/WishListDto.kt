@@ -16,7 +16,12 @@ class WishListDto(groupId : Int) {
         return mutableWishList
     }
 
-    fun wishListInsert(wish: Wish) {
-        wishListDao.wishListInsert(wish)
+    fun insertWishList(wish: Wish) {
+        wishListDao.insertWishList(wish)
+    }
+
+    fun deleteWishList(wishIdList: ArrayList<Int>) {
+        for (i in wishIdList)
+            wishListDao.deleteWishList(i)
     }
 }

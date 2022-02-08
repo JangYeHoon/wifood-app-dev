@@ -24,18 +24,19 @@ class AddWishList : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "위시리스트 추가"
 
-        binding.searchText.setOnClickListener {
+        binding.searchButton.setOnClickListener {
             val intent = Intent(this@AddWishList, SearchPlace::class.java).apply {}
             requestActivity.launch(intent)
         }
 
         binding.saveBtn.setOnClickListener {
-            val name = binding.searchText.text.toString()
+            val name = binding.searchName.text.toString()
             val memo = binding.memoText.text.toString()
             if (name.isNotEmpty()) {
                 val intent = Intent().apply {
                     putExtra("searchResult", searchResult)
                     putExtra("memo", memo)
+                    putExtra("type", 0)
                 }
                 setResult(RESULT_OK, intent)
                 finish()
@@ -46,7 +47,9 @@ class AddWishList : AppCompatActivity() {
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
             searchResult = it.data?.getParcelableExtra("searchResult")!!
-            binding.searchText.setText(searchResult.name)
+            binding.searchName.text = searchResult.name
+            binding.searchBizName.text = searchResult.bizName
+            binding.searchAddress.text = searchResult.fullAddress
         }
     }
 
