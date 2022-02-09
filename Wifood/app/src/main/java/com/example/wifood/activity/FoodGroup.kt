@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
@@ -40,6 +41,7 @@ class FoodGroup : AppCompatActivity() {
         foodGroupAdapter = GroupAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = foodGroupAdapter
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         // Automatically change bindings when data changes
         foodGroupViewModel.foodGroupList.observe(this) {
@@ -78,6 +80,16 @@ class FoodGroup : AppCompatActivity() {
                     }
                     requestActivity.launch(intent)
                 }
+            }
+        })
+
+        // group go btn
+        foodGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
+            override fun onClick(view: View, position: Int, groupId: Int) {
+                val intent = Intent(this@FoodGroup, FoodList::class.java).apply {
+                    putExtra("groupId", groupId)
+                }
+                startActivity(intent)
             }
         })
     }

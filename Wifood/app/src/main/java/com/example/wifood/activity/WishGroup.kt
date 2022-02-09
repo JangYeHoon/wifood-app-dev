@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
@@ -39,6 +40,7 @@ class WishGroup : AppCompatActivity() {
         wishGroupAdapter = GroupAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = wishGroupAdapter
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         wishGroupViewModel.wishGroupList.observe(this) {
             wishGroupAdapter.setListData(it)

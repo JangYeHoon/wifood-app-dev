@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.WishListAdapter
@@ -41,6 +42,7 @@ class WishList : AppCompatActivity() {
         wishListAdapter = WishListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = wishListAdapter
+        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         wishListViewModel.wishList.observe(this) {
             wishListAdapter.setListData(it)
@@ -78,14 +80,13 @@ class WishList : AppCompatActivity() {
                 0 -> {
                     val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
                     val memo = it.data?.getStringExtra("memo")
-                    val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, searchResult.fullAddress,
-                        memo!!, searchResult.latitude, searchResult.longitude)
+                    val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, memo!!,
+                        searchResult.fullAddress, searchResult.latitude, searchResult.longitude)
                     CoroutineScope(Dispatchers.IO).launch {
                         wishListViewModel.insertWishList(wish)
                     }
                 }
                 1 -> {
-                    val memo = it.data?.getStringExtra("memo")
                     val editWish = it.data?.getParcelableExtra<Wish>("wish")
                     CoroutineScope(Dispatchers.IO).launch {
                         wishListViewModel.insertWishList(editWish!!)

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.DeleteFoodGroupAdapter
@@ -37,6 +38,7 @@ class DeleteFoodGroup : AppCompatActivity() {
         deleteFoodGroupAdapter = DeleteFoodGroupAdapter(this)
         binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.deleteRecyclerView.adapter = deleteFoodGroupAdapter
+        binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         deleteFoodGroupAdapter.setListData(foodGroupList)
 
         binding.deleteBtn.setOnClickListener {
