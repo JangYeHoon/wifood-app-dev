@@ -82,6 +82,16 @@ class FoodGroup : AppCompatActivity() {
                 }
             }
         })
+
+        // group go btn
+        foodGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
+            override fun onClick(view: View, position: Int, groupId: Int) {
+                val intent = Intent(this@FoodGroup, FoodList::class.java).apply {
+                    putExtra("groupId", groupId)
+                }
+                startActivity(intent)
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
