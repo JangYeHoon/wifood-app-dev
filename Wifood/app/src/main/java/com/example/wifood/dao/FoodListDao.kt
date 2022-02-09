@@ -28,4 +28,12 @@ class FoodListDao (groupId : Int) {
         })
         return foodList
     }
+
+    fun insertFoodList(food: Food) {
+        databaseFoodList.child(food.id.toString()).setValue(food)
+    }
+
+    fun deleteFoodList(foodId: Int) {
+        databaseFoodList.child(foodId.toString()).removeValue()
+    }
 }

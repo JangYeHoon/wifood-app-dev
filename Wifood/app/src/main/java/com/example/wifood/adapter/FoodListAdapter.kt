@@ -26,7 +26,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.foodName.text = food.name
         holder.foodAddress.text = food.address
         holder.foodMemo.text = food.memo
-        val grade : String = food.myGrade.toString() + "/5"
+        val grade : String = food.myTasteGrade.toString() + "/5"
         holder.foodGrade.text = grade
     }
 

@@ -15,4 +15,13 @@ class FoodListDto(groupId : Int) {
         }
         return mutableFoodList
     }
+
+    fun insertFoodList(food: Food) {
+        foodListDao.insertFoodList(food)
+    }
+
+    fun deleteFoodList(foodIdList: ArrayList<Int>) {
+        for (i in foodIdList)
+            foodListDao.deleteFoodList(i)
+    }
 }
