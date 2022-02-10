@@ -54,6 +54,14 @@ class FoodList : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
+        // foodlist delete btn
+        binding.foodListDeleteButton.setOnClickListener {
+            val intent = Intent(this@FoodList, DeleteFoodList::class.java).apply {
+                putParcelableArrayListExtra("foodlist", foodListViewModel.getFoodList())
+            }
+            requestActivity.launch(intent)
+        }
+
         // foodlist edit btn
         foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Food) {
@@ -85,6 +93,12 @@ class FoodList : AppCompatActivity() {
                     val editFood = it.data?.getParcelableExtra<Food>("food")
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(editFood!!)
+                    }
+                }
+                2 -> {
+                    val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        foodListViewModel.deleteFoodList(deleteIdList!!)
                     }
                 }
             }

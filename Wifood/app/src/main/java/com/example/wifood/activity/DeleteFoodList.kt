@@ -11,18 +11,18 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
-import com.example.wifood.adapter.DeleteWishListAdapter
-import com.example.wifood.databinding.ActivityDeleteWishListBinding
-import com.example.wifood.entity.Wish
+import com.example.wifood.adapter.DeleteFoodListAdapter
+import com.example.wifood.databinding.ActivityDeleteFoodListBinding
+import com.example.wifood.entity.Food
 
-class DeleteWishList : AppCompatActivity() {
-    lateinit var binding : ActivityDeleteWishListBinding
-    lateinit var deleteWishListAdapter : DeleteWishListAdapter
-    var selectedWishList : SparseBooleanArray = SparseBooleanArray(0)
-    var deleteWishList : ArrayList<Int> = ArrayList(0)
+class DeleteFoodList : AppCompatActivity() {
+    lateinit var binding : ActivityDeleteFoodListBinding
+    lateinit var deleteFoodListAdapter: DeleteFoodListAdapter
+    var selectedFoodList : SparseBooleanArray = SparseBooleanArray(0)
+    var deleteFoodList : ArrayList<Int> = ArrayList(0)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDeleteWishListBinding.inflate(layoutInflater)
+        binding = ActivityDeleteFoodListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
@@ -30,19 +30,19 @@ class DeleteWishList : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
-        supportActionBar?.title = "위시리스트 삭제"
+        supportActionBar?.title = "맛집리스트 삭제"
 
-        val wishlist = intent.getParcelableArrayListExtra<Wish>("wishlist")
-        deleteWishListAdapter = DeleteWishListAdapter(this)
+        var foodlist = intent.getParcelableArrayListExtra<Food>("foodlist")
+        deleteFoodListAdapter = DeleteFoodListAdapter(this)
         binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.deleteRecyclerView.adapter = deleteWishListAdapter
+        binding.deleteRecyclerView.adapter = deleteFoodListAdapter
         binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
-        deleteWishListAdapter.setListData(wishlist!!)
+        deleteFoodListAdapter.setListData(foodlist!!)
 
         binding.deleteBtn.setOnClickListener {
-            if (deleteWishList.size != 0) {
+            if (deleteFoodList.size != 0) {
                 val intent = Intent().apply {
-                    putExtra("deleteIdList", deleteWishList)
+                    putExtra("deleteIdList", deleteFoodList)
                     putExtra("type", 2)
                 }
                 setResult(RESULT_OK, intent)
@@ -50,16 +50,16 @@ class DeleteWishList : AppCompatActivity() {
             finish()
         }
 
-        deleteWishListAdapter.setDeleteWishListClickListener(object: DeleteWishListAdapter.DeleteWishListClickListener {
-            override fun onClick(view: View, position: Int, item: Wish) {
-                if (selectedWishList.get(position, false)) {
-                    selectedWishList.delete(position)
+        deleteFoodListAdapter.setDeleteFoodListClickListener(object: DeleteFoodListAdapter.DeleteFoodListClickListener {
+            override fun onClick(view: View, position: Int, item: Food) {
+                if (selectedFoodList.get(position, false)) {
+                    selectedFoodList.delete(position)
                     view.setBackgroundColor(Color.WHITE)
-                    deleteWishList.remove(item.id)
+                    deleteFoodList.remove(item.id)
                 } else {
-                    selectedWishList.put(position, true)
+                    selectedFoodList.put(position, true)
                     view.setBackgroundColor(Color.DKGRAY)
-                    deleteWishList.add(item.id)
+                    deleteFoodList.add(item.id)
                 }
             }
         })

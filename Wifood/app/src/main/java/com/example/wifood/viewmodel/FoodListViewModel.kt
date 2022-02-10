@@ -23,6 +23,13 @@ class FoodListViewModel(groupId : Int): ViewModel() {
         return maxValue
     }
 
+    fun getFoodList(): ArrayList<Food> {
+        var food : ArrayList<Food> = ArrayList(0)
+        for (f in foodList.value!!)
+            food.add(f)
+        return food
+    }
+
     fun insertFoodList(food: Food) {
         foodListDto.insertFoodList(food)
     }
