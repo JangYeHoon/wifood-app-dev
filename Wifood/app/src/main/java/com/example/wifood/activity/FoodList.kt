@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,16 @@ class FoodList : AppCompatActivity() {
             val intent = Intent(this@FoodList, AddFoodList::class.java)
             requestActivity.launch(intent)
         }
+
+        // foodlist edit btn
+        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
+            override fun onClick(view: View, position: Int, item: Food) {
+                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+                    putExtra("food", item)
+                }
+                requestActivity.launch(intent)
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -68,6 +79,12 @@ class FoodList : AppCompatActivity() {
                         tasteGrade!!, cleanGrade!!, kindnessGrade!!)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(food)
+                    }
+                }
+                1 -> {
+                    val editFood = it.data?.getParcelableExtra<Food>("food")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        foodListViewModel.insertFoodList(editFood!!)
                     }
                 }
             }

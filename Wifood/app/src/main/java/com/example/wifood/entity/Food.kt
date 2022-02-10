@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 data class Food(val id:Int = 0, val name:String = "Name",
                 var memo:String = "None", val address:String = "None",
                 val latitude:Double = 0.0, val longitude:Double = 0.0,
-                val myTasteGrade:Double = 0.0, val myCleanGrade:Double = 0.0,
-                val myKindnessGrade:Double = 0.0)  : Parcelable
+                var myTasteGrade:Double = 0.0, var myCleanGrade:Double = 0.0,
+                var myKindnessGrade:Double = 0.0)  : Parcelable
