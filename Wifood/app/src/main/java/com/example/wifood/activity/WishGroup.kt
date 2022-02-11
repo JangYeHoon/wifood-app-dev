@@ -47,6 +47,7 @@ class WishGroup : AppCompatActivity() {
         wishGroupViewModel.wishGroupList.observe(this) {
             wishGroupAdapter.setListData(it)
             wishGroupAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
         }
 
         // group add btn
@@ -138,6 +139,16 @@ class WishGroup : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setEmptyRecyclerView() {
+        if (wishGroupAdapter.itemCount == 0) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyText.visibility = View.GONE
         }
     }
 }

@@ -32,6 +32,7 @@ class AddWishList : AppCompatActivity() {
         }
 
         // 위시리스트를 추가할 수 있도록 name, memo 정보를 WishList Activity로 넘겨줌
+        // TODO("여기서 wish를 생성하고 넘겨주는게 좋은가")
         binding.saveBtn.setOnClickListener {
             val name = binding.searchName.text.toString()
             val memo = binding.memoText.text.toString()
@@ -44,7 +45,6 @@ class AddWishList : AppCompatActivity() {
                 setResult(RESULT_OK, intent)
                 finish()
             }
-            TODO("여기서 wish를 생성하고 넘겨주는게 좋은가")
         }
     }
 

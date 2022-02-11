@@ -3,6 +3,7 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,7 @@ class FoodList : AppCompatActivity() {
         foodListViewModel.foodList.observe(this) {
             foodListAdapter.setListData(it)
             foodListAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
         }
 
         // foodlist add btn
@@ -123,5 +125,15 @@ class FoodList : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setEmptyRecyclerView() {
+        if (foodListAdapter.itemCount == 0) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyText.visibility = View.GONE
+        }
     }
 }

@@ -47,6 +47,7 @@ class FoodGroup : AppCompatActivity() {
         foodGroupViewModel.foodGroupList.observe(this) {
             foodGroupAdapter.setListData(it)
             foodGroupAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
         }
 
         // group add btn
@@ -136,6 +137,16 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setEmptyRecyclerView() {
+        if (foodGroupAdapter.itemCount == 0) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyText.visibility = View.GONE
         }
     }
 }

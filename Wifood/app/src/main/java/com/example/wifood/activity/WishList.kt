@@ -52,6 +52,7 @@ class WishList : AppCompatActivity() {
         wishListViewModel.wishList.observe(this) {
             wishListAdapter.setListData(it)
             wishListAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
         }
 
         // wishlist add btn
@@ -119,5 +120,15 @@ class WishList : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setEmptyRecyclerView() {
+        if (wishListAdapter.itemCount == 0) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyText.visibility = View.GONE
+        }
     }
 }
