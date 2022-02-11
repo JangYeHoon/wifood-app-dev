@@ -45,7 +45,8 @@ class WishGroup : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         wishGroupViewModel.wishGroupList.observe(this) {
-            wishGroupAdapter.setListData(it)
+            if (it != null) wishGroupAdapter.setListData(it)
+            else wishGroupAdapter.setListDataClear()
             wishGroupAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
         }

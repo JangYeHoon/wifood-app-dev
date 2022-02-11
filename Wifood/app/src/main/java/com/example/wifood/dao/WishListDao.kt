@@ -20,7 +20,7 @@ class WishListDao(groupId : Int) {
                         dbList.add(wish!!)
                         wishList.value = dbList
                     }
-                }
+                } else wishList.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {

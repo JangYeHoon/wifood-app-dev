@@ -23,7 +23,7 @@ class GroupDao (groupType: String){
                         dbList.add(group!!)
                         groupList.value = dbList
                     }
-                }
+                } else groupList.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {

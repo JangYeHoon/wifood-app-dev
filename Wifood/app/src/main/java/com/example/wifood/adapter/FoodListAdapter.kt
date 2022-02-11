@@ -17,6 +17,10 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         foodList = data
     }
 
+    fun setListDataClear() {
+        foodList.clear()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.food_list, parent, false)
         return FoodListViewHolder(view)

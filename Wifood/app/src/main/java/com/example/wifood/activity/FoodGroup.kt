@@ -45,7 +45,8 @@ class FoodGroup : AppCompatActivity() {
 
         // Automatically change bindings when data changes
         foodGroupViewModel.foodGroupList.observe(this) {
-            foodGroupAdapter.setListData(it)
+            if (it != null) foodGroupAdapter.setListData(it)
+            else foodGroupAdapter.setListDataClear()
             foodGroupAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
         }

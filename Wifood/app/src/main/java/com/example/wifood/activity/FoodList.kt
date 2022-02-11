@@ -3,7 +3,6 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,7 +15,6 @@ import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
 import com.example.wifood.entity.Search
-import com.example.wifood.entity.Wish
 import com.example.wifood.viewmodel.FoodListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +48,8 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         foodListViewModel.foodList.observe(this) {
-            foodListAdapter.setListData(it)
+            if (it != null) foodListAdapter.setListData(it)
+            else foodListAdapter.setListDataClear()
             foodListAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
         }

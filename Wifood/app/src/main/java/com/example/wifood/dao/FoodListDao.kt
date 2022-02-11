@@ -20,7 +20,7 @@ class FoodListDao (groupId : Int) {
                         dbList.add(food!!)
                         foodList.value = dbList
                     }
-                }
+                } else foodList.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {

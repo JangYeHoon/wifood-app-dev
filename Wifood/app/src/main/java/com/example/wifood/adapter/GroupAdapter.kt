@@ -2,7 +2,6 @@ package com.example.wifood.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,10 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     fun setListData(data:MutableList<Group>) {
         groupList = data
+    }
+
+    fun setListDataClear() {
+        groupList.clear()
     }
 
     fun getGroupNameList() : MutableList<String> {

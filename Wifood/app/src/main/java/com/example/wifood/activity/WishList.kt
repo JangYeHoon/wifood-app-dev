@@ -50,7 +50,8 @@ class WishList : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         wishListViewModel.wishList.observe(this) {
-            wishListAdapter.setListData(it)
+            if (it != null) wishListAdapter.setListData(it)
+            else wishListAdapter.setListDataClear()
             wishListAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
         }
