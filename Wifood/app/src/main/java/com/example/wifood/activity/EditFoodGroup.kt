@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditFoodGroupBinding
@@ -11,6 +12,8 @@ import com.example.wifood.databinding.ActivityEditFoodGroupBinding
 class EditFoodGroup : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodGroupBinding
     var pinColor : String = ""
+    lateinit var inputMethodManager: InputMethodManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditFoodGroupBinding.inflate(layoutInflater)
@@ -47,6 +50,8 @@ class EditFoodGroup : AppCompatActivity() {
         // click image size conversion
         for (i in pinArray) {
             i.setOnClickListener {
+                inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(binding.groupTitle.windowToken, 0)
                 pinColor = i.contentDescription.toString()
                 i.scaleX = 2F
                 i.scaleY = 2F

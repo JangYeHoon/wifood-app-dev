@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ class SearchPlace : AppCompatActivity() {
     lateinit var binding : ActivitySearchPlaceBinding
     lateinit var searchPlaceAdapter : SearchPlaceAdapter
     var searchResult = MutableLiveData<MutableList<Search>>()
+    lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,8 @@ class SearchPlace : AppCompatActivity() {
 
         // 검색 버튼
         binding.searchButton.setOnClickListener {
+            inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
             searchPlace(binding.keywordText.text.toString())
         }
 
