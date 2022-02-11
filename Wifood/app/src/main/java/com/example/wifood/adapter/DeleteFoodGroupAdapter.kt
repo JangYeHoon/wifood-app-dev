@@ -14,7 +14,7 @@ import com.example.wifood.entity.Group
 
 class DeleteFoodGroupAdapter(private val context: Context): RecyclerView.Adapter<DeleteFoodGroupAdapter.DeleteFoodGroupViewHolder>() {
     private var foodGroupList = mutableListOf<Group>()
-    private var deleteFoodIdList = mutableListOf<Int>()
+    private var deleteFoodIdList = mutableListOf<Int>()     // 삭제할 food Id 저장하는 리스트
     fun setListData(data:MutableList<Group>) {
         foodGroupList = data
     }
@@ -32,6 +32,7 @@ class DeleteFoodGroupAdapter(private val context: Context): RecyclerView.Adapter
         val foodGroup : Group = foodGroupList[position]
         holder.group_name.text = foodGroup.name
         holder.group_pin.setColorFilter(Color.parseColor(foodGroup.color))
+        // chk 상태에 따라 삭제할 리스트에 저장
         holder.group_check.setOnClickListener{
             if (holder.group_check.isChecked)
                 deleteFoodIdList.add(foodGroup.id)

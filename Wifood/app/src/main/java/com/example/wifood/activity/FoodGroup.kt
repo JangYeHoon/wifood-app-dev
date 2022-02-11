@@ -119,6 +119,7 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
                 1 -> {
+                    // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
                     val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
                         it.data?.getSerializableExtra("color") as String)
                     CoroutineScope(Dispatchers.IO).launch {
@@ -126,6 +127,7 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
                 2 -> {
+                    // DeleteFoodGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
                     val groupId = it.data?.getIntegerArrayListExtra("id")
                     CoroutineScope(Dispatchers.IO).launch {
                         if (groupId != null)

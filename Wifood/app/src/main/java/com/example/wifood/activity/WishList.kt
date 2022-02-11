@@ -31,14 +31,19 @@ class WishList : AppCompatActivity() {
         binding = ActivityWishListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 툴바 설정
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
+        // TODO("WishGroupActivity에서 그룹 이름 정보 받아와서 툴바 타이틀 설정")
 
+        // 데이터베이스 접근을 위한 wish group id정보 받아옴
         val groupId = intent.getIntExtra("groupId", 0)
 
+        // 데이터베이스 접근을 위한 viewModel 설정, 파라미터로 groupId를 넘겨줌
         wishListViewModel = ViewModelProvider(this, WishListViewModel.Factory(groupId)).get(WishListViewModel::class.java)
+        // 데이터베이스에서 받아온 wishlist 정보를 이용해 recyclerView 설정
         wishListAdapter = WishListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = wishListAdapter
@@ -78,6 +83,7 @@ class WishList : AppCompatActivity() {
         if (it.resultCode == RESULT_OK) {
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
+                    // AddWishListActivity에서 받은 정보를 이용해 wish를 생성해 db에 추가
                     val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
                     val memo = it.data?.getStringExtra("memo")
                     val wish = Wish(wishListViewModel.getWishListMaxId() + 1, searchResult!!.name, memo!!,
@@ -87,12 +93,14 @@ class WishList : AppCompatActivity() {
                     }
                 }
                 1 -> {
+                    // EditWishListActivity에서 받은 수정된 wish를 이용해 db 수정
                     val editWish = it.data?.getParcelableExtra<Wish>("wish")
                     CoroutineScope(Dispatchers.IO).launch {
                         wishListViewModel.insertWishList(editWish!!)
                     }
                 }
                 2 -> {
+                    // DeleteWishListActivity에서 받은 삭제할 id list를 이용해 db에서 삭제
                     val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
                     CoroutineScope(Dispatchers.IO).launch {
                         wishListViewModel.deleteWishList(deleteIdList!!)

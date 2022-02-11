@@ -16,17 +16,20 @@ class EditWishList : AppCompatActivity() {
         binding = ActivityEditWishListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 툴바 설정
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "위시리스트 수정"
 
+        // 수정할 맛집에 대한 정보를 받아와 view 설정
         var wish = intent.getParcelableExtra<Wish>("wish")
         binding.wishName.text = wish?.name
         binding.wishAddress.text = wish?.address
         binding.memoText.setText(wish?.memo)
 
+        // 변경된 정보를 받아와서 memo에 대한 정보를 수정하고 WishListActivity에게 넘겨줌
         binding.saveBtn.setOnClickListener {
             wish?.memo = binding.memoText.text.toString()
             val intent = Intent().apply {
@@ -39,7 +42,7 @@ class EditWishList : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 클릭한 툴바 메뉴 아이템의 id마다 다르게 실행하도록 설정
+        // 툴바 메뉴에 뒤로가기 버튼
         when (item.itemId) {
             android.R.id.home -> {
                 finish()

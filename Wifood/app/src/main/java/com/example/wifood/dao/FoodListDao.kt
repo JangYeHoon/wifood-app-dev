@@ -8,6 +8,7 @@ import com.google.firebase.database.*
 class FoodListDao (groupId : Int) {
     private var databaseFoodList: DatabaseReference = FirebaseDatabase.getInstance().getReference("FoodGroup/$groupId/foodlist")
 
+    // 디비에서 foodlist 정보 받아옴
     fun getFoodList() : LiveData<MutableList<Food>> {
         val foodList = MutableLiveData<MutableList<Food>>()
         databaseFoodList.addValueEventListener(object: ValueEventListener {
@@ -29,10 +30,12 @@ class FoodListDao (groupId : Int) {
         return foodList
     }
 
+    // 디비에 해당 food 정보 추가 or 수정
     fun insertFoodList(food: Food) {
         databaseFoodList.child(food.id.toString()).setValue(food)
     }
 
+    // 디비에서 해당 id를 가진 food 삭제
     fun deleteFoodList(foodId: Int) {
         databaseFoodList.child(foodId.toString()).removeValue()
     }

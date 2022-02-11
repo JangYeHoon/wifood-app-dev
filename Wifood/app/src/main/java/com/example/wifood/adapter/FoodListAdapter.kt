@@ -27,8 +27,8 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.foodName.text = food.name
         holder.foodAddress.text = food.address
         holder.foodMemo.text = food.memo
-        val gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myTasteGrade) / 3
-        val grade = "${round(gradeScore*10)/10}/5"
+        val gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
+        val grade = "${round(gradeScore*10)/10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
         holder.foodGrade.text = grade
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
