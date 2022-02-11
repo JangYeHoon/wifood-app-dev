@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditFoodGroupBinding
@@ -11,14 +12,17 @@ import com.example.wifood.databinding.ActivityEditFoodGroupBinding
 class EditFoodGroup : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodGroupBinding
     var pinColor : String = ""
+    lateinit var inputMethodManager: InputMethodManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditFoodGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 툴바 설정
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
         // ImageView Array
@@ -46,6 +50,8 @@ class EditFoodGroup : AppCompatActivity() {
         // click image size conversion
         for (i in pinArray) {
             i.setOnClickListener {
+                inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(binding.groupTitle.windowToken, 0)
                 pinColor = i.contentDescription.toString()
                 i.scaleX = 2F
                 i.scaleY = 2F
@@ -90,7 +96,7 @@ class EditFoodGroup : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // 클릭한 툴바 메뉴 아이템의 id마다 다르게 실행하도록 설정
+        // 툴바 메뉴에 뒤로가기 버튼
         when (item.itemId) {
             android.R.id.home -> {
                 finish()

@@ -16,6 +16,10 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         wishList = data
     }
 
+    fun setListDataClear() {
+        wishList.clear()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.wish_list, parent, false)
         return WishListViewHolder(view)

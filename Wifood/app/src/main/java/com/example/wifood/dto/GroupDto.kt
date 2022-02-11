@@ -10,6 +10,7 @@ import com.example.wifood.entity.Group
 class GroupDto(groupType: String) {
     private val groupDao = GroupDao(groupType)
 
+    // 디비에서 받아온 정보를 이용해 group list 업데이트
     fun getGroupList() : LiveData<MutableList<Group>> {
         val mutableFoodGroup = MutableLiveData<MutableList<Group>>()
         groupDao.getGroupList().observeForever {
@@ -18,10 +19,12 @@ class GroupDto(groupType: String) {
         return mutableFoodGroup
     }
 
+    // 디비에 추가할 group 정보를 dao에게 넘겨줌
     fun groupInsert(group: Group) {
         groupDao.foodGroupInsert(group)
     }
 
+    // 디비에서 삭제할 id 정보를 dao에 넘겨줌
     fun groupDelete(groupIdList: ArrayList<Int>) {
         for (i in groupIdList)
             groupDao.foodGroupDelete(i)

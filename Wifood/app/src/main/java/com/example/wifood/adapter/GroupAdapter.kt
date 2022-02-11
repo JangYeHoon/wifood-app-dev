@@ -2,7 +2,6 @@ package com.example.wifood.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,10 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     fun setListData(data:MutableList<Group>) {
         groupList = data
+    }
+
+    fun setListDataClear() {
+        groupList.clear()
     }
 
     fun getGroupNameList() : MutableList<String> {
@@ -53,8 +56,9 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         holder.group_edit.setOnClickListener {
             groupEditClickListener.onClick(it, position, foodGroup.id)
         }
+        // TODO{"버튼을 따로 만들지 말고 해당 리스트를 선택하면 넘어가게 할까"}
         holder.group_go.setOnClickListener {
-            groupGoClickListener.onClick(it, position, foodGroup.id)
+            groupGoClickListener.onClick(it, position, foodGroup)
         }
     }
 
@@ -80,7 +84,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
     }
 
     interface GroupGoClickListener {
-        fun onClick(view: View, position: Int, groupId: Int)
+        fun onClick(view: View, position: Int, group: Group)
     }
 
     private lateinit var groupGoClickListener: GroupGoClickListener

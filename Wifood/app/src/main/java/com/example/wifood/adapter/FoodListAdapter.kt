@@ -8,12 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Food
+import kotlin.math.round
 
 class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
     private var foodList = mutableListOf<Food>()
 
     fun setListData(data:MutableList<Food>) {
         foodList = data
+    }
+
+    fun setListDataClear() {
+        foodList.clear()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
@@ -26,8 +31,12 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.foodName.text = food.name
         holder.foodAddress.text = food.address
         holder.foodMemo.text = food.memo
-        val grade : String = food.myGrade.toString() + "/5"
+        val gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
+        val grade = "${round(gradeScore*10)/10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
         holder.foodGrade.text = grade
+        holder.itemView.setOnClickListener {
+            foodListClickListener.onClick(it, position, food)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,5 +48,15 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
         val foodGrade : TextView = itemView.findViewById(R.id.foodGrade)
+    }
+
+    interface FoodListClickListener {
+        fun onClick(view: View, position: Int, item: Food)
+    }
+
+    private lateinit var foodListClickListener: FoodListClickListener
+
+    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
+        this.foodListClickListener = foodListClickListener
     }
 }

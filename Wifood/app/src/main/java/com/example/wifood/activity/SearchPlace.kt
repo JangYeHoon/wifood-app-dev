@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,12 +20,14 @@ class SearchPlace : AppCompatActivity() {
     lateinit var binding : ActivitySearchPlaceBinding
     lateinit var searchPlaceAdapter : SearchPlaceAdapter
     var searchResult = MutableLiveData<MutableList<Search>>()
+    lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // tmap api에서 받은 검색 결과를 출력하기 위한 recyclerView 설정
         searchPlaceAdapter = SearchPlaceAdapter(this)
         binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.searchResultRecyclerView.adapter = searchPlaceAdapter
@@ -34,12 +37,16 @@ class SearchPlace : AppCompatActivity() {
             searchPlaceAdapter.notifyDataSetChanged()
         }
 
+        // tmap api 사용을 위한 key 설정
         val tmapTAPI = TMapTapi(this)
         tmapTAPI.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
 
 
+        // 검색 버튼
         binding.searchButton.setOnClickListener {
-            searchPlace(binding.keywordText.text.toString(), 20)
+            inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
+            searchPlace(binding.keywordText.text.toString())
         }
 
         searchPlaceAdapter.setSearchResultClickListener(object: SearchPlaceAdapter.SearchResultClickListener{
@@ -53,7 +60,9 @@ class SearchPlace : AppCompatActivity() {
         })
     }
 
-    private fun searchPlace(keyword: String, page: Int) {
+    // tmap api에 keyword를 이용해 검색한 결과를 받아와 searchResult에 저장
+    // TODO("address 정보 더 출력되도록 수정")
+    private fun searchPlace(keyword: String) {
         val search : MutableList<Search> = mutableListOf()
         val tmapData = TMapData()
         tmapData.findTitlePOI(keyword, TMapData.FindTitlePOIListenerCallback {

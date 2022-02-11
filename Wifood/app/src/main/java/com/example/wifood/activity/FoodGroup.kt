@@ -45,8 +45,10 @@ class FoodGroup : AppCompatActivity() {
 
         // Automatically change bindings when data changes
         foodGroupViewModel.foodGroupList.observe(this) {
-            foodGroupAdapter.setListData(it)
+            if (it != null) foodGroupAdapter.setListData(it)
+            else foodGroupAdapter.setListDataClear()
             foodGroupAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
         }
 
         // group add btn
@@ -85,9 +87,10 @@ class FoodGroup : AppCompatActivity() {
 
         // group go btn
         foodGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
-            override fun onClick(view: View, position: Int, groupId: Int) {
+            override fun onClick(view: View, position: Int, group: Group) {
                 val intent = Intent(this@FoodGroup, FoodList::class.java).apply {
-                    putExtra("groupId", groupId)
+                    putExtra("groupName", group.name)
+                    putExtra("groupId", group.id)
                 }
                 startActivity(intent)
             }
@@ -119,6 +122,7 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
                 1 -> {
+                    // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
                     val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
                         it.data?.getSerializableExtra("color") as String)
                     CoroutineScope(Dispatchers.IO).launch {
@@ -126,6 +130,7 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
                 2 -> {
+                    // DeleteFoodGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
                     val groupId = it.data?.getIntegerArrayListExtra("id")
                     CoroutineScope(Dispatchers.IO).launch {
                         if (groupId != null)
@@ -133,6 +138,16 @@ class FoodGroup : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setEmptyRecyclerView() {
+        if (foodGroupAdapter.itemCount == 0) {
+            binding.recyclerView.visibility = View.GONE
+            binding.emptyText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.emptyText.visibility = View.GONE
         }
     }
 }

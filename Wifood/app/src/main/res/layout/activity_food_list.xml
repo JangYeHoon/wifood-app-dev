@@ -13,6 +13,7 @@
         android:layout_width="411dp"
         android:layout_height="486dp"
         android:layout_marginTop="240dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,5 +45,18 @@
         app:layout_constraintVertical_bias="0.957"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="#000000" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="284dp"
+        android:layout_height="134dp"
+        android:text="데이터가 없습니다."
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toTopOf="@+id/recyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

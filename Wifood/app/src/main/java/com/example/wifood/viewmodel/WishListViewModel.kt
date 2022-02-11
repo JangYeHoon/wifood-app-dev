@@ -24,7 +24,7 @@ class WishListViewModel(groupId : Int): ViewModel() {
     }
 
     fun getWishList(): ArrayList<Wish> {
-        var wish : ArrayList<Wish> = ArrayList<Wish>(0)
+        var wish : ArrayList<Wish> = ArrayList(0)
         for (w in wishList.value!!)
             wish.add(w)
         return wish
