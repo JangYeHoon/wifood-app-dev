@@ -55,7 +55,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         }
         // TODO{"버튼을 따로 만들지 말고 해당 리스트를 선택하면 넘어가게 할까"}
         holder.group_go.setOnClickListener {
-            groupGoClickListener.onClick(it, position, foodGroup.id)
+            groupGoClickListener.onClick(it, position, foodGroup)
         }
     }
 
@@ -81,7 +81,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
     }
 
     interface GroupGoClickListener {
-        fun onClick(view: View, position: Int, groupId: Int)
+        fun onClick(view: View, position: Int, group: Group)
     }
 
     private lateinit var groupGoClickListener: GroupGoClickListener

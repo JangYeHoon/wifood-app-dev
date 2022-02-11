@@ -36,7 +36,7 @@ class WishList : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
-        // TODO("WishGroupActivity에서 그룹 이름 정보 받아와서 툴바 타이틀 설정")
+        supportActionBar?.title = intent.getStringExtra("groupName")
 
         // 데이터베이스 접근을 위한 wish group id정보 받아옴
         val groupId = intent.getIntExtra("groupId", 0)

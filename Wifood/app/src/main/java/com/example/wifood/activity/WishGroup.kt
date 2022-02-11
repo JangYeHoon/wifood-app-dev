@@ -85,9 +85,12 @@ class WishGroup : AppCompatActivity() {
 
         // group go btn
         wishGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
-            override fun onClick(view: View, position: Int, groupId: Int) {
+            override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val intent = Intent(this@WishGroup, WishList::class.java).apply { putExtra("groupId", groupId) }
+                    val intent = Intent(this@WishGroup, WishList::class.java).apply {
+                        putExtra("groupName", group.name)
+                        putExtra("groupId", group.id)
+                    }
                     startActivity(intent)
                 }
             }
