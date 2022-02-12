@@ -53,7 +53,7 @@ class WishGroup : AppCompatActivity() {
 
         // group add btn
         binding.groupAddButton.setOnClickListener {
-            val intent = Intent(this@WishGroup, EditFoodGroup::class.java).apply {
+            val intent = Intent(this@WishGroup, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestActivity.launch(intent)
@@ -61,7 +61,7 @@ class WishGroup : AppCompatActivity() {
 
         // group del btn
         binding.groupDeleteButton.setOnClickListener {
-            val intent = Intent(this@WishGroup, DeleteFoodGroup::class.java).apply {
+            val intent = Intent(this@WishGroup, DeleteGroup::class.java).apply {
                 putExtra("groupName", ArrayList(wishGroupAdapter.getGroupNameList()))
                 putExtra("groupId", ArrayList(wishGroupAdapter.getGroupIdList()))
                 putExtra("groupColor", ArrayList(wishGroupAdapter.getGroupColorList()))
@@ -74,7 +74,7 @@ class WishGroup : AppCompatActivity() {
             override fun onClick(view: View, position: Int, groupId: Int) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val group: Group = wishGroupViewModel.getGroup(position)
-                    val intent = Intent(this@WishGroup, EditFoodGroup::class.java).apply {
+                    val intent = Intent(this@WishGroup, EditGroup::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("groupId", group.id)
                         putExtra("groupName", group.name)

@@ -7,16 +7,16 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
-import com.example.wifood.databinding.ActivityEditFoodGroupBinding
+import com.example.wifood.databinding.ActivityEditGroupBinding
 
-class EditFoodGroup : AppCompatActivity() {
-    lateinit var binding : ActivityEditFoodGroupBinding
+class EditGroup : AppCompatActivity() {
+    lateinit var binding : ActivityEditGroupBinding
     var pinColor : String = ""
     lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditFoodGroupBinding.inflate(layoutInflater)
+        binding = ActivityEditGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정
