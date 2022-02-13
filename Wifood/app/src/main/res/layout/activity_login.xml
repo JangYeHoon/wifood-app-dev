@@ -51,12 +51,14 @@
     <Button
         android:id="@+id/button4"
         android:layout_width="215dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="389dp"
+        android:layout_marginBottom="23dp"
         android:text="Naver Login"
+        app:layout_constraintBottom_toTopOf="@+id/switchAutoLogin"
         app:layout_constraintEnd_toStartOf="@+id/btnFindPwd"
         app:layout_constraintStart_toStartOf="@+id/btnFindPwd"
-        app:layout_constraintTop_toBottomOf="@+id/btnFindPwd" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextId"
@@ -67,7 +69,7 @@
         android:hint="xxx@xxx.com"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textSize="15"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btnGoHomeButton"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton"
@@ -76,7 +78,7 @@
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="204dp"
-        android:layout_height="44dp"
+        android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:ems="10"
@@ -84,7 +86,7 @@
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:password="true"
-        android:textSize="15"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton" />
 
@@ -92,16 +94,32 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="6dp"
         android:text="아이디"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="196dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toStartOf="@+id/editTextId" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
         android:text="비밀번호"
-        tools:layout_editor_absoluteX="12dp"
-        tools:layout_editor_absoluteY="253dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/switchAutoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="221dp"
+        android:minHeight="48dp"
+        android:text="자동로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
