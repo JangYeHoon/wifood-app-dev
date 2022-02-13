@@ -28,8 +28,18 @@
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginBottom="14dp"
+        android:text="단맛 선호도"
+        app:layout_constraintBottom_toBottomOf="@+id/radioGroupSweetness"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <RadioGroup
-        android:id="@+id/radioGroup2"
+        android:id="@+id/radioGroupSweetness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
@@ -38,43 +48,33 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11">
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/radioButtonSweetness1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/radioButtonSweetness2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/radioButtonSweetness3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radioButtonSweetness4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/radioButtonSweetness5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginBottom="14dp"
-        android:text="단맛 선호도"
-        app:layout_constraintBottom_toBottomOf="@+id/radioGroup2"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView7"
@@ -84,40 +84,40 @@
         android:layout_marginTop="31dp"
         android:text="신맛 선호도"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup3" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupSpiciness" />
 
     <RadioGroup
-        android:id="@+id/radioGroup3"
+        android:id="@+id/radioGroupSourness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="275dp"
+        android:layout_marginEnd="26dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup5"
-        app:layout_constraintStart_toEndOf="@+id/textView8">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/radioButton21"
+            android:id="@+id/radioButtonSourness1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton22"
+            android:id="@+id/radioButtonSourness2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton23"
+            android:id="@+id/radioButtonSourness3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton24"
+            android:id="@+id/radioButtonSourness4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton25"
+            android:id="@+id/radioButtonSourness5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RadioGroup>
@@ -130,7 +130,43 @@
         android:layout_marginTop="7dp"
         android:text="감칠맛 선호도"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/radioGroup6" />
+        app:layout_constraintTop_toTopOf="@+id/radioGroupSavory" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSavory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="26dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupSourness">
+
+        <RadioButton
+            android:id="@+id/radioButtonSavory1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSavory2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSavory3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSavory4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSavory5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView8"
@@ -138,9 +174,45 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:text="매운맛 선호도"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup3"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupSpiciness"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/radioGroup3" />
+        app:layout_constraintTop_toTopOf="@+id/radioGroupSpiciness" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupSpiciness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="19dp"
+        android:layout_marginBottom="38dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupSourness"
+        app:layout_constraintStart_toEndOf="@+id/textView8">
+
+        <RadioButton
+            android:id="@+id/radioButtonSpiciness1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSpiciness2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSpiciness3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSpiciness4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSpiciness5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView9"
@@ -149,113 +221,41 @@
         android:layout_marginStart="33dp"
         android:layout_marginBottom="33dp"
         android:text="짠맛 선호도"
-        app:layout_constraintBottom_toBottomOf="@+id/radioGroup4"
+        app:layout_constraintBottom_toBottomOf="@+id/radioGroupSaltiness"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
-        android:id="@+id/radioGroup4"
+        android:id="@+id/radioGroupSaltiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="11dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="@+id/radioGroup3">
+        app:layout_constraintEnd_toEndOf="@+id/radioGroupSpiciness">
 
         <RadioButton
-            android:id="@+id/radioButton8"
+            android:id="@+id/radioButtonSaltiness1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton9"
+            android:id="@+id/radioButtonSaltiness2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton10"
+            android:id="@+id/radioButtonSaltiness3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton11"
+            android:id="@+id/radioButtonSaltiness4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <RadioButton
-            android:id="@+id/radioButton7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/radioGroup5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="275dp"
-        android:layout_marginEnd="26dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/radioButton26"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton27"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton28"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton29"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton30"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/radioGroup6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="26dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup5">
-
-        <RadioButton
-            android:id="@+id/radioButton31"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton32"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton33"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton34"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/radioButton35"
+            android:id="@+id/radioButtonSaltiness5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RadioGroup>
@@ -267,7 +267,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginTop="26dp"
         android:text="1"
-        app:layout_constraintStart_toStartOf="@+id/radioGroup2"
+        app:layout_constraintStart_toStartOf="@+id/radioGroupSweetness"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -276,7 +276,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="11dp"
         android:text="5"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup2"
-        app:layout_constraintEnd_toEndOf="@+id/radioGroup2" />
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupSweetness"
+        app:layout_constraintEnd_toEndOf="@+id/radioGroupSweetness" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

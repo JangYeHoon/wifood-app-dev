@@ -79,10 +79,13 @@ class Login : AppCompatActivity() {
                             if (accountTrue) {
                                 // if user didnt add food favorite, then go to food favorite page
                                 var intent = Intent()
-                                if (snapShot.child(idText).hasChild("Info_Food_Favorite"))
+                                if (snapShot.child(idText).hasChild("Taste_Favorite"))
                                     intent = Intent(this@Login, Map::class.java)
-                                else
+                                else{
+                                    // put user email info to
                                     intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
+                                    intent.putExtra("UserEmail",idText)
+                                }
                                 startActivity(intent)
                             }
                             // go to home activiy
@@ -97,7 +100,7 @@ class Login : AppCompatActivity() {
             }
         }
 
-        // join in button
+        // joinin button
         btnGoJoinIn.setOnClickListener {
             val intent = Intent(this@Login,Joinin::class.java)
             startActivity(intent)
@@ -105,29 +108,8 @@ class Login : AppCompatActivity() {
 
         // find password button
         btnFindPwd.setOnClickListener{
-            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapShot: DataSnapshot) {
-                    val builder = AlertDialog.Builder(this@Login)
-                    val idText = editTextId.text.toString()
-                    if(snapShot.hasChild(idText)){
-                        val userPhoneNum = snapShot.child(idText).child("info").child("phone_number").value.toString()
-                        val userUri = Uri.parse("smsto:${userPhoneNum}")
-                        val userIntent = Intent(Intent.ACTION_SENDTO,userUri)
-                        val sms_body_text = snapShot.child(idText).child("info").child("password").value.toString()
-                        userIntent.putExtra("sms_body", "Wifood User Password : $sms_body_text")
-                        builder.setTitle("Sending PWD")
-                            .setMessage("Successed , Dont forget your password")
-                        startActivity(userIntent)
-                    }
-                    else {
-                        builder.setTitle("Sending PWD")
-                            .setMessage("Failed , There is no ID")
-                    }
-                    builder.show()
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
+            val intent = Intent(this@Login,FindPassword::class.java)
+            startActivity(intent)
         }
 
         // check id(email) listener

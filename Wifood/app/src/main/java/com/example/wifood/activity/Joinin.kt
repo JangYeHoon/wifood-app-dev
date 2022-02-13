@@ -236,6 +236,7 @@ class Joinin : AppCompatActivity() {
                 dbRef.child(userEmail).child("info").setValue(userInfoObject)
 
                 val intent = Intent(this@Joinin,JoininFoodFavoriteInfo::class.java)
+                intent.putExtra("UserEmail",userEmail)
                 startActivity(intent)
             }
 
