@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.Login">
+
     <Button
         android:id="@+id/btnGoHomeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="48dp"
-        android:enabled="false"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="28dp"
+        android:enabled="true"
         android:text="로그인"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -59,30 +60,48 @@
 
     <EditText
         android:id="@+id/editTextId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="아이디를 입력하세요"
+        android:hint="xxx@xxx.com"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:textSize="15"
         app:layout_constraintBottom_toTopOf="@+id/btnGoHomeButton"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton"
-        app:layout_constraintVertical_bias="0.416" />
+        app:layout_constraintVertical_bias="0.166" />
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="204dp"
+        android:layout_height="44dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:ems="10"
-        android:hint="비밀번호를 입력하세요"
+        android:hint="특수문자 2자리 포함, 8~15자"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:password="true"
+        android:textSize="15"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아이디"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="196dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="비밀번호"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="253dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
