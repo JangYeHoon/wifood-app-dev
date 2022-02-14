@@ -13,13 +13,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b9443bc-b145-4bf7-a5ac-e82f3b990da2" name="Default Changelist" comment="change item id of menu_nav.xml">
-      <change afterPath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/JoinIn.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Joinin.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +58,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="merge_project" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -192,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643804619380</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="change item id of menu_nav.xml">
+      <created>1644150031881</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1644150031881</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
