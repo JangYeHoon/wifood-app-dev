@@ -82,7 +82,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         wishGroupViewModel = ViewModelProvider(this).get(WishGroupViewModel::class.java)
         // WishGroup 데이터 변동 감지
         wishGroupViewModel.wishGroupList.observe(this) {
-            arrWishGroup = it   // Shallow Copy
+            if (it != null) arrWishGroup = it   // Shallow Copy
         }
 
         // WishList 데이터
@@ -90,7 +90,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         wishListViewModel = ViewModelProvider(this, WishListViewModel.Factory(groupId)).get(WishListViewModel::class.java)
         // WishList 데이터 변동 감지
         wishListViewModel.wishList.observe(this) {
-            arrWishList = it    // Shallow Copy
+            if (it != null) arrWishList = it    // Shallow Copy
         }
 
         // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
