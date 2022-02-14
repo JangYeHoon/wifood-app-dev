@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Wish
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 
 class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishListAdapter.WishListViewHolder>() {
     private var wishList = mutableListOf<Wish>()
@@ -33,6 +35,9 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         holder.itemView.setOnClickListener {
             wishListClickListener.onClick(it, position, wish)
         }
+        holder.mapButton.setOnClickListener {
+            mapButtonClickListener.onClick(it, position, wish)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -43,6 +48,7 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
         val wishName : TextView = itemView.findViewById(R.id.wishName)
         val wishAddress : TextView = itemView.findViewById(R.id.wishAddress)
         val wishMemo : TextView = itemView.findViewById(R.id.wishMemo)
+        val mapButton : ImageButton = itemView.findViewById(R.id.mapButton)
     }
 
     interface WishListClickListener {
@@ -53,5 +59,11 @@ class WishListAdapter(private val context: Context): RecyclerView.Adapter<WishLi
 
     fun setWishListClickListener(wishListClickListener: WishListClickListener) {
         this.wishListClickListener = wishListClickListener
+    }
+
+    private lateinit var mapButtonClickListener: WishListClickListener
+
+    fun setMapButtonClickListener(mapButtonClickListener: WishListClickListener) {
+        this.mapButtonClickListener = mapButtonClickListener
     }
 }

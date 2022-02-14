@@ -72,10 +72,10 @@
             android:name=".activity.GroupSelect"
             android:exported="false" />
         <activity
-            android:name=".activity.DeleteFoodGroup"
+            android:name=".activity.DeleteGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.EditFoodGroup"
+            android:name=".activity.EditGroup"
             android:exported="false" />
         <activity
             android:name=".activity.FoodGroup"

@@ -79,6 +79,19 @@ class WishList : AppCompatActivity() {
                 requestActivity.launch(intent)
             }
         })
+
+        // map btn
+        wishListAdapter.setMapButtonClickListener(object: WishListAdapter.WishListClickListener{
+            override fun onClick(view: View, position: Int, item: Wish) {
+                val intent = Intent(this@WishList, Map::class.java).apply {
+                    putExtra("latitude", item.latitude)
+                    putExtra("longitude", item.longitude)
+                    putExtra("name", item.name)
+                }
+                startActivity(intent)
+                finish()
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

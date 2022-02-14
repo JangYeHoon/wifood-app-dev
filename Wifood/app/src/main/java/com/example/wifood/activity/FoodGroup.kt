@@ -53,7 +53,7 @@ class FoodGroup : AppCompatActivity() {
 
         // group add btn
         binding.groupAddButton.setOnClickListener {
-            val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
+            val intent = Intent(this@FoodGroup, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestActivity.launch(intent)
@@ -61,7 +61,7 @@ class FoodGroup : AppCompatActivity() {
 
         // group del btn
         binding.groupDeleteButton.setOnClickListener {
-            val intent = Intent(this@FoodGroup, DeleteFoodGroup::class.java).apply {
+            val intent = Intent(this@FoodGroup, DeleteGroup::class.java).apply {
                 putExtra("groupName", ArrayList(foodGroupAdapter.getGroupNameList()))
                 putExtra("groupId", ArrayList(foodGroupAdapter.getGroupIdList()))
                 putExtra("groupColor", ArrayList(foodGroupAdapter.getGroupColorList()))
@@ -74,7 +74,7 @@ class FoodGroup : AppCompatActivity() {
             override fun onClick(view: View, position: Int, groupId: Int) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val group: Group = foodGroupViewModel.getGroup(position)
-                    val intent = Intent(this@FoodGroup, EditFoodGroup::class.java).apply {
+                    val intent = Intent(this@FoodGroup, EditGroup::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("groupId", group.id)
                         putExtra("groupName", group.name)

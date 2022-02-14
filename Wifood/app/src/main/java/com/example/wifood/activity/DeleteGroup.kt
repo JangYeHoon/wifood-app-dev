@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.DeleteFoodGroupAdapter
-import com.example.wifood.databinding.ActivityDeleteFoodGroupBinding
+import com.example.wifood.databinding.ActivityDeleteGroupBinding
 import com.example.wifood.entity.Group
 
-class DeleteFoodGroup : AppCompatActivity() {
-    lateinit var binding : ActivityDeleteFoodGroupBinding
+class DeleteGroup : AppCompatActivity() {
+    lateinit var binding : ActivityDeleteGroupBinding
     lateinit var deleteFoodGroupAdapter : DeleteFoodGroupAdapter
     var foodGroupList = mutableListOf<Group>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDeleteFoodGroupBinding.inflate(layoutInflater)
+        binding = ActivityDeleteGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정
