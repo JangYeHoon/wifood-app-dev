@@ -16,13 +16,26 @@ import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import com.example.wifood.databinding.ActivityMapBinding
+import com.example.wifood.entity.Group
+import com.example.wifood.entity.Wish
+import com.example.wifood.viewmodel.WishGroupViewModel
+import com.example.wifood.viewmodel.WishListViewModel
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+    lateinit var binding : ActivityMapBinding
+
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
     private lateinit var navigationView: NavigationView
@@ -32,14 +45,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
     private var placeName = ""
 
-    // Marker 예제
-    private val foodMarker = Marker()
-    private val wishMarker = Marker()
+    // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
+    lateinit var wishGroupViewModel: WishGroupViewModel
+    lateinit var wishListViewModel: WishListViewModel
+    
+    var arrWishGroup = mutableListOf<Group>()   // WishGroup의 가변리스트
+    var arrWishList = mutableListOf<Wish>()     // WishList의 가변리스트
+
+    // Firebase 연결
+    private val db = Firebase.database;
+    private val dbRootPath = "WishGroup";
+    private val dbRef = db.getReference(dbRootPath);
 
     // onCreate()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        binding = ActivityMapBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //setContentView(R.layout.activity_map)
 
         // 툴바를 Activity의 앱바로 적용
         val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
@@ -54,13 +77,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 네비게이션 Drawer에 있는 화면의 Event를 처리하기 위해 생성
         navigationView = findViewById(R.id.main_navigationView)
         navigationView.setNavigationItemSelectedListener(this)
+        
+        // WishGroup 데이터
+        wishGroupViewModel = ViewModelProvider(this).get(WishGroupViewModel::class.java)
+        // WishGroup 데이터 변동 감지
+        wishGroupViewModel.wishGroupList.observe(this) {
+            arrWishGroup = it   // Shallow Copy
+        }
+
+        // WishList 데이터
+        val groupId = intent.getIntExtra("groupId", 0)
+        wishListViewModel = ViewModelProvider(this, WishListViewModel.Factory(groupId)).get(WishListViewModel::class.java)
+        // WishList 데이터 변동 감지
+        wishListViewModel.wishList.observe(this) {
+            arrWishList = it    // Shallow Copy
+        }
 
         // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
-        val btn = findViewById<Button>(R.id.goGroupSelect) as Button
-        btn.setOnClickListener {
-            val intent = Intent(this, GroupSelect::class.java)
-            startActivity(intent)
-        }
+        clickBtnJYH()
 
         // 지도 객체 생성
         val fm = supportFragmentManager // 다른 Fragment내에 배치할 경우 childFragmentManager로
@@ -81,6 +115,15 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         placeName = intent.getStringExtra("name").toString()
     }
 
+    // 예훈이형 메뉴로 Go (개발 임시 버튼)
+    private fun clickBtnJYH() {
+        val btn = findViewById<Button>(R.id.goGroupSelect) as Button
+        btn.setOnClickListener {
+            val intent = Intent(this, GroupSelect::class.java)
+            startActivity(intent)
+        }
+    }
+
     // 위치정보 사용자 권한 설정
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -90,7 +133,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             // 권한 거부됨
             if (!locationSource.isActivated) {
-                naverMap.locationTrackingMode = LocationTrackingMode.None
+                naverMap.locationTrackingMode = LocationTrackingMode.None   // 권한 거부되면 위치추적 하지 않음.
             }
             return
         }
@@ -108,11 +151,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         if (placeLatitude != 0.0 && placeLongitude != 0.0) {
             val cameraUpdate = CameraUpdate.scrollTo(LatLng(placeLatitude, placeLongitude))
             naverMap.moveCamera(cameraUpdate)
-            val marker = Marker()
-            marker.position = LatLng(placeLatitude, placeLongitude)
-            marker.map = naverMap
-            marker.icon = MarkerIcons.RED
-            marker.captionText = placeName
         }
         // 현재위치 표시
         else {
@@ -122,17 +160,40 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
         }
 
-        // Marker 예제
-        // 지도상에 마커 표시 → 맛집 표시로 활용하면 될 듯
-        foodMarker.position = LatLng(37.55285848882371, 127.14371145563707)
-        foodMarker.map = naverMap
-        foodMarker.icon = MarkerIcons.RED
-        foodMarker.captionText = "하남돼지집 명일역"
+        // FireBase 데이터 읽기 후 Marker 표시
+        dbRef.addValueEventListener(object :ValueEventListener {
+            // 데이터 변경 시
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.key.isNullOrEmpty())
+                    return
 
-        wishMarker.position = LatLng(37.55125881330635, 127.14665918080502)
-        wishMarker.map = naverMap
-        wishMarker.icon = MarkerIcons.BLUE
-        wishMarker.captionText = "회밀리"
+                // WishGroup의 모든 WishList 위, 경도 Marker 표시
+                for (i in 0 until arrWishGroup.size) {
+                    val wishGroupName: String = arrWishGroup[i].name
+                    val wishListData = snapshot.child(arrWishGroup[i].id.toString()).child("wishlist")
+
+                    for (wish in wishListData.children) {
+                        val wishName: String = wish.child("name").value as String
+                        val wishLatitude: Double = wish.child("latitude").value as Double
+                        val wishLongitude: Double = wish.child("longitude").value as Double
+
+                        // Marker 표시 코드 (Naver-API)
+                        val wishMarker = Marker()
+                        wishMarker.position = LatLng(wishLatitude, wishLongitude)
+                        wishMarker.map = naverMap
+                        wishMarker.icon = MarkerIcons.BLUE
+                        wishMarker.width = Marker.SIZE_AUTO
+                        wishMarker.height = Marker.SIZE_AUTO
+                        wishMarker.captionText = wishGroupName + '_' + wishName
+                    }
+                }
+            }
+
+            // 데이터 삭제 시
+            override fun onCancelled(error:DatabaseError) {
+                println("loadItem:onCancelled : ${error.toException()}")
+            }
+        })
     }
 
     companion object {
@@ -153,6 +214,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 // 三메뉴 버튼 클릭 시 네비게이션 Drawer 열기
                 drawerLayout.openDrawer(GravityCompat.START)
             }
+            /* 
+            // 검색 버튼 임시 삭제 (2022-02-11 박지훈 삭제)
             R.id.action_search -> {
                 //검색 버튼 눌렀을 때
                 Toast.makeText(applicationContext, "검색 이벤트 실행", Toast.LENGTH_LONG).show()
@@ -163,6 +226,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 // * ReverseCoding : 위도,경도 → 주소
 
             }
+            */
             R.id.action_share -> {
                 //공유 버튼 눌렀을 때
                 Toast.makeText(applicationContext, "공유 이벤트 실행", Toast.LENGTH_LONG).show()
@@ -176,9 +240,11 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // 강직이형 User 메뉴 여기서 연결시키면 될 듯 합니다.
         when (item.itemId) {
-            R.id.menu_item1 -> Toast.makeText(this, "메뉴1 실행", Toast.LENGTH_SHORT).show()
-            R.id.menu_item2 -> Toast.makeText(this, "메뉴2 실행", Toast.LENGTH_SHORT).show()
-            R.id.menu_item3 -> Toast.makeText(this, "메뉴3 실행", Toast.LENGTH_SHORT).show()
+            R.id.foodList -> Toast.makeText(this, "맛집리스트", Toast.LENGTH_SHORT).show()
+            R.id.wishList -> Toast.makeText(this, "위시리스트", Toast.LENGTH_SHORT).show()
+            R.id.followers -> Toast.makeText(this, "팔로워", Toast.LENGTH_SHORT).show()
+            R.id.userSettings -> Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
+            R.id.userLogout -> Toast.makeText(this, "로그아웃", Toast.LENGTH_SHORT).show()
         }
         return false
     }
