@@ -41,9 +41,9 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
 
+    // 선택된 음식점으로 카메라 이동을 위한 좌표
     private var placeLatitude = 0.0
     private var placeLongitude = 0.0
-    private var placeName = ""
 
     // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
     lateinit var wishGroupViewModel: WishGroupViewModel
@@ -112,7 +112,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         placeLatitude = intent.getDoubleExtra("latitude", 0.0)
         placeLongitude = intent.getDoubleExtra("longitude", 0.0)
-        placeName = intent.getStringExtra("name").toString()
     }
 
     // 예훈이형 메뉴로 Go (개발 임시 버튼)
