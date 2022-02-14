@@ -77,6 +77,19 @@ class FoodList : AppCompatActivity() {
                 requestActivity.launch(intent)
             }
         })
+
+        // map btn
+        foodListAdapter.setMapButtonClickListener(object: FoodListAdapter.FoodListClickListener{
+            override fun onClick(view: View, position: Int, item: Food) {
+                val intent = Intent(this@FoodList, Map::class.java).apply {
+                    putExtra("latitude", item.latitude)
+                    putExtra("longitude", item.longitude)
+                    putExtra("name", item.name)
+                }
+                startActivity(intent)
+                finish()
+            }
+        })
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

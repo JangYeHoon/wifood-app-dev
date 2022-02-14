@@ -3,15 +3,12 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
 import com.example.wifood.R
 
-import com.naver.maps.map.LocationTrackingMode
-import com.naver.maps.map.MapFragment
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.util.FusedLocationSource
 import androidx.core.view.GravityCompat
 
@@ -21,6 +18,7 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.navigation.NavigationView
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
 
@@ -29,6 +27,10 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private lateinit var naverMap: NaverMap
     private lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
+
+    private var placeLatitude = 0.0
+    private var placeLongitude = 0.0
+    private var placeName = ""
 
     // Marker 예제
     private val foodMarker = Marker()
@@ -73,6 +75,10 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // 위치를 반환하는 구현체인 FusedLocationSource 생성
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+
+        placeLatitude = intent.getDoubleExtra("latitude", 0.0)
+        placeLongitude = intent.getDoubleExtra("longitude", 0.0)
+        placeName = intent.getStringExtra("name").toString()
     }
 
     // 위치정보 사용자 권한 설정
@@ -98,11 +104,23 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
 
+        // 위시/맛집리스트에서 선택한 음식점에 대한 해당 좌표로 카메라 이동하고 마커 생성
+        if (placeLatitude != 0.0 && placeLongitude != 0.0) {
+            val cameraUpdate = CameraUpdate.scrollTo(LatLng(placeLatitude, placeLongitude))
+            naverMap.moveCamera(cameraUpdate)
+            val marker = Marker()
+            marker.position = LatLng(placeLatitude, placeLongitude)
+            marker.map = naverMap
+            marker.icon = MarkerIcons.RED
+            marker.captionText = placeName
+        }
         // 현재위치 표시
-        val uiSettings = naverMap.uiSettings
-        uiSettings.isLocationButtonEnabled = true
-        naverMap.locationTrackingMode =
-            LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
+        else {
+            val uiSettings = naverMap.uiSettings
+            uiSettings.isLocationButtonEnabled = true
+            naverMap.locationTrackingMode =
+                LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
+        }
 
         // Marker 예제
         // 지도상에 마커 표시 → 맛집 표시로 활용하면 될 듯

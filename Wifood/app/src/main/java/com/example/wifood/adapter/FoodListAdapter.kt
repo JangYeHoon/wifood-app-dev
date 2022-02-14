@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Food
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import kotlin.math.round
 
 class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
@@ -37,6 +39,9 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
         }
+        holder.mapButton.setOnClickListener {
+            mapButtonClickListener.onClick(it, position, food)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -48,6 +53,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
         val foodGrade : TextView = itemView.findViewById(R.id.foodGrade)
+        val mapButton : ImageButton = itemView.findViewById(R.id.mapButton)
     }
 
     interface FoodListClickListener {
@@ -58,5 +64,11 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
 
     fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
         this.foodListClickListener = foodListClickListener
+    }
+
+    private lateinit var mapButtonClickListener: FoodListClickListener
+
+    fun setMapButtonClickListener(mapButtonClickListener: FoodListClickListener) {
+        this.mapButtonClickListener = mapButtonClickListener
     }
 }
