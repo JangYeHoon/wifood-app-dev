@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.Toast
 import com.example.wifood.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -101,7 +99,7 @@ class Joinin : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?){}
             override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
             override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                if (android.util.Patterns.PHONE.matcher(editTextJoinPhone.text.toString()).matches()){
+                if (android.util.Patterns.PHONE.matcher(editTextJoinPhone.text.toString()).matches() && editTextJoinPhone.text.toString().length == 11){
                     editTextJoinPhone.setTextColor(Color.BLACK)
                     phoneNumberValid = true
                 }
@@ -144,6 +142,36 @@ class Joinin : AppCompatActivity() {
         }
 
         btnGoJoinInFoodInfo.setOnClickListener {
+            // Check if error exists
+            if (editTextJoinEmail.text.toString().length == 0)
+                Toast.makeText(this@Joinin, "이메일 입력 없음", Toast.LENGTH_SHORT).show()
+            else if (!emailValid)
+                Toast.makeText(this@Joinin, "이메일 형식 오류", Toast.LENGTH_SHORT).show()
+            else if (editTextJoinPassword.text.toString().length == 0)
+                Toast.makeText(this@Joinin, "비밀번호 입력 없음", Toast.LENGTH_SHORT).show()
+            else if (!passwordValid)
+                Toast.makeText(this@Joinin, "비밀번호 형식 오류", Toast.LENGTH_SHORT).show()
+            else if (editTextJoinPasswordCheck.text.toString().length == 0)
+                Toast.makeText(this@Joinin, "비밀번호 확인 입력 없음", Toast.LENGTH_SHORT).show()
+            else if (!passwordValidCheck)
+                Toast.makeText(this@Joinin, "비밀번호 확인 형식 오류", Toast.LENGTH_SHORT).show()
+            else if (editTextJoinPassword.text.equals(editTextJoinPasswordCheck.text))
+                Toast.makeText(this@Joinin, "비밀번호 확인 일치 오류", Toast.LENGTH_SHORT).show()
+
+            // 이메일 중복
+            // 비밀번호 재입력 체크
+            // 닉네임 없음
+            // 닉네임 형식 오류
+            // 닉네임 중복 체크
+            // 핸드폰번호 없음
+            // 핸드폰번호 형식 오류 ( 넘어가거나 - 있으면)
+            // 핸드폰번호 중복 오류
+            // coarse 주소 입력
+            // Fine 주소 없음
+            // Fine 주소 형식 오류
+            // 성별 체크 오류
+
+
             // already is email exists check
             val idText = editTextJoinEmail.text.toString().replace('.', '_') // change to firebase string
             dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -198,7 +226,7 @@ class Joinin : AppCompatActivity() {
                     //TODO("add correct code for user home lat lon using api")
                     password = editTextJoinPasswordCheck.text.toString(),
                     nickname = editTextJoinNickName.text.toString(),
-                    phoneNumber = editTextJoinPhone.text.toString().toInt(),
+                    phoneNumber = editTextJoinPhone.text.toString(),
                     coarseAddress = "노량진 제 1동 만양로 39",
                     fineAddress = "B01호",
                     gender = genderValue,
@@ -206,7 +234,9 @@ class Joinin : AppCompatActivity() {
                     homeLongitude = 126.94754349105091
                 )
                 dbRef.child(userEmail).child("info").setValue(userInfoObject)
-                val intent = Intent(this@Joinin,JoininFoodInfo::class.java)
+
+                val intent = Intent(this@Joinin,JoininFoodFavoriteInfo::class.java)
+                intent.putExtra("UserEmail",userEmail)
                 startActivity(intent)
             }
 
@@ -215,8 +245,7 @@ class Joinin : AppCompatActivity() {
 
     }
     fun checkValid() : Boolean{
-        btnGoJoinInFoodInfo.isEnabled = emailValid && passwordValid && passwordValidCheck && genderValid && coarseAddressValid && fineAddressValid && phoneNumberValid && nickNameValid
-        return btnGoJoinInFoodInfo.isEnabled
+        return emailValid && passwordValid && passwordValidCheck && genderValid && coarseAddressValid && fineAddressValid && phoneNumberValid && nickNameValid
     }
 }
 

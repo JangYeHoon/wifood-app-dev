@@ -250,14 +250,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     }
 
     // 뒤로가기 할 시 사이드, Nav바 닫는 기능 (Drawer Close)
+    var backKeyPressedTime : Long = 0
     override fun onBackPressed() {
+        val currentTime = System.currentTimeMillis()
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers()
             //
             Toast.makeText(this, "뒤로가기", Toast.LENGTH_SHORT).show()
         } else {
-            super.onBackPressed()
+            // if user push back button at map
+            if (currentTime > backKeyPressedTime + 2500) {
+                backKeyPressedTime = System.currentTimeMillis()
+                Toast.makeText(this@Map, "두 번 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show()
+                return
+            }else{
+                finishAffinity()
+            }
         }
     }
+
 
 }
