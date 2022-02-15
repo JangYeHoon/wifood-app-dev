@@ -252,7 +252,7 @@ class Joinin : AppCompatActivity() {
 data class UserInfo(
     val password : String?=null,
     val nickname : String?=null,
-    val phoneNumber : Int?=null,
+    val phoneNumber : String?=null,
     val coarseAddress : String?=null,
     val fineAddress : String?=null,
     val gender : String?=null,
