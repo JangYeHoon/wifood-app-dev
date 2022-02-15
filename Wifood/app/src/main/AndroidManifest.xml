@@ -22,6 +22,37 @@
             android:name=".activity.FindPassword"
             android:exported="false" />
         <activity
+            android:name=".activity.DeleteFoodList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditFoodList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddFoodList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.FoodList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DeleteWishList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditWishList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddWishList"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SearchPlace"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.JoininFoodInfo"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Joinin"
+            android:exported="false" />
+        <activity
             android:name=".activity.Login"
             android:exported="true">
             <intent-filter>
@@ -49,10 +80,10 @@
             android:name=".activity.GroupSelect"
             android:exported="false" />
         <activity
-            android:name=".activity.DeleteFoodGroup"
+            android:name=".activity.DeleteGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.EditFoodGroup"
+            android:name=".activity.EditGroup"
             android:exported="false" />
         <activity
             android:name=".activity.FoodGroup"

@@ -4,17 +4,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import com.example.wifood.R
-import com.example.wifood.databinding.ActivityGroupSelectBinding
+import com.example.wifood.databinding.ActivityEditWishListBinding
+import com.example.wifood.entity.Wish
 
-class GroupSelect : AppCompatActivity() {
-    lateinit var binding : ActivityGroupSelectBinding
+class EditWishList : AppCompatActivity() {
+    lateinit var binding : ActivityEditWishListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityGroupSelectBinding.inflate(layoutInflater)
+        binding = ActivityEditWishListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정
@@ -22,18 +21,23 @@ class GroupSelect : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
-        supportActionBar?.title = "그룹 선택"
+        supportActionBar?.title = "위시리스트 수정"
 
-        // foodGroup으로 이동
-        binding.foodGroupBtn.setOnClickListener {
-            val intent = Intent(this@GroupSelect, FoodGroup::class.java)
-            startActivity(intent)
-        }
+        // 수정할 맛집에 대한 정보를 받아와 view 설정
+        var wish = intent.getParcelableExtra<Wish>("wish")
+        binding.wishName.text = wish?.name
+        binding.wishAddress.text = wish?.address
+        binding.memoText.setText(wish?.memo)
 
-        // wishGroup으로 이동
-        binding.wishGroupBtn.setOnClickListener {
-            val intent = Intent(this@GroupSelect, WishGroup::class.java)
-            startActivity(intent)
+        // 변경된 정보를 받아와서 memo에 대한 정보를 수정하고 WishListActivity에게 넘겨줌
+        binding.saveBtn.setOnClickListener {
+            wish?.memo = binding.memoText.text.toString()
+            val intent = Intent().apply {
+                putExtra("type", 1)
+                putExtra("wish", wish)
+            }
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 

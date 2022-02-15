@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    tools:context=".activity.FoodGroup">
+    tools:context=".activity.FoodList">
 
     <include layout="@layout/toolbar"/>
 
@@ -21,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/groupDeleteButton"
+        android:id="@+id/foodListDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#ffffff"
@@ -34,7 +33,7 @@
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <ImageButton
-        android:id="@+id/groupAddButton"
+        android:id="@+id/foodListAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#ffffff"

@@ -11,23 +11,14 @@
         android:layout_width="335dp"
         android:layout_height="58dp"
         android:textSize="24sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="393dp"
-        android:layout_height="1dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/wishName"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/wishAddress"
@@ -37,7 +28,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wishName" />
+        app:layout_constraintTop_toBottomOf="@+id/wishName"
+        app:layout_constraintVertical_bias="0.031" />
 
     <ImageButton
         android:id="@+id/mapButton"
@@ -49,5 +41,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_map" />
+
+    <TextView
+        android:id="@+id/wishMemo"
+        android:layout_width="335dp"
+        android:layout_height="26dp"
+        android:text="TextView"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wishAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

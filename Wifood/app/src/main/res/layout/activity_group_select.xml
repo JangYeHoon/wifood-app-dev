@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     tools:context=".activity.GroupSelect">
+
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="409dp"
