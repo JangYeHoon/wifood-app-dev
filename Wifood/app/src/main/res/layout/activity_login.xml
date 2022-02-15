@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.Login">
+
     <Button
         android:id="@+id/btnGoHomeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="48dp"
-        android:enabled="false"
+        android:layout_marginTop="196dp"
+        android:layout_marginEnd="28dp"
+        android:enabled="true"
         android:text="로그인"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,39 +51,75 @@
     <Button
         android:id="@+id/button4"
         android:layout_width="215dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="389dp"
+        android:layout_marginBottom="23dp"
         android:text="Naver Login"
+        app:layout_constraintBottom_toTopOf="@+id/switchAutoLogin"
         app:layout_constraintEnd_toStartOf="@+id/btnFindPwd"
         app:layout_constraintStart_toStartOf="@+id/btnFindPwd"
-        app:layout_constraintTop_toBottomOf="@+id/btnFindPwd" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_width="179dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="아이디를 입력하세요"
+        android:hint="xxx@xxx.com"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btnGoHomeButton"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton"
-        app:layout_constraintVertical_bias="0.416" />
+        app:layout_constraintVertical_bias="0.166" />
 
     <EditText
         android:id="@+id/editTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="204dp"
+        android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:ems="10"
-        android:hint="비밀번호를 입력하세요"
+        android:hint="특수문자 2자리 포함, 8~15자"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:password="true"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/btnGoHomeButton"
         app:layout_constraintTop_toTopOf="@+id/btnGoHomeButton" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="6dp"
+        android:text="아이디"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toStartOf="@+id/editTextId" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="비밀번호"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/switchAutoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="221dp"
+        android:minHeight="48dp"
+        android:text="자동로그인"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
