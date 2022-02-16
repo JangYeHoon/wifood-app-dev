@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
@@ -145,10 +146,13 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
 
-        // 위시/맛집리스트에서 선택한 음식점에 대한 해당 좌표로 카메라 이동하고 마커 생성
+        // 맛집리스트에서 선택한 음식점에 대한 해당 좌표로 카메라 이동하고 마커 생성
         if (placeLatitude != 0.0 && placeLongitude != 0.0) {
             val cameraUpdate = CameraUpdate.scrollTo(LatLng(placeLatitude, placeLongitude))
             naverMap.moveCamera(cameraUpdate)
+            val cameraZoomUpdate = CameraUpdate.zoomTo(16.0)
+                .animate(CameraAnimation.Easing, 1000)
+            naverMap.moveCamera(cameraZoomUpdate)
         }
         // 현재위치 표시
         else {
