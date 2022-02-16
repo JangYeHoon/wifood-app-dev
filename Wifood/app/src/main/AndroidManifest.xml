@@ -34,21 +34,9 @@
             android:name=".activity.FoodList"
             android:exported="false" />
         <activity
-            android:name=".activity.DeleteWishList"
-            android:exported="false" />
-        <activity
-            android:name=".activity.EditWishList"
-            android:exported="false" />
-        <activity
-            android:name=".activity.AddWishList"
-            android:exported="false" />
-        <activity
             android:name=".activity.SearchPlace"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activity.JoininFoodInfo"
-            android:exported="false" />
         <activity
             android:name=".activity.Joinin"
             android:exported="false" />
@@ -65,19 +53,7 @@
             android:name=".activity.JoininFoodFavoriteInfo"
             android:exported="false" />
         <activity
-            android:name=".activity.Joinin"
-            android:exported="false" />
-        <activity
-            android:name=".activity.WishList"
-            android:exported="false" />
-        <activity
-            android:name=".activity.WishGroup"
-            android:exported="false" />
-        <activity
             android:name=".activity.Map"
-            android:exported="false" />
-        <activity
-            android:name=".activity.GroupSelect"
             android:exported="false" />
         <activity
             android:name=".activity.DeleteGroup"

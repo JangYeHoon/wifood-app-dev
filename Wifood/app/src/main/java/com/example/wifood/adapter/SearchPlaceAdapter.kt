@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Search
-import com.example.wifood.entity.Wish
 
 class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<SearchPlaceAdapter.SearchPlaceViewHolder>() {
 
