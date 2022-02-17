@@ -102,10 +102,11 @@ class FoodList : AppCompatActivity() {
                     val tasteGrade = it.data?.getDoubleExtra("taste", 1.0)
                     val cleanGrade = it.data?.getDoubleExtra("clean", 1.0)
                     val kindnessGrade = it.data?.getDoubleExtra("kindness", 1.0)
+                    val visited = it.data?.getIntExtra("visited", 0)
                     val memo = it.data?.getStringExtra("memo")
                     val food = Food(foodListViewModel.getFoodListMaxId() + 1, searchResult!!.name, memo!!,
                         searchResult.fullAddress, searchResult.latitude, searchResult.longitude,
-                        tasteGrade!!, cleanGrade!!, kindnessGrade!!)
+                        tasteGrade!!, cleanGrade!!, kindnessGrade!!, visited!!)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(food)
                     }

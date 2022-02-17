@@ -4,7 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -44,9 +47,17 @@ class SearchPlace : AppCompatActivity() {
 
         // 검색 버튼
         binding.searchButton.setOnClickListener {
-            inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
-            searchPlace(binding.keywordText.text.toString())
+            clickSearchBtn()
+        }
+
+        // 엔터키 버튼 입력
+        binding.keywordText.setOnEditorActionListener { textView, i, keyEvent ->
+            var handled = false
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                clickSearchBtn()
+                handled = true
+            }
+            handled
         }
 
         searchPlaceAdapter.setSearchResultClickListener(object: SearchPlaceAdapter.SearchResultClickListener{
@@ -58,6 +69,12 @@ class SearchPlace : AppCompatActivity() {
                 finish()
             }
         })
+    }
+
+    fun clickSearchBtn() {
+        inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
+        searchPlace(binding.keywordText.text.toString())
     }
 
     // tmap api에 keyword를 이용해 검색한 결과를 받아와 searchResult에 저장
