@@ -142,11 +142,11 @@ class FoodList : AppCompatActivity() {
 
     private fun setEmptyRecyclerView() {
         if (foodListAdapter.itemCount == 0) {
-            binding.recyclerView.visibility = View.GONE
+            binding.recyclerView.visibility = View.INVISIBLE
             binding.emptyText.visibility = View.VISIBLE
         } else {
             binding.recyclerView.visibility = View.VISIBLE
-            binding.emptyText.visibility = View.GONE
+            binding.emptyText.visibility = View.INVISIBLE
         }
     }
 }
