@@ -20,9 +20,15 @@ import android.widget.Toast
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
+import kotlinx.android.synthetic.main.menu_nav_header.*;
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var locationSource: FusedLocationSource
@@ -38,6 +44,31 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+
+        val db = Firebase.database;
+        val dbRootPath = "kg_test_db";
+        val dbRef = db.getReference(dbRootPath);
+
+        // from login activity
+        var userEmail = ""
+        var userNickname = ""
+        if (intent.hasExtra("UserEmail")){
+            userEmail = intent.getStringExtra("UserEmail").toString()
+            textViewUserEmail.text = userEmail
+            // get userNickname
+            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapShot: DataSnapshot) {
+                    userNickname = snapShot.child("nickname").getValue().toString()
+                    textViewNickname.text = userNickname
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    textViewUserEmail.text = "error"
+                    textViewNickname.text = "error"
+                }
+
+            })
+
+        }
 
         // 툴바를 Activity의 앱바로 적용
         val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
