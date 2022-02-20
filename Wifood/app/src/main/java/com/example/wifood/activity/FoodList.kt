@@ -14,8 +14,10 @@ import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import com.example.wifood.entity.Search
 import com.example.wifood.viewmodel.FoodListViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +26,9 @@ class FoodList : AppCompatActivity() {
     lateinit var binding : ActivityFoodListBinding
     private lateinit var foodListAdapter: FoodListAdapter
     lateinit var foodListViewModel: FoodListViewModel
+    lateinit var placeViewModel: PlaceViewModel
+    var placeList = mutableListOf<Place>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFoodListBinding.inflate(layoutInflater)
@@ -41,6 +46,8 @@ class FoodList : AppCompatActivity() {
 
         // 데이터베이스 접근을 위한 viewModel 설정, 파라미터로 groupId를 넘겨줌
         foodListViewModel = ViewModelProvider(this, FoodListViewModel.Factory(groupId)).get(FoodListViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         foodListAdapter = FoodListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -48,10 +55,15 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         foodListViewModel.foodList.observe(this) {
-            if (it != null) foodListAdapter.setListData(it)
+            if (it != null) foodListAdapter.setFoodListData(it)
             else foodListAdapter.setListDataClear()
             foodListAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
+        }
+
+        placeViewModel.placeList.observe(this) {
+            if (it != null) foodListAdapter.setPlaceListData(it)
+            foodListAdapter.notifyDataSetChanged()
         }
 
         // foodlist add btn

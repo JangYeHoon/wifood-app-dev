@@ -9,18 +9,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Food
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
+import com.example.wifood.entity.Place
 import kotlin.math.round
 
 class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
     private var foodList = mutableListOf<Food>()
+    private var placeList = mutableListOf<Place>()
 
-    fun setListData(data:MutableList<Food>) {
+    fun setFoodListData(data:MutableList<Food>) {
         foodList = data
     }
 
     fun setListDataClear() {
         foodList.clear()
+    }
+
+    fun setPlaceListData(data:MutableList<Place>) {
+        placeList = data
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
@@ -33,14 +38,22 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.foodName.text = food.name
         holder.foodAddress.text = food.address
         holder.foodMemo.text = food.memo
-        val gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
-        val grade = "${round(gradeScore*10)/10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
-        holder.foodGrade.text = grade
+        var gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
+        var grade = "${round(gradeScore*10)/10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
+        holder.myGrade.text = grade
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
         }
         holder.mapButton.setOnClickListener {
             mapButtonClickListener.onClick(it, position, food)
+        }
+        for (p in placeList) {
+            if (p.id == food.placeId) {
+                gradeScore = (p.tasteGrade + p.cleanGrade + p.kindnessGrade) / (p.personCount * 3)
+                grade = "${round(gradeScore*10)/10}/5"
+                holder.placeGrade.text = grade
+                break
+            }
         }
     }
 
@@ -52,7 +65,8 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodName : TextView = itemView.findViewById(R.id.foodName)
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
-        val foodGrade : TextView = itemView.findViewById(R.id.foodGrade)
+        val myGrade : TextView = itemView.findViewById(R.id.myGrade)
+        val placeGrade : TextView = itemView.findViewById(R.id.placeGrade)
         val mapButton : ImageButton = itemView.findViewById(R.id.mapButton)
     }
 
