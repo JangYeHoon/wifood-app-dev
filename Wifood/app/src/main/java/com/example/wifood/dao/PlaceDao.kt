@@ -28,4 +28,8 @@ class PlaceDao {
         })
         return placeList
     }
+
+    fun insertPlace(place:Place) {
+        databasePlace.child(place.id.toString()).setValue(place)
+    }
 }

@@ -15,4 +15,8 @@ class PlaceDto {
         }
         return mutablePlace
     }
+
+    fun insertPlace(place:Place) {
+        placeDao.insertPlace(place)
+    }
 }
