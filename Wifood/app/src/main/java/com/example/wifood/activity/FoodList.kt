@@ -119,18 +119,30 @@ class FoodList : AppCompatActivity() {
                     val memo = it.data?.getStringExtra("memo")
                     var placeId = placeViewModel.getPlaceId(searchResult!!.name)
                     var arrPlaceGrade = doubleArrayOf(tasteGrade!!, cleanGrade!!, kindnessGrade!!)
-                    if (placeId == 0)
+                    var visitCount = 0
+                    if (placeId == 0) {
                         placeId = placeViewModel.getPlaceMaxId() + 1
+                        if (visited == 1)
+                            visitCount++
+                    }
                     else {
-                        placeViewModel.setPlaceGrade(placeId, tasteGrade, cleanGrade, kindnessGrade)
+                        if (visited == 1) {
+                            placeViewModel.setPlaceGrade(
+                                placeId,
+                                tasteGrade,
+                                cleanGrade,
+                                kindnessGrade
+                            )
+                            placeViewModel.setPlaceVisit(placeId)
+                        }
                         arrPlaceGrade = placeViewModel.getPlaceGrade(placeId)
-                        placeViewModel.setPlaceVisit(placeId)
+                        visitCount = placeViewModel.getPlaceVisit(placeId)
                     }
                     val food = Food(foodListViewModel.getFoodListMaxId() + 1, searchResult.name, memo!!,
                         searchResult.fullAddress, searchResult.latitude, searchResult.longitude,
                         tasteGrade, cleanGrade, kindnessGrade, visited!!, placeId)
                     val place = Place(placeId, searchResult.name, searchResult.fullAddress, searchResult.latitude,
-                        searchResult.longitude, arrPlaceGrade[0], arrPlaceGrade[1], arrPlaceGrade[2], placeViewModel.getPlaceVisit(placeId))
+                        searchResult.longitude, arrPlaceGrade[0], arrPlaceGrade[1], arrPlaceGrade[2], visitCount)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(food)
                         placeViewModel.insertPlace(place)

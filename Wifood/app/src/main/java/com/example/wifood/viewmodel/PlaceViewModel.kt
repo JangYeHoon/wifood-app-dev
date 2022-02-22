@@ -68,6 +68,6 @@ class PlaceViewModel: ViewModel() {
             if (place.id == placeId)
                 return place.personCount
         }
-        return 1
+        return 0
     }
 }

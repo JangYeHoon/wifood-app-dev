@@ -17,9 +17,9 @@ class AddFoodList : AppCompatActivity() {
     lateinit var searchResult: Search
 
     // 별점 저장을 위한 변수
-    var tasteGrade:Double = 0.5
-    var cleanGrade:Double = 0.5
-    var kindnessGrade:Double = 0.5
+    var tasteGrade:Double = 0.0
+    var cleanGrade:Double = 0.0
+    var kindnessGrade:Double = 0.0
     var isVisited = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +42,17 @@ class AddFoodList : AppCompatActivity() {
         // 방문 여부 체크
         binding.isVisited.setOnCheckedChangeListener { _, onSwitch ->
             isVisited = onSwitch
-            if (onSwitch) binding.tableLayout2.visibility = View.VISIBLE
-            else binding.tableLayout2.visibility = View.GONE
+            if (onSwitch) {
+                binding.tableLayout2.visibility = View.VISIBLE
+                tasteGrade = binding.tasteGrade.rating.toDouble()
+                cleanGrade = binding.cleanGrade.rating.toDouble()
+                kindnessGrade = binding.kindnessGrade.rating.toDouble()
+            } else {
+                binding.tableLayout2.visibility = View.GONE
+                tasteGrade = 0.0
+                cleanGrade = 0.0
+                kindnessGrade = 0.0
+            }
         }
 
         // 맛집 검색 SearchPlace Activity로 이동
