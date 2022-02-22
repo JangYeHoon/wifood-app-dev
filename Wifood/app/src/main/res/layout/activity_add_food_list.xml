@@ -24,10 +24,11 @@
         android:id="@+id/tableLayout"
         android:layout_width="376dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/memoText"
+        app:layout_constraintBottom_toTopOf="@+id/isVisited"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchButton">
+        app:layout_constraintTop_toBottomOf="@+id/searchButton"
+        app:layout_constraintVertical_bias="0.110000014">
 
         <TableRow
             android:layout_width="wrap_content"
@@ -39,8 +40,8 @@
                 android:id="@+id/searchName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:hint="장소를 검색하세요."
+                android:text=""
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -79,71 +80,90 @@
         android:id="@+id/tableLayout2"
         android:layout_width="376dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/memoText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        android:stretchColumns="*">
+        app:layout_constraintTop_toBottomOf="@+id/isVisited">
 
         <TableRow>
 
             <TextView
                 android:id="@+id/tasteText"
-                android:layout_width="wrap_content"
+                android:layout_width="98dp"
                 android:layout_height="wrap_content"
                 android:text="맛"
+                android:layout_gravity="center"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
-            <Spinner
+            <RatingBar
                 android:id="@+id/tasteGrade"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
+                android:layout_gravity="center"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0.5"
+                android:stepSize="0.5" />
+        </TableRow>
+        <TableRow>
             <TextView
                 android:id="@+id/cleanText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="청결"
+                android:layout_gravity="center"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
-            <Spinner
+            <RatingBar
                 android:id="@+id/cleanGrade"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0.5"
+                android:stepSize="0.5" />
+        </TableRow>
+        <TableRow>
             <TextView
                 android:id="@+id/kindnessText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="친절"
                 android:textSize="16sp"
+                android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
-            <Spinner
+            <RatingBar
                 android:id="@+id/kindnessGrade"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_gravity="center"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0.5"
+                android:stepSize="0.5" />
         </TableRow>
     </TableLayout>
 
     <EditText
         android:id="@+id/memoText"
         android:layout_width="376dp"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:background="@drawable/memo_border"
         android:ems="10"
         android:gravity="top"
@@ -151,7 +171,7 @@
         app:layout_constraintBottom_toTopOf="@+id/saveBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout2"/>
 
     <Button
         android:id="@+id/saveBtn"
@@ -165,5 +185,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/include3"
         app:layout_constraintVertical_bias="0.59000003" />
+
+    <Switch
+        android:id="@+id/isVisited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="방문여부"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

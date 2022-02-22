@@ -56,8 +56,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         holder.group_edit.setOnClickListener {
             groupEditClickListener.onClick(it, position, foodGroup.id)
         }
-        // TODO{"버튼을 따로 만들지 말고 해당 리스트를 선택하면 넘어가게 할까"}
-        holder.group_go.setOnClickListener {
+        holder.itemView.setOnClickListener {
             groupGoClickListener.onClick(it, position, foodGroup)
         }
     }
@@ -68,9 +67,8 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val group_name : TextView = itemView.findViewById(R.id.group_name)
-        val group_pin : ImageView = itemView.findViewById(R.id.imageView)
+        val group_pin : ImageView = itemView.findViewById(R.id.pinImage)
         val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)
-        val group_go : ImageButton = itemView.findViewById(R.id.goBtn)
     }
 
     interface GroupEditClickListener {

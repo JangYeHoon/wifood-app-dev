@@ -3,7 +3,6 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
@@ -18,10 +17,10 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.databinding.ActivityMapBinding
+import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
-import com.example.wifood.entity.Wish
-import com.example.wifood.viewmodel.WishGroupViewModel
-import com.example.wifood.viewmodel.WishListViewModel
+import com.example.wifood.viewmodel.FoodGroupViewModel
+import com.example.wifood.viewmodel.FoodListViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -29,6 +28,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
@@ -46,15 +46,15 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
 
     // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
-    lateinit var wishGroupViewModel: WishGroupViewModel
-    lateinit var wishListViewModel: WishListViewModel
+    lateinit var wishGroupViewModel: FoodGroupViewModel
+    lateinit var wishListViewModel: FoodListViewModel
     
     var arrWishGroup = mutableListOf<Group>()   // WishGroup의 가변리스트
-    var arrWishList = mutableListOf<Wish>()     // WishList의 가변리스트
+    var arrWishList = mutableListOf<Food>()     // WishList의 가변리스트
 
     // Firebase 연결
     private val db = Firebase.database;
-    private val dbRootPath = "WishGroup";
+    private val dbRootPath = "FoodGroup";
     private val dbRef = db.getReference(dbRootPath);
 
     // onCreate()
@@ -79,17 +79,17 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         navigationView.setNavigationItemSelectedListener(this)
         
         // WishGroup 데이터
-        wishGroupViewModel = ViewModelProvider(this).get(WishGroupViewModel::class.java)
+        wishGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
         // WishGroup 데이터 변동 감지
-        wishGroupViewModel.wishGroupList.observe(this) {
+        wishGroupViewModel.foodGroupList.observe(this) {
             if (it != null) arrWishGroup = it   // Shallow Copy
         }
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
-        wishListViewModel = ViewModelProvider(this, WishListViewModel.Factory(groupId)).get(WishListViewModel::class.java)
+        wishListViewModel = ViewModelProvider(this, FoodListViewModel.Factory(groupId)).get(FoodListViewModel::class.java)
         // WishList 데이터 변동 감지
-        wishListViewModel.wishList.observe(this) {
+        wishListViewModel.foodList.observe(this) {
             if (it != null) arrWishList = it    // Shallow Copy
         }
 
@@ -118,7 +118,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private fun clickBtnJYH() {
         val btn = findViewById<Button>(R.id.goGroupSelect) as Button
         btn.setOnClickListener {
-            val intent = Intent(this, GroupSelect::class.java)
+            val intent = Intent(this, FoodGroup::class.java)
             startActivity(intent)
         }
     }
@@ -146,10 +146,13 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         this.naverMap = naverMap
         naverMap.locationSource = locationSource
 
-        // 위시/맛집리스트에서 선택한 음식점에 대한 해당 좌표로 카메라 이동하고 마커 생성
+        // 맛집리스트에서 선택한 음식점에 대한 해당 좌표로 카메라 이동하고 마커 생성
         if (placeLatitude != 0.0 && placeLongitude != 0.0) {
             val cameraUpdate = CameraUpdate.scrollTo(LatLng(placeLatitude, placeLongitude))
             naverMap.moveCamera(cameraUpdate)
+            val cameraZoomUpdate = CameraUpdate.zoomTo(16.0)
+                .animate(CameraAnimation.Easing, 1000)
+            naverMap.moveCamera(cameraZoomUpdate)
         }
         // 현재위치 표시
         else {
@@ -169,7 +172,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 // WishGroup의 모든 WishList 위, 경도 Marker 표시
                 for (i in 0 until arrWishGroup.size) {
                     val wishGroupName: String = arrWishGroup[i].name
-                    val wishListData = snapshot.child(arrWishGroup[i].id.toString()).child("wishlist")
+                    val wishListData = snapshot.child(arrWishGroup[i].id.toString()).child("foodlist")
 
                     for (wish in wishListData.children) {
                         val wishName: String = wish.child("name").value as String
@@ -256,6 +259,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
             drawerLayout.closeDrawers()
             //
             Toast.makeText(this, "뒤로가기", Toast.LENGTH_SHORT).show()
+        } else if (placeLatitude != 0.0){
+            super.onBackPressed()
         } else {
             // if user push back button at map
             if (currentTime > backKeyPressedTime + 2500) {

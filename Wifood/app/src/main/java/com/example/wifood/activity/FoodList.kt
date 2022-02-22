@@ -14,8 +14,10 @@ import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import com.example.wifood.entity.Search
 import com.example.wifood.viewmodel.FoodListViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +26,9 @@ class FoodList : AppCompatActivity() {
     lateinit var binding : ActivityFoodListBinding
     private lateinit var foodListAdapter: FoodListAdapter
     lateinit var foodListViewModel: FoodListViewModel
+    lateinit var placeViewModel: PlaceViewModel
+    var placeList = mutableListOf<Place>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFoodListBinding.inflate(layoutInflater)
@@ -41,6 +46,8 @@ class FoodList : AppCompatActivity() {
 
         // 데이터베이스 접근을 위한 viewModel 설정, 파라미터로 groupId를 넘겨줌
         foodListViewModel = ViewModelProvider(this, FoodListViewModel.Factory(groupId)).get(FoodListViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         foodListAdapter = FoodListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -48,10 +55,15 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         foodListViewModel.foodList.observe(this) {
-            if (it != null) foodListAdapter.setListData(it)
+            if (it != null) foodListAdapter.setFoodListData(it)
             else foodListAdapter.setListDataClear()
             foodListAdapter.notifyDataSetChanged()
             setEmptyRecyclerView()
+        }
+
+        placeViewModel.placeList.observe(this) {
+            if (it != null) foodListAdapter.setPlaceListData(it)
+            foodListAdapter.notifyDataSetChanged()
         }
 
         // foodlist add btn
@@ -98,16 +110,42 @@ class FoodList : AppCompatActivity() {
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
                     // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
+                    // TODO("코드 리팩토링 필요해 보임")
                     val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
-                    val tasteGrade = it.data?.getDoubleExtra("taste", 1.0)
-                    val cleanGrade = it.data?.getDoubleExtra("clean", 1.0)
-                    val kindnessGrade = it.data?.getDoubleExtra("kindness", 1.0)
+                    val tasteGrade = it.data?.getDoubleExtra("taste", 0.0)
+                    val cleanGrade = it.data?.getDoubleExtra("clean", 0.0)
+                    val kindnessGrade = it.data?.getDoubleExtra("kindness", 0.0)
+                    val visited = it.data?.getIntExtra("visited", 0)
                     val memo = it.data?.getStringExtra("memo")
-                    val food = Food(foodListViewModel.getFoodListMaxId() + 1, searchResult!!.name, memo!!,
+                    var placeId = placeViewModel.getPlaceId(searchResult!!.name)
+                    var arrPlaceGrade = doubleArrayOf(tasteGrade!!, cleanGrade!!, kindnessGrade!!)
+                    var visitCount = 0
+                    if (placeId == 0) {
+                        placeId = placeViewModel.getPlaceMaxId() + 1
+                        if (visited == 1)
+                            visitCount++
+                    }
+                    else {
+                        if (visited == 1) {
+                            placeViewModel.setPlaceGrade(
+                                placeId,
+                                tasteGrade,
+                                cleanGrade,
+                                kindnessGrade
+                            )
+                            placeViewModel.setPlaceVisit(placeId)
+                        }
+                        arrPlaceGrade = placeViewModel.getPlaceGrade(placeId)
+                        visitCount = placeViewModel.getPlaceVisit(placeId)
+                    }
+                    val food = Food(foodListViewModel.getFoodListMaxId() + 1, searchResult.name, memo!!,
                         searchResult.fullAddress, searchResult.latitude, searchResult.longitude,
-                        tasteGrade!!, cleanGrade!!, kindnessGrade!!)
+                        tasteGrade, cleanGrade, kindnessGrade, visited!!, placeId)
+                    val place = Place(placeId, searchResult.name, searchResult.fullAddress, searchResult.latitude,
+                        searchResult.longitude, arrPlaceGrade[0], arrPlaceGrade[1], arrPlaceGrade[2], visitCount)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(food)
+                        placeViewModel.insertPlace(place)
                     }
                 }
                 1 -> {
@@ -141,11 +179,11 @@ class FoodList : AppCompatActivity() {
 
     private fun setEmptyRecyclerView() {
         if (foodListAdapter.itemCount == 0) {
-            binding.recyclerView.visibility = View.GONE
+            binding.recyclerView.visibility = View.INVISIBLE
             binding.emptyText.visibility = View.VISIBLE
         } else {
             binding.recyclerView.visibility = View.VISIBLE
-            binding.emptyText.visibility = View.GONE
+            binding.emptyText.visibility = View.INVISIBLE
         }
     }
 }

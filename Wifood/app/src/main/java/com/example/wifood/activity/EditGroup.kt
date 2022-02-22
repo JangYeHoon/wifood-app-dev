@@ -66,10 +66,11 @@ class EditGroup : AppCompatActivity() {
             }
         }
 
+        // TODO("로직 수정")
         binding.saveBtn.setOnClickListener {
             val title = binding.groupTitle.text.toString()
             // when adding a group
-            if (type.equals("ADD")) {
+            if (type == "ADD") {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
                     val intent = Intent().apply {
                         putExtra("name", title)
