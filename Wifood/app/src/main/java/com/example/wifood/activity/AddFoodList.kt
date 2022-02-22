@@ -82,7 +82,7 @@ class AddFoodList : AppCompatActivity() {
         }
     }
 
-    fun Boolean.toInt() = if (this) 1 else 0
+    private fun Boolean.toInt() = if (this) 1 else 0
 
     // SearchPlace Activity로부터 받은 정보들을 이용해 name, bizname, address에 대한 text 설정
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
