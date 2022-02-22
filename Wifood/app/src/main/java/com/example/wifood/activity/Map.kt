@@ -259,6 +259,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
             drawerLayout.closeDrawers()
             //
             Toast.makeText(this, "뒤로가기", Toast.LENGTH_SHORT).show()
+        } else if (placeLatitude != 0.0){
+            super.onBackPressed()
         } else {
             // if user push back button at map
             if (currentTime > backKeyPressedTime + 2500) {
