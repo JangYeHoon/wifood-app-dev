@@ -15,7 +15,7 @@
 <!--        android:src=""/>-->
 
     <TextView
-        android:id="@+id/textViewNickname"
+        android:id="@+id/textViewNavHeaderNickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="User Name"
@@ -24,7 +24,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textViewUserEmail"
+        android:id="@+id/textViewNavHeaderUserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="userName@wifood.com"

@@ -3,6 +3,7 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
@@ -18,6 +19,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
@@ -28,7 +31,10 @@ import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
-import kotlinx.android.synthetic.main.menu_nav_header.*;
+import kotlinx.android.synthetic.main.*;
+import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.menu_nav_header.view.*
+import org.w3c.dom.Text
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     private lateinit var locationSource: FusedLocationSource
@@ -49,27 +55,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         val dbRootPath = "kg_test_db";
         val dbRef = db.getReference(dbRootPath);
 
-        // from login activity
-        var userEmail = ""
-        var userNickname = ""
-        if (intent.hasExtra("UserEmail")){
-            userEmail = intent.getStringExtra("UserEmail").toString()
-            textViewUserEmail.text = userEmail
-            // get userNickname
-            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapShot: DataSnapshot) {
-                    userNickname = snapShot.child("nickname").getValue().toString()
-                    textViewNickname.text = userNickname
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    textViewUserEmail.text = "error"
-                    textViewNickname.text = "error"
-                }
-
-            })
-
-        }
-
         // 툴바를 Activity의 앱바로 적용
         val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
         setSupportActionBar(toolbar)
@@ -83,6 +68,9 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 네비게이션 Drawer에 있는 화면의 Event를 처리하기 위해 생성
         navigationView = findViewById(R.id.main_navigationView)
         navigationView.setNavigationItemSelectedListener(this)
+        val userEmail = intent.getStringExtra("UserEmail").toString()
+        Toast.makeText(applicationContext, userEmail, Toast.LENGTH_LONG).show()
+
 
         // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
         val btn = findViewById<Button>(R.id.goGroupSelect) as Button

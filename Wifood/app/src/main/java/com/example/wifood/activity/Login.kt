@@ -26,7 +26,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.wifood.R
 import java.util.regex.Pattern
-import kotlin.collections.Map
+
 
 class Login : AppCompatActivity() {
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
@@ -83,23 +83,26 @@ class Login : AppCompatActivity() {
                             } else
                                 Toast.makeText(this@Login, "패스워드 실패", Toast.LENGTH_SHORT).show()
                             if (accountTrue) {
-                                // if user didnt add food favorite, then go to food favorite page
-                                var intent = Intent()
-                                if (snapShot.child(idText).hasChild("Taste_Favorite"))
-                                    intent = Intent(this@Login, Map::class.java)
-                                else{
-                                    // put user email info to
-                                    intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
-                                }
-
                                 // set auto login
                                 if (switchAutoLogin.isChecked){
                                     autoLoginEditor.putString("WifoodLoginId",idText)
-                                    autoLoginEditor.commit()
+                                    autoLoginEditor.apply()
                                 }
+                                else{
+                                    // if user didnt add food favorite, then go to food favorite page
+                                    if (snapShot.child(idText).hasChild("Taste_Favorite")){
+                                        val intent = Intent(this@Login, Map::class.java)
+                                        intent.putExtra("UserEmail",idText)
+                                        startActivity(intent)
+                                    }
+                                    else{
+                                        // put user email info to
+                                        val intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
+                                        intent.putExtra("UserEmail",idText)
+                                        startActivity(intent)
 
-                                intent.putExtra("UserEmail",idText)
-                                startActivity(intent)
+                                    }
+                                }
                             }
                             // go to home activiy
                         } else {
