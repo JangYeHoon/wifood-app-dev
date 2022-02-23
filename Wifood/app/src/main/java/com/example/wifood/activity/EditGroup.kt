@@ -36,7 +36,9 @@ class EditGroup : AppCompatActivity() {
             supportActionBar?.title = "그룹 수정"
             val name: String = intent.getStringExtra("groupName") as String
             val color = intent.getStringExtra("groupColor") as String
+            val theme: String = intent.getStringExtra("groupTheme") as String
             binding.groupTitle.setText(name)
+            binding.themeTitle.setText(theme)
             for (i in pinArray) {
                 if (color == i.contentDescription.toString()) {
                     pinColor = color
@@ -69,12 +71,14 @@ class EditGroup : AppCompatActivity() {
         // TODO("로직 수정")
         binding.saveBtn.setOnClickListener {
             val title = binding.groupTitle.text.toString()
+            val theme = binding.themeTitle.text.toString()
             // when adding a group
             if (type == "ADD") {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
                     val intent = Intent().apply {
                         putExtra("name", title)
                         putExtra("color", pinColor)
+                        putExtra("theme", theme)
                         putExtra("type", 0)
                     }
                     setResult(RESULT_OK, intent)
@@ -87,6 +91,7 @@ class EditGroup : AppCompatActivity() {
                         putExtra("id", id)
                         putExtra("name", title)
                         putExtra("color", pinColor)
+                        putExtra("theme", theme)
                         putExtra("type", 1)
                     }
                     setResult(RESULT_OK, intent)

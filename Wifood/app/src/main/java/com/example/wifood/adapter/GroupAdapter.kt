@@ -52,6 +52,8 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
     override fun onBindViewHolder(holder: GroupAdapter.FoodGroupViewHolder, position: Int) {
         val foodGroup : Group = groupList[position]
         holder.group_name.text = foodGroup.name
+        val t = "#" + foodGroup.theme
+        holder.group_theme.text = t
         holder.group_pin.setColorFilter(Color.parseColor(foodGroup.color))
         holder.group_edit.setOnClickListener {
             groupEditClickListener.onClick(it, position, foodGroup.id)
@@ -67,6 +69,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val group_name : TextView = itemView.findViewById(R.id.group_name)
+        val group_theme : TextView = itemView.findViewById(R.id.group_theme)
         val group_pin : ImageView = itemView.findViewById(R.id.pinImage)
         val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)
     }

@@ -79,6 +79,7 @@ class FoodGroup : AppCompatActivity() {
                         putExtra("groupId", group.id)
                         putExtra("groupName", group.name)
                         putExtra("groupColor", group.color)
+                        putExtra("groupTheme", group.theme)
                     }
                     requestActivity.launch(intent)
                 }
@@ -116,7 +117,7 @@ class FoodGroup : AppCompatActivity() {
                     val maxId = foodGroupAdapter.getGroupIdList().maxOrNull() ?: 0
                     // create a group to add using the value received from EditFoodGroup Activity
                     val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String)
+                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
                     }
@@ -124,7 +125,7 @@ class FoodGroup : AppCompatActivity() {
                 1 -> {
                     // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
                     val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String)
+                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
                     }

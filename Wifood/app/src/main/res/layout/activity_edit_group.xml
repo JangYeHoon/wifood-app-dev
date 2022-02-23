@@ -10,18 +10,18 @@
     <include layout="@layout/toolbar"/>
 
     <ImageView
-        android:id="@+id/pinImage1"
+        android:id="@+id/pinImage10"
         android:layout_width="51dp"
         android:layout_height="40dp"
-        android:contentDescription="#F44336"
+        android:contentDescription="#FF9800"
         android:src="@drawable/ic_group_pin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
-        app:tint="#F44336" />
+        app:layout_constraintVertical_bias="0.371"
+        app:tint="#FF9800" />
 
     <ImageView
         android:id="@+id/pinImage6"
@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
+        app:layout_constraintVertical_bias="0.371"
         app:tint="#009688" />
 
     <ImageView
@@ -48,7 +48,7 @@
         app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
+        app:layout_constraintVertical_bias="0.371"
         app:tint="#4CAF50" />
 
     <ImageView
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
+        app:layout_constraintVertical_bias="0.371"
         app:tint="#CDDC39" />
 
     <ImageView
@@ -75,36 +75,22 @@
         app:layout_constraintHorizontal_bias="0.736"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
+        app:layout_constraintVertical_bias="0.371"
         app:tint="#FFC107" />
 
     <ImageView
-        android:id="@+id/pinImage10"
+        android:id="@+id/pinImage1"
         android:layout_width="51dp"
         android:layout_height="40dp"
-        android:contentDescription="#FF9800"
+        android:contentDescription="#F44336"
         android:src="@drawable/ic_group_pin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintHorizontal_bias="0.063"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311"
-        app:tint="#FF9800" />
-
-    <ImageView
-        android:id="@+id/pinImage2"
-        android:layout_width="51dp"
-        android:layout_height="40dp"
-        android:contentDescription="#E91E63"
-        android:src="@drawable/ic_group_pin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
-        app:tint="#E91E63" />
+        app:layout_constraintVertical_bias="0.276"
+        app:tint="#F44336" />
 
     <ImageView
         android:id="@+id/pinImage3"
@@ -116,7 +102,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
+        app:layout_constraintVertical_bias="0.276"
         app:tint="#9C27B0" />
 
     <ImageView
@@ -130,7 +116,7 @@
         app:layout_constraintHorizontal_bias="0.736"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
+        app:layout_constraintVertical_bias="0.276"
         app:tint="#3F51B5" />
 
     <ImageView
@@ -144,7 +130,21 @@
         app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.215"
+        app:layout_constraintVertical_bias="0.276"
+        app:tint="#E91E63" />
+
+    <ImageView
+        android:id="@+id/pinImage2"
+        android:layout_width="51dp"
+        android:layout_height="40dp"
+        android:contentDescription="#E91E63"
+        android:src="@drawable/ic_group_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.276"
         app:tint="#E91E63" />
 
     <EditText
@@ -159,6 +159,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.100000024" />
+
+    <EditText
+        android:id="@+id/themeTitle"
+        android:layout_width="366dp"
+        android:layout_height="wrap_content"
+        android:hint="테마 등록"
+        android:maxLength="30"
+        android:singleLine="true"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.191" />
 
     <Button
         android:id="@+id/saveBtn"
