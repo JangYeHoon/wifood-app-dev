@@ -23,18 +23,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- 개발 임시 버튼 -->
+
         <android.widget.Button
-            android:id="@+id/goGroupSelect"
+            android:id="@+id/btnGoMainMap"
+            android:layout_width="139dp"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom|left"
+            android:background="@drawable/group_selector"
+            android:text="지도"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <android.widget.Button
+            android:id="@+id/btnGoMyList"
+            android:layout_width="139dp"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/group_selector"
+            android:text="리스트"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <android.widget.Button
+            android:id="@+id/btnGoMyPage"
             android:layout_width="139dp"
             android:layout_height="45dp"
             android:layout_gravity="bottom|right"
             android:background="@drawable/group_selector"
-            android:text="위시/맛집 그룹 GO"
-            android:textColor="#000000"
+            android:text="마이페이지"
+           android:textColor="#000000"
             android:textSize="16sp" />
+
+
     </fragment>
 
     <!--메인 레이아웃-->
+
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"

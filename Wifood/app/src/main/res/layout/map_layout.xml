@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <!-- 툴바(전체 layout에 Toolbar 연결) -->
+
     <include layout="@layout/toolbar"/>
 
     <!-- 메인 view -->

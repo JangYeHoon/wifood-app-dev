@@ -51,9 +51,13 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        val db = Firebase.database;
-        val dbRootPath = "kg_test_db";
-        val dbRef = db.getReference(dbRootPath);
+        // Connect FireDatabase
+        //val db = Firebase.database;
+        //val dbRootPath = "kg_test_db";
+        //val dbRef = db.getReference(dbRootPath);
+
+        val userEmail = intent.getStringExtra("UserEmail").toString()
+        Toast.makeText(applicationContext, userEmail, Toast.LENGTH_LONG).show()
 
         // 툴바를 Activity의 앱바로 적용
         val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
@@ -68,14 +72,23 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 네비게이션 Drawer에 있는 화면의 Event를 처리하기 위해 생성
         navigationView = findViewById(R.id.main_navigationView)
         navigationView.setNavigationItemSelectedListener(this)
-        val userEmail = intent.getStringExtra("UserEmail").toString()
-        Toast.makeText(applicationContext, userEmail, Toast.LENGTH_LONG).show()
 
+        // button event : go to map
+        btnGoMainMap.setOnClickListener{
+            Toast.makeText(applicationContext, "현재 메뉴 입니다", Toast.LENGTH_LONG).show()
+        }
 
-        // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
-        val btn = findViewById<Button>(R.id.goGroupSelect) as Button
-        btn.setOnClickListener {
+        // button event : go to my list
+        btnGoMyList.setOnClickListener {
             val intent = Intent(this, GroupSelect::class.java)
+            intent.putExtra("UserEmail",userEmail)
+            startActivity(intent)
+        }
+
+        // button event : go to my information
+        btnGoMyPage.setOnClickListener {
+            val intent = Intent(this, MyPage::class.java)
+            intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }
 
