@@ -3,15 +3,18 @@ package com.example.wifood.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
+import com.example.wifood.adapter.GroupItemTouchHelperCallback
 import com.example.wifood.databinding.ActivityFoodGroupBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.FoodGroupViewModel
@@ -23,6 +26,7 @@ class FoodGroup : AppCompatActivity() {
     lateinit var binding : ActivityFoodGroupBinding
     private lateinit var foodGroupAdapter: GroupAdapter
     lateinit var foodGroupViewModel : FoodGroupViewModel
+    var checkTouch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,17 @@ class FoodGroup : AppCompatActivity() {
             setEmptyRecyclerView()
         }
 
+        val groupItemTouchHelperCallback = GroupItemTouchHelperCallback(foodGroupAdapter)
+        val groupTouchHelper = ItemTouchHelper(groupItemTouchHelperCallback)
+        groupTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+        foodGroupAdapter.setOnStartDragListener(object: GroupAdapter.OnStartDragListener {
+            override fun onStartDrag(viewHolder: GroupAdapter.FoodGroupViewHolder) {
+                 groupTouchHelper.startDrag(viewHolder)
+                checkTouch = true
+            }
+        })
+
         // group add btn
         binding.groupAddButton.setOnClickListener {
             val intent = Intent(this@FoodGroup, EditGroup::class.java).apply {
@@ -71,9 +86,8 @@ class FoodGroup : AppCompatActivity() {
 
         // group edit btn
         foodGroupAdapter.setGroupEditClickListener(object: GroupAdapter.GroupEditClickListener {
-            override fun onClick(view: View, position: Int, groupId: Int) {
+            override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val group: Group = foodGroupViewModel.getGroup(position)
                     val intent = Intent(this@FoodGroup, EditGroup::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("groupId", group.id)
@@ -98,6 +112,18 @@ class FoodGroup : AppCompatActivity() {
         })
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        when(ev!!.action) {
+            MotionEvent.ACTION_UP -> {
+                if (checkTouch) {
+                    foodGroupViewModel.setGroupOrder(foodGroupAdapter.getListData())
+                    checkTouch = false
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭한 툴바 메뉴 아이템의 id마다 다르게 실행하도록 설정
         when (item.itemId) {
@@ -117,7 +143,8 @@ class FoodGroup : AppCompatActivity() {
                     val maxId = foodGroupAdapter.getGroupIdList().maxOrNull() ?: 0
                     // create a group to add using the value received from EditFoodGroup Activity
                     val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
+                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String,
+                        maxId + 1)
                     CoroutineScope(Dispatchers.IO).launch {
                         foodGroupViewModel.groupInsert(group)
                     }

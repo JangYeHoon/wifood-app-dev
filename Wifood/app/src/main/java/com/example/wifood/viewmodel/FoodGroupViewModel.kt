@@ -23,6 +23,13 @@ class FoodGroupViewModel :ViewModel() {
         foodGroupDto.groupDelete(groupIdList)
     }
 
+    fun setGroupOrder(groupList: ArrayList<Group>) {
+        for (i in groupList.indices) {
+            groupList[i].order = i + 1
+            foodGroupDto.groupInsert(groupList[i])
+        }
+    }
+
     fun getGroup(pos: Int): Group {
         val groupList = foodGroupList.value
         return groupList!![pos]

@@ -30,17 +30,18 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/goImage"
+        android:id="@+id/moveImage"
         android:layout_width="33dp"
         android:layout_height="30dp"
         android:background="#ffffff"
-        android:src="@drawable/ic_next"
+        app:srcCompat="@drawable/ic_baseline_menu_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="#000000" />
 
     <ImageButton
         android:id="@+id/editBtn"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:background="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/goImage"
+        app:layout_constraintEnd_toEndOf="@+id/moveImage"
         app:layout_constraintHorizontal_bias="0.892"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
