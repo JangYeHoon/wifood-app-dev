@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MyPage">
+
+    <TextView
+        android:id="@+id/textViewMyPageUserEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="13dp"
+        android:text="user email"
+        app:layout_constraintStart_toStartOf="@+id/textViewMyPageUserName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMyPageUserName" />
+
+    <TextView
+        android:id="@+id/textViewMyPageUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="61dp"
+        android:text="user name"
+        app:layout_constraintBottom_toTopOf="@+id/btnMyPageModifyMyInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibtnMyPageProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMyPageUserName"
+        app:layout_constraintStart_toEndOf="@+id/textViewTopView"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btnMyPageModifyMyInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="307dp"
+        android:layout_marginEnd="10dp"
+        android:text="내 정보 수정"
+        app:layout_constraintEnd_toEndOf="@+id/ibtnMyPageProfileImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnMyPageModifyMyFavor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:text="내 입맛 수정"
+        app:layout_constraintStart_toStartOf="@+id/btnMyPageModifyMyInfo"
+        app:layout_constraintTop_toBottomOf="@+id/btnMyPageModifyMyInfo" />
+
+    <Button
+        android:id="@+id/btnMyPageOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:text="설정"
+        app:layout_constraintStart_toStartOf="@+id/btnMyPageModifyMyFavor"
+        app:layout_constraintTop_toBottomOf="@+id/btnMyPageModifyMyFavor" />
+
+    <Button
+        android:id="@+id/btnMyPageLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="19dp"
+        android:text="로그아웃"
+        app:layout_constraintStart_toStartOf="@+id/btnMyPageOption"
+        app:layout_constraintTop_toBottomOf="@+id/btnMyPageOption" />
+
+    <Button
+        android:id="@+id/btnMyPageDeleteUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="22dp"
+        android:text="회원 탈퇴"
+        app:layout_constraintStart_toStartOf="@+id/btnMyPageLogout"
+        app:layout_constraintTop_toBottomOf="@+id/btnMyPageLogout" />
+
+    <TextView
+        android:id="@+id/textViewTopView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="27dp"
+        android:text="마이페이지"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButtonMyPageSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="14dp"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_edit_btn"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

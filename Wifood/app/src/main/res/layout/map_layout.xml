@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <!-- 툴바(전체 layout에 Toolbar 연결) -->
+
     <include layout="@layout/toolbar"/>
 
     <!-- 메인 view -->
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center" />
-<!--        android:text="메인 레이아웃" />-->
+
+    <!--        android:text="메인 레이아웃" />-->
 <!--        android:textColor="@color/colorBlack"/>-->
 </LinearLayout>

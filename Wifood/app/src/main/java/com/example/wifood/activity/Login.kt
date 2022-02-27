@@ -2,9 +2,11 @@ package com.example.wifood.activity
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
@@ -40,6 +42,17 @@ class Login : AppCompatActivity() {
         var idValidation = false
         var pwdValidation = false
 
+        // Auto Login variables
+        val autoLoginPref : SharedPreferences = this.getSharedPreferences("wifoodAutoLogin", Context.MODE_PRIVATE)
+        val autoLoginEditor : SharedPreferences.Editor = autoLoginPref.edit()
+        val autoLoginId = autoLoginPref.getString("WifoodLoginId","").toString()
+
+        if (!autoLoginId.isNullOrBlank()){
+            Toast.makeText(this@Login, "자동 로그인", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this@Login,Map::class.java).putExtra("UserEmail",autoLoginId))
+        }
+
+
         // login button
         btnGoHomeButton.setOnClickListener {
             pwdValidation = Pattern.matches(pwdStringLambda, editTextPassword.text)
@@ -63,33 +76,35 @@ class Login : AppCompatActivity() {
                         var accountTrue = false;
 
                         if (snapShot.hasChild(idText)) {
-                            Log.d(TAG, "Success LOGIN")
-                            if (snapShot.child(idText).child("info")
-                                    .child("password").value.toString() == pwdText
-                            ) {
-                                Log.d(TAG,
-                                    snapShot.child(idText).child("info").child("password")
-                                        .toString()
-                                )
-                                Toast.makeText(this@Login, "로그인 성공", Toast.LENGTH_SHORT).show()
+                            if (snapShot.child(idText).child("info").child("password").value.toString() == pwdText) {
                                 accountTrue = true
+                                Toast.makeText(this@Login, "로그인 성공", Toast.LENGTH_SHORT).show()
                             } else
                                 Toast.makeText(this@Login, "패스워드 실패", Toast.LENGTH_SHORT).show()
                             if (accountTrue) {
-                                // if user didnt add food favorite, then go to food favorite page
-                                var intent = Intent()
-                                if (snapShot.child(idText).hasChild("Taste_Favorite"))
-                                    intent = Intent(this@Login, Map::class.java)
-                                else{
-                                    // put user email info to
-                                    intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
-                                    intent.putExtra("UserEmail",idText)
+                                // set auto login
+                                if (switchAutoLogin.isChecked){
+                                    autoLoginEditor.putString("WifoodLoginId",idText)
+                                    autoLoginEditor.apply()
                                 }
-                                startActivity(intent)
+                                else{
+                                    // if user didnt add food favorite, then go to food favorite page
+                                    if (snapShot.child(idText).hasChild("Taste_Favorite")){
+                                        val intent = Intent(this@Login, Map::class.java)
+                                        intent.putExtra("UserEmail",idText)
+                                        startActivity(intent)
+                                    }
+                                    else{
+                                        // put user email info to
+                                        val intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
+                                        intent.putExtra("UserEmail",idText)
+                                        startActivity(intent)
+
+                                    }
+                                }
                             }
                             // go to home activiy
                         } else {
-                            Log.d(TAG, "Fail to LOGIN, There is no ID");
                             Toast.makeText(this@Login, "아이디 없음", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -98,6 +113,8 @@ class Login : AppCompatActivity() {
                 })
             }
         }
+
+
 
         // joinin button
         btnGoJoinIn.setOnClickListener {

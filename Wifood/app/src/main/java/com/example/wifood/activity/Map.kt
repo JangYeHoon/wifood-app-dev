@@ -3,6 +3,7 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
@@ -14,6 +15,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.databinding.ActivityMapBinding
@@ -32,6 +35,10 @@ import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
+import kotlinx.android.synthetic.main.*;
+import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.menu_nav_header.view.*
+import org.w3c.dom.Text
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding : ActivityMapBinding
@@ -64,6 +71,14 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         setContentView(binding.root)
         //setContentView(R.layout.activity_map)
 
+        // Connect FireDatabase
+        //val db = Firebase.database;
+        //val dbRootPath = "kg_test_db";
+        //val dbRef = db.getReference(dbRootPath);
+
+        val userEmail = intent.getStringExtra("UserEmail").toString()
+        Toast.makeText(applicationContext, userEmail, Toast.LENGTH_LONG).show()
+
         // 툴바를 Activity의 앱바로 적용
         val toolbar:Toolbar = findViewById(R.id.main_layout_toolbar)
         setSupportActionBar(toolbar)
@@ -84,6 +99,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         wishGroupViewModel.foodGroupList.observe(this) {
             if (it != null) arrWishGroup = it   // Shallow Copy
         }
+
+        // button event : go to map
+        btnGoMainMap.setOnClickListener{
+            Toast.makeText(applicationContext, "현재 메뉴 입니다", Toast.LENGTH_LONG).show()
+        }
+
+        // button event : go to my list
+        btnGoMyList.setOnClickListener {
+            val intent = Intent(this, GroupSelect::class.java)
+            intent.putExtra("UserEmail",userEmail)
+            startActivity(intent)
+        }
+
+        // button event : go to my information
+        btnGoMyPage.setOnClickListener {
+            val intent = Intent(this, MyPage::class.java)
+            intent.putExtra("UserEmail",userEmail)
+            startActivity(intent)
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
