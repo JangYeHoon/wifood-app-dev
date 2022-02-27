@@ -3,15 +3,27 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.wifood.databinding.ActivityEditFoodGroupBinding
+import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.Toolbar
+import com.example.wifood.R
+import com.example.wifood.databinding.ActivityEditGroupBinding
 
-class EditFoodGroup : AppCompatActivity() {
-    lateinit var binding : ActivityEditFoodGroupBinding
+class EditGroup : AppCompatActivity() {
+    lateinit var binding : ActivityEditGroupBinding
     var pinColor : String = ""
+    lateinit var inputMethodManager: InputMethodManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditFoodGroupBinding.inflate(layoutInflater)
+        binding = ActivityEditGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 툴바 설정
+        val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
+        supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
         // ImageView Array
         val pinArray = arrayOf(binding.pinImage1, binding.pinImage2, binding.pinImage3, binding.pinImage4, binding.pinImage5, binding.pinImage6,
@@ -38,6 +50,8 @@ class EditFoodGroup : AppCompatActivity() {
         // click image size conversion
         for (i in pinArray) {
             i.setOnClickListener {
+                inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(binding.groupTitle.windowToken, 0)
                 pinColor = i.contentDescription.toString()
                 i.scaleX = 2F
                 i.scaleY = 2F
@@ -52,10 +66,11 @@ class EditFoodGroup : AppCompatActivity() {
             }
         }
 
+        // TODO("로직 수정")
         binding.saveBtn.setOnClickListener {
             val title = binding.groupTitle.text.toString()
             // when adding a group
-            if (type.equals("ADD")) {
+            if (type == "ADD") {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
                     val intent = Intent().apply {
                         putExtra("name", title)
@@ -79,5 +94,16 @@ class EditFoodGroup : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // 툴바 메뉴에 뒤로가기 버튼
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

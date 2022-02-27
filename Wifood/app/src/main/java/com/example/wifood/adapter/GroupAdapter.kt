@@ -2,7 +2,6 @@ package com.example.wifood.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,10 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     fun setListData(data:MutableList<Group>) {
         groupList = data
+    }
+
+    fun setListDataClear() {
+        groupList.clear()
     }
 
     fun getGroupNameList() : MutableList<String> {
@@ -53,8 +56,8 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         holder.group_edit.setOnClickListener {
             groupEditClickListener.onClick(it, position, foodGroup.id)
         }
-        holder.group_go.setOnClickListener {
-            groupGoClickListener.onClick(it, position, foodGroup.id)
+        holder.itemView.setOnClickListener {
+            groupGoClickListener.onClick(it, position, foodGroup)
         }
     }
 
@@ -64,9 +67,8 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
 
     inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val group_name : TextView = itemView.findViewById(R.id.group_name)
-        val group_pin : ImageView = itemView.findViewById(R.id.imageView)
+        val group_pin : ImageView = itemView.findViewById(R.id.pinImage)
         val group_edit : ImageButton = itemView.findViewById(R.id.editBtn)
-        val group_go : ImageButton = itemView.findViewById(R.id.goBtn)
     }
 
     interface GroupEditClickListener {
@@ -80,7 +82,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
     }
 
     interface GroupGoClickListener {
-        fun onClick(view: View, position: Int, groupId: Int)
+        fun onClick(view: View, position: Int, group: Group)
     }
 
     private lateinit var groupGoClickListener: GroupGoClickListener

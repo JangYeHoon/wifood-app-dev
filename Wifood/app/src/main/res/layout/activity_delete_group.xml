@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.DeleteFoodGroup">
+    android:background="#ffffff"
+    tools:context=".activity.DeleteGroup">
+
+    <include layout="@layout/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deleteRecyclerView"
-        android:layout_width="410dp"
-        android:layout_height="627dp"
+        android:layout_width="409dp"
+        android:layout_height="552dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.351" />
 
     <Button
         android:id="@+id/deleteBtn"

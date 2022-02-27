@@ -10,6 +10,7 @@ class GroupDao (groupType: String){
         if (groupType == "food") FirebaseDatabase.getInstance().getReference("FoodGroup")
         else FirebaseDatabase.getInstance().getReference("WishGroup")
 
+    // 디비에서 맛집/위시 그룹 정보 받아옴
     fun getGroupList() : LiveData<MutableList<Group>> {
         val groupList = MutableLiveData<MutableList<Group>>()
         groupDatabase.addValueEventListener(object: ValueEventListener {
@@ -22,7 +23,7 @@ class GroupDao (groupType: String){
                         dbList.add(group!!)
                         groupList.value = dbList
                     }
-                }
+                } else groupList.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -37,6 +38,7 @@ class GroupDao (groupType: String){
         groupDatabase.child(group.id.toString()).setValue(group)
     }
 
+    // 그룹 id에 해당하는 정보 디비에서 삭제
     fun foodGroupDelete(groupId : Int) {
         groupDatabase.child(groupId.toString()).removeValue()
     }

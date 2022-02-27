@@ -7,7 +7,7 @@
     android:layout_margin="8dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pinImage"
         android:layout_width="51dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_group_pin"
@@ -30,8 +30,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageButton
-        android:id="@+id/goBtn"
+    <ImageView
+        android:id="@+id/goImage"
         android:layout_width="33dp"
         android:layout_height="30dp"
         android:background="#ffffff"
@@ -50,22 +50,11 @@
         android:layout_height="wrap_content"
         android:background="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/goBtn"
+        app:layout_constraintEnd_toEndOf="@+id/goImage"
         app:layout_constraintHorizontal_bias="0.892"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.47"
         app:srcCompat="@drawable/ic_edit_btn"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="393dp"
-        android:layout_height="1dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/goBtn"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/group_name"
-        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

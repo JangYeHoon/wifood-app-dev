@@ -27,7 +27,6 @@ import androidx.core.content.ContextCompat
 import com.example.wifood.R
 import java.util.regex.Pattern
 
-
 class Login : AppCompatActivity() {
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
     val TAG = "Login Page LOG : "
