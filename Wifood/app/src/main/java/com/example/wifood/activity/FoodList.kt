@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.GridLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
@@ -50,7 +52,7 @@ class FoodList : AppCompatActivity() {
 
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         foodListAdapter = FoodListAdapter(this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerView.adapter = foodListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 

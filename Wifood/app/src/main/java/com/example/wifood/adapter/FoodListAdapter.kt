@@ -38,22 +38,15 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.foodName.text = food.name
         holder.foodAddress.text = food.address
         holder.foodMemo.text = food.memo
-        var gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
-        var grade = "${round(gradeScore*10)/10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
-        holder.myGrade.text = grade
+        if (food.visited == 1) {
+            var gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
+            var grade = "${round(gradeScore * 10) / 10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
+            holder.myGrade.text = grade
+        } else {
+            holder.myGrade.visibility = View.INVISIBLE
+        }
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
-        }
-        holder.mapButton.setOnClickListener {
-            mapButtonClickListener.onClick(it, position, food)
-        }
-        for (p in placeList) {
-            if (p.id == food.placeId) {
-                gradeScore = (p.tasteGrade + p.cleanGrade + p.kindnessGrade) / (p.personCount * 3)
-                grade = "${round(gradeScore*10)/10}/5"
-                holder.placeGrade.text = grade
-                break
-            }
         }
     }
 
@@ -66,8 +59,6 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
         val myGrade : TextView = itemView.findViewById(R.id.myGrade)
-        val placeGrade : TextView = itemView.findViewById(R.id.placeGrade)
-        val mapButton : ImageButton = itemView.findViewById(R.id.mapButton)
     }
 
     interface FoodListClickListener {

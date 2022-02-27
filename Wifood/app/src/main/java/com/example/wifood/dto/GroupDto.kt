@@ -14,7 +14,8 @@ class GroupDto(groupType: String) {
     fun getGroupList() : LiveData<MutableList<Group>> {
         val mutableFoodGroup = MutableLiveData<MutableList<Group>>()
         groupDao.getGroupList().observeForever {
-            mutableFoodGroup.value = it
+            val orderGroupList = it.sortedBy { it.order }
+            mutableFoodGroup.value = orderGroupList as MutableList<Group>?
         }
         return mutableFoodGroup
     }
@@ -28,5 +29,9 @@ class GroupDto(groupType: String) {
     fun groupDelete(groupIdList: ArrayList<Int>) {
         for (i in groupIdList)
             groupDao.foodGroupDelete(i)
+    }
+
+    fun updateGroup(group: Group) {
+        groupDao.updateGroup(group)
     }
 }

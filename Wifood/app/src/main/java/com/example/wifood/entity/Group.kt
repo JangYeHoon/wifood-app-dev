@@ -1,3 +1,9 @@
 package com.example.wifood.entity
 
-data class Group (val id:Int = 0, val name:String = "Name", val color:String = "0.0.0")
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Group(
+    val id:Int = 0, var name:String = "Name", var color:String = "0.0.0",
+    var theme:String = "", var order:Int = 0) : Parcelable
