@@ -10,197 +10,158 @@
         android:id="@+id/editTextJoinEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="57dp"
         android:ems="10"
         android:hint="xxx@xxx.com"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="35dp" />
 
     <TextView
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="47dp"
         android:text="이메일"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="47dp" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="28dp"
         android:text="비밀번호"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="94dp" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="13dp"
         android:text="비밀번호 확인"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextJoinPasswordCheck"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="174dp" />
 
     <EditText
         android:id="@+id/editTextJoinPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:ems="10"
         android:hint="특수문자 2개 포함 8~15자"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:password="true"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinEmail"
-        app:layout_constraintTop_toBottomOf="@+id/editTextJoinEmail" />
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="90dp" />
 
     <EditText
         android:id="@+id/editTextJoinPasswordCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="비밀번호 동일 입력"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:password="true"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextJoinPassword" />
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="158dp" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="닉네임"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinNickName"
-        app:layout_constraintEnd_toEndOf="@+id/textView15"
-        app:layout_constraintStart_toStartOf="@+id/textView19" />
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="248dp" />
 
     <EditText
         android:id="@+id/editTextJoinNickName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:ems="10"
         android:hint="한글,영어,숫자만 입력"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinPasswordCheck"
-        app:layout_constraintTop_toBottomOf="@+id/editTextJoinPasswordCheck" />
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="232dp" />
 
     <EditText
         android:id="@+id/editTextJoinPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
         android:ems="10"
         android:hint="'-'을 빼고 입력"
         android:inputType="phone"
         android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinNickName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextJoinNickName" />
+        tools:layout_editor_absoluteX="144dp"
+        tools:layout_editor_absoluteY="301dp" />
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:text="핸드폰 번호"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinPhone"
-        app:layout_constraintEnd_toStartOf="@+id/editTextJoinPhone"
-        app:layout_constraintStart_toStartOf="@+id/textView16" />
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="317dp" />
 
     <EditText
         android:id="@+id/editTextJoinFineAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="170dp"
         android:ems="10"
         android:hint="상세 주소를 입력하세요"
         android:inputType="textPostalAddress"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnGoJoinInFoodInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="488dp" />
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="46dp"
         android:text="주소"
-        app:layout_constraintBottom_toTopOf="@+id/textView21"
-        app:layout_constraintEnd_toEndOf="@+id/textView23"
-        app:layout_constraintStart_toStartOf="@+id/textView19" />
+        tools:layout_editor_absoluteX="51dp"
+        tools:layout_editor_absoluteY="387dp" />
 
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="31dp"
         android:text="상세주소"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinFineAddress"
-        app:layout_constraintEnd_toStartOf="@+id/editTextJoinFineAddress"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="38dp"
+        tools:layout_editor_absoluteY="504dp" />
 
     <TextView
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="10dp"
         android:text="회원가입"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinEmail"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="179dp"
+        tools:layout_editor_absoluteY="10dp" />
 
     <Button
         android:id="@+id/btnGoJoinInFoodInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginBottom="76dp"
         android:enabled="true"
         android:text="완료"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="658dp" />
 
     <TextView
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="56dp"
         android:text="성별"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="579dp" />
 
     <RadioGroup
         android:id="@+id/radioGroupJoinGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="30dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinFineAddress"
-        app:layout_constraintTop_toBottomOf="@+id/editTextJoinFineAddress">
+        tools:layout_editor_absoluteX="174dp"
+        tools:layout_editor_absoluteY="566dp">
 
         <RadioButton
             android:id="@+id/radioButtonJoinMale"
@@ -219,9 +180,20 @@
         android:id="@+id/btnCoarseAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="16dp"
         android:text="주소"
-        app:layout_constraintBottom_toTopOf="@+id/editTextJoinFineAddress"
-        app:layout_constraintStart_toStartOf="@+id/editTextJoinFineAddress" />
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="373dp" />
+
+    <EditText
+        android:id="@+id/editTextJoinCoarseAddress"
+        android:layout_width="339dp"
+        android:layout_height="43dp"
+        android:background="@color/cardview_light_background"
+        android:clickable="false"
+        android:ems="10"
+        android:hint="주소 버튼을 눌러주세요"
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="428dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
