@@ -16,6 +16,7 @@ import com.example.wifood.R
 import com.example.wifood.adapter.GroupAdapter
 import com.example.wifood.adapter.GroupItemTouchHelperCallback
 import com.example.wifood.databinding.ActivityFoodGroupBinding
+import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.FoodGroupViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -90,10 +91,7 @@ class FoodGroup : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val intent = Intent(this@FoodGroup, EditGroup::class.java).apply {
                         putExtra("type", "EDIT")
-                        putExtra("groupId", group.id)
-                        putExtra("groupName", group.name)
-                        putExtra("groupColor", group.color)
-                        putExtra("groupTheme", group.theme)
+                        putExtra("group", group)
                     }
                     requestActivity.launch(intent)
                 }
@@ -151,10 +149,11 @@ class FoodGroup : AppCompatActivity() {
                 }
                 1 -> {
                     // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
-                    val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
+                    val group =it.data?.getParcelableExtra<Group>("group")
+//                    val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
+//                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodGroupViewModel.groupInsert(group)
+                        foodGroupViewModel.updateGroup(group!!)
                     }
                 }
                 2 -> {

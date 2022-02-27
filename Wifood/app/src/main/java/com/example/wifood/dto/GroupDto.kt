@@ -30,4 +30,8 @@ class GroupDto(groupType: String) {
         for (i in groupIdList)
             groupDao.foodGroupDelete(i)
     }
+
+    fun updateGroup(group: Group) {
+        groupDao.updateGroup(group)
+    }
 }

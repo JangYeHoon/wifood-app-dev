@@ -42,4 +42,11 @@ class GroupDao (groupType: String){
     fun foodGroupDelete(groupId : Int) {
         groupDatabase.child(groupId.toString()).removeValue()
     }
+
+    fun updateGroup(group: Group) {
+        groupDatabase.child(group.id.toString()).child("order").setValue(group.order)
+        groupDatabase.child(group.id.toString()).child("name").setValue(group.name)
+        groupDatabase.child(group.id.toString()).child("theme").setValue(group.theme)
+        groupDatabase.child(group.id.toString()).child("color").setValue(group.color)
+    }
 }

@@ -8,11 +8,14 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditGroupBinding
+import com.example.wifood.entity.Food
+import com.example.wifood.entity.Group
 
 class EditGroup : AppCompatActivity() {
     lateinit var binding : ActivityEditGroupBinding
     var pinColor : String = ""
     lateinit var inputMethodManager: InputMethodManager
+    lateinit var group:Group
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +37,12 @@ class EditGroup : AppCompatActivity() {
         // Initialize the value in case of edit
         if (type == "EDIT") {
             supportActionBar?.title = "그룹 수정"
-            val name: String = intent.getStringExtra("groupName") as String
-            val color = intent.getStringExtra("groupColor") as String
-            val theme: String = intent.getStringExtra("groupTheme") as String
-            binding.groupTitle.setText(name)
-            binding.themeTitle.setText(theme)
+            group = intent.getParcelableExtra("group")!!
+            binding.groupTitle.setText(group.name)
+            binding.themeTitle.setText(group.theme)
             for (i in pinArray) {
-                if (color == i.contentDescription.toString()) {
-                    pinColor = color
+                if (group.color == i.contentDescription.toString()) {
+                    pinColor = group.color
                     i.scaleX = 2F
                     i.scaleY = 2F
                     break
@@ -72,6 +73,9 @@ class EditGroup : AppCompatActivity() {
         binding.saveBtn.setOnClickListener {
             val title = binding.groupTitle.text.toString()
             val theme = binding.themeTitle.text.toString()
+            group.name = title
+            group.theme = theme
+            group.color = pinColor
             // when adding a group
             if (type == "ADD") {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
@@ -88,10 +92,7 @@ class EditGroup : AppCompatActivity() {
             } else {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
                     val intent = Intent().apply {
-                        putExtra("id", id)
-                        putExtra("name", title)
-                        putExtra("color", pinColor)
-                        putExtra("theme", theme)
+                        putExtra("group", group)
                         putExtra("type", 1)
                     }
                     setResult(RESULT_OK, intent)

@@ -35,7 +35,7 @@ class DeleteGroup : AppCompatActivity() {
         val idList = intent.getIntegerArrayListExtra("groupId")
         val colorList = intent.getStringArrayListExtra("groupColor")
         for (i in 0 until nameList!!.count())
-            foodGroupList.add(Group(idList!![i], nameList[i], colorList!![i]))
+            foodGroupList.add(Group(idList!![i], nameList[i], colorList!![i], "", 0))
 
         // 삭제할 foodGroup을 선택할 수 있도록 foodgrouplist에 대한 recyclerView 설정
         deleteFoodGroupAdapter = DeleteFoodGroupAdapter(this)
