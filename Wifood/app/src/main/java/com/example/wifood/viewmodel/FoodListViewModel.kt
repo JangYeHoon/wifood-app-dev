@@ -24,11 +24,14 @@ class FoodListViewModel(): ViewModel() {
 
     fun getFoodList(groupId: Int): MutableList<Food> {
         val food = mutableListOf<Food>()
-        for (f in foodList.value!!) {
-            if (groupId == f.groupId)
-                food.add(f)
+        if (groupId != -1) {
+            for (f in foodList.value!!) {
+                if (groupId == f.groupId)
+                    food.add(f)
+            }
+            return food
         }
-        return food
+        return foodList.value!!
     }
 
     fun insertFoodList(food: Food) {

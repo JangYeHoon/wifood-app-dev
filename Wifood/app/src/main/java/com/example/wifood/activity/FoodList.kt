@@ -1,6 +1,8 @@
 package com.example.wifood.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,11 +10,13 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
@@ -61,6 +65,8 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView2.layoutManager = LinearLayoutManager(this).also {
             it.orientation = HORIZONTAL
         }
+        val spaceDecoration =  VerticalSpaceItemDecoration(10)
+        binding.recyclerView2.addItemDecoration(spaceDecoration)
         binding.recyclerView2.adapter = groupListAdapter
 
         groupListViewModel.foodGroupList.observe(this) {
@@ -72,6 +78,8 @@ class FoodList : AppCompatActivity() {
                 groupId = group.id
                 updateGroupAdapterList()
                 updateFoodAdapterList()
+                binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+                binding.groupAll.setTextColor(Color.BLACK)
             }
         })
 
@@ -104,6 +112,15 @@ class FoodList : AppCompatActivity() {
                 }
             }
         })
+
+        binding.groupAll.setOnClickListener {
+            groupId = -1
+            groupListAdapter.setSelectGroup(-1)
+            updateGroupAdapterList()
+            updateFoodAdapterList()
+            binding.groupAll.background = ContextCompat.getDrawable(this, R.drawable.bg_rounding_box_check)
+            binding.groupAll.setTextColor(Color.WHITE)
+        }
     }
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -177,6 +194,18 @@ class FoodList : AppCompatActivity() {
         } else {
             binding.recyclerView.visibility = View.VISIBLE
             binding.emptyText.visibility = View.INVISIBLE
+        }
+    }
+
+    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
+        RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.right = verticalSpaceHeight
         }
     }
 }
