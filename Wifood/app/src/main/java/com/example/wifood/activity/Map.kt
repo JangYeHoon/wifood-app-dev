@@ -3,7 +3,6 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import androidx.annotation.UiThread
@@ -15,8 +14,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.databinding.ActivityMapBinding
@@ -31,14 +28,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.*;
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.menu_nav_header.view.*
-import org.w3c.dom.Text
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding : ActivityMapBinding
@@ -107,7 +102,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // button event : go to my list
         btnGoMyList.setOnClickListener {
-            val intent = Intent(this, GroupSelect::class.java)
+            val intent = Intent(this, FoodGroup::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }
@@ -115,8 +110,9 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // button event : go to my information
         btnGoMyPage.setOnClickListener {
             val intent = Intent(this, MyPage::class.java)
-            intent.putExtra("UserEmail",userEmail)
+            intent.putExtra("UserEmail", userEmail)
             startActivity(intent)
+        }
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
@@ -125,9 +121,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         wishListViewModel.foodList.observe(this) {
             if (it != null) arrWishList = it    // Shallow Copy
         }
-
-        // 예훈이형 메뉴로 Go (개발 임시 버튼 Event)
-        clickBtnJYH()
 
         // 지도 객체 생성
         val fm = supportFragmentManager // 다른 Fragment내에 배치할 경우 childFragmentManager로
@@ -145,15 +138,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         placeLatitude = intent.getDoubleExtra("latitude", 0.0)
         placeLongitude = intent.getDoubleExtra("longitude", 0.0)
-    }
-
-    // 예훈이형 메뉴로 Go (개발 임시 버튼)
-    private fun clickBtnJYH() {
-        val btn = findViewById<Button>(R.id.goGroupSelect) as Button
-        btn.setOnClickListener {
-            val intent = Intent(this, FoodGroup::class.java)
-            startActivity(intent)
-        }
     }
 
     // 위치정보 사용자 권한 설정
