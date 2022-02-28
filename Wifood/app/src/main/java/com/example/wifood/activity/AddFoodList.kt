@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
+import com.example.wifood.adapter.GroupSelectBottom
 import com.example.wifood.databinding.ActivityAddFoodListBinding
+import com.example.wifood.entity.Group
 import com.example.wifood.entity.Search
+import kotlinx.coroutines.selects.select
 
 class AddFoodList : AppCompatActivity() {
     lateinit var binding : ActivityAddFoodListBinding
@@ -21,6 +24,7 @@ class AddFoodList : AppCompatActivity() {
     var cleanGrade:Double = 0.0
     var kindnessGrade:Double = 0.0
     var isVisited = false
+    var selectGroup: Group = Group()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +60,14 @@ class AddFoodList : AppCompatActivity() {
         }
 
         // 맛집 검색 SearchPlace Activity로 이동
-        binding.searchButton.setOnClickListener {
-            val intent = Intent(this@AddFoodList, SearchPlace::class.java).apply {}
-            requestActivity.launch(intent)
+//        binding.searchButton.setOnClickListener {
+//            val intent = Intent(this@AddFoodList, SearchPlace::class.java).apply {}
+//            requestActivity.launch(intent)
+//        }
+
+        binding.groupName.setOnClickListener {
+            val bottomSheet = GroupSelectBottom()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
         // 맛집리스트를 추가할 수 있도록 name, memo, taste, clean, kindness 정보를 FoodList Activity로 넘겨줌
@@ -89,9 +98,13 @@ class AddFoodList : AppCompatActivity() {
         if (it.resultCode == RESULT_OK) {
             searchResult = it.data?.getParcelableExtra("searchResult")!!
             binding.searchName.text = searchResult.name
-            binding.searchBizName.text = searchResult.bizName
             binding.searchAddress.text = searchResult.fullAddress
         }
+    }
+
+    fun receiveData(group:Group) {
+        selectGroup = group
+        binding.groupName.text = selectGroup.name
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

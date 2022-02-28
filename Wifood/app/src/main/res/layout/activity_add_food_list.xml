@@ -9,17 +9,6 @@
     <include
         layout="@layout/toolbar" />
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="367dp"
-        android:layout_height="48dp"
-        android:text="장소 검색"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13999999" />
-
     <TableLayout
         android:id="@+id/tableLayout"
         android:layout_width="376dp"
@@ -27,7 +16,7 @@
         app:layout_constraintBottom_toTopOf="@+id/isVisited"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchButton"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.110000014">
 
         <TableRow
@@ -37,14 +26,13 @@
             android:shrinkColumns="0">
 
             <TextView
-                android:id="@+id/searchName"
+                android:id="@+id/groupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="장소를 검색하세요."
-                android:text=""
+                android:text="그룹"
                 android:textColor="#000000"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingRight="20px"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -53,16 +41,70 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/searchBizName"
-                android:layout_width="wrap_content"
+                android:id="@+id/groupName"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:hint="그룹 선택"
                 android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/searchName"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <ImageView
+                android:id="@+id/nextImage1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_next" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:shrinkColumns="0">
+
+            <TextView
+                android:id="@+id/foodText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="맛집"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:paddingRight="20px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/searchName"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="맛집 선택"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/nextImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_next" />
         </TableRow>
 
         <TextView
