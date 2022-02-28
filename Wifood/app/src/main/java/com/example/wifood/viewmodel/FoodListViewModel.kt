@@ -2,13 +2,12 @@ package com.example.wifood.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.dto.FoodListDto
 import com.example.wifood.entity.Food
 
-class FoodListViewModel(groupId : Int): ViewModel() {
+class FoodListViewModel(): ViewModel() {
     var foodList: LiveData<MutableList<Food>>
-    private val foodListDto: FoodListDto = FoodListDto(groupId)
+    private val foodListDto: FoodListDto = FoodListDto()
 
     init {
         foodList = foodListDto.getFoodList()
@@ -23,10 +22,12 @@ class FoodListViewModel(groupId : Int): ViewModel() {
         return maxValue
     }
 
-    fun getFoodList(): ArrayList<Food> {
-        var food : ArrayList<Food> = ArrayList(0)
-        for (f in foodList.value!!)
-            food.add(f)
+    fun getFoodList(groupId: Int): MutableList<Food> {
+        val food = mutableListOf<Food>()
+        for (f in foodList.value!!) {
+            if (groupId == f.groupId)
+                food.add(f)
+        }
         return food
     }
 
@@ -41,11 +42,5 @@ class FoodListViewModel(groupId : Int): ViewModel() {
 
     fun deleteFood(foodId: Int) {
         foodListDto.deleteFoodList(foodId)
-    }
-
-    class Factory(val groupId : Int) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return FoodListViewModel(groupId) as T
-        }
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.dao.FoodListDao
 import com.example.wifood.entity.Food
 
-class FoodListDto(groupId : Int) {
-    private val foodListDao = FoodListDao(groupId)
+class FoodListDto() {
+    private val foodListDao = FoodListDao()
 
     // 디비에서 받아온 정보를 이용해 foodlist 업데이트
     fun getFoodList() : LiveData<MutableList<Food>> {

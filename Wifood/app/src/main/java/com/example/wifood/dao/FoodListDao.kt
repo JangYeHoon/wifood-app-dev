@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.entity.Food
 import com.google.firebase.database.*
 
-class FoodListDao (groupId : Int) {
-    private var databaseFoodList: DatabaseReference = FirebaseDatabase.getInstance().getReference("FoodGroup/$groupId/foodlist")
+class FoodListDao () {
+    private var databaseFoodList: DatabaseReference = FirebaseDatabase.getInstance().getReference("FoodList")
 
     // 디비에서 foodlist 정보 받아옴
     fun getFoodList() : LiveData<MutableList<Food>> {

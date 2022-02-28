@@ -15,12 +15,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
+import com.example.wifood.adapter.GroupAdapter
+import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
+import com.example.wifood.entity.Group
 import com.example.wifood.entity.Place
 import com.example.wifood.entity.Search
+import com.example.wifood.viewmodel.FoodGroupViewModel
 import com.example.wifood.viewmodel.FoodListViewModel
 import com.example.wifood.viewmodel.PlaceViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,8 +36,11 @@ class FoodList : AppCompatActivity() {
     lateinit var binding : ActivityFoodListBinding
     private lateinit var foodListAdapter: FoodListAdapter
     lateinit var foodListViewModel: FoodListViewModel
+    private lateinit var groupListAdapter: GroupNameAdapter
+    lateinit var groupListViewModel: FoodGroupViewModel
     lateinit var placeViewModel: PlaceViewModel
     var placeList = mutableListOf<Place>()
+    var groupId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +55,9 @@ class FoodList : AppCompatActivity() {
         supportActionBar?.title = intent.getStringExtra("groupName")
 
         // 데이터베이스 접근을 위한 food group id정보 받아옴
-        val groupId = intent.getIntExtra("groupId", 0)
+        groupId = intent.getIntExtra("groupId", 0)
 
         // 데이터베이스 접근을 위한 viewModel 설정, 파라미터로 groupId를 넘겨줌
-        foodListViewModel = ViewModelProvider(this, FoodListViewModel.Factory(groupId)).get(FoodListViewModel::class.java)
         placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
 
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
@@ -59,54 +66,37 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView.adapter = foodListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
-        foodListViewModel.foodList.observe(this) {
-            if (it != null) foodListAdapter.setFoodListData(it)
-            else foodListAdapter.setListDataClear()
-            foodListAdapter.notifyDataSetChanged()
-            setEmptyRecyclerView()
-        }
+        setFoodListView()
 
         placeViewModel.placeList.observe(this) {
             if (it != null) foodListAdapter.setPlaceListData(it)
             foodListAdapter.notifyDataSetChanged()
         }
 
+        groupListViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        groupListAdapter = GroupNameAdapter(this)
+        binding.recyclerView2.layoutManager = LinearLayoutManager(this).also {
+            it.orientation = HORIZONTAL
+        }
+        binding.recyclerView2.adapter = groupListAdapter
+
+        groupListViewModel.foodGroupList.observe(this) {
+            updateGroupAdapterList()
+        }
+
+        groupListAdapter.setGroupClickListener(object: GroupNameAdapter.GroupClickListener{
+            override fun onClick(view: View, position: Int, group: Group) {
+                groupId = group.id
+                updateGroupAdapterList()
+                updateFoodAdapterList()
+            }
+        })
+
         // foodlist add btn
         binding.foodListAddButton.setOnClickListener {
             val intent = Intent(this@FoodList, AddFoodList::class.java)
             requestActivity.launch(intent)
         }
-
-//        // foodlist delete btn
-//        binding.foodListDeleteButton.setOnClickListener {
-//            val intent = Intent(this@FoodList, DeleteFoodList::class.java).apply {
-//                putParcelableArrayListExtra("foodlist", foodListViewModel.getFoodList())
-//            }
-//            requestActivity.launch(intent)
-//        }
-//
-//        // foodlist edit btn
-//        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
-//            override fun onClick(view: View, position: Int, item: Food) {
-//                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
-//                    putExtra("food", item)
-//                }
-//                requestActivity.launch(intent)
-//            }
-//        })
-
-        // map btn
-//        foodListAdapter.setMapButtonClickListener(object: FoodListAdapter.FoodListClickListener{
-//            override fun onClick(view: View, position: Int, item: Food) {
-//                val intent = Intent(this@FoodList, Map::class.java).apply {
-//                    putExtra("latitude", item.latitude)
-//                    putExtra("longitude", item.longitude)
-//                    putExtra("name", item.name)
-//                }
-//                startActivity(intent)
-//                finish()
-//            }
-//        })
 
         foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Food) {
@@ -184,15 +174,30 @@ class FoodList : AppCompatActivity() {
                         foodListViewModel.insertFoodList(editFood!!)
                     }
                 }
-//                2 -> {
-//                    // DeleteFoodListActivity에서 받은 삭제할 id list를 이용해 db에서 삭제
-//                    val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        foodListViewModel.deleteFoodList(deleteIdList!!)
-//                    }
-//                }
             }
         }
+    }
+
+    private fun setFoodListView() {
+        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
+        foodListViewModel.foodList.observe(this) {
+            updateFoodAdapterList()
+        }
+    }
+
+    private fun updateFoodAdapterList() {
+        foodListAdapter.setFoodListData(foodListViewModel.getFoodList(groupId))
+        foodListAdapter.notifyDataSetChanged()
+        setEmptyRecyclerView()
+    }
+
+    private fun updateGroupAdapterList() {
+        val groupList = groupListViewModel.getGroupList()
+        if (groupList != null) {
+            groupListAdapter.setSelectGroup(groupId)
+            groupListAdapter.setListData(groupList)
+            groupListAdapter.notifyDataSetChanged()
+        } else groupListAdapter.setListDataClear()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
