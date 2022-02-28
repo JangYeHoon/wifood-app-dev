@@ -35,7 +35,12 @@ class FoodListViewModel(groupId : Int): ViewModel() {
     }
 
     fun deleteFoodList(foodIdList: ArrayList<Int>) {
-        foodListDto.deleteFoodList(foodIdList)
+        for (id in foodIdList)
+            foodListDto.deleteFoodList(id)
+    }
+
+    fun deleteFood(foodId: Int) {
+        foodListDto.deleteFoodList(foodId)
     }
 
     class Factory(val groupId : Int) : ViewModelProvider.Factory {

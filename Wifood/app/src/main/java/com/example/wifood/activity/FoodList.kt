@@ -3,9 +3,12 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.GridLayout
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
@@ -74,34 +77,58 @@ class FoodList : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
-        // foodlist delete btn
-        binding.foodListDeleteButton.setOnClickListener {
-            val intent = Intent(this@FoodList, DeleteFoodList::class.java).apply {
-                putParcelableArrayListExtra("foodlist", foodListViewModel.getFoodList())
-            }
-            requestActivity.launch(intent)
-        }
-
-        // foodlist edit btn
-        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
-            override fun onClick(view: View, position: Int, item: Food) {
-                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
-                    putExtra("food", item)
-                }
-                requestActivity.launch(intent)
-            }
-        })
+//        // foodlist delete btn
+//        binding.foodListDeleteButton.setOnClickListener {
+//            val intent = Intent(this@FoodList, DeleteFoodList::class.java).apply {
+//                putParcelableArrayListExtra("foodlist", foodListViewModel.getFoodList())
+//            }
+//            requestActivity.launch(intent)
+//        }
+//
+//        // foodlist edit btn
+//        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
+//            override fun onClick(view: View, position: Int, item: Food) {
+//                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+//                    putExtra("food", item)
+//                }
+//                requestActivity.launch(intent)
+//            }
+//        })
 
         // map btn
-        foodListAdapter.setMapButtonClickListener(object: FoodListAdapter.FoodListClickListener{
+//        foodListAdapter.setMapButtonClickListener(object: FoodListAdapter.FoodListClickListener{
+//            override fun onClick(view: View, position: Int, item: Food) {
+//                val intent = Intent(this@FoodList, Map::class.java).apply {
+//                    putExtra("latitude", item.latitude)
+//                    putExtra("longitude", item.longitude)
+//                    putExtra("name", item.name)
+//                }
+//                startActivity(intent)
+//                finish()
+//            }
+//        })
+
+        foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Food) {
-                val intent = Intent(this@FoodList, Map::class.java).apply {
-                    putExtra("latitude", item.latitude)
-                    putExtra("longitude", item.longitude)
-                    putExtra("name", item.name)
+                val popupMenu = PopupMenu(this@FoodList, view)
+                popupMenu.menuInflater.inflate(R.menu.popup_food, popupMenu.menu)
+                popupMenu.show()
+                popupMenu.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.delete_menu -> {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                foodListViewModel.deleteFood(item.id)
+                            }
+                        }
+                        R.id.edit_menu -> {
+                            val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+                                putExtra("food", item)
+                            }
+                            requestActivity.launch(intent)
+                        }
+                    }
+                    true
                 }
-                startActivity(intent)
-                finish()
             }
         })
     }
@@ -157,13 +184,13 @@ class FoodList : AppCompatActivity() {
                         foodListViewModel.insertFoodList(editFood!!)
                     }
                 }
-                2 -> {
-                    // DeleteFoodListActivity에서 받은 삭제할 id list를 이용해 db에서 삭제
-                    val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
-                    CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.deleteFoodList(deleteIdList!!)
-                    }
-                }
+//                2 -> {
+//                    // DeleteFoodListActivity에서 받은 삭제할 id list를 이용해 db에서 삭제
+//                    val deleteIdList = it.data?.getIntegerArrayListExtra("deleteIdList")
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        foodListViewModel.deleteFoodList(deleteIdList!!)
+//                    }
+//                }
             }
         }
     }

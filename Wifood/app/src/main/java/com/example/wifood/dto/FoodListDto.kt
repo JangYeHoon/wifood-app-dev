@@ -23,8 +23,7 @@ class FoodListDto(groupId : Int) {
     }
 
     // 디비에서 삭제할 id 정보를 dao에 넘겨줌
-    fun deleteFoodList(foodIdList: ArrayList<Int>) {
-        for (i in foodIdList)
-            foodListDao.deleteFoodList(i)
+    fun deleteFoodList(deleteId: Int) {
+        foodListDao.deleteFoodList(deleteId)
     }
 }

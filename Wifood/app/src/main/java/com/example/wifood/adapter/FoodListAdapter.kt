@@ -48,6 +48,9 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
         }
+        holder.popupMenu.setOnClickListener {
+            foodListClickListener.onClick(it, position, food)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +62,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
         val myGrade : TextView = itemView.findViewById(R.id.myGrade)
+        val popupMenu : ImageButton = itemView.findViewById(R.id.popupMenu)
     }
 
     interface FoodListClickListener {
@@ -67,13 +71,11 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
 
     private lateinit var foodListClickListener: FoodListClickListener
 
-    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
+//    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
+//        this.foodListClickListener = foodListClickListener
+//    }
+
+    fun setPopupButtonClickListener(foodListClickListener: FoodListClickListener) {
         this.foodListClickListener = foodListClickListener
-    }
-
-    private lateinit var mapButtonClickListener: FoodListClickListener
-
-    fun setMapButtonClickListener(mapButtonClickListener: FoodListClickListener) {
-        this.mapButtonClickListener = mapButtonClickListener
     }
 }
