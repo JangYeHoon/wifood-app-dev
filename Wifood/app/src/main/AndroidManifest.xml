@@ -32,7 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.AddFoodList"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.FoodList"
             android:exported="false" />

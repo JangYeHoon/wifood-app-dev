@@ -3,29 +3,34 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.wifood.R
+import com.example.wifood.adapter.DeleteFoodListAdapter
+import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupSelectBottom
+import com.example.wifood.adapter.MenuNameAdapter
 import com.example.wifood.databinding.ActivityAddFoodListBinding
 import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
+import com.example.wifood.entity.Menu
 import com.example.wifood.entity.Search
-import kotlinx.coroutines.selects.select
 
 class AddFoodList : AppCompatActivity() {
     lateinit var binding : ActivityAddFoodListBinding
     lateinit var searchResult: Search
-
+    lateinit var adapterMenuName: MenuNameAdapter
+    lateinit var inputMethodManager: InputMethodManager
     // 별점 저장을 위한 변수
-    var tasteGrade:Double = 0.0
-    var cleanGrade:Double = 0.0
-    var kindnessGrade:Double = 0.0
     var isVisited = false
     var insertFood: Food = Food()
+    var menuList:ArrayList<Menu> = ArrayList(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,16 +55,42 @@ class AddFoodList : AppCompatActivity() {
             insertFood.visited = isVisited.toInt()
             if (onSwitch) {
                 binding.tableLayout2.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.tableLayout3.visibility = View.VISIBLE
                 insertFood.myTasteGrade = binding.tasteGrade.rating.toDouble()
                 insertFood.myCleanGrade = binding.cleanGrade.rating.toDouble()
                 insertFood.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
             } else {
                 binding.tableLayout2.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+                binding.tableLayout3.visibility = View.GONE
                 insertFood.myTasteGrade = 0.0
                 insertFood.myCleanGrade = 0.0
                 insertFood.myKindnessGrade = 0.0
             }
         }
+
+        adapterMenuName = MenuNameAdapter(this)
+        binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
+        binding.recyclerView.adapter = adapterMenuName
+        updateMenuListAdapter()
+        binding.insertMenu.setOnClickListener {
+            inputMenu()
+        }
+        binding.editMenu.setOnEditorActionListener { textView, i, keyEvent ->
+            var handled = false
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                inputMenu()
+                handled = true
+            }
+            handled
+        }
+        adapterMenuName.setMenuClickListener(object: MenuNameAdapter.MenuClickListener{
+            override fun onClick(view: View, position: Int, menu: Menu) {
+                menuList.removeAt(position)
+                updateMenuListAdapter()
+            }
+        })
 
         // 맛집 검색 SearchPlace Activity로 이동
         binding.searchName.setOnClickListener {
@@ -72,7 +103,6 @@ class AddFoodList : AppCompatActivity() {
             val bottomSheet = GroupSelectBottom()
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
-
         binding.nextGroup.setOnClickListener {
             val bottomSheet = GroupSelectBottom()
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
@@ -81,6 +111,7 @@ class AddFoodList : AppCompatActivity() {
         // 맛집리스트를 추가할 수 있도록 설정된 food 정보를 FoodList Activity로 넘겨줌
         binding.saveBtn.setOnClickListener {
             insertFood.memo = binding.memoText.text.toString()
+            insertFood.menu = menuList
             if (insertFood.name != "None" && insertFood.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("searchResult", searchResult)
@@ -106,6 +137,21 @@ class AddFoodList : AppCompatActivity() {
             insertFood.latitude = searchResult.latitude
             insertFood.longitude = searchResult.longitude
         }
+    }
+
+    private fun inputMenu() {
+        if (binding.editMenu.text.toString() != "") {
+            menuList.add(Menu(binding.editMenu.text.toString()))
+            updateMenuListAdapter()
+            inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.editMenu.windowToken, 0)
+            binding.editMenu.setText("")
+        }
+    }
+
+    private fun updateMenuListAdapter() {
+        adapterMenuName.setListData(menuList)
+        adapterMenuName.notifyDataSetChanged()
     }
 
     fun receiveData(group:Group) {
