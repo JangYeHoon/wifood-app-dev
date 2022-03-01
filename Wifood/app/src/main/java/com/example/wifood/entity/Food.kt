@@ -4,9 +4,10 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Food(val id:Int = 0, val name:String = "Name",
-                var memo:String = "None", val address:String = "None",
-                val latitude:Double = 0.0, val longitude:Double = 0.0,
-                var myTasteGrade:Double = 0.0, var myCleanGrade:Double = 0.0,
-                var myKindnessGrade:Double = 0.0, val visited:Int = 0,
-                val groupId:Int = 0)  : Parcelable
+data class Food(
+    var id:Int = 0, var name:String = "None",
+    var memo:String = "None", var address:String = "None",
+    var latitude:Double = 0.0, var longitude:Double = 0.0,
+    var myTasteGrade:Double = 0.0, var myCleanGrade:Double = 0.0,
+    var myKindnessGrade:Double = 0.0, var visited:Int = 0,
+    var groupId:Int = -1)  : Parcelable

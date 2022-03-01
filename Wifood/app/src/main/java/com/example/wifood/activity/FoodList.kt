@@ -129,18 +129,9 @@ class FoodList : AppCompatActivity() {
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
                     // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
-                    // TODO("코드 리팩토링 필요해 보임")
-                    val searchResult = it.data?.getParcelableExtra<Search>("searchResult")
-                    val tasteGrade = it.data?.getDoubleExtra("taste", 0.0)
-                    val cleanGrade = it.data?.getDoubleExtra("clean", 0.0)
-                    val kindnessGrade = it.data?.getDoubleExtra("kindness", 0.0)
-                    val visited = it.data?.getIntExtra("visited", 0)
-                    val memo = it.data?.getStringExtra("memo")
-                    val food = Food(foodListViewModel.getFoodListMaxId() + 1, searchResult!!.name, memo!!,
-                        searchResult.fullAddress, searchResult.latitude, searchResult.longitude,
-                        tasteGrade!!, cleanGrade!!, kindnessGrade!!, visited!!)
+                    val food = it.data?.getParcelableExtra<Food>("food")
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.insertFoodList(food)
+                        foodListViewModel.insertFoodList(food!!)
                     }
                 }
                 1 -> {
