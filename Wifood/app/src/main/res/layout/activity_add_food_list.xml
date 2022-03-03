@@ -1,282 +1,418 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AddFoodList">
 
-    <include
-        layout="@layout/toolbar" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="376dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/isVisited"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <include
+            layout="@layout/toolbar" />
 
-        <TableRow
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/isVisited"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="18dp">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:shrinkColumns="0">
+
+                <TextView
+                    android:id="@+id/groupText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="그룹"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/groupName"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="그룹 선택"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/nextGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_next" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:shrinkColumns="0">
+
+                <TextView
+                    android:id="@+id/foodText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="맛집"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/searchName"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="맛집 선택"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/nextSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_next" />
+            </TableRow>
+
+            <TextView
+                android:id="@+id/searchAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:shrinkColumns="0">
+
+                <TextView
+                    android:id="@+id/menuText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="메뉴"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <EditText
+                    android:id="@+id/editMenu"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="메뉴 추가"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ImageView
+                    android:id="@+id/insertMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_next" />
+            </TableRow>
+        </TableLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="953dp" />
+
+        <Switch
+            android:id="@+id/isVisited"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:shrinkColumns="0">
+            android:minHeight="48dp"
+            android:text="방문여부"
+            tools:layout_editor_absoluteX="157dp"
+            tools:layout_editor_absoluteY="533dp" />
 
-            <TextView
-                android:id="@+id/groupText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="그룹"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:paddingRight="20px" />
-
-            <TextView
-                android:id="@+id/groupName"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:hint="그룹 선택"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/nextGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_next" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
+        <TableLayout
+            android:id="@+id/tableLayout2"
+            android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:shrinkColumns="0">
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="1237dp">
 
-            <TextView
-                android:id="@+id/foodText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="맛집"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:paddingRight="20px" />
+            <TableRow>
 
-            <TextView
-                android:id="@+id/searchName"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:hint="맛집 선택"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tasteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="맛"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:paddingRight="117px"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
-            <ImageView
-                android:id="@+id/nextSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_next" />
-        </TableRow>
+                <RatingBar
+                    android:id="@+id/tasteGrade"
+                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0.5"
+                    android:stepSize="0.5" />
+            </TableRow>
 
-        <TextView
-            android:id="@+id/searchAddress"
-            android:layout_width="wrap_content"
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/cleanText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="청결"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchName" />
+
+                <RatingBar
+                    android:id="@+id/cleanGrade"
+                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0.5"
+                    android:stepSize="0.5" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/kindnessText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="친절"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchName" />
+
+                <RatingBar
+                    android:id="@+id/kindnessGrade"
+                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0.5"
+                    android:stepSize="0.5" />
+            </TableRow>
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:text="" />
-    </TableLayout>
+            android:visibility="visible">
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="메뉴평가"
+                    android:textSize="26sp"
+                    android:textColor="#000000"
+                    android:paddingRight="240dp"/>
 
-    <TableLayout
-        android:id="@+id/tableLayout3"
-        android:layout_width="376dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/isVisited"
-        app:layout_constraintVertical_bias="0.110000014">
+                <ImageButton
+                    android:id="@+id/addMenuGradeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
+                    app:srcCompat="@android:drawable/ic_input_add"
+                    app:tint="#000000" />
+            </TableRow>
+        </TableLayout>
 
-        <TableRow
-            android:layout_width="wrap_content"
+        <TableLayout
+            android:id="@+id/menuTable"
+            android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:shrinkColumns="0">
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="1408dp">
 
-            <TextView
-                android:id="@+id/menuText"
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="20px"
-                android:text="메뉴"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:gravity="bottom"
+                android:shrinkColumns="0">
 
-            <EditText
-                android:id="@+id/editMenu"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:hint="메뉴 추가"
-                android:text=""
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:singleLine="true"
-                android:textStyle="bold"
-                android:imeOptions="actionDone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    android:id="@+id/menuName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="메뉴명"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/insertMenu"
+                <EditText
+                    android:id="@+id/editMenuName"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="메뉴명 입력"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_next" />
-        </TableRow>
-    </TableLayout>
+                android:gravity="bottom"
+                android:shrinkColumns="0">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="376dp"
-        android:layout_height="83dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/tableLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout3"
-        app:layout_constraintVertical_bias="1.0" />
+                <TextView
+                    android:id="@+id/menuPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="가격"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
-    <TableLayout
-        android:id="@+id/tableLayout2"
-        android:layout_width="376dp"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/memoText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+                <EditText
+                    android:id="@+id/editMenuPrice"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="메뉴 가격 입력"
+                    android:text=""
+                    android:inputType="number"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </TableRow>
 
-        <TableRow>
-
-            <TextView
-                android:id="@+id/tasteText"
-                android:layout_width="98dp"
-                android:layout_height="wrap_content"
-                android:text="맛"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
-
-            <RatingBar
-                android:id="@+id/tasteGrade"
-                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:rating="0.5"
-                android:stepSize="0.5" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/cleanText"
+                android:gravity="center_vertical"
+                android:shrinkColumns="0">
+
+                <TextView
+                    android:id="@+id/textMenuGrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="평가"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <RatingBar
+                    android:id="@+id/menuGrade"
+                    style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="0.5"
+                    android:stepSize="0.5" />
+            </TableRow>
+
+            <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="청결"
-                android:layout_gravity="center"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
+                android:gravity="center_vertical"
+                android:shrinkColumns="0">
 
-            <RatingBar
-                android:id="@+id/cleanGrade"
-                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:rating="0.5"
-                android:stepSize="0.5" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:id="@+id/kindnessText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="친절"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
+                <TextView
+                    android:id="@+id/menuMemo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="20px"
+                    android:text="메모"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
-            <RatingBar
-                android:id="@+id/kindnessGrade"
-                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:isIndicator="false"
-                android:numStars="5"
-                android:rating="0.5"
-                android:stepSize="0.5" />
-        </TableRow>
-    </TableLayout>
+                <EditText
+                    android:id="@+id/editMenuMemo"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="메모"
+                    android:text=""
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
 
-    <EditText
-        android:id="@+id/memoText"
-        android:layout_width="376dp"
-        android:layout_height="100dp"
-        android:background="@drawable/memo_border"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="Memo"
-        app:layout_constraintBottom_toTopOf="@+id/saveBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout2"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMenuGrade"
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="953dp" />
 
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="367dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="저장"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <EditText
+            android:id="@+id/memoText"
+            android:layout_width="376dp"
+            android:layout_height="100dp"
+            android:background="@drawable/memo_border"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Memo"
+            tools:layout_editor_absoluteX="18dp"
+            tools:layout_editor_absoluteY="1609dp" />
 
-    <Switch
-        android:id="@+id/isVisited"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="방문여부"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="367dp"
+            android:layout_height="48dp"
+            android:text="저장"
+            tools:layout_editor_absoluteX="22dp"
+            tools:layout_editor_absoluteY="1709dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

@@ -11,26 +11,23 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
-import com.example.wifood.adapter.DeleteFoodListAdapter
-import com.example.wifood.adapter.FoodListAdapter
-import com.example.wifood.adapter.GroupSelectBottom
-import com.example.wifood.adapter.MenuNameAdapter
+import com.example.wifood.adapter.*
 import com.example.wifood.databinding.ActivityAddFoodListBinding
-import com.example.wifood.entity.Food
-import com.example.wifood.entity.Group
-import com.example.wifood.entity.Menu
-import com.example.wifood.entity.Search
+import com.example.wifood.entity.*
 
 class AddFoodList : AppCompatActivity() {
     lateinit var binding : ActivityAddFoodListBinding
     lateinit var searchResult: Search
     lateinit var adapterMenuName: MenuNameAdapter
+    lateinit var adapterMenuGrade: MenuGradeAdapter
     lateinit var inputMethodManager: InputMethodManager
     // 별점 저장을 위한 변수
     var isVisited = false
     var insertFood: Food = Food()
     var menuList:ArrayList<Menu> = ArrayList(0)
+    var listMenuGrade:ArrayList<MenuGrade> = ArrayList(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +42,15 @@ class AddFoodList : AppCompatActivity() {
         supportActionBar?.title = "맛집리스트 추가"
 
         // 맛, 청결, 친절에 대한 별점 리스너 설정
-        binding.tasteGrade.setOnRatingBarChangeListener { _, rating, _ -> insertFood.myTasteGrade = rating.toDouble() }
-        binding.cleanGrade.setOnRatingBarChangeListener { _, rating, _ -> insertFood.myCleanGrade = rating.toDouble() }
-        binding.kindnessGrade.setOnRatingBarChangeListener { _, rating, _ -> insertFood.myKindnessGrade = rating.toDouble() }
+        binding.tasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
+            if (rating <= 0.5f) ratingBar.rating = 0.5f
+            insertFood.myTasteGrade = rating.toDouble() }
+        binding.cleanGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
+            if (rating < 0.5f) ratingBar.rating = 0.5f
+            insertFood.myCleanGrade = rating.toDouble() }
+        binding.kindnessGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
+            if (rating < 0.5f) ratingBar.rating = 0.5f
+            insertFood.myKindnessGrade = rating.toDouble() }
 
         // 방문 여부 체크
         binding.isVisited.setOnCheckedChangeListener { _, onSwitch ->
@@ -56,14 +59,16 @@ class AddFoodList : AppCompatActivity() {
             if (onSwitch) {
                 binding.tableLayout2.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.VISIBLE
-                binding.tableLayout3.visibility = View.VISIBLE
+                binding.menuTable.visibility = View.VISIBLE
+                binding.recyclerMenuGrade.visibility = View.VISIBLE
                 insertFood.myTasteGrade = binding.tasteGrade.rating.toDouble()
                 insertFood.myCleanGrade = binding.cleanGrade.rating.toDouble()
                 insertFood.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
             } else {
                 binding.tableLayout2.visibility = View.GONE
                 binding.recyclerView.visibility = View.GONE
-                binding.tableLayout3.visibility = View.GONE
+                binding.menuTable.visibility = View.GONE
+                binding.recyclerMenuGrade.visibility = View.GONE
                 insertFood.myTasteGrade = 0.0
                 insertFood.myCleanGrade = 0.0
                 insertFood.myKindnessGrade = 0.0
@@ -92,6 +97,27 @@ class AddFoodList : AppCompatActivity() {
             }
         })
 
+        adapterMenuGrade = MenuGradeAdapter(this)
+        binding.recyclerMenuGrade.layoutManager = LinearLayoutManager(this)
+        binding.recyclerMenuGrade.adapter = adapterMenuGrade
+        updateMenuGradeListAdapter()
+        binding.addMenuGradeButton.setOnClickListener {
+            val name:String = binding.editMenuName.text.toString()
+            val price:Int = binding.editMenuPrice.text.toString().toInt()
+            val grade:Double = binding.menuGrade.rating.toDouble()
+            val memo:String = binding.editMenuMemo.text.toString()
+            if (name != "") {
+                listMenuGrade.add(MenuGrade(name, price, grade, memo))
+                updateMenuGradeListAdapter()
+                inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+                binding.editMenuName.setText("")
+                binding.editMenuMemo.setText("")
+                binding.editMenuPrice.setText("")
+                binding.menuGrade.rating = 0.5f
+            }
+        }
+
         // 맛집 검색 SearchPlace Activity로 이동
         binding.searchName.setOnClickListener {
             val intent = Intent(this@AddFoodList, SearchPlace::class.java).apply{}
@@ -112,6 +138,7 @@ class AddFoodList : AppCompatActivity() {
         binding.saveBtn.setOnClickListener {
             insertFood.memo = binding.memoText.text.toString()
             insertFood.menu = menuList
+            insertFood.menuGrade = listMenuGrade
             if (insertFood.name != "None" && insertFood.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("searchResult", searchResult)
@@ -152,6 +179,11 @@ class AddFoodList : AppCompatActivity() {
     private fun updateMenuListAdapter() {
         adapterMenuName.setListData(menuList)
         adapterMenuName.notifyDataSetChanged()
+    }
+
+    private fun updateMenuGradeListAdapter() {
+        adapterMenuGrade.setListData(listMenuGrade)
+        adapterMenuGrade.notifyDataSetChanged()
     }
 
     fun receiveData(group:Group) {
