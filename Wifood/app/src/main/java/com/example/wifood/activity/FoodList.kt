@@ -85,7 +85,11 @@ class FoodList : AppCompatActivity() {
 
         // foodlist add btn
         binding.foodListAddButton.setOnClickListener {
-            val intent = Intent(this@FoodList, AddFoodList::class.java)
+            val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
+                putExtra("groupId", groupId)
+                putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                putExtra("type", "add")
+            }
             requestActivity.launch(intent)
         }
 
@@ -102,8 +106,10 @@ class FoodList : AppCompatActivity() {
                             }
                         }
                         R.id.edit_menu -> {
-                            val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+                            val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
                                 putExtra("food", item)
+                                putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                                putExtra("type", "edit")
                             }
                             requestActivity.launch(intent)
                         }
@@ -125,23 +131,24 @@ class FoodList : AppCompatActivity() {
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
+            val food = it.data?.getParcelableExtra<Food>("food")
             // type 0: add, 1: edit, 2: delete
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
                     // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
-                    val food = it.data?.getParcelableExtra<Food>("food")
                     CoroutineScope(Dispatchers.IO).launch {
                         foodListViewModel.insertFoodList(food!!)
                     }
                 }
                 1 -> {
                     // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
-                    val editFood = it.data?.getParcelableExtra<Food>("food")
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.insertFoodList(editFood!!)
+                        foodListViewModel.updateFoodList(food!!)
                     }
                 }
             }
+            groupId = food!!.groupId
+            updateGroupAdapterList()
         }
     }
 

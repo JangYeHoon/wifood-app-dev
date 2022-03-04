@@ -39,9 +39,8 @@ class FoodListViewModel(): ViewModel() {
         foodListDto.insertFoodList(food)
     }
 
-    fun deleteFoodList(foodIdList: ArrayList<Int>) {
-        for (id in foodIdList)
-            foodListDto.deleteFoodList(id)
+    fun updateFoodList(food: Food) {
+        foodListDto.insertFoodList(food)
     }
 
     fun deleteFood(foodId: Int) {

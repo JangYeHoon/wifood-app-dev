@@ -118,10 +118,38 @@ class AddFoodList : AppCompatActivity() {
             }
         }
 
+        val type = intent.getStringExtra("type")
+        if (type  == "edit") {
+            insertFood = intent.getParcelableExtra("food")!!
+            binding.searchName.text = insertFood.name
+            binding.searchAddress.text = insertFood.address
+            menuList = insertFood.menu
+            updateMenuListAdapter()
+            if (insertFood.visited == 1) {
+                listMenuGrade = insertFood.menuGrade
+                updateMenuGradeListAdapter()
+                binding.tasteGrade.rating = insertFood.myTasteGrade.toFloat()
+                binding.kindnessGrade.rating = insertFood.myKindnessGrade.toFloat()
+                binding.cleanGrade.rating = insertFood.myCleanGrade.toFloat()
+                binding.isVisited.isChecked = true
+                binding.tableLayout2.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.menuTable.visibility = View.VISIBLE
+                binding.recyclerMenuGrade.visibility = View.VISIBLE
+                binding.memoText.setText(insertFood.memo)
+            }
+        } else if (type == "add") {
+            insertFood.name = intent.getStringExtra("groupName").toString()
+            insertFood.groupId = intent.getIntExtra("groupId", -1)
+        }
+        binding.groupName.text = insertFood.name
+
         // 맛집 검색 SearchPlace Activity로 이동
-        binding.searchName.setOnClickListener {
-            val intent = Intent(this@AddFoodList, SearchPlace::class.java).apply{}
-            requestActivity.launch(intent)
+        if (type != "edit") {
+            binding.searchName.setOnClickListener {
+                val intent = Intent(this@AddFoodList, SearchPlace::class.java).apply {}
+                requestActivity.launch(intent)
+            }
         }
 
         // 그룹 선택 다이얼로그로 이동
@@ -141,9 +169,9 @@ class AddFoodList : AppCompatActivity() {
             insertFood.menuGrade = listMenuGrade
             if (insertFood.name != "None" && insertFood.groupId != -1) {
                 val intent = Intent().apply {
-                    putExtra("searchResult", searchResult)
                     putExtra("food", insertFood)
-                    putExtra("type", 0)
+                    if (type == "edit") putExtra("type", 1)
+                    else putExtra("type", 0)
                 }
                 setResult(RESULT_OK, intent)
                 finish()

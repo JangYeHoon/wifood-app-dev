@@ -35,6 +35,16 @@ class FoodGroupViewModel :ViewModel() {
         }
     }
 
+    fun getGroupName(groupId: Int) : String {
+        if (groupId != -1) {
+            for (group in foodGroupList.value!!) {
+                if (groupId == group.id)
+                    return group.name
+            }
+        }
+        return ""
+    }
+
     fun getGroupList(): MutableList<Group>? {
         return foodGroupList.value
     }
