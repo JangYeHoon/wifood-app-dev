@@ -2,19 +2,18 @@ package com.example.wifood.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.dto.FoodListDto
 import com.example.wifood.entity.Food
 
-class FoodListViewModel(groupId : Int): ViewModel() {
+class FoodListViewModel(): ViewModel() {
     var foodList: LiveData<MutableList<Food>>
-    private val foodListDto: FoodListDto = FoodListDto(groupId)
+    private val foodListDto: FoodListDto = FoodListDto()
 
     init {
         foodList = foodListDto.getFoodList()
     }
 
-    fun getFoodListMaxId() : Int {
+    private fun getFoodListMaxId() : Int {
         val food = foodList.value
         var maxValue = 0
         if (food != null)
@@ -23,24 +22,28 @@ class FoodListViewModel(groupId : Int): ViewModel() {
         return maxValue
     }
 
-    fun getFoodList(): ArrayList<Food> {
-        var food : ArrayList<Food> = ArrayList(0)
-        for (f in foodList.value!!)
-            food.add(f)
-        return food
+    fun getFoodList(groupId: Int): MutableList<Food> {
+        val food = mutableListOf<Food>()
+        if (groupId != -1) {
+            for (f in foodList.value!!) {
+                if (groupId == f.groupId)
+                    food.add(f)
+            }
+            return food
+        }
+        return foodList.value!!
     }
 
     fun insertFoodList(food: Food) {
+        food.id = getFoodListMaxId() + 1
         foodListDto.insertFoodList(food)
     }
 
-    fun deleteFoodList(foodIdList: ArrayList<Int>) {
-        foodListDto.deleteFoodList(foodIdList)
+    fun updateFoodList(food: Food) {
+        foodListDto.insertFoodList(food)
     }
 
-    class Factory(val groupId : Int) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return FoodListViewModel(groupId) as T
-        }
+    fun deleteFood(foodId: Int) {
+        foodListDto.deleteFoodList(foodId)
     }
 }

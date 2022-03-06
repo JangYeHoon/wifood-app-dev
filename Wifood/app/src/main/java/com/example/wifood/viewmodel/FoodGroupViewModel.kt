@@ -3,6 +3,7 @@ package com.example.wifood.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.GroupDto
+import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 
 // Independent of the lifecycle of the activity.
@@ -32,6 +33,20 @@ class FoodGroupViewModel :ViewModel() {
             groupList[i].order = i + 1
             foodGroupDto.updateGroup(groupList[i])
         }
+    }
+
+    fun getGroupName(groupId: Int) : String {
+        if (groupId != -1) {
+            for (group in foodGroupList.value!!) {
+                if (groupId == group.id)
+                    return group.name
+            }
+        }
+        return ""
+    }
+
+    fun getGroupList(): MutableList<Group>? {
+        return foodGroupList.value
     }
 
     fun getGroup(pos: Int): Group {

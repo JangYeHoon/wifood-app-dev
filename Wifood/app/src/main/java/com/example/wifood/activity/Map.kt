@@ -116,7 +116,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
-        wishListViewModel = ViewModelProvider(this, FoodListViewModel.Factory(groupId)).get(FoodListViewModel::class.java)
+        wishListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
         // WishList 데이터 변동 감지
         wishListViewModel.foodList.observe(this) {
             if (it != null) arrWishList = it    // Shallow Copy

@@ -9,12 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Food
-import com.example.wifood.entity.Place
 import kotlin.math.round
 
 class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
     private var foodList = mutableListOf<Food>()
-    private var placeList = mutableListOf<Place>()
 
     fun setFoodListData(data:MutableList<Food>) {
         foodList = data
@@ -22,10 +20,6 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
 
     fun setListDataClear() {
         foodList.clear()
-    }
-
-    fun setPlaceListData(data:MutableList<Place>) {
-        placeList = data
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
@@ -48,6 +42,9 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         holder.itemView.setOnClickListener {
             foodListClickListener.onClick(it, position, food)
         }
+        holder.popupMenu.setOnClickListener {
+            foodListClickListener.onClick(it, position, food)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +56,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
         val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
         val myGrade : TextView = itemView.findViewById(R.id.myGrade)
+        val popupMenu : ImageButton = itemView.findViewById(R.id.popupMenu)
     }
 
     interface FoodListClickListener {
@@ -67,13 +65,11 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
 
     private lateinit var foodListClickListener: FoodListClickListener
 
-    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
+//    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
+//        this.foodListClickListener = foodListClickListener
+//    }
+
+    fun setPopupButtonClickListener(foodListClickListener: FoodListClickListener) {
         this.foodListClickListener = foodListClickListener
-    }
-
-    private lateinit var mapButtonClickListener: FoodListClickListener
-
-    fun setMapButtonClickListener(mapButtonClickListener: FoodListClickListener) {
-        this.mapButtonClickListener = mapButtonClickListener
     }
 }
