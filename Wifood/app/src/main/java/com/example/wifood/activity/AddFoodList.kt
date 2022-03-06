@@ -58,17 +58,17 @@ class AddFoodList : AppCompatActivity() {
             insertFood.visited = isVisited.toInt()
             if (onSwitch) {
                 binding.tableLayout2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
+                binding.menuGradeText.visibility = View.VISIBLE
                 insertFood.myTasteGrade = binding.tasteGrade.rating.toDouble()
                 insertFood.myCleanGrade = binding.cleanGrade.rating.toDouble()
                 insertFood.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
             } else {
                 binding.tableLayout2.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
                 binding.menuTable.visibility = View.GONE
                 binding.recyclerMenuGrade.visibility = View.GONE
+                binding.menuGradeText.visibility = View.GONE
                 insertFood.myTasteGrade = 0.0
                 insertFood.myCleanGrade = 0.0
                 insertFood.myKindnessGrade = 0.0
@@ -133,16 +133,14 @@ class AddFoodList : AppCompatActivity() {
                 binding.cleanGrade.rating = insertFood.myCleanGrade.toFloat()
                 binding.isVisited.isChecked = true
                 binding.tableLayout2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
+                binding.menuGradeText.visibility = View.VISIBLE
                 binding.memoText.setText(insertFood.memo)
             }
-        } else if (type == "add") {
-            insertFood.name = intent.getStringExtra("groupName").toString()
+        } else if (type == "add")
             insertFood.groupId = intent.getIntExtra("groupId", -1)
-        }
-        binding.groupName.text = insertFood.name
+        binding.groupName.text = intent.getStringExtra("groupName").toString()
 
         // 맛집 검색 SearchPlace Activity로 이동
         if (type != "edit") {
@@ -165,6 +163,8 @@ class AddFoodList : AppCompatActivity() {
         // 맛집리스트를 추가할 수 있도록 설정된 food 정보를 FoodList Activity로 넘겨줌
         binding.saveBtn.setOnClickListener {
             insertFood.memo = binding.memoText.text.toString()
+            if (insertFood.visited == 0)
+                listMenuGrade.clear()
             insertFood.menu = menuList
             insertFood.menuGrade = listMenuGrade
             if (insertFood.name != "None" && insertFood.groupId != -1) {
