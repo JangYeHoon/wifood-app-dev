@@ -43,7 +43,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
             foodListClickListener.onClick(it, position, food)
         }
         holder.popupMenu.setOnClickListener {
-            foodListClickListener.onClick(it, position, food)
+            popupClickListener.onClick(it, position, food)
         }
     }
 
@@ -63,13 +63,14 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
         fun onClick(view: View, position: Int, item: Food)
     }
 
+    private lateinit var popupClickListener: FoodListClickListener
     private lateinit var foodListClickListener: FoodListClickListener
 
-//    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
-//        this.foodListClickListener = foodListClickListener
-//    }
-
-    fun setPopupButtonClickListener(foodListClickListener: FoodListClickListener) {
+    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
         this.foodListClickListener = foodListClickListener
+    }
+
+    fun setPopupButtonClickListener(popupClickListener: FoodListClickListener) {
+        this.popupClickListener = popupClickListener
     }
 }

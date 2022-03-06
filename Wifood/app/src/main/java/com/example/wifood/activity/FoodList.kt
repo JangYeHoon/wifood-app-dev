@@ -93,6 +93,16 @@ class FoodList : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
+        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
+            override fun onClick(view: View, position: Int, item: Food) {
+                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+                    putExtra("food", item)
+                    putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                }
+                startActivity(intent)
+            }
+        })
+
         foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Food) {
                 val popupMenu = PopupMenu(this@FoodList, view)

@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
+import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityEditFoodListBinding
 import com.example.wifood.entity.Food
 
 class EditFoodList : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodListBinding
+    lateinit var adapterMenuGradeInfo : MenuGradeInfoAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditFoodListBinding.inflate(layoutInflater)
@@ -22,35 +25,30 @@ class EditFoodList : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
-        supportActionBar?.title = "맛집리스트 수정"
 
         // 수정할 맛집에 대한 정보를 받아와 view 설정
         var food = intent.getParcelableExtra<Food>("food")
+        val groupName = intent.getStringExtra("groupName")
+        binding.groupName.text = groupName
         binding.foodName.text = food!!.name
         binding.foodAddress.text = food.address
-        binding.memoText.setText(food.memo)
-
-        val gradeAdapter = ArrayAdapter.createFromResource(this, R.array.grade, android.R.layout.simple_spinner_item)
-        binding.tasteGrade.adapter = gradeAdapter
-        binding.tasteGrade.setSelection(food.myTasteGrade.toInt() - 1)
-        binding.cleanGrade.adapter = gradeAdapter
-        binding.cleanGrade.setSelection(food.myCleanGrade.toInt() - 1)
-        binding.kindnessGrade.adapter = gradeAdapter
-        binding.kindnessGrade.setSelection(food.myKindnessGrade.toInt() - 1)
-
-        // 변경된 정보를 받아와서 memo, taste, clean, kindness에 대한 정보를 수정하고 FoodListActivity에게 넘겨줌
-        binding.saveBtn.setOnClickListener {
-            food.memo = binding.memoText.text.toString()
-            food.myTasteGrade = binding.tasteGrade.selectedItem.toString().toDouble()
-            food.myCleanGrade = binding.cleanGrade.selectedItem.toString().toDouble()
-            food.myKindnessGrade = binding.kindnessGrade.selectedItem.toString().toDouble()
-            val intent = Intent().apply {
-                putExtra("type", 1)
-                putExtra("food", food)
-            }
-            setResult(RESULT_OK, intent)
-            finish()
+        binding.memoText.text = food.memo
+        binding.tasteGrade.text = food.myTasteGrade.toString()
+        binding.kindnessGrade.text = food.myKindnessGrade.toString()
+        binding.cleanGrade.text = food.myCleanGrade.toString()
+        var s = ""
+        for (i in 0 until food.menu.size) {
+            s += food.menu[i].name
+            if (i != food.menu.size - 1)
+                s += ","
         }
+        binding.foodMenu.text = s
+
+        adapterMenuGradeInfo = MenuGradeInfoAdapter(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapterMenuGradeInfo
+        adapterMenuGradeInfo.setMenuGradeListData(food.menuGrade)
+        adapterMenuGradeInfo.notifyDataSetChanged()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
