@@ -246,6 +246,24 @@
             </TableRow>
         </TableLayout>
 
+        <Button
+            android:id="@+id/addGalleryImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="갤러리"/>
+
+        <Button
+            android:id="@+id/addCameraImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라"/>
+
+        <ImageView
+            android:id="@+id/foodImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"/>
+
         <TableLayout
             android:id="@+id/menuGradeText"
             android:layout_width="376dp"

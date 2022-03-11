@@ -23,7 +23,6 @@ import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
-import com.example.wifood.entity.Search
 import com.example.wifood.viewmodel.FoodGroupViewModel
 import com.example.wifood.viewmodel.FoodListViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -88,6 +87,8 @@ class FoodList : AppCompatActivity() {
             val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                val foodId = foodListViewModel.getFoodListMaxId() + 1
+                putExtra("foodId", foodId)
                 putExtra("type", "add")
             }
             requestActivity.launch(intent)

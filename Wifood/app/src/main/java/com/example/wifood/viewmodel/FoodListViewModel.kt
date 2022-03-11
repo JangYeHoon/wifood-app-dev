@@ -13,7 +13,7 @@ class FoodListViewModel(): ViewModel() {
         foodList = foodListDto.getFoodList()
     }
 
-    private fun getFoodListMaxId() : Int {
+    fun getFoodListMaxId() : Int {
         val food = foodList.value
         var maxValue = 0
         if (food != null)

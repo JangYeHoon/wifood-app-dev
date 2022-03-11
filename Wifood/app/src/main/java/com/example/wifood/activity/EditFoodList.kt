@@ -1,16 +1,17 @@
 package com.example.wifood.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityEditFoodListBinding
 import com.example.wifood.entity.Food
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class EditFoodList : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodListBinding
@@ -49,6 +50,15 @@ class EditFoodList : AppCompatActivity() {
         binding.recyclerView.adapter = adapterMenuGradeInfo
         adapterMenuGradeInfo.setMenuGradeListData(food.menuGrade)
         adapterMenuGradeInfo.notifyDataSetChanged()
+
+        // TEST : firebase storage image download
+        val storage:FirebaseStorage = FirebaseStorage.getInstance()
+        val storageRef:StorageReference = storage.reference.child("1.jpg")
+        storageRef.downloadUrl.addOnCompleteListener {
+            if (it.isSuccessful) {
+                Glide.with(this@EditFoodList).load(it.result).into(binding.foodImage)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
