@@ -4,18 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityEditFoodListBinding
 import com.example.wifood.entity.Food
+import com.example.wifood.viewmodel.ImageStoreViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class EditFoodList : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodListBinding
     lateinit var adapterMenuGradeInfo : MenuGradeInfoAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditFoodListBinding.inflate(layoutInflater)
@@ -51,9 +54,13 @@ class EditFoodList : AppCompatActivity() {
         adapterMenuGradeInfo.setMenuGradeListData(food.menuGrade)
         adapterMenuGradeInfo.notifyDataSetChanged()
 
-        // TEST : firebase storage image download
+        if (food.imageUri.size > 0)
+            downloadImage(food.imageUri[0], food.id)
+    }
+
+    private fun downloadImage(idx: String, foodId: Int) {
         val storage:FirebaseStorage = FirebaseStorage.getInstance()
-        val storageRef:StorageReference = storage.reference.child("1.jpg")
+        val storageRef:StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
                 Glide.with(this@EditFoodList).load(it.result).into(binding.foodImage)
