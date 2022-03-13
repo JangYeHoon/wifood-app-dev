@@ -24,12 +24,14 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.*
 import com.example.wifood.databinding.ActivityAddFoodListBinding
 import com.example.wifood.entity.*
 import com.example.wifood.viewmodel.ImageStoreViewModel
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,6 +93,9 @@ class AddFoodList : AppCompatActivity() {
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
                 binding.menuGradeText.visibility = View.VISIBLE
+                binding.addCameraImageButton.visibility = View.VISIBLE
+                binding.addGalleryImageButton.visibility = View.VISIBLE
+                binding.foodImage.visibility = View.VISIBLE
                 insertFood.myTasteGrade = binding.tasteGrade.rating.toDouble()
                 insertFood.myCleanGrade = binding.cleanGrade.rating.toDouble()
                 insertFood.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
@@ -99,6 +104,9 @@ class AddFoodList : AppCompatActivity() {
                 binding.menuTable.visibility = View.GONE
                 binding.recyclerMenuGrade.visibility = View.GONE
                 binding.menuGradeText.visibility = View.GONE
+                binding.addCameraImageButton.visibility = View.GONE
+                binding.addGalleryImageButton.visibility = View.GONE
+                binding.foodImage.visibility = View.GONE
                 insertFood.myTasteGrade = 0.0
                 insertFood.myCleanGrade = 0.0
                 insertFood.myKindnessGrade = 0.0
@@ -154,6 +162,7 @@ class AddFoodList : AppCompatActivity() {
             binding.searchName.text = insertFood.name
             binding.searchAddress.text = insertFood.address
             menuList = insertFood.menu
+            binding.memoText.setText(insertFood.memo)
             updateMenuListAdapter()
             if (insertFood.visited == 1) {
                 listMenuGrade = insertFood.menuGrade
@@ -166,7 +175,11 @@ class AddFoodList : AppCompatActivity() {
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
                 binding.menuGradeText.visibility = View.VISIBLE
-                binding.memoText.setText(insertFood.memo)
+                if (insertFood.imageUri.size > 0) {
+                    downloadImage(insertFood.imageUri[0], insertFood.id)
+                    imageList = insertFood.imageUri
+                    imageCnt = imageList.size
+                }
             }
         } else if (type == "add") {
             insertFood.groupId = intent.getIntExtra("groupId", -1)
@@ -295,9 +308,9 @@ class AddFoodList : AppCompatActivity() {
 
     private fun getGalleryImage() {
         var storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        // 카메라 권한 확인
+        // 갤러리 권한 확인
         if (storagePermission == PackageManager.PERMISSION_DENIED) {
-            // 카메라 권한 요청
+            // 갤러리 권한 요청
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 REQUEST_IMAGE_CAPTURE)
         } else {
@@ -327,6 +340,10 @@ class AddFoodList : AppCompatActivity() {
         when (requestCode) {
             1 -> {
                 if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
+                    imageUriList.clear()
+                    imageList.clear()
+                    imageCnt = 0
                     // 카메라로부터 받은 데이터가 있을경우에만
                     val file = File(currentPhotoPath)
                     binding.foodImage.setImageURI(Uri.fromFile(file))
@@ -339,6 +356,10 @@ class AddFoodList : AppCompatActivity() {
             }
             2 -> {
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_TAKE) {
+                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
+                    imageUriList.clear()
+                    imageList.clear()
+                    imageCnt = 0
                     binding.foodImage.setImageURI(data?.data)
                     foodImageUri = data?.data!!
                     imageUriList.add(data.data!!)
@@ -346,6 +367,17 @@ class AddFoodList : AppCompatActivity() {
                     imageList.add(imageCnt.toString())
                     binding.foodImage.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    private fun downloadImage(idx: String, foodId: Int) {
+        val storage:FirebaseStorage = FirebaseStorage.getInstance()
+        val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
+        storageRef.downloadUrl.addOnCompleteListener {
+            if (it.isSuccessful) {
+                Glide.with(this@AddFoodList).load(it.result).into(binding.foodImage)
+                imageUriList.add(it.result)
             }
         }
     }

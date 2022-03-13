@@ -1,8 +1,11 @@
 package com.example.wifood.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,9 +40,13 @@ class EditFoodList : AppCompatActivity() {
         binding.foodName.text = food!!.name
         binding.foodAddress.text = food.address
         binding.memoText.text = food.memo
-        binding.tasteGrade.text = food.myTasteGrade.toString()
-        binding.kindnessGrade.text = food.myKindnessGrade.toString()
-        binding.cleanGrade.text = food.myCleanGrade.toString()
+        if (food.visited == 1) {
+            binding.tasteGrade.text = food.myTasteGrade.toString()
+            binding.kindnessGrade.text = food.myKindnessGrade.toString()
+            binding.cleanGrade.text = food.myCleanGrade.toString()
+        } else {
+            binding.foodGradeRow.visibility = View.GONE
+        }
         var s = ""
         for (i in 0 until food.menu.size) {
             s += food.menu[i].name
@@ -53,6 +60,13 @@ class EditFoodList : AppCompatActivity() {
         binding.recyclerView.adapter = adapterMenuGradeInfo
         adapterMenuGradeInfo.setMenuGradeListData(food.menuGrade)
         adapterMenuGradeInfo.notifyDataSetChanged()
+
+        binding.foodAddress.setOnClickListener {
+            val intent = Intent(this@EditFoodList, Map::class.java)
+            intent.putExtra("latitude", food.latitude)
+            intent.putExtra("longitude", food.longitude)
+            startActivity(intent)
+        }
 
         if (food.imageUri.size > 0)
             downloadImage(food.imageUri[0], food.id)
