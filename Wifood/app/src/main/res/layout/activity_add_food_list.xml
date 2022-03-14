@@ -144,7 +144,6 @@
             android:id="@+id/recyclerView"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="953dp" />
 
@@ -161,7 +160,7 @@
             android:id="@+id/tableLayout2"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="1237dp">
 
@@ -247,10 +246,31 @@
             </TableRow>
         </TableLayout>
 
+        <Button
+            android:id="@+id/addGalleryImageButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="갤러리"/>
+
+        <Button
+            android:id="@+id/addCameraImageButton"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라"/>
+
+        <ImageView
+            android:id="@+id/foodImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"/>
+
         <TableLayout
+            android:id="@+id/menuGradeText"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:visibility="gone">
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -276,7 +296,7 @@
             android:id="@+id/menuTable"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="1408dp">
 
@@ -391,7 +411,7 @@
             android:id="@+id/recyclerMenuGrade"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="953dp" />
 

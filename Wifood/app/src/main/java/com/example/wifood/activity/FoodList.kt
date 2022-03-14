@@ -12,18 +12,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
 import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
-import com.example.wifood.entity.Search
 import com.example.wifood.viewmodel.FoodGroupViewModel
 import com.example.wifood.viewmodel.FoodListViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +67,10 @@ class FoodList : AppCompatActivity() {
 
         groupListViewModel.foodGroupList.observe(this) {
             updateGroupAdapterList()
+            updateFoodAdapterList()
+            binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+            binding.groupAll.setTextColor(Color.BLACK)
+            binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
 
         groupListAdapter.setGroupClickListener(object: GroupNameAdapter.GroupClickListener{
@@ -83,15 +83,34 @@ class FoodList : AppCompatActivity() {
             }
         })
 
+        binding.groupAddButton.setOnClickListener {
+            val intent = Intent(this@FoodList, EditGroup::class.java).apply {
+                putExtra("type", "ADD")
+            }
+            requestGroupActivity.launch(intent)
+        }
+
         // foodlist add btn
         binding.foodListAddButton.setOnClickListener {
             val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                val foodId = foodListViewModel.getFoodListMaxId() + 1
+                putExtra("foodId", foodId)
                 putExtra("type", "add")
             }
             requestActivity.launch(intent)
         }
+
+        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
+            override fun onClick(view: View, position: Int, item: Food) {
+                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+                    putExtra("food", item)
+                    putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                }
+                startActivity(intent)
+            }
+        })
 
         foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Food) {
@@ -149,6 +168,25 @@ class FoodList : AppCompatActivity() {
             }
             groupId = food!!.groupId
             updateGroupAdapterList()
+        }
+    }
+
+    private val requestGroupActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            // type 0 : add, 1 : edit, 2 : delete
+            when(it.data?.getIntExtra("type", -1)) {
+                0 -> {
+                    val maxId = groupListAdapter.getGroupIdList().maxOrNull() ?: 0
+                    // create a group to add using the value received from EditFoodGroup Activity
+                    val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
+                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String,
+                        maxId + 1)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        groupListViewModel.groupInsert(group)
+                        groupId = maxId + 1
+                    }
+                }
+            }
         }
     }
 

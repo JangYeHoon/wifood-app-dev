@@ -1,21 +1,41 @@
 package com.example.wifood.activity
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.*
 import com.example.wifood.databinding.ActivityAddFoodListBinding
 import com.example.wifood.entity.*
+import com.example.wifood.viewmodel.ImageStoreViewModel
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddFoodList : AppCompatActivity() {
     lateinit var binding : ActivityAddFoodListBinding
@@ -29,6 +49,16 @@ class AddFoodList : AppCompatActivity() {
     var menuList:ArrayList<Menu> = ArrayList(0)
     var listMenuGrade:ArrayList<MenuGrade> = ArrayList(0)
 
+    // 카메라, 갤러리 관련 변수
+    val REQUEST_IMAGE_CAPTURE = 1
+    val REQUEST_GALLERY_TAKE = 2
+    lateinit var currentPhotoPath: String
+    lateinit var foodImageUri:Uri
+    var imageList:ArrayList<String> = ArrayList(0)
+    var imageCnt:Int = 0
+    var imageUriList:ArrayList<Uri> = ArrayList(0)
+    lateinit var imageStoreViewModel: ImageStoreViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddFoodListBinding.inflate(layoutInflater)
@@ -40,6 +70,8 @@ class AddFoodList : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "맛집리스트 추가"
+
+        imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
 
         // 맛, 청결, 친절에 대한 별점 리스너 설정
         binding.tasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
@@ -58,17 +90,23 @@ class AddFoodList : AppCompatActivity() {
             insertFood.visited = isVisited.toInt()
             if (onSwitch) {
                 binding.tableLayout2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
+                binding.menuGradeText.visibility = View.VISIBLE
+                binding.addCameraImageButton.visibility = View.VISIBLE
+                binding.addGalleryImageButton.visibility = View.VISIBLE
+                binding.foodImage.visibility = View.VISIBLE
                 insertFood.myTasteGrade = binding.tasteGrade.rating.toDouble()
                 insertFood.myCleanGrade = binding.cleanGrade.rating.toDouble()
                 insertFood.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
             } else {
                 binding.tableLayout2.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
                 binding.menuTable.visibility = View.GONE
                 binding.recyclerMenuGrade.visibility = View.GONE
+                binding.menuGradeText.visibility = View.GONE
+                binding.addCameraImageButton.visibility = View.GONE
+                binding.addGalleryImageButton.visibility = View.GONE
+                binding.foodImage.visibility = View.GONE
                 insertFood.myTasteGrade = 0.0
                 insertFood.myCleanGrade = 0.0
                 insertFood.myKindnessGrade = 0.0
@@ -124,6 +162,7 @@ class AddFoodList : AppCompatActivity() {
             binding.searchName.text = insertFood.name
             binding.searchAddress.text = insertFood.address
             menuList = insertFood.menu
+            binding.memoText.setText(insertFood.memo)
             updateMenuListAdapter()
             if (insertFood.visited == 1) {
                 listMenuGrade = insertFood.menuGrade
@@ -133,16 +172,20 @@ class AddFoodList : AppCompatActivity() {
                 binding.cleanGrade.rating = insertFood.myCleanGrade.toFloat()
                 binding.isVisited.isChecked = true
                 binding.tableLayout2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.VISIBLE
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
-                binding.memoText.setText(insertFood.memo)
+                binding.menuGradeText.visibility = View.VISIBLE
+                if (insertFood.imageUri.size > 0) {
+                    downloadImage(insertFood.imageUri[0], insertFood.id)
+                    imageList = insertFood.imageUri
+                    imageCnt = imageList.size
+                }
             }
         } else if (type == "add") {
-            insertFood.name = intent.getStringExtra("groupName").toString()
             insertFood.groupId = intent.getIntExtra("groupId", -1)
+            insertFood.id = intent.getIntExtra("foodId", -1)
         }
-        binding.groupName.text = insertFood.name
+        binding.groupName.text = intent.getStringExtra("groupName").toString()
 
         // 맛집 검색 SearchPlace Activity로 이동
         if (type != "edit") {
@@ -162,16 +205,28 @@ class AddFoodList : AppCompatActivity() {
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
+        // 카메라 버튼
+        binding.addCameraImageButton.setOnClickListener { getCameraTakeImage() }
+        // 갤러리 버튼
+        binding.addGalleryImageButton.setOnClickListener { getGalleryImage() }
+
         // 맛집리스트를 추가할 수 있도록 설정된 food 정보를 FoodList Activity로 넘겨줌
         binding.saveBtn.setOnClickListener {
             insertFood.memo = binding.memoText.text.toString()
+            if (insertFood.visited == 0)
+                listMenuGrade.clear()
+            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
+            insertFood.imageUri = imageList
             insertFood.menu = menuList
             insertFood.menuGrade = listMenuGrade
             if (insertFood.name != "None" && insertFood.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("food", insertFood)
                     if (type == "edit") putExtra("type", 1)
-                    else putExtra("type", 0)
+                    else {
+                        putExtra("type", 0)
+                        putExtra("imageUri", imageUriList)
+                    }
                 }
                 setResult(RESULT_OK, intent)
                 finish()
@@ -217,6 +272,114 @@ class AddFoodList : AppCompatActivity() {
     fun receiveData(group:Group) {
         binding.groupName.text = group.name
         insertFood.groupId = group.id
+    }
+
+    private fun getCameraTakeImage() {
+        var cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        var storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        // 카메라 권한 확인
+        if (cameraPermission == PackageManager.PERMISSION_DENIED
+            || storagePermission == PackageManager.PERMISSION_DENIED) {
+            // 카메라 권한 요청
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE)
+        } else {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                if (takePictureIntent.resolveActivity(this.packageManager) != null) {
+                    // 촬영한 사진을 파일로 생성
+                    val photoFile: File = createImageFile()
+                    if (Build.VERSION.SDK_INT < 24) {
+                        val photoURI = Uri.fromFile(photoFile)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                    else{
+                        photoFile.also {
+                            val photoURI: Uri = FileProvider.getUriForFile(
+                                this, "com.example.wifood.fileprovider", it)
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getGalleryImage() {
+        var storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        // 갤러리 권한 확인
+        if (storagePermission == PackageManager.PERMISSION_DENIED) {
+            // 갤러리 권한 요청
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_IMAGE_CAPTURE)
+        } else {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_GALLERY_TAKE)
+        }
+    }
+
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            1 -> {
+                if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
+                    imageUriList.clear()
+                    imageList.clear()
+                    imageCnt = 0
+                    // 카메라로부터 받은 데이터가 있을경우에만
+                    val file = File(currentPhotoPath)
+                    binding.foodImage.setImageURI(Uri.fromFile(file))
+                    foodImageUri = Uri.fromFile(file)
+                    imageUriList.add(Uri.fromFile(file))
+                    imageCnt += 1
+                    imageList.add(imageCnt.toString())
+                    binding.foodImage.visibility = View.VISIBLE
+                }
+            }
+            2 -> {
+                if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_TAKE) {
+                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
+                    imageUriList.clear()
+                    imageList.clear()
+                    imageCnt = 0
+                    binding.foodImage.setImageURI(data?.data)
+                    foodImageUri = data?.data!!
+                    imageUriList.add(data.data!!)
+                    imageCnt += 1
+                    imageList.add(imageCnt.toString())
+                    binding.foodImage.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun downloadImage(idx: String, foodId: Int) {
+        val storage:FirebaseStorage = FirebaseStorage.getInstance()
+        val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
+        storageRef.downloadUrl.addOnCompleteListener {
+            if (it.isSuccessful) {
+                Glide.with(this@AddFoodList).load(it.result).into(binding.foodImage)
+                imageUriList.add(it.result)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

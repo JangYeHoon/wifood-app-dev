@@ -15,6 +15,7 @@ import com.example.wifood.entity.Group
 class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<GroupNameAdapter.FoodGroupViewHolder>() {
     private var groupList = mutableListOf<Group>()
     private var selectGroup = 0
+    private var groupPosition: Int = 0
 
     fun setListData(data:MutableList<Group>) {
         groupList = data
@@ -26,6 +27,21 @@ class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<Group
 
     fun setSelectGroup(groupId: Int) {
         selectGroup = groupId
+    }
+
+    fun getGroupPosition(): Int {
+        for (i in 0 until groupList.size) {
+            if (groupList[i].id == selectGroup)
+                groupPosition = i
+        }
+        return groupPosition
+    }
+
+    fun getGroupIdList() : MutableList<Int> {
+        var nameList = mutableListOf<Int>()
+        for (l in groupList)
+            nameList.add(l.id)
+        return nameList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {

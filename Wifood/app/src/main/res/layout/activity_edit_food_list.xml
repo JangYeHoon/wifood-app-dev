@@ -18,7 +18,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39">
+        app:layout_constraintVertical_bias="0.1">
+
+        <ImageView
+            android:id="@+id/foodImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:id="@id/groupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/foodName"
@@ -28,103 +41,104 @@
             android:text=""
             android:textColor="#000000"
             android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/foodAddress"
+            android:id="@+id/foodMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchName" />
+            android:text="" />
 
-        <TableRow>
+        <TableRow
+            android:id="@+id/foodGradeRow">
 
             <TextView
                 android:id="@+id/tasteText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="맛"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
+                android:textSize="16sp" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/tasteGrade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/cleanText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="청결"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
+                android:textSize="16sp" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/cleanGrade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/kindnessText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="친절"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchName" />
+                android:textSize="16sp" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/kindnessGrade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:textSize="16sp" />
         </TableRow>
-
-        <EditText
-            android:id="@+id/memoText"
-            android:layout_width="376dp"
-            android:layout_height="200dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/memo_border"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="Memo"
-            app:layout_constraintBottom_toTopOf="@+id/saveBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
     </TableLayout>
 
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="367dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="저장"
+    <TextView
+        android:id="@+id/foodAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+
+    <TextView
+        android:id="@+id/textMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="메뉴"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodAddress" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="376dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="953dp"
+        app:layout_constraintBottom_toTopOf="@+id/memoText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMenu"/>
+
+    <TextView
+        android:id="@+id/memoText"
+        android:layout_width="376dp"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/memo_border"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Memo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        app:layout_constraintVertical_bias="0.755" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
