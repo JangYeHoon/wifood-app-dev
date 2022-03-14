@@ -73,9 +73,6 @@ class EditGroup : AppCompatActivity() {
         binding.saveBtn.setOnClickListener {
             val title = binding.groupTitle.text.toString()
             val theme = binding.themeTitle.text.toString()
-            group.name = title
-            group.theme = theme
-            group.color = pinColor
             // when adding a group
             if (type == "ADD") {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
@@ -91,6 +88,9 @@ class EditGroup : AppCompatActivity() {
             // when editing a group
             } else {
                 if (title.isNotEmpty() && pinColor.isNotEmpty()) {
+                    group.name = title
+                    group.theme = theme
+                    group.color = pinColor
                     val intent = Intent().apply {
                         putExtra("group", group)
                         putExtra("type", 1)
