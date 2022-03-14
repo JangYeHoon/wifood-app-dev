@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
+import android.widget.ToggleButton
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.databinding.ActivityMapBinding
@@ -48,16 +49,18 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
 
     // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
-    lateinit var wishGroupViewModel: FoodGroupViewModel
-    lateinit var wishListViewModel: FoodListViewModel
+    lateinit var foodGroupViewModel: FoodGroupViewModel
+    lateinit var foodListViewModel: FoodListViewModel
     
-    var arrWishGroup = mutableListOf<Group>()   // WishGroup의 가변리스트
-    var arrWishList = mutableListOf<Food>()     // WishList의 가변리스트
+    var arrFoodGroup = mutableListOf<Group>()   // FoodGroup의 가변리스트
+    var arrFoodList = mutableListOf<Food>()     // FoodList의 가변리스트
 
     // Firebase 연결
+    /*
     private val db = Firebase.database;
     private val dbRootPath = "FoodGroup";
     private val dbRef = db.getReference(dbRootPath);
+    */
 
     // onCreate()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,11 +68,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //setContentView(R.layout.activity_map)
-
-        // Connect FireDatabase
-        //val db = Firebase.database;
-        //val dbRootPath = "kg_test_db";
-        //val dbRef = db.getReference(dbRootPath);
 
         val userEmail = intent.getStringExtra("UserEmail").toString()
         Toast.makeText(applicationContext, userEmail, Toast.LENGTH_LONG).show()
@@ -89,10 +87,10 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         navigationView.setNavigationItemSelectedListener(this)
         
         // WishGroup 데이터
-        wishGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
         // WishGroup 데이터 변동 감지
-        wishGroupViewModel.foodGroupList.observe(this) {
-            if (it != null) arrWishGroup = it   // Shallow Copy
+        foodGroupViewModel.foodGroupList.observe(this) {
+            if (it != null) arrFoodGroup = it   // Shallow Copy
         }
 
         // button event : go to map
@@ -116,11 +114,15 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
-        wishListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
+        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
         // WishList 데이터 변동 감지
-        wishListViewModel.foodList.observe(this) {
-            if (it != null) arrWishList = it    // Shallow Copy
+        foodListViewModel.foodList.observe(this) {
+            if (it != null) arrFoodList = it    // Shallow Copy
         }
+
+//        Toggle1.setOnClickListener {
+//            Toast.makeText(applicationContext, "토글토글", Toast.LENGTH_LONG).show()
+//        }
 
         // 지도 객체 생성
         val fm = supportFragmentManager // 다른 Fragment내에 배치할 경우 childFragmentManager로
@@ -179,17 +181,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
         }
 
+        // FoodGroup DB 연결 테스트
+        for (i in 0 until arrFoodGroup.size) {
+            Toast.makeText(applicationContext, arrFoodGroup[i].name, Toast.LENGTH_LONG).show()
+            //Toast.makeText(applicationContext, arrFoodGroup[i].id, Toast.LENGTH_LONG).show()
+        }
+
         // FireBase 데이터 읽기 후 Marker 표시
+        /*
         dbRef.addValueEventListener(object :ValueEventListener {
             // 데이터 변경 시
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.key.isNullOrEmpty())
                     return
 
-                // WishGroup의 모든 WishList 위, 경도 Marker 표시
-                for (i in 0 until arrWishGroup.size) {
-                    val wishGroupName: String = arrWishGroup[i].name
-                    val wishListData = snapshot.child(arrWishGroup[i].id.toString()).child("foodlist")
+                // FoodGroup의 모든 FoodList 위, 경도 Marker 표시
+                for (i in 0 until arrFoodGroup.size) {
+                    val wishGroupName: String = arrFoodGroup[i].name
+                    val wishListData = snapshot.child(arrFoodGroup[i].id.toString()).child("foodlist")
 
                     for (wish in wishListData.children) {
                         val wishName: String = wish.child("name").value as String
@@ -213,6 +222,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 println("loadItem:onCancelled : ${error.toException()}")
             }
         })
+        */
     }
 
     companion object {
@@ -260,7 +270,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 강직이형 User 메뉴 여기서 연결시키면 될 듯 합니다.
         when (item.itemId) {
             R.id.foodList -> Toast.makeText(this, "맛집리스트", Toast.LENGTH_SHORT).show()
-            R.id.wishList -> Toast.makeText(this, "위시리스트", Toast.LENGTH_SHORT).show()
             R.id.followers -> Toast.makeText(this, "팔로워", Toast.LENGTH_SHORT).show()
             R.id.userSettings -> Toast.makeText(this, "설정", Toast.LENGTH_SHORT).show()
             R.id.userLogout -> Toast.makeText(this, "로그아웃", Toast.LENGTH_SHORT).show()
