@@ -3,14 +3,57 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
-    android:layout_height = "match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <!-- 툴바(전체 layout에 Toolbar 연결) -->
 
-    <include layout="@layout/toolbar"/>
-
     <!-- 메인 view -->
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <android.widget.ToggleButton
+            android:id="@+id/toggle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textOn="All"
+            android:textOff="All"
+            android:background="@drawable/toggle_btn" />
+
+        <android.widget.ToggleButton
+            android:id="@+id/toggle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textOn="맛집"
+            android:textOff="맛집"
+            android:background="@drawable/toggle_btn" />
+
+        <android.widget.ToggleButton
+            android:id="@+id/toggle3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textOn="고래"
+            android:textOff="고래"
+            android:background="@drawable/toggle_btn" />
+
+        <android.widget.ToggleButton
+            android:id="@+id/toggle4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textOn="테스트"
+            android:textOff="테스트"
+            android:background="@drawable/toggle_btn" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
