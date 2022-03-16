@@ -106,7 +106,7 @@ class FoodList : AppCompatActivity() {
             override fun onClick(view: View, position: Int, item: Food) {
                 val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
                     putExtra("food", item)
-                    putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                    putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
                 }
                 startActivity(intent)
             }
@@ -127,7 +127,7 @@ class FoodList : AppCompatActivity() {
                         R.id.edit_menu -> {
                             val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
                                 putExtra("food", item)
-                                putExtra("groupName", groupListViewModel.getGroupName(groupId))
+                                putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
                                 putExtra("type", "edit")
                             }
                             requestActivity.launch(intent)

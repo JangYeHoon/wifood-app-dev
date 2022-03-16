@@ -215,21 +215,33 @@ class AddFoodList : AppCompatActivity() {
             insertFood.memo = binding.memoText.text.toString()
             if (insertFood.visited == 0)
                 listMenuGrade.clear()
-            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
+//            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
             insertFood.imageUri = imageList
             insertFood.menu = menuList
             insertFood.menuGrade = listMenuGrade
             if (insertFood.name != "None" && insertFood.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("food", insertFood)
-                    if (type == "edit") putExtra("type", 1)
+                    if (type == "edit") {
+                        putExtra("type", 1)
+                        putExtra("groupName", binding.groupName.text)
+                    }
                     else {
                         putExtra("type", 0)
                         putExtra("imageUri", imageUriList)
                     }
                 }
                 setResult(RESULT_OK, intent)
-                finish()
+                if (imageList.size > 0) {
+                    val storage = FirebaseStorage.getInstance().reference
+                    val uploadTask = storage.child(insertFood.id.toString() + "/").child("1.png")
+                        .putFile(imageUriList[0])
+                    uploadTask.addOnSuccessListener {
+                        finish()
+                    }
+                } else {
+                    finish()
+                }
             }
         }
     }
