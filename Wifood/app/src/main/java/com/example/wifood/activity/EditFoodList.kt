@@ -118,6 +118,8 @@ class EditFoodList : AppCompatActivity() {
             binding.tasteGrade.text = food.myTasteGrade.toString()
             binding.kindnessGrade.text = food.myKindnessGrade.toString()
             binding.cleanGrade.text = food.myCleanGrade.toString()
+            if (food.menuGrade.size <= 0)
+                binding.textMenu.visibility = View.GONE
         } else {
             binding.textMenu.visibility = View.GONE
             binding.recyclerView.visibility = View.GONE
