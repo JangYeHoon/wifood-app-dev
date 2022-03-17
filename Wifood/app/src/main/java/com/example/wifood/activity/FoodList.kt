@@ -49,9 +49,11 @@ class FoodList : AppCompatActivity() {
         // 데이터베이스 접근을 위한 food group id정보 받아옴
         groupId = intent.getIntExtra("groupId", 0)
 
+        // TODO "관련된 것들 한곳으로 모으기"
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         foodListAdapter = FoodListAdapter(this)
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
+
         binding.recyclerView.adapter = foodListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         setFoodListView()
@@ -66,6 +68,7 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView2.adapter = groupListAdapter
 
         groupListViewModel.foodGroupList.observe(this) {
+            // TODO "함수 만들어서 중복되는 부분 모으기
             updateGroupAdapterList()
             updateFoodAdapterList()
             binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)

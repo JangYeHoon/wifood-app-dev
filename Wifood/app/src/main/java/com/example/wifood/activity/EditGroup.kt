@@ -40,6 +40,7 @@ class EditGroup : AppCompatActivity() {
             group = intent.getParcelableExtra("group")!!
             binding.groupTitle.setText(group.name)
             binding.themeTitle.setText(group.theme)
+            // TODO "pin image size 변경 함수 작성
             for (i in pinArray) {
                 if (group.color == i.contentDescription.toString()) {
                     pinColor = group.color

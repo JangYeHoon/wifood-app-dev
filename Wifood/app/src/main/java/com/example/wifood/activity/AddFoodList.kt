@@ -71,6 +71,8 @@ class AddFoodList : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "맛집리스트 추가"
 
+        // TODO "같은 것 끼리 묶어서 볼 수 있게 변경
+
         imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
 
         // 맛, 청결, 친절에 대한 별점 리스너 설정
@@ -89,6 +91,7 @@ class AddFoodList : AppCompatActivity() {
             isVisited = onSwitch
             insertFood.visited = isVisited.toInt()
             if (onSwitch) {
+                // TODO "visibility 설정 함수로 수정"
                 binding.tableLayout2.visibility = View.VISIBLE
                 binding.menuTable.visibility = View.VISIBLE
                 binding.recyclerMenuGrade.visibility = View.VISIBLE
@@ -224,6 +227,7 @@ class AddFoodList : AppCompatActivity() {
                     putExtra("food", insertFood)
                     if (type == "edit") {
                         putExtra("type", 1)
+                        // TODO "food data class 변경해서 food에 group name 추가해서 food만 넘겨주게 변경"
                         putExtra("groupName", binding.groupName.text)
                     }
                     else {
@@ -272,6 +276,7 @@ class AddFoodList : AppCompatActivity() {
         }
     }
 
+    // TODO "매개변수로 menuList 값 받아와서 처리
     private fun updateMenuListAdapter() {
         adapterMenuName.setListData(menuList)
         adapterMenuName.notifyDataSetChanged()
@@ -358,6 +363,7 @@ class AddFoodList : AppCompatActivity() {
                     imageList.clear()
                     imageCnt = 0
                     // 카메라로부터 받은 데이터가 있을경우에만
+                    // TODO 동일한 부분 함수로 빼기
                     val file = File(currentPhotoPath)
                     binding.foodImage.setImageURI(Uri.fromFile(file))
                     foodImageUri = Uri.fromFile(file)

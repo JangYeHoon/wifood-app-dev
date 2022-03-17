@@ -20,6 +20,7 @@ class DeleteFoodList : AppCompatActivity() {
     lateinit var deleteFoodListAdapter: DeleteFoodListAdapter
     var selectedFoodList : SparseBooleanArray = SparseBooleanArray(0)   // 선택된 항목인지 체크할 리스트
     var deleteFoodList : ArrayList<Int> = ArrayList(0)      // 삭제할 맛집에 대한 id를 저장하는 리스트
+    // TODO "해당 Activity 삭제"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDeleteFoodListBinding.inflate(layoutInflater)

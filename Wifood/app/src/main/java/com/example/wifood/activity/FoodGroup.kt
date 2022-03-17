@@ -62,7 +62,7 @@ class FoodGroup : AppCompatActivity() {
 
         foodGroupAdapter.setOnStartDragListener(object: GroupAdapter.OnStartDragListener {
             override fun onStartDrag(viewHolder: GroupAdapter.FoodGroupViewHolder) {
-                 groupTouchHelper.startDrag(viewHolder)
+                groupTouchHelper.startDrag(viewHolder)
                 checkTouch = true
             }
         })
@@ -99,6 +99,7 @@ class FoodGroup : AppCompatActivity() {
         })
 
         // group go btn
+        // TODO "intent group data class 넘기기"
         foodGroupAdapter.setGroupGoClickListener(object: GroupAdapter.GroupGoClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 val intent = Intent(this@FoodGroup, FoodList::class.java).apply {
@@ -138,6 +139,7 @@ class FoodGroup : AppCompatActivity() {
             // type 0 : add, 1 : edit, 2 : delete
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
+                    // TODO "AddGroupActivity 에서 food를 생성해서 넘겨주는걸 받게 변경"
                     val maxId = foodGroupAdapter.getGroupIdList().maxOrNull() ?: 0
                     // create a group to add using the value received from EditFoodGroup Activity
                     val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,

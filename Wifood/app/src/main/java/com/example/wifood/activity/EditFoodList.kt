@@ -79,6 +79,7 @@ class EditFoodList : AppCompatActivity() {
                 finish()
             }
             R.id.edit_menu -> {
+                // TODO "food data class에 group name까지 넣어서 한번에 처리
                 val intent = Intent(this@EditFoodList, AddFoodList::class.java).apply {
                     putExtra("food", food)
                     putExtra("groupName", groupName)
@@ -92,6 +93,7 @@ class EditFoodList : AppCompatActivity() {
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
+            // TODO "food data class에 group name까지 넣어서 한번에 처리
             val editFood = it.data?.getParcelableExtra<Food>("food")
             val editGroupName = it.data?.getStringExtra("groupName")
             // type 0: add, 1: edit, 2: delete
@@ -125,6 +127,7 @@ class EditFoodList : AppCompatActivity() {
             binding.recyclerView.visibility = View.GONE
             binding.foodGradeRow.visibility = View.GONE
         }
+        // TODO "string join하는 방법 찾아서 처리하기"
         var s = ""
         for (i in 0 until food.menu.size) {
             s += food.menu[i].name

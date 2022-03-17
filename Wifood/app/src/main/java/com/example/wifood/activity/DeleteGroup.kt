@@ -16,7 +16,7 @@ class DeleteGroup : AppCompatActivity() {
     lateinit var binding : ActivityDeleteGroupBinding
     lateinit var deleteFoodGroupAdapter : DeleteFoodGroupAdapter
     var foodGroupList = mutableListOf<Group>()
-
+    // TODO "해당 Activity 삭제"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDeleteGroupBinding.inflate(layoutInflater)
