@@ -168,6 +168,9 @@ class FoodList : AppCompatActivity() {
             }
             groupId = food!!.groupId
             updateGroupAdapterList()
+            binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
+            binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+            binding.groupAll.setTextColor(Color.BLACK)
         }
     }
 

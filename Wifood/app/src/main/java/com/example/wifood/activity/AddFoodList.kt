@@ -232,6 +232,7 @@ class AddFoodList : AppCompatActivity() {
                     }
                 }
                 setResult(RESULT_OK, intent)
+                // TODO "ViewModel로 수정"
                 if (imageList.size > 0) {
                     val storage = FirebaseStorage.getInstance().reference
                     val uploadTask = storage.child(insertFood.id.toString() + "/").child("1.png")
