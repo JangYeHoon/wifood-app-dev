@@ -8,13 +8,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
-import com.example.wifood.adapter.DeleteFoodGroupAdapter
+import com.example.wifood.adapter.DeleteGroupAdapter
 import com.example.wifood.databinding.ActivityDeleteGroupBinding
 import com.example.wifood.entity.Group
 
 class DeleteGroup : AppCompatActivity() {
     lateinit var binding : ActivityDeleteGroupBinding
-    lateinit var deleteFoodGroupAdapter : DeleteFoodGroupAdapter
+    lateinit var deleteGroupAdapter : DeleteGroupAdapter
     var foodGroupList = mutableListOf<Group>()
     // TODO "해당 Activity 삭제"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,16 +38,16 @@ class DeleteGroup : AppCompatActivity() {
             foodGroupList.add(Group(idList!![i], nameList[i], colorList!![i], "", 0))
 
         // 삭제할 foodGroup을 선택할 수 있도록 foodgrouplist에 대한 recyclerView 설정
-        deleteFoodGroupAdapter = DeleteFoodGroupAdapter(this)
+        deleteGroupAdapter = DeleteGroupAdapter(this)
         binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.deleteRecyclerView.adapter = deleteFoodGroupAdapter
+        binding.deleteRecyclerView.adapter = deleteGroupAdapter
         binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
-        deleteFoodGroupAdapter.setListData(foodGroupList)
+        deleteGroupAdapter.setListData(foodGroupList)
 
         // 선택된 삭제할 foodGroup들에 대한 id를 FoodGroupActivity로 넘겨줌
         binding.deleteBtn.setOnClickListener {
             val intent = Intent().apply {
-                putExtra("id", ArrayList(deleteFoodGroupAdapter.getDeleteFoodIdList()))
+                putExtra("id", ArrayList(deleteGroupAdapter.getDeleteFoodIdList()))
                 putExtra("type", 2)
             }
             setResult(RESULT_OK, intent)

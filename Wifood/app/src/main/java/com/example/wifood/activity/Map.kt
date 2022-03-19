@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
 import androidx.annotation.UiThread
 import com.example.wifood.R
 
@@ -102,7 +101,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // button event : go to my list
         btnGoMyList.setOnClickListener {
-            val intent = Intent(this, FoodGroup::class.java)
+            val intent = Intent(this, GroupList::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }

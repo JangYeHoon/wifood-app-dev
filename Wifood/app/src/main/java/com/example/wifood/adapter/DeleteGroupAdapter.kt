@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Group
 
-class DeleteFoodGroupAdapter(private val context: Context): RecyclerView.Adapter<DeleteFoodGroupAdapter.DeleteFoodGroupViewHolder>() {
+class DeleteGroupAdapter(private val context: Context): RecyclerView.Adapter<DeleteGroupAdapter.DeleteFoodGroupViewHolder>() {
     private var foodGroupList = mutableListOf<Group>()
     private var deleteFoodIdList = mutableListOf<Int>()     // 삭제할 food Id 저장하는 리스트
     fun setListData(data:MutableList<Group>) {
@@ -23,12 +23,12 @@ class DeleteFoodGroupAdapter(private val context: Context): RecyclerView.Adapter
         return deleteFoodIdList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteFoodGroupAdapter.DeleteFoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteGroupAdapter.DeleteFoodGroupViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.food_group_delete, parent, false)
         return DeleteFoodGroupViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: DeleteFoodGroupAdapter.DeleteFoodGroupViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DeleteGroupAdapter.DeleteFoodGroupViewHolder, position: Int) {
         val foodGroup : Group = foodGroupList[position]
         holder.group_name.text = foodGroup.name
         holder.group_pin.setColorFilter(Color.parseColor(foodGroup.color))

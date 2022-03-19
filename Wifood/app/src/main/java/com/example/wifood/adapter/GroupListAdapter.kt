@@ -15,7 +15,7 @@ import com.example.wifood.R
 import com.example.wifood.entity.Group
 import java.util.*
 
-class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdapter.FoodGroupViewHolder>(), GroupItemTouchHelperCallback.OnItemMoveListener {
+class GroupListAdapter(private val context: Context): RecyclerView.Adapter<GroupListAdapter.FoodGroupViewHolder>(), GroupItemTouchHelperCallback.OnItemMoveListener {
     private var groupList = mutableListOf<Group>()
 
     fun setListData(data:MutableList<Group>) {
@@ -59,7 +59,7 @@ class GroupAdapter(private val context: Context): RecyclerView.Adapter<GroupAdap
         return FoodGroupViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: GroupAdapter.FoodGroupViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupListAdapter.FoodGroupViewHolder, position: Int) {
         val foodGroup : Group = groupList[position]
         holder.group_name.text = foodGroup.name
         val t = "#" + foodGroup.theme
