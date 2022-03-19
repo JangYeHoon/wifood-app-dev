@@ -8,13 +8,13 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import kotlin.math.round
 
 class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
-    private var foodList = mutableListOf<Food>()
+    private var foodList = mutableListOf<Place>()
 
-    fun setFoodListData(data:MutableList<Food>) {
+    fun setFoodListData(data:MutableList<Place>) {
         foodList = data
     }
 
@@ -23,27 +23,27 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.food_list, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.place_list, parent, false)
         return FoodListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: FoodListViewHolder, position: Int) {
-        val food: Food = foodList[position]
-        holder.foodName.text = food.name
-        holder.foodAddress.text = food.address
-        holder.foodMemo.text = food.memo
-        if (food.visited == 1) {
-            var gradeScore = (food.myTasteGrade + food.myCleanGrade + food.myKindnessGrade) / 3
+        val place: Place = foodList[position]
+        holder.foodName.text = place.name
+        holder.foodAddress.text = place.address
+        holder.foodMemo.text = place.memo
+        if (place.visited == 1) {
+            var gradeScore = (place.myTasteGrade + place.myCleanGrade + place.myKindnessGrade) / 3
             var grade = "${round(gradeScore * 10) / 10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
             holder.myGrade.text = grade
         } else {
             holder.myGrade.visibility = View.INVISIBLE
         }
         holder.itemView.setOnClickListener {
-            foodListClickListener.onClick(it, position, food)
+            foodListClickListener.onClick(it, position, place)
         }
         holder.popupMenu.setOnClickListener {
-            popupClickListener.onClick(it, position, food)
+            popupClickListener.onClick(it, position, place)
         }
     }
 
@@ -60,7 +60,7 @@ class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodLi
     }
 
     interface FoodListClickListener {
-        fun onClick(view: View, position: Int, item: Food)
+        fun onClick(view: View, position: Int, item: Place)
     }
 
     private lateinit var popupClickListener: FoodListClickListener

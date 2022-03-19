@@ -5,7 +5,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Food(
+data class Place(
     var id:Int = 0, var name:String = "None",
     var memo:String = "None", var address:String = "None",
     var latitude:Double = 0.0, var longitude:Double = 0.0,

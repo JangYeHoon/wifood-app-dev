@@ -17,7 +17,7 @@ import com.example.wifood.adapter.GroupListAdapter
 import com.example.wifood.adapter.GroupItemTouchHelperCallback
 import com.example.wifood.databinding.ActivityGroupListBinding
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.FoodGroupViewModel
+import com.example.wifood.viewmodel.GroupViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class GroupList : AppCompatActivity() {
     lateinit var binding : ActivityGroupListBinding
     private lateinit var foodGroupListAdapter: GroupListAdapter
-    lateinit var foodGroupViewModel : FoodGroupViewModel
+    lateinit var groupViewModel : GroupViewModel
     var checkTouch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +41,14 @@ class GroupList : AppCompatActivity() {
         supportActionBar?.title = "맛집 그룹"
 
         // Connecting RecyclerView and Adapter
-        foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         foodGroupListAdapter = GroupListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = foodGroupListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
 
         // Automatically change bindings when data changes
-        foodGroupViewModel.foodGroupList.observe(this) {
+        groupViewModel.foodGroupList.observe(this) {
             if (it != null) foodGroupListAdapter.setListData(it)
             else foodGroupListAdapter.setListDataClear()
             foodGroupListAdapter.notifyDataSetChanged()
@@ -101,7 +101,7 @@ class GroupList : AppCompatActivity() {
         // TODO "intent group data class 넘기기"
         foodGroupListAdapter.setGroupGoClickListener(object: GroupListAdapter.GroupGoClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
-                val intent = Intent(this@GroupList, FoodList::class.java).apply {
+                val intent = Intent(this@GroupList, PlaceList::class.java).apply {
                     putExtra("groupName", group.name)
                     putExtra("groupId", group.id)
                 }
@@ -114,7 +114,7 @@ class GroupList : AppCompatActivity() {
         when(ev!!.action) {
             MotionEvent.ACTION_UP -> {
                 if (checkTouch) {
-                    foodGroupViewModel.setGroupOrder(foodGroupListAdapter.getListData())
+                    groupViewModel.setGroupOrder(foodGroupListAdapter.getListData())
                     checkTouch = false
                 }
             }
@@ -145,7 +145,7 @@ class GroupList : AppCompatActivity() {
                         it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String,
                         maxId + 1)
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodGroupViewModel.groupInsert(group)
+                        groupViewModel.groupInsert(group)
                     }
                 }
                 1 -> {
@@ -154,7 +154,7 @@ class GroupList : AppCompatActivity() {
 //                    val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
 //                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodGroupViewModel.updateGroup(group!!)
+                        groupViewModel.updateGroup(group!!)
                     }
                 }
                 2 -> {
@@ -162,7 +162,7 @@ class GroupList : AppCompatActivity() {
                     val groupId = it.data?.getIntegerArrayListExtra("id")
                     CoroutineScope(Dispatchers.IO).launch {
                         if (groupId != null)
-                            foodGroupViewModel.groupDelete(groupId)
+                            groupViewModel.groupDelete(groupId)
                     }
                 }
             }

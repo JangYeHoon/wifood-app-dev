@@ -3,12 +3,11 @@ package com.example.wifood.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.GroupDto
-import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 
 // Independent of the lifecycle of the activity.
 // Data retention and sharing
-class FoodGroupViewModel :ViewModel() {
+class GroupViewModel :ViewModel() {
     var foodGroupList : LiveData<MutableList<Group>>
     private val foodGroupDto : GroupDto = GroupDto("food")
 

@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 
-class DeleteFoodListAdapter(private val context: Context) : RecyclerView.Adapter<DeleteFoodListAdapter.DeleteFoodListViewHolder>() {
-    private var foodList = mutableListOf<Food>()
+class DeletePlaceAdapter(private val context: Context) : RecyclerView.Adapter<DeletePlaceAdapter.DeleteFoodListViewHolder>() {
+    private var foodList = mutableListOf<Place>()
 
-    fun setListData(data: MutableList<Food>) {
+    fun setListData(data: MutableList<Place>) {
         foodList = data
     }
 
@@ -22,12 +22,12 @@ class DeleteFoodListAdapter(private val context: Context) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: DeleteFoodListViewHolder, position: Int) {
-        val food : Food = foodList[position]
-        holder.foodName.text = food.name
-        holder.foodAddress.text = food.address
-        holder.foodMemo.text = food.memo
+        val place : Place = foodList[position]
+        holder.foodName.text = place.name
+        holder.foodAddress.text = place.address
+        holder.foodMemo.text = place.memo
         holder.itemView.setOnClickListener {
-            deleteFoodListClickListener.onClick(it, position, food)
+            deleteFoodListClickListener.onClick(it, position, place)
         }
     }
 
@@ -42,7 +42,7 @@ class DeleteFoodListAdapter(private val context: Context) : RecyclerView.Adapter
     }
 
     interface DeleteFoodListClickListener {
-        fun onClick(view: View, position: Int, item: Food)
+        fun onClick(view: View, position: Int, item: Place)
     }
 
     private lateinit var deleteFoodListClickListener: DeleteFoodListClickListener

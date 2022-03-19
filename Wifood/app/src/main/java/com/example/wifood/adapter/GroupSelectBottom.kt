@@ -1,27 +1,22 @@
 package com.example.wifood.adapter
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.activity.AddFoodList
+import com.example.wifood.activity.AddPlace
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.FoodGroupViewModel
+import com.example.wifood.viewmodel.GroupViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class GroupSelectBottom : BottomSheetDialogFragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var foodGroupAdapter: GroupSelectAdapter
-    val foodGroupViewModel: FoodGroupViewModel by viewModels()
+    val groupViewModel: GroupViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,7 +27,7 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
         recyclerView = rootView.findViewById(R.id.groupRecycler) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = foodGroupAdapter
-        foodGroupViewModel.foodGroupList.observe(viewLifecycleOwner) {
+        groupViewModel.foodGroupList.observe(viewLifecycleOwner) {
             if (it != null) foodGroupAdapter.setListData(it)
             else foodGroupAdapter.setListDataClear()
             foodGroupAdapter.notifyDataSetChanged()
@@ -40,7 +35,7 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
 
         foodGroupAdapter.setGroupClickListener(object: GroupSelectAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
-                val addFood = activity as AddFoodList
+                val addFood = activity as AddPlace
                 addFood.receiveData(group)
                 dismiss()
             }

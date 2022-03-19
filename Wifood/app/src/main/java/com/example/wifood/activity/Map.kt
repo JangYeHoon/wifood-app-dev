@@ -16,10 +16,10 @@ import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.databinding.ActivityMapBinding
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.FoodGroupViewModel
-import com.example.wifood.viewmodel.FoodListViewModel
+import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -47,11 +47,11 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
 
     // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
-    lateinit var wishGroupViewModel: FoodGroupViewModel
-    lateinit var wishListViewModel: FoodListViewModel
+    lateinit var wishGroupViewModel: GroupViewModel
+    lateinit var wishListViewModel: PlaceViewModel
     
     var arrWishGroup = mutableListOf<Group>()   // WishGroup의 가변리스트
-    var arrWishList = mutableListOf<Food>()     // WishList의 가변리스트
+    var arrWishList = mutableListOf<Place>()     // WishList의 가변리스트
 
     // Firebase 연결
     private val db = Firebase.database;
@@ -88,7 +88,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         navigationView.setNavigationItemSelectedListener(this)
         
         // WishGroup 데이터
-        wishGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        wishGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         // WishGroup 데이터 변동 감지
         wishGroupViewModel.foodGroupList.observe(this) {
             if (it != null) arrWishGroup = it   // Shallow Copy
@@ -115,9 +115,9 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // WishList 데이터
         val groupId = intent.getIntExtra("groupId", 0)
-        wishListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
+        wishListViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
         // WishList 데이터 변동 감지
-        wishListViewModel.foodList.observe(this) {
+        wishListViewModel.placeList.observe(this) {
             if (it != null) arrWishList = it    // Shallow Copy
         }
 

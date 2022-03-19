@@ -11,13 +11,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
-import com.example.wifood.adapter.DeleteFoodListAdapter
+import com.example.wifood.adapter.DeletePlaceAdapter
 import com.example.wifood.databinding.ActivityDeleteFoodListBinding
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 
 class DeleteFoodList : AppCompatActivity() {
     lateinit var binding : ActivityDeleteFoodListBinding
-    lateinit var deleteFoodListAdapter: DeleteFoodListAdapter
+    lateinit var deletePlaceAdapter: DeletePlaceAdapter
     var selectedFoodList : SparseBooleanArray = SparseBooleanArray(0)   // 선택된 항목인지 체크할 리스트
     var deleteFoodList : ArrayList<Int> = ArrayList(0)      // 삭제할 맛집에 대한 id를 저장하는 리스트
     // TODO "해당 Activity 삭제"
@@ -34,12 +34,12 @@ class DeleteFoodList : AppCompatActivity() {
         supportActionBar?.title = "맛집리스트 삭제"
 
         // 삭제할 맛집을 선택할 수 있도록 foodlist를 받아와서 해당 foodlist를 이용해 recyclerview에 뿌려줌
-        var foodlist = intent.getParcelableArrayListExtra<Food>("foodlist")
-        deleteFoodListAdapter = DeleteFoodListAdapter(this)
+        var foodlist = intent.getParcelableArrayListExtra<Place>("foodlist")
+        deletePlaceAdapter = DeletePlaceAdapter(this)
         binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.deleteRecyclerView.adapter = deleteFoodListAdapter
+        binding.deleteRecyclerView.adapter = deletePlaceAdapter
         binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
-        deleteFoodListAdapter.setListData(foodlist!!)
+        deletePlaceAdapter.setListData(foodlist!!)
 
         // 삭제버튼을 누르면 선택된 맛집에 대한 id list를 FoodListActivity로 넘겨줌
         binding.deleteBtn.setOnClickListener {
@@ -54,8 +54,8 @@ class DeleteFoodList : AppCompatActivity() {
         }
 
         // foodlist에서 클릭이 되었는지 체크하는 함수
-        deleteFoodListAdapter.setDeleteFoodListClickListener(object: DeleteFoodListAdapter.DeleteFoodListClickListener {
-            override fun onClick(view: View, position: Int, item: Food) {
+        deletePlaceAdapter.setDeleteFoodListClickListener(object: DeletePlaceAdapter.DeleteFoodListClickListener {
+            override fun onClick(view: View, position: Int, item: Place) {
                 // 선택된 맛집이 기존에 선택되어 있던 맛집이면 삭제리스트에서 제외
                 if (selectedFoodList.get(position, false)) {
                     selectedFoodList.delete(position)

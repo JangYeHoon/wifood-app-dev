@@ -8,9 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Food
 import com.example.wifood.entity.MenuGrade
-import kotlin.math.round
 
 class MenuGradeInfoAdapter(private val context: Context): RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {
     private var listMenuGrade = mutableListOf<MenuGrade>()

@@ -3,7 +3,6 @@ package com.example.wifood.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,21 +14,20 @@ import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityEditFoodListBinding
-import com.example.wifood.entity.Food
-import com.example.wifood.viewmodel.FoodListViewModel
-import com.example.wifood.viewmodel.ImageStoreViewModel
+import com.example.wifood.entity.Place
+import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.Map
 
-class EditFoodList : AppCompatActivity() {
+class PlaceInfo : AppCompatActivity() {
     lateinit var binding : ActivityEditFoodListBinding
     lateinit var adapterMenuGradeInfo : MenuGradeInfoAdapter
-    lateinit var food: Food
+    lateinit var place: Place
     lateinit var groupName: String
-    lateinit var foodListViewModel: FoodListViewModel
+    lateinit var placeViewModel: PlaceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +40,10 @@ class EditFoodList : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
-        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
 
         // 수정할 맛집에 대한 정보를 받아와 view 설정
-        food = intent.getParcelableExtra<Food>("food")!!
+        place = intent.getParcelableExtra<Place>("food")!!
         groupName = intent.getStringExtra("groupName")!!
         setActivityViewValue()
     }
@@ -55,13 +53,13 @@ class EditFoodList : AppCompatActivity() {
         val storageRef:StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
-                Glide.with(this@EditFoodList).load(it.result).into(binding.foodImage)
+                Glide.with(this@PlaceInfo).load(it.result).into(binding.foodImage)
             }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.popup_food, menu)
+        menuInflater.inflate(R.menu.popup_place_menu, menu)
         return true
     }
 
@@ -74,14 +72,14 @@ class EditFoodList : AppCompatActivity() {
             }
             R.id.delete_menu -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    foodListViewModel.deleteFood(food.id)
+                    placeViewModel.deleteFood(place.id)
                 }
                 finish()
             }
             R.id.edit_menu -> {
                 // TODO "food data class에 group name까지 넣어서 한번에 처리
-                val intent = Intent(this@EditFoodList, AddFoodList::class.java).apply {
-                    putExtra("food", food)
+                val intent = Intent(this@PlaceInfo, AddPlace::class.java).apply {
+                    putExtra("food", place)
                     putExtra("groupName", groupName)
                     putExtra("type", "edit")
                 }
@@ -94,16 +92,16 @@ class EditFoodList : AppCompatActivity() {
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
             // TODO "food data class에 group name까지 넣어서 한번에 처리
-            val editFood = it.data?.getParcelableExtra<Food>("food")
+            val editFood = it.data?.getParcelableExtra<Place>("food")
             val editGroupName = it.data?.getStringExtra("groupName")
             // type 0: add, 1: edit, 2: delete
             when(it.data?.getIntExtra("type", -1)) {
                 1 -> {
                     // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.updateFoodList(editFood!!)
+                        placeViewModel.updateFoodList(editFood!!)
                     }
-                    food = editFood!!
+                    place = editFood!!
                     groupName = editGroupName!!
                     setActivityViewValue()
                 }
@@ -113,14 +111,14 @@ class EditFoodList : AppCompatActivity() {
 
     private fun setActivityViewValue() {
         binding.groupName.text = groupName
-        binding.foodName.text = food!!.name
-        binding.foodAddress.text = food.address
-        binding.memoText.text = food.memo
-        if (food.visited == 1) {
-            binding.tasteGrade.text = food.myTasteGrade.toString()
-            binding.kindnessGrade.text = food.myKindnessGrade.toString()
-            binding.cleanGrade.text = food.myCleanGrade.toString()
-            if (food.menuGrade.size <= 0)
+        binding.foodName.text = place!!.name
+        binding.foodAddress.text = place.address
+        binding.memoText.text = place.memo
+        if (place.visited == 1) {
+            binding.tasteGrade.text = place.myTasteGrade.toString()
+            binding.kindnessGrade.text = place.myKindnessGrade.toString()
+            binding.cleanGrade.text = place.myCleanGrade.toString()
+            if (place.menuGrade.size <= 0)
                 binding.textMenu.visibility = View.GONE
         } else {
             binding.textMenu.visibility = View.GONE
@@ -129,9 +127,9 @@ class EditFoodList : AppCompatActivity() {
         }
         // TODO "string join하는 방법 찾아서 처리하기"
         var s = ""
-        for (i in 0 until food.menu.size) {
-            s += food.menu[i].name
-            if (i != food.menu.size - 1)
+        for (i in 0 until place.menu.size) {
+            s += place.menu[i].name
+            if (i != place.menu.size - 1)
                 s += ","
         }
         binding.foodMenu.text = s
@@ -139,17 +137,17 @@ class EditFoodList : AppCompatActivity() {
         adapterMenuGradeInfo = MenuGradeInfoAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapterMenuGradeInfo
-        adapterMenuGradeInfo.setMenuGradeListData(food.menuGrade)
+        adapterMenuGradeInfo.setMenuGradeListData(place.menuGrade)
         adapterMenuGradeInfo.notifyDataSetChanged()
 
         binding.foodAddress.setOnClickListener {
-            val intent = Intent(this@EditFoodList, Map::class.java)
-            intent.putExtra("latitude", food.latitude)
-            intent.putExtra("longitude", food.longitude)
+            val intent = Intent(this@PlaceInfo, Map::class.java)
+            intent.putExtra("latitude", place.latitude)
+            intent.putExtra("longitude", place.longitude)
             startActivity(intent)
         }
 
-        if (food.imageUri.size > 0)
-            downloadImage(food.imageUri[0], food.id)
+        if (place.imageUri.size > 0)
+            downloadImage(place.imageUri[0], place.id)
     }
 }

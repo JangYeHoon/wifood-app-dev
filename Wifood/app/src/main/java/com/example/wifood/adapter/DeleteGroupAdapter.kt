@@ -24,7 +24,7 @@ class DeleteGroupAdapter(private val context: Context): RecyclerView.Adapter<Del
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteGroupAdapter.DeleteFoodGroupViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.food_group_delete, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.group_delete, parent, false)
         return DeleteFoodGroupViewHolder(view)
     }
 

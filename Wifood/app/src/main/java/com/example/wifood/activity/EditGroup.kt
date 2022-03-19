@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditGroupBinding
-import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 
 class EditGroup : AppCompatActivity() {

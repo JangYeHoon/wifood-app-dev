@@ -18,20 +18,20 @@ import com.example.wifood.R
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityFoodListBinding
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.FoodGroupViewModel
-import com.example.wifood.viewmodel.FoodListViewModel
+import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FoodList : AppCompatActivity() {
+class PlaceList : AppCompatActivity() {
     lateinit var binding : ActivityFoodListBinding
     private lateinit var foodListAdapter: FoodListAdapter
-    lateinit var foodListViewModel: FoodListViewModel
+    lateinit var placeViewModel: PlaceViewModel
     private lateinit var groupListAdapter: GroupNameAdapter
-    lateinit var groupListViewModel: FoodGroupViewModel
+    lateinit var groupListViewModel: GroupViewModel
     var groupId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +58,7 @@ class FoodList : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         setFoodListView()
 
-        groupListViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        groupListViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListAdapter = GroupNameAdapter(this)
         binding.recyclerView2.layoutManager = LinearLayoutManager(this).also {
             it.orientation = HORIZONTAL
@@ -71,7 +71,7 @@ class FoodList : AppCompatActivity() {
             // TODO "함수 만들어서 중복되는 부분 모으기
             updateGroupAdapterList()
             updateFoodAdapterList()
-            binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+            binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
             binding.groupAll.setTextColor(Color.BLACK)
             binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
@@ -81,13 +81,13 @@ class FoodList : AppCompatActivity() {
                 groupId = group.id
                 updateGroupAdapterList()
                 updateFoodAdapterList()
-                binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+                binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
                 binding.groupAll.setTextColor(Color.BLACK)
             }
         })
 
         binding.groupAddButton.setOnClickListener {
-            val intent = Intent(this@FoodList, EditGroup::class.java).apply {
+            val intent = Intent(this@PlaceList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
             requestGroupActivity.launch(intent)
@@ -95,10 +95,10 @@ class FoodList : AppCompatActivity() {
 
         // foodlist add btn
         binding.foodListAddButton.setOnClickListener {
-            val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
+            val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListViewModel.getGroupName(groupId))
-                val foodId = foodListViewModel.getFoodListMaxId() + 1
+                val foodId = placeViewModel.getFoodListMaxId() + 1
                 putExtra("foodId", foodId)
                 putExtra("type", "add")
             }
@@ -106,8 +106,8 @@ class FoodList : AppCompatActivity() {
         }
 
         foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
-            override fun onClick(view: View, position: Int, item: Food) {
-                val intent = Intent(this@FoodList, EditFoodList::class.java).apply {
+            override fun onClick(view: View, position: Int, item: Place) {
+                val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
                     putExtra("food", item)
                     putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
                 }
@@ -116,19 +116,19 @@ class FoodList : AppCompatActivity() {
         })
 
         foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
-            override fun onClick(view: View, position: Int, item: Food) {
-                val popupMenu = PopupMenu(this@FoodList, view)
-                popupMenu.menuInflater.inflate(R.menu.popup_food, popupMenu.menu)
+            override fun onClick(view: View, position: Int, item: Place) {
+                val popupMenu = PopupMenu(this@PlaceList, view)
+                popupMenu.menuInflater.inflate(R.menu.popup_place_menu, popupMenu.menu)
                 popupMenu.show()
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.delete_menu -> {
                             CoroutineScope(Dispatchers.IO).launch {
-                                foodListViewModel.deleteFood(item.id)
+                                placeViewModel.deleteFood(item.id)
                             }
                         }
                         R.id.edit_menu -> {
-                            val intent = Intent(this@FoodList, AddFoodList::class.java).apply {
+                            val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                                 putExtra("food", item)
                                 putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
                                 putExtra("type", "edit")
@@ -153,26 +153,26 @@ class FoodList : AppCompatActivity() {
 
     private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
-            val food = it.data?.getParcelableExtra<Food>("food")
+            val food = it.data?.getParcelableExtra<Place>("food")
             // type 0: add, 1: edit, 2: delete
             when(it.data?.getIntExtra("type", -1)) {
                 0 -> {
                     // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.insertFoodList(food!!)
+                        placeViewModel.insertFoodList(food!!)
                     }
                 }
                 1 -> {
                     // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
                     CoroutineScope(Dispatchers.IO).launch {
-                        foodListViewModel.updateFoodList(food!!)
+                        placeViewModel.updateFoodList(food!!)
                     }
                 }
             }
             groupId = food!!.groupId
             updateGroupAdapterList()
             binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
-            binding.groupAll.background = ContextCompat.getDrawable(this@FoodList, R.drawable.bg_rounding_box)
+            binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
             binding.groupAll.setTextColor(Color.BLACK)
         }
     }
@@ -197,14 +197,14 @@ class FoodList : AppCompatActivity() {
     }
 
     private fun setFoodListView() {
-        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
-        foodListViewModel.foodList.observe(this) {
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+        placeViewModel.placeList.observe(this) {
             updateFoodAdapterList()
         }
     }
 
     private fun updateFoodAdapterList() {
-        foodListAdapter.setFoodListData(foodListViewModel.getFoodList(groupId))
+        foodListAdapter.setFoodListData(placeViewModel.getFoodList(groupId))
         foodListAdapter.notifyDataSetChanged()
         setEmptyRecyclerView()
     }
