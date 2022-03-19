@@ -11,7 +11,7 @@ import com.example.wifood.R
 import com.example.wifood.entity.Place
 import kotlin.math.round
 
-class FoodListAdapter(private val context: Context): RecyclerView.Adapter<FoodListAdapter.FoodListViewHolder>() {
+class PlaceListAdapter(private val context: Context): RecyclerView.Adapter<PlaceListAdapter.FoodListViewHolder>() {
     private var foodList = mutableListOf<Place>()
 
     fun setFoodListData(data:MutableList<Place>) {

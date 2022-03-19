@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.*
-import com.example.wifood.databinding.ActivityAddFoodListBinding
+import com.example.wifood.databinding.ActivityAddPlaceBinding
 import com.example.wifood.entity.*
 import com.example.wifood.viewmodel.ImageStoreViewModel
 import com.google.firebase.storage.FirebaseStorage
@@ -36,7 +36,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AddPlace : AppCompatActivity() {
-    lateinit var binding : ActivityAddFoodListBinding
+    lateinit var binding : ActivityAddPlaceBinding
     lateinit var searchResult: Search
     lateinit var adapterMenuName: MenuNameAdapter
     lateinit var adapterMenuGrade: MenuGradeAdapter
@@ -59,7 +59,7 @@ class AddPlace : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddFoodListBinding.inflate(layoutInflater)
+        binding = ActivityAddPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정

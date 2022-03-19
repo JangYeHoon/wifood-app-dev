@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
-import com.example.wifood.databinding.ActivityEditFoodListBinding
+import com.example.wifood.databinding.ActivityPlaceInfoBinding
 import com.example.wifood.entity.Place
 import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
@@ -23,7 +23,7 @@ import java.util.*
 import kotlin.collections.Map
 
 class PlaceInfo : AppCompatActivity() {
-    lateinit var binding : ActivityEditFoodListBinding
+    lateinit var binding : ActivityPlaceInfoBinding
     lateinit var adapterMenuGradeInfo : MenuGradeInfoAdapter
     lateinit var place: Place
     lateinit var groupName: String
@@ -31,7 +31,7 @@ class PlaceInfo : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditFoodListBinding.inflate(layoutInflater)
+        binding = ActivityPlaceInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정

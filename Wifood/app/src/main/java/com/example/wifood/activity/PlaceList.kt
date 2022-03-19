@@ -15,9 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.example.wifood.R
-import com.example.wifood.adapter.FoodListAdapter
+import com.example.wifood.adapter.PlaceListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
-import com.example.wifood.databinding.ActivityFoodListBinding
+import com.example.wifood.databinding.ActivityPlaceListBinding
 import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.GroupViewModel
@@ -27,8 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlaceList : AppCompatActivity() {
-    lateinit var binding : ActivityFoodListBinding
-    private lateinit var foodListAdapter: FoodListAdapter
+    lateinit var binding : ActivityPlaceListBinding
+    private lateinit var placeListAdapter: PlaceListAdapter
     lateinit var placeViewModel: PlaceViewModel
     private lateinit var groupListAdapter: GroupNameAdapter
     lateinit var groupListViewModel: GroupViewModel
@@ -36,7 +36,7 @@ class PlaceList : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFoodListBinding.inflate(layoutInflater)
+        binding = ActivityPlaceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 툴바 설정
@@ -51,10 +51,10 @@ class PlaceList : AppCompatActivity() {
 
         // TODO "관련된 것들 한곳으로 모으기"
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
-        foodListAdapter = FoodListAdapter(this)
+        placeListAdapter = PlaceListAdapter(this)
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        binding.recyclerView.adapter = foodListAdapter
+        binding.recyclerView.adapter = placeListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         setFoodListView()
 
@@ -105,7 +105,7 @@ class PlaceList : AppCompatActivity() {
             requestActivity.launch(intent)
         }
 
-        foodListAdapter.setFoodListClickListener(object: FoodListAdapter.FoodListClickListener{
+        placeListAdapter.setFoodListClickListener(object: PlaceListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Place) {
                 val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
                     putExtra("food", item)
@@ -115,7 +115,7 @@ class PlaceList : AppCompatActivity() {
             }
         })
 
-        foodListAdapter.setPopupButtonClickListener(object: FoodListAdapter.FoodListClickListener{
+        placeListAdapter.setPopupButtonClickListener(object: PlaceListAdapter.FoodListClickListener{
             override fun onClick(view: View, position: Int, item: Place) {
                 val popupMenu = PopupMenu(this@PlaceList, view)
                 popupMenu.menuInflater.inflate(R.menu.popup_place_menu, popupMenu.menu)
@@ -204,8 +204,8 @@ class PlaceList : AppCompatActivity() {
     }
 
     private fun updateFoodAdapterList() {
-        foodListAdapter.setFoodListData(placeViewModel.getFoodList(groupId))
-        foodListAdapter.notifyDataSetChanged()
+        placeListAdapter.setFoodListData(placeViewModel.getFoodList(groupId))
+        placeListAdapter.notifyDataSetChanged()
         setEmptyRecyclerView()
     }
 
@@ -230,7 +230,7 @@ class PlaceList : AppCompatActivity() {
     }
 
     private fun setEmptyRecyclerView() {
-        if (foodListAdapter.itemCount == 0) {
+        if (placeListAdapter.itemCount == 0) {
             binding.recyclerView.visibility = View.INVISIBLE
             binding.emptyText.visibility = View.VISIBLE
         } else {
