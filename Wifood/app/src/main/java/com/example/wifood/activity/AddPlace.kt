@@ -35,26 +35,25 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+const val REQUEST_IMAGE_CAPTURE = 1
+const val REQUEST_GALLERY_TAKE = 2
+
 class AddPlace : AppCompatActivity() {
-    lateinit var binding : ActivityAddPlaceBinding
+    var imageCnt: Int = 0
+    var isVisited = false
+    var insertPlace: Place = Place()
+    var menuList: ArrayList<Menu> = ArrayList(0)
+    var menuGradeList: ArrayList<MenuGrade> = ArrayList(0)
+    var imageList: ArrayList<String> = ArrayList(0)
+    var imageUriList: ArrayList<Uri> = ArrayList(0)
+
+    lateinit var binding: ActivityAddPlaceBinding
     lateinit var searchResult: Search
     lateinit var adapterMenuName: MenuNameAdapter
     lateinit var adapterMenuGrade: MenuGradeAdapter
     lateinit var inputMethodManager: InputMethodManager
-    // 별점 저장을 위한 변수
-    var isVisited = false
-    var insertPlace: Place = Place()
-    var menuList:ArrayList<Menu> = ArrayList(0)
-    var listMenuGrade:ArrayList<MenuGrade> = ArrayList(0)
-
-    // 카메라, 갤러리 관련 변수
-    val REQUEST_IMAGE_CAPTURE = 1
-    val REQUEST_GALLERY_TAKE = 2
     lateinit var currentPhotoPath: String
-    lateinit var foodImageUri:Uri
-    var imageList:ArrayList<String> = ArrayList(0)
-    var imageCnt:Int = 0
-    var imageUriList:ArrayList<Uri> = ArrayList(0)
+    lateinit var foodImageUri: Uri
     lateinit var imageStoreViewModel: ImageStoreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,41 +75,30 @@ class AddPlace : AppCompatActivity() {
         // 맛, 청결, 친절에 대한 별점 리스너 설정
         binding.tasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating <= 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myTasteGrade = rating.toDouble() }
+            insertPlace.myTasteGrade = rating.toDouble()
+        }
         binding.cleanGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating < 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myCleanGrade = rating.toDouble() }
+            insertPlace.myCleanGrade = rating.toDouble()
+        }
         binding.kindnessGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating < 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myKindnessGrade = rating.toDouble() }
+            insertPlace.myKindnessGrade = rating.toDouble()
+        }
 
         // 방문 여부 체크
         binding.isVisited.setOnCheckedChangeListener { _, onSwitch ->
             isVisited = onSwitch
             insertPlace.visited = isVisited.toInt()
+            updateActivityViewByVisit(onSwitch)
             if (onSwitch) {
-                // TODO "visibility 설정 함수로 수정"
-                binding.tableLayout2.visibility = View.VISIBLE
-                binding.menuTable.visibility = View.VISIBLE
-                binding.recyclerMenuGrade.visibility = View.VISIBLE
-                binding.menuGradeText.visibility = View.VISIBLE
-                binding.addCameraImageButton.visibility = View.VISIBLE
-                binding.addGalleryImageButton.visibility = View.VISIBLE
-                binding.foodImage.visibility = View.VISIBLE
-                insertPlace.myTasteGrade = binding.tasteGrade.rating.toDouble()
-                insertPlace.myCleanGrade = binding.cleanGrade.rating.toDouble()
-                insertPlace.myKindnessGrade = binding.kindnessGrade.rating.toDouble()
+                updatePlaceGrade(
+                    binding.tasteGrade.rating.toDouble(),
+                    binding.cleanGrade.rating.toDouble(),
+                    binding.kindnessGrade.rating.toDouble()
+                )
             } else {
-                binding.tableLayout2.visibility = View.GONE
-                binding.menuTable.visibility = View.GONE
-                binding.recyclerMenuGrade.visibility = View.GONE
-                binding.menuGradeText.visibility = View.GONE
-                binding.addCameraImageButton.visibility = View.GONE
-                binding.addGalleryImageButton.visibility = View.GONE
-                binding.foodImage.visibility = View.GONE
-                insertPlace.myTasteGrade = 0.0
-                insertPlace.myCleanGrade = 0.0
-                insertPlace.myKindnessGrade = 0.0
+                updatePlaceGrade(0.0, 0.0, 0.0)
             }
         }
 
@@ -121,7 +109,7 @@ class AddPlace : AppCompatActivity() {
         binding.insertMenu.setOnClickListener {
             inputMenu()
         }
-        binding.editMenu.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.editMenu.setOnEditorActionListener { _, i, _ ->
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
                 inputMenu()
@@ -129,7 +117,7 @@ class AddPlace : AppCompatActivity() {
             }
             handled
         }
-        adapterMenuName.setMenuClickListener(object: MenuNameAdapter.MenuClickListener{
+        adapterMenuName.setMenuClickListener(object : MenuNameAdapter.MenuClickListener {
             override fun onClick(view: View, position: Int, menu: Menu) {
                 menuList.removeAt(position)
                 updateMenuListAdapter()
@@ -141,12 +129,12 @@ class AddPlace : AppCompatActivity() {
         binding.recyclerMenuGrade.adapter = adapterMenuGrade
         updateMenuGradeListAdapter()
         binding.addMenuGradeButton.setOnClickListener {
-            val name:String = binding.editMenuName.text.toString()
-            val price:Int = binding.editMenuPrice.text.toString().toInt()
-            val grade:Double = binding.menuGrade.rating.toDouble()
-            val memo:String = binding.editMenuMemo.text.toString()
+            val name: String = binding.editMenuName.text.toString()
+            val price: Int = binding.editMenuPrice.text.toString().toInt()
+            val grade: Double = binding.menuGrade.rating.toDouble()
+            val memo: String = binding.editMenuMemo.text.toString()
             if (name != "") {
-                listMenuGrade.add(MenuGrade(name, price, grade, memo))
+                menuGradeList.add(MenuGrade(name, price, grade, memo))
                 updateMenuGradeListAdapter()
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
@@ -158,24 +146,22 @@ class AddPlace : AppCompatActivity() {
         }
 
         val type = intent.getStringExtra("type")
-        if (type  == "edit") {
+        if (type == "edit") {
             insertPlace = intent.getParcelableExtra("food")!!
             binding.searchName.text = insertPlace.name
             binding.searchAddress.text = insertPlace.address
             menuList = insertPlace.menu
-            binding.memoText.setText(insertPlace.memo)
             updateMenuListAdapter()
-            if (insertPlace.visited == 1) {
-                listMenuGrade = insertPlace.menuGrade
+            binding.memoText.setText(insertPlace.memo)
+            isVisited = insertPlace.visited == 1
+            updateActivityViewByVisit(isVisited)
+            if (isVisited) {
+                menuGradeList = insertPlace.menuGrade
                 updateMenuGradeListAdapter()
                 binding.tasteGrade.rating = insertPlace.myTasteGrade.toFloat()
                 binding.kindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
                 binding.cleanGrade.rating = insertPlace.myCleanGrade.toFloat()
                 binding.isVisited.isChecked = true
-                binding.tableLayout2.visibility = View.VISIBLE
-                binding.menuTable.visibility = View.VISIBLE
-                binding.recyclerMenuGrade.visibility = View.VISIBLE
-                binding.menuGradeText.visibility = View.VISIBLE
                 if (insertPlace.imageUri.size > 0) {
                     downloadImage(insertPlace.imageUri[0], insertPlace.id)
                     imageList = insertPlace.imageUri
@@ -214,12 +200,14 @@ class AddPlace : AppCompatActivity() {
         // 맛집리스트를 추가할 수 있도록 설정된 food 정보를 FoodList Activity로 넘겨줌
         binding.saveBtn.setOnClickListener {
             insertPlace.memo = binding.memoText.text.toString()
-            if (insertPlace.visited == 0)
-                listMenuGrade.clear()
+            if (insertPlace.visited == 0) {
+                imageList.clear()
+                menuGradeList.clear()
+            }
 //            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
             insertPlace.imageUri = imageList
             insertPlace.menu = menuList
-            insertPlace.menuGrade = listMenuGrade
+            insertPlace.menuGrade = menuGradeList
             if (insertPlace.name != "None" && insertPlace.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("food", insertPlace)
@@ -227,8 +215,7 @@ class AddPlace : AppCompatActivity() {
                         putExtra("type", 1)
                         // TODO "food data class 변경해서 food에 group name 추가해서 food만 넘겨주게 변경"
                         putExtra("groupName", binding.groupName.text)
-                    }
-                    else {
+                    } else {
                         putExtra("type", 0)
                         putExtra("imageUri", imageUriList)
                     }
@@ -252,17 +239,18 @@ class AddPlace : AppCompatActivity() {
     private fun Boolean.toInt() = if (this) 1 else 0
 
     // SearchPlace Activity로부터 받은 정보들을 이용해 name, bizname, address에 대한 text 설정
-    private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            searchResult = it.data?.getParcelableExtra("searchResult")!!
-            binding.searchName.text = searchResult.name
-            binding.searchAddress.text = searchResult.fullAddress
-            insertPlace.name = searchResult.name
-            insertPlace.address = searchResult.fullAddress
-            insertPlace.latitude = searchResult.latitude
-            insertPlace.longitude = searchResult.longitude
+    private val requestActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                searchResult = it.data?.getParcelableExtra("searchResult")!!
+                binding.searchName.text = searchResult.name
+                binding.searchAddress.text = searchResult.fullAddress
+                insertPlace.name = searchResult.name
+                insertPlace.address = searchResult.fullAddress
+                insertPlace.latitude = searchResult.latitude
+                insertPlace.longitude = searchResult.longitude
+            }
         }
-    }
 
     private fun inputMenu() {
         if (binding.editMenu.text.toString() != "") {
@@ -281,24 +269,49 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun updateMenuGradeListAdapter() {
-        adapterMenuGrade.setListData(listMenuGrade)
+        adapterMenuGrade.setListData(menuGradeList)
         adapterMenuGrade.notifyDataSetChanged()
     }
 
-    fun receiveData(group:Group) {
+    private fun updateActivityViewByVisit(isVisit: Boolean) {
+        val view: Int =
+            if (isVisit) View.VISIBLE
+            else View.GONE
+
+        binding.tableLayout2.visibility = view
+        binding.menuTable.visibility = view
+        binding.recyclerMenuGrade.visibility = view
+        binding.menuGradeText.visibility = view
+        binding.addCameraImageButton.visibility = view
+        binding.addGalleryImageButton.visibility = view
+        binding.foodImage.visibility = view
+    }
+
+    private fun updatePlaceGrade(taste: Double, clean: Double, kindness: Double) {
+        insertPlace.myTasteGrade = taste
+        insertPlace.myCleanGrade = clean
+        insertPlace.myKindnessGrade = kindness
+    }
+
+    fun receiveData(group: Group) {
         binding.groupName.text = group.name
         insertPlace.groupId = group.id
     }
 
     private fun getCameraTakeImage() {
         var cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        var storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        var storagePermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         // 카메라 권한 확인
         if (cameraPermission == PackageManager.PERMISSION_DENIED
-            || storagePermission == PackageManager.PERMISSION_DENIED) {
+            || storagePermission == PackageManager.PERMISSION_DENIED
+        ) {
             // 카메라 권한 요청
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                REQUEST_IMAGE_CAPTURE)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE
+            )
         } else {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                 if (takePictureIntent.resolveActivity(this.packageManager) != null) {
@@ -308,11 +321,11 @@ class AddPlace : AppCompatActivity() {
                         val photoURI = Uri.fromFile(photoFile)
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                    }
-                    else{
+                    } else {
                         photoFile.also {
                             val photoURI: Uri = FileProvider.getUriForFile(
-                                this, "com.example.wifood.fileprovider", it)
+                                this, "com.example.wifood.fileprovider", it
+                            )
                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                         }
@@ -323,12 +336,15 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun getGalleryImage() {
-        var storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        var storagePermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         // 갤러리 권한 확인
         if (storagePermission == PackageManager.PERMISSION_DENIED) {
             // 갤러리 권한 요청
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                REQUEST_IMAGE_CAPTURE)
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_IMAGE_CAPTURE
+            )
         } else {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -355,7 +371,7 @@ class AddPlace : AppCompatActivity() {
 
         when (requestCode) {
             1 -> {
-                if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+                if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
                     // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
                     imageUriList.clear()
                     imageList.clear()
@@ -389,7 +405,7 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun downloadImage(idx: String, foodId: Int) {
-        val storage:FirebaseStorage = FirebaseStorage.getInstance()
+        val storage: FirebaseStorage = FirebaseStorage.getInstance()
         val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
