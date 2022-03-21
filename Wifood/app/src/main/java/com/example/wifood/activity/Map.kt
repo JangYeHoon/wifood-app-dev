@@ -1,10 +1,11 @@
 package com.example.wifood.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
 import androidx.annotation.UiThread
 import com.example.wifood.R
 
@@ -14,20 +15,20 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import android.widget.Toast
 import android.view.MenuItem
-import android.widget.ToggleButton
+import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.wifood.adapter.FoodListAdapter
+import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityMapBinding
 import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.FoodGroupViewModel
 import com.example.wifood.viewmodel.FoodListViewModel
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
@@ -48,11 +49,16 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLatitude = 0.0
     private var placeLongitude = 0.0
 
-    // private lateinit var wishListAdapter: WishListAdapter    // 데이터를 List형식으로 보여줄 필요가 없으므로 Adapter 필요X
+    // FoodGroup , FoodList 선언
     lateinit var foodGroupViewModel: FoodGroupViewModel
     lateinit var foodListViewModel: FoodListViewModel
+    private lateinit var foodListAdapter: FoodListAdapter
+    private lateinit var groupListAdapter: GroupNameAdapter
+    var arrMarkerList = mutableListOf<Marker>()
+    var groupId: Int = 0
+    var mColor: String = ""
     
-    var arrFoodGroup = mutableListOf<Group>()   // FoodGroup의 가변리스트
+    //var arrFoodGroup = mutableListOf<Group>()   // FoodGroup의 가변리스트
     var arrFoodList = mutableListOf<Food>()     // FoodList의 가변리스트
 
     // Firebase 연결
@@ -85,44 +91,70 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 네비게이션 Drawer에 있는 화면의 Event를 처리하기 위해 생성
         navigationView = findViewById(R.id.main_navigationView)
         navigationView.setNavigationItemSelectedListener(this)
-        
-        // WishGroup 데이터
+
+
+        // 데이터베이스 접근을 위한 food group id정보 받아옴
+        groupId = intent.getIntExtra("groupId", 0)
+        // 툴바 하단 그룹리스트 버튼 생성
         foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
-        // WishGroup 데이터 변동 감지
+        groupListAdapter = GroupNameAdapter(this)
+        binding.includeMapLayout.filterBtn.layoutManager = LinearLayoutManager(this).also {
+            it.orientation = LinearLayoutManager.HORIZONTAL
+        }
+        val spaceDecoration = VerticalSpaceItemDecoration(10)
+        binding.includeMapLayout.filterBtn.addItemDecoration(spaceDecoration)
+        binding.includeMapLayout.filterBtn.adapter = groupListAdapter
+
         foodGroupViewModel.foodGroupList.observe(this) {
-            if (it != null) arrFoodGroup = it   // Shallow Copy
+            updateGroupAdapterList()
+            binding.includeMapLayout.allBtn.background = ContextCompat.getDrawable(this@Map, R.drawable.bg_rounding_box)
+            binding.includeMapLayout.allBtn.setTextColor(Color.BLACK)
+            binding.includeMapLayout.filterBtn.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
 
+        // FoodGroup 버튼
+        groupListAdapter.setGroupClickListener(object: GroupNameAdapter.GroupClickListener {
+            override fun onClick(view: View, position: Int, group: Group) {
+                groupId = group.id
+                mColor = group.color
+                updateGroupAdapterList()
+                binding.includeMapLayout.allBtn.background = ContextCompat.getDrawable(this@Map, R.drawable.bg_rounding_box)
+                binding.includeMapLayout.allBtn.setTextColor(Color.BLACK)
+                getFoodListData(groupId)
+                drawFoodMarker(arrFoodList)
+            }
+        })
+
+        // 전체 버튼
+        binding.includeMapLayout.allBtn.setOnClickListener {
+            groupId = -1
+            //groupListAdapter.setSelectGroup(-1)
+            updateGroupAdapterList()
+            binding.includeMapLayout.allBtn.background = ContextCompat.getDrawable(this@Map, R.drawable.bg_rounding_box_check)
+            binding.includeMapLayout.allBtn.setTextColor(Color.WHITE)
+            getFoodListData(groupId)
+            drawFoodMarker(arrFoodList)
+        }
+
+        // 하단 메뉴 Event
         // button event : go to map
-        btnGoMainMap.setOnClickListener{
+        binding.btnGoMainMap.setOnClickListener{
             Toast.makeText(applicationContext, "현재 메뉴 입니다", Toast.LENGTH_LONG).show()
         }
 
         // button event : go to my list
-        btnGoMyList.setOnClickListener {
+        binding.btnGoMyList.setOnClickListener {
             val intent = Intent(this, FoodGroup::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }
 
         // button event : go to my information
-        btnGoMyPage.setOnClickListener {
+        binding.btnGoMyPage.setOnClickListener {
             val intent = Intent(this, MyPage::class.java)
             intent.putExtra("UserEmail", userEmail)
             startActivity(intent)
         }
-
-        // WishList 데이터
-        val groupId = intent.getIntExtra("groupId", 0)
-        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
-        // WishList 데이터 변동 감지
-        foodListViewModel.foodList.observe(this) {
-            if (it != null) arrFoodList = it    // Shallow Copy
-        }
-
-//        Toggle1.setOnClickListener {
-//            Toast.makeText(applicationContext, "토글토글", Toast.LENGTH_LONG).show()
-//        }
 
         // 지도 객체 생성
         val fm = supportFragmentManager // 다른 Fragment내에 배치할 경우 childFragmentManager로
@@ -181,11 +213,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 LocationTrackingMode.Face   // 위치추적 활성화, 현위치 오버레이, 카메라 좌표, 베어링이 사용자의 위치 및 방향에 따라 움직임
         }
 
-        // FoodGroup DB 연결 테스트
-        for (i in 0 until arrFoodGroup.size) {
-            Toast.makeText(applicationContext, arrFoodGroup[i].name, Toast.LENGTH_LONG).show()
-            //Toast.makeText(applicationContext, arrFoodGroup[i].id, Toast.LENGTH_LONG).show()
-        }
 
         // FireBase 데이터 읽기 후 Marker 표시
         /*
@@ -293,11 +320,72 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
                 backKeyPressedTime = System.currentTimeMillis()
                 Toast.makeText(this@Map, "두 번 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show()
                 return
-            }else{
+            } else {
                 finishAffinity()
             }
         }
     }
 
+    inner class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
+        RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.right = verticalSpaceHeight
+        }
+    }
+
+    private fun getFoodListData(Id: Int) {
+        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
+        foodListViewModel.foodList.observe(this) {
+            arrFoodList.clear()
+            Toast.makeText(applicationContext, "getFoodData", Toast.LENGTH_LONG).show()
+            arrFoodList = foodListViewModel.getFoodList(Id)
+        }
+    }
+
+    private fun updateGroupAdapterList() {
+        val groupList = foodGroupViewModel.getGroupList()
+        if (groupList != null) {
+            groupListAdapter.setSelectGroup(groupId)
+            groupListAdapter.setListData(groupList)
+            groupListAdapter.notifyDataSetChanged()
+        } else groupListAdapter.setListDataClear()
+    }
+
+    private fun drawFoodMarker(fList: MutableList<Food>) {
+        clearFoodMarker()
+
+        Toast.makeText(applicationContext, "draw", Toast.LENGTH_LONG).show()
+        for (i in 0 until fList.size) {
+            val fName: String = fList[i].name
+            Toast.makeText(applicationContext, fName, Toast.LENGTH_LONG).show()
+            val fLatitude: Double = fList[i].latitude as Double
+            val fLongitude: Double = fList[i].longitude as Double
+
+            val fMarker = Marker()
+            fMarker.position = LatLng(fLatitude, fLongitude)
+            fMarker.map = naverMap
+            fMarker.width = Marker.SIZE_AUTO
+            fMarker.height = Marker.SIZE_AUTO
+            fMarker.captionText = fName
+            arrMarkerList.add(fMarker)
+        }
+    }
+
+    private fun clearFoodMarker() {
+        if (arrMarkerList.size <= 0) {
+            return
+        }
+
+        Toast.makeText(applicationContext, "clearMarker", Toast.LENGTH_LONG).show()
+        for (i in 0 until arrMarkerList.size) {
+            arrMarkerList[i].map = null
+        }
+        arrMarkerList.clear()
+    }
 
 }

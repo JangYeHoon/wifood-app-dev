@@ -59,6 +59,7 @@
     <!--메인 레이아웃-->
 
     <include
+        android:id="@+id/include_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/map_layout" />
