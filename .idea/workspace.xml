@@ -6,21 +6,18 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b9443bc-b145-4bf7-a5ac-e82f3b990da2" name="Default Changelist" comment="DB connection &amp; WishList marker diplay &amp; Code refactoring">
-      <change afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/drawable/toggle_btn.xml" afterDir="false" />
+    <list default="true" id="2b9443bc-b145-4bf7-a5ac-e82f3b990da2" name="Default Changelist" comment="Create Toggle Button">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/java/com/example/wifood/activity/Map.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/activity_map.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/activity_map.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/map_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/map_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/toolbar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/layout/toolbar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/menu/menu_nav.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Wifood/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Wifood/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +198,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644150031881</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Create Toggle Button">
+      <created>1647265616933</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1647265616933</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -232,7 +236,8 @@
     <MESSAGE value="merge project" />
     <MESSAGE value="Menu bar &amp; Search" />
     <MESSAGE value="change item id of menu_nav.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="change item id of menu_nav.xml" />
+    <MESSAGE value="Create Toggle Button" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create Toggle Button" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

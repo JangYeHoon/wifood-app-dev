@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,47 +13,28 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filterBtn"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.824"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09" />
+
+    <TextView
+        android:id="@+id/allBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/white">
-        <android.widget.ToggleButton
-            android:id="@+id/toggle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:textOn="All"
-            android:textOff="All"
-            android:background="@drawable/toggle_btn" />
-
-        <android.widget.ToggleButton
-            android:id="@+id/toggle2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:textOn="맛집"
-            android:textOff="맛집"
-            android:background="@drawable/toggle_btn" />
-
-        <android.widget.ToggleButton
-            android:id="@+id/toggle3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:textOn="고래"
-            android:textOff="고래"
-            android:background="@drawable/toggle_btn" />
-
-        <android.widget.ToggleButton
-            android:id="@+id/toggle4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:textOn="테스트"
-            android:textOff="테스트"
-            android:background="@drawable/toggle_btn" />
-    </LinearLayout>
+        android:background="@drawable/bg_rounding_box"
+        android:text="전체"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/filterBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09" />
 
     <TextView
         android:layout_width="match_parent"
@@ -61,4 +43,4 @@
 
     <!--        android:text="메인 레이아웃" />-->
 <!--        android:textColor="@color/colorBlack"/>-->
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
