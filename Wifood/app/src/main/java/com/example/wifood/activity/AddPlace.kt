@@ -40,10 +40,7 @@ const val REQUEST_GALLERY_TAKE = 2
 
 class AddPlace : AppCompatActivity() {
     var imageCnt: Int = 0
-    var isVisited = false
     var insertPlace: Place = Place()
-    var menuList: ArrayList<Menu> = ArrayList(0)
-    var menuGradeList: ArrayList<MenuGrade> = ArrayList(0)
     var imageList: ArrayList<String> = ArrayList(0)
     var imageUriList: ArrayList<Uri> = ArrayList(0)
 
@@ -70,6 +67,42 @@ class AddPlace : AppCompatActivity() {
 
         // TODO "같은 것 끼리 묶어서 볼 수 있게 변경
 
+        val type = intent.getStringExtra("type")
+        if (type == "edit") {
+            insertPlace = intent.getParcelableExtra("food")!!
+            binding.searchName.text = insertPlace.name
+            binding.searchAddress.text = insertPlace.address
+            binding.memoText.setText(insertPlace.memo)
+            updateMenuListAdapter(insertPlace.menu)
+            updateActivityViewByVisit(insertPlace.visited == 1)
+            if (insertPlace.visited == 1) {
+                updateMenuGradeListAdapter(insertPlace.menuGrade)
+                binding.tasteGrade.rating = insertPlace.myTasteGrade.toFloat()
+                binding.kindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
+                binding.cleanGrade.rating = insertPlace.myCleanGrade.toFloat()
+                binding.isVisited.isChecked = true
+                if (insertPlace.imageUri.size > 0) {
+                    downloadImage(insertPlace.imageUri[0], insertPlace.id)
+                    imageList = insertPlace.imageUri
+                    imageCnt = imageList.size
+                }
+            }
+        } else if (type == "add") {
+            insertPlace.groupId = intent.getIntExtra("groupId", -1)
+            insertPlace.id = intent.getIntExtra("foodId", -1)
+        }
+        binding.groupName.text = intent.getStringExtra("groupName").toString()
+
+        adapterMenuName = MenuNameAdapter(this)
+        binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
+        binding.recyclerView.adapter = adapterMenuName
+        updateMenuListAdapter(insertPlace.menu)
+
+        adapterMenuGrade = MenuGradeAdapter(this)
+        binding.recyclerMenuGrade.layoutManager = LinearLayoutManager(this)
+        binding.recyclerMenuGrade.adapter = adapterMenuGrade
+        updateMenuGradeListAdapter(insertPlace.menuGrade)
+
         imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
 
         // 맛, 청결, 친절에 대한 별점 리스너 설정
@@ -88,8 +121,7 @@ class AddPlace : AppCompatActivity() {
 
         // 방문 여부 체크
         binding.isVisited.setOnCheckedChangeListener { _, onSwitch ->
-            isVisited = onSwitch
-            insertPlace.visited = isVisited.toInt()
+            insertPlace.visited = onSwitch.toInt()
             updateActivityViewByVisit(onSwitch)
             if (onSwitch) {
                 updatePlaceGrade(
@@ -102,40 +134,37 @@ class AddPlace : AppCompatActivity() {
             }
         }
 
-        adapterMenuName = MenuNameAdapter(this)
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
-        binding.recyclerView.adapter = adapterMenuName
-        updateMenuListAdapter()
+        // 메뉴 추가 버튼
         binding.insertMenu.setOnClickListener {
-            inputMenu()
+            insertMenu()
         }
+        // 메뉴 입력에서 엔터 입력 시 추가
         binding.editMenu.setOnEditorActionListener { _, i, _ ->
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
-                inputMenu()
+                insertMenu()
                 handled = true
             }
             handled
         }
+
+        // 메뉴 삭제 버튼
         adapterMenuName.setMenuClickListener(object : MenuNameAdapter.MenuClickListener {
             override fun onClick(view: View, position: Int, menu: Menu) {
-                menuList.removeAt(position)
-                updateMenuListAdapter()
+                insertPlace.menu.removeAt(position)
+                updateMenuListAdapter(insertPlace.menu)
             }
         })
 
-        adapterMenuGrade = MenuGradeAdapter(this)
-        binding.recyclerMenuGrade.layoutManager = LinearLayoutManager(this)
-        binding.recyclerMenuGrade.adapter = adapterMenuGrade
-        updateMenuGradeListAdapter()
+        // 메뉴 평가 추가 버튼
         binding.addMenuGradeButton.setOnClickListener {
             val name: String = binding.editMenuName.text.toString()
             val price: Int = binding.editMenuPrice.text.toString().toInt()
             val grade: Double = binding.menuGrade.rating.toDouble()
             val memo: String = binding.editMenuMemo.text.toString()
             if (name != "") {
-                menuGradeList.add(MenuGrade(name, price, grade, memo))
-                updateMenuGradeListAdapter()
+                insertPlace.menuGrade.add(MenuGrade(name, price, grade, memo))
+                updateMenuGradeListAdapter(insertPlace.menuGrade)
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 binding.editMenuName.setText("")
@@ -144,35 +173,6 @@ class AddPlace : AppCompatActivity() {
                 binding.menuGrade.rating = 0.5f
             }
         }
-
-        val type = intent.getStringExtra("type")
-        if (type == "edit") {
-            insertPlace = intent.getParcelableExtra("food")!!
-            binding.searchName.text = insertPlace.name
-            binding.searchAddress.text = insertPlace.address
-            menuList = insertPlace.menu
-            updateMenuListAdapter()
-            binding.memoText.setText(insertPlace.memo)
-            isVisited = insertPlace.visited == 1
-            updateActivityViewByVisit(isVisited)
-            if (isVisited) {
-                menuGradeList = insertPlace.menuGrade
-                updateMenuGradeListAdapter()
-                binding.tasteGrade.rating = insertPlace.myTasteGrade.toFloat()
-                binding.kindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
-                binding.cleanGrade.rating = insertPlace.myCleanGrade.toFloat()
-                binding.isVisited.isChecked = true
-                if (insertPlace.imageUri.size > 0) {
-                    downloadImage(insertPlace.imageUri[0], insertPlace.id)
-                    imageList = insertPlace.imageUri
-                    imageCnt = imageList.size
-                }
-            }
-        } else if (type == "add") {
-            insertPlace.groupId = intent.getIntExtra("groupId", -1)
-            insertPlace.id = intent.getIntExtra("foodId", -1)
-        }
-        binding.groupName.text = intent.getStringExtra("groupName").toString()
 
         // 맛집 검색 SearchPlace Activity로 이동
         if (type != "edit") {
@@ -202,12 +202,10 @@ class AddPlace : AppCompatActivity() {
             insertPlace.memo = binding.memoText.text.toString()
             if (insertPlace.visited == 0) {
                 imageList.clear()
-                menuGradeList.clear()
+                insertPlace.menuGrade.clear()
             }
 //            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
             insertPlace.imageUri = imageList
-            insertPlace.menu = menuList
-            insertPlace.menuGrade = menuGradeList
             if (insertPlace.name != "None" && insertPlace.groupId != -1) {
                 val intent = Intent().apply {
                     putExtra("food", insertPlace)
@@ -252,23 +250,22 @@ class AddPlace : AppCompatActivity() {
             }
         }
 
-    private fun inputMenu() {
+    private fun insertMenu() {
         if (binding.editMenu.text.toString() != "") {
-            menuList.add(Menu(binding.editMenu.text.toString()))
-            updateMenuListAdapter()
+            insertPlace.menu.add(Menu(binding.editMenu.text.toString()))
+            updateMenuListAdapter(insertPlace.menu)
             inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.editMenu.windowToken, 0)
             binding.editMenu.setText("")
         }
     }
 
-    // TODO "매개변수로 menuList 값 받아와서 처리
-    private fun updateMenuListAdapter() {
+    private fun updateMenuListAdapter(menuList: ArrayList<Menu>) {
         adapterMenuName.setListData(menuList)
         adapterMenuName.notifyDataSetChanged()
     }
 
-    private fun updateMenuGradeListAdapter() {
+    private fun updateMenuGradeListAdapter(menuGradeList: ArrayList<MenuGrade>) {
         adapterMenuGrade.setListData(menuGradeList)
         adapterMenuGrade.notifyDataSetChanged()
     }
@@ -299,8 +296,8 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun getCameraTakeImage() {
-        var cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        var storagePermission =
+        val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val storagePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         // 카메라 권한 확인
         if (cameraPermission == PackageManager.PERMISSION_DENIED
@@ -336,7 +333,7 @@ class AddPlace : AppCompatActivity() {
     }
 
     private fun getGalleryImage() {
-        var storagePermission =
+        val storagePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         // 갤러리 권한 확인
         if (storagePermission == PackageManager.PERMISSION_DENIED) {
