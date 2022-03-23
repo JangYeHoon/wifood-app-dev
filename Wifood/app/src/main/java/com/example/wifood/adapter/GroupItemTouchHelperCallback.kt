@@ -3,10 +3,11 @@ package com.example.wifood.adapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class GroupItemTouchHelperCallback(listener:OnItemMoveListener): ItemTouchHelper.Callback() {
+class GroupItemTouchHelperCallback(listener: OnItemMoveListener) : ItemTouchHelper.Callback() {
     interface OnItemMoveListener {
-        fun onItemMove(fromPosition:Int, toPosition:Int)
+        fun onItemMove(fromPosition: Int, toPosition: Int)
     }
+
     private val mItemMoveListener = listener
 
     override fun getMovementFlags(

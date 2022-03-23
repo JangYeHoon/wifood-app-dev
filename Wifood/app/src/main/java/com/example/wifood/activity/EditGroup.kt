@@ -54,7 +54,11 @@ class EditGroup : AppCompatActivity() {
                     break
                 }
             }
-        } else supportActionBar?.title = "그룹 추가"
+        } else {
+            editGroup.id = intent.getIntExtra("groupId", 1)
+            editGroup.order = editGroup.id
+            supportActionBar?.title = "그룹 추가"
+        }
 
         // click image size conversion
         for (selectPin in pinArray) {

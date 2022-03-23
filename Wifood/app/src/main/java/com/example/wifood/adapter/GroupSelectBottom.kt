@@ -27,13 +27,13 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
         recyclerView = rootView.findViewById(R.id.groupRecycler) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = foodGroupAdapter
-        groupViewModel.foodGroupList.observe(viewLifecycleOwner) {
+        groupViewModel.groupList.observe(viewLifecycleOwner) {
             if (it != null) foodGroupAdapter.setListData(it)
             else foodGroupAdapter.setListDataClear()
             foodGroupAdapter.notifyDataSetChanged()
         }
 
-        foodGroupAdapter.setGroupClickListener(object: GroupSelectAdapter.GroupClickListener {
+        foodGroupAdapter.setGroupClickListener(object : GroupSelectAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 val addFood = activity as AddPlace
                 addFood.setGroupByGroupEntity(group)

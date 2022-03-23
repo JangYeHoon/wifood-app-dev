@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PlaceList : AppCompatActivity() {
-    lateinit var binding : ActivityPlaceListBinding
+    lateinit var binding: ActivityPlaceListBinding
     private lateinit var placeListAdapter: PlaceListAdapter
     lateinit var placeViewModel: PlaceViewModel
     private lateinit var groupListAdapter: GroupNameAdapter
@@ -49,40 +49,35 @@ class PlaceList : AppCompatActivity() {
         // 데이터베이스 접근을 위한 food group id정보 받아옴
         groupId = intent.getIntExtra("groupId", 0)
 
-        // TODO "관련된 것들 한곳으로 모으기"
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         placeListAdapter = PlaceListAdapter(this)
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
-
         binding.recyclerView.adapter = placeListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
         setFoodListView()
 
-        groupListViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListAdapter = GroupNameAdapter(this)
         binding.recyclerView2.layoutManager = LinearLayoutManager(this).also {
             it.orientation = HORIZONTAL
         }
-        val spaceDecoration =  VerticalSpaceItemDecoration(10)
+        val spaceDecoration = VerticalSpaceItemDecoration(10)
         binding.recyclerView2.addItemDecoration(spaceDecoration)
         binding.recyclerView2.adapter = groupListAdapter
 
-        groupListViewModel.foodGroupList.observe(this) {
-            // TODO "함수 만들어서 중복되는 부분 모으기
+        groupListViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        groupListViewModel.groupList.observe(this) {
             updateGroupAdapterList()
             updateFoodAdapterList()
-            binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
-            binding.groupAll.setTextColor(Color.BLACK)
+            setGroupAllButtonColorBySelect(true)
             binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
 
-        groupListAdapter.setGroupClickListener(object: GroupNameAdapter.GroupClickListener{
+        groupListAdapter.setGroupClickListener(object : GroupNameAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 groupId = group.id
                 updateGroupAdapterList()
                 updateFoodAdapterList()
-                binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
-                binding.groupAll.setTextColor(Color.BLACK)
+                setGroupAllButtonColorBySelect(false)
             }
         })
 
@@ -97,25 +92,25 @@ class PlaceList : AppCompatActivity() {
         binding.foodListAddButton.setOnClickListener {
             val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                 putExtra("groupId", groupId)
-                putExtra("groupName", groupListViewModel.getGroupName(groupId))
-                val foodId = placeViewModel.getFoodListMaxId() + 1
-                putExtra("foodId", foodId)
+                putExtra("groupName", groupListViewModel.getGroupNameById(groupId))
+                putExtra("foodId", placeViewModel.getPlaceListMaxId() + 1)
                 putExtra("type", "add")
             }
             requestActivity.launch(intent)
         }
 
-        placeListAdapter.setFoodListClickListener(object: PlaceListAdapter.FoodListClickListener{
+        placeListAdapter.setFoodListClickListener(object : PlaceListAdapter.FoodListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
                 val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
                     putExtra("food", item)
-                    putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
+                    putExtra("groupName", groupListViewModel.getGroupNameById(item.groupId))
                 }
                 startActivity(intent)
             }
         })
 
-        placeListAdapter.setPopupButtonClickListener(object: PlaceListAdapter.FoodListClickListener{
+        placeListAdapter.setPopupButtonClickListener(object :
+            PlaceListAdapter.FoodListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
                 val popupMenu = PopupMenu(this@PlaceList, view)
                 popupMenu.menuInflater.inflate(R.menu.popup_place_menu, popupMenu.menu)
@@ -124,13 +119,16 @@ class PlaceList : AppCompatActivity() {
                     when (it.itemId) {
                         R.id.delete_menu -> {
                             CoroutineScope(Dispatchers.IO).launch {
-                                placeViewModel.deleteFood(item.id)
+                                placeViewModel.deletePlace(item.id)
                             }
                         }
                         R.id.edit_menu -> {
                             val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                                 putExtra("food", item)
-                                putExtra("groupName", groupListViewModel.getGroupName(item.groupId))
+                                putExtra(
+                                    "groupName",
+                                    groupListViewModel.getGroupNameById(item.groupId)
+                                )
                                 putExtra("type", "edit")
                             }
                             requestActivity.launch(intent)
@@ -143,58 +141,54 @@ class PlaceList : AppCompatActivity() {
 
         binding.groupAll.setOnClickListener {
             groupId = -1
-            groupListAdapter.setSelectGroup(-1)
+            groupListAdapter.setSelectGroupByGroupId(-1)
             updateGroupAdapterList()
             updateFoodAdapterList()
-            binding.groupAll.background = ContextCompat.getDrawable(this, R.drawable.bg_rounding_box_check)
-            binding.groupAll.setTextColor(Color.WHITE)
+            setGroupAllButtonColorBySelect(true)
         }
     }
 
-    private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            val food = it.data?.getParcelableExtra<Place>("food")
-            // type 0: add, 1: edit, 2: delete
-            when(it.data?.getIntExtra("type", -1)) {
-                0 -> {
-                    // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
-                    CoroutineScope(Dispatchers.IO).launch {
-                        placeViewModel.insertFoodList(food!!)
+    private val requestActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val food = it.data?.getParcelableExtra<Place>("food")
+                // type 0: add, 1: edit, 2: delete
+                when (it.data?.getIntExtra("type", -1)) {
+                    0 -> {
+                        // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
+                        CoroutineScope(Dispatchers.IO).launch {
+                            placeViewModel.insertPlace(food!!)
+                        }
+                    }
+                    1 -> {
+                        // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
+                        CoroutineScope(Dispatchers.IO).launch {
+                            placeViewModel.updatePlace(food!!)
+                        }
                     }
                 }
-                1 -> {
-                    // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
-                    CoroutineScope(Dispatchers.IO).launch {
-                        placeViewModel.updateFoodList(food!!)
-                    }
-                }
+                groupId = food!!.groupId
+                updateGroupAdapterList()
+                binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
+                setGroupAllButtonColorBySelect(false)
             }
-            groupId = food!!.groupId
-            updateGroupAdapterList()
-            binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
-            binding.groupAll.background = ContextCompat.getDrawable(this@PlaceList, R.drawable.bg_rounding_box)
-            binding.groupAll.setTextColor(Color.BLACK)
         }
-    }
 
-    private val requestGroupActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            // type 0 : add, 1 : edit, 2 : delete
-            when(it.data?.getIntExtra("type", -1)) {
-                0 -> {
-                    val maxId = groupListAdapter.getGroupIdList().maxOrNull() ?: 0
-                    // create a group to add using the value received from EditFoodGroup Activity
-                    val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String,
-                        maxId + 1)
-                    CoroutineScope(Dispatchers.IO).launch {
-                        groupListViewModel.groupInsert(group)
-                        groupId = maxId + 1
+    private val requestGroupActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                // type 0 : add, 1 : edit, 2 : delete
+                when (it.data?.getIntExtra("type", -1)) {
+                    0 -> {
+                        val group = it.data?.getParcelableExtra<Group>("group")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            groupListViewModel.insertGroup(group!!)
+                            groupId = group.id
+                        }
                     }
                 }
             }
         }
-    }
 
     private fun setFoodListView() {
         placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
@@ -204,7 +198,7 @@ class PlaceList : AppCompatActivity() {
     }
 
     private fun updateFoodAdapterList() {
-        placeListAdapter.setFoodListData(placeViewModel.getFoodList(groupId))
+        placeListAdapter.setFoodListData(placeViewModel.getPlaceListByGroupId(groupId))
         placeListAdapter.notifyDataSetChanged()
         setEmptyRecyclerView()
     }
@@ -212,7 +206,7 @@ class PlaceList : AppCompatActivity() {
     private fun updateGroupAdapterList() {
         val groupList = groupListViewModel.getGroupList()
         if (groupList != null) {
-            groupListAdapter.setSelectGroup(groupId)
+            groupListAdapter.setSelectGroupByGroupId(groupId)
             groupListAdapter.setListData(groupList)
             groupListAdapter.notifyDataSetChanged()
         } else groupListAdapter.setListDataClear()
@@ -227,6 +221,18 @@ class PlaceList : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setGroupAllButtonColorBySelect(isSelect: Boolean) {
+        if (isSelect) {
+            binding.groupAll.background =
+                ContextCompat.getDrawable(this, R.drawable.bg_rounding_box_check)
+            binding.groupAll.setTextColor(Color.WHITE)
+        } else {
+            binding.groupAll.background =
+                ContextCompat.getDrawable(this, R.drawable.bg_rounding_box)
+            binding.groupAll.setTextColor(Color.BLACK)
+        }
     }
 
     private fun setEmptyRecyclerView() {

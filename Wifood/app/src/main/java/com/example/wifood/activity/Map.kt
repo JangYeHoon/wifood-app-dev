@@ -90,7 +90,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // WishGroup 데이터
         wishGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         // WishGroup 데이터 변동 감지
-        wishGroupViewModel.foodGroupList.observe(this) {
+        wishGroupViewModel.groupList.observe(this) {
             if (it != null) arrWishGroup = it   // Shallow Copy
         }
 

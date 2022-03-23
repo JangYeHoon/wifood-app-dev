@@ -23,9 +23,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GroupList : AppCompatActivity() {
-    lateinit var binding : ActivityGroupListBinding
-    private lateinit var foodGroupListAdapter: GroupListAdapter
-    lateinit var groupViewModel : GroupViewModel
+    lateinit var binding: ActivityGroupListBinding
+    private lateinit var groupListAdapter: GroupListAdapter
+    private lateinit var groupViewModel: GroupViewModel
     var checkTouch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,29 +37,28 @@ class GroupList : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // Drawer를 꺼낼 홈 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
-
         supportActionBar?.title = "맛집 그룹"
 
         // Connecting RecyclerView and Adapter
         groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
-        foodGroupListAdapter = GroupListAdapter(this)
+        groupListAdapter = GroupListAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = foodGroupListAdapter
+        binding.recyclerView.adapter = groupListAdapter
         binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
-
-        // Automatically change bindings when data changes
-        groupViewModel.foodGroupList.observe(this) {
-            if (it != null) foodGroupListAdapter.setListData(it)
-            else foodGroupListAdapter.setListDataClear()
-            foodGroupListAdapter.notifyDataSetChanged()
-            setEmptyRecyclerView()
-        }
-
-        val groupItemTouchHelperCallback = GroupItemTouchHelperCallback(foodGroupListAdapter)
+        val groupItemTouchHelperCallback = GroupItemTouchHelperCallback(groupListAdapter)
         val groupTouchHelper = ItemTouchHelper(groupItemTouchHelperCallback)
         groupTouchHelper.attachToRecyclerView(binding.recyclerView)
 
-        foodGroupListAdapter.setOnStartDragListener(object: GroupListAdapter.OnStartDragListener {
+        // Automatically change bindings when data changes
+        groupViewModel.groupList.observe(this) {
+            if (it != null) groupListAdapter.setListData(it)
+            else groupListAdapter.setListDataClear()
+            groupListAdapter.notifyDataSetChanged()
+            setEmptyRecyclerView()
+        }
+
+        // 그룹 순서 변경
+        groupListAdapter.setOnStartDragListener(object : GroupListAdapter.OnStartDragListener {
             override fun onStartDrag(viewHolder: GroupListAdapter.FoodGroupViewHolder) {
                 groupTouchHelper.startDrag(viewHolder)
                 checkTouch = true
@@ -70,22 +69,24 @@ class GroupList : AppCompatActivity() {
         binding.groupAddButton.setOnClickListener {
             val intent = Intent(this@GroupList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
+                putExtra("groupId", groupViewModel.getGroupMaxId() + 1)
             }
             requestActivity.launch(intent)
         }
 
         // group del btn
-        binding.groupDeleteButton.setOnClickListener {
-            val intent = Intent(this@GroupList, DeleteGroup::class.java).apply {
-                putExtra("groupName", ArrayList(foodGroupListAdapter.getGroupNameList()))
-                putExtra("groupId", ArrayList(foodGroupListAdapter.getGroupIdList()))
-                putExtra("groupColor", ArrayList(foodGroupListAdapter.getGroupColorList()))
-            }
-            requestActivity.launch(intent)
-        }
+//        binding.groupDeleteButton.setOnClickListener {
+//            val intent = Intent(this@GroupList, DeleteGroup::class.java).apply {
+//                putExtra("groupName", ArrayList(groupListAdapter.getGroupNameList()))
+//                putExtra("groupId", ArrayList(groupListAdapter.getGroupIdList()))
+//                putExtra("groupColor", ArrayList(groupListAdapter.getGroupColorList()))
+//            }
+//            requestActivity.launch(intent)
+//        }
 
         // group edit btn
-        foodGroupListAdapter.setGroupEditClickListener(object: GroupListAdapter.GroupEditClickListener {
+        groupListAdapter.setGroupEditClickListener(object :
+            GroupListAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val intent = Intent(this@GroupList, EditGroup::class.java).apply {
@@ -98,8 +99,8 @@ class GroupList : AppCompatActivity() {
         })
 
         // group go btn
-        // TODO "intent group data class 넘기기"
-        foodGroupListAdapter.setGroupGoClickListener(object: GroupListAdapter.GroupGoClickListener {
+        groupListAdapter.setGroupGoClickListener(object :
+            GroupListAdapter.GroupGoClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 val intent = Intent(this@GroupList, PlaceList::class.java).apply {
                     putExtra("groupName", group.name)
@@ -111,10 +112,10 @@ class GroupList : AppCompatActivity() {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        when(ev!!.action) {
+        when (ev!!.action) {
             MotionEvent.ACTION_UP -> {
                 if (checkTouch) {
-                    groupViewModel.setGroupOrder(foodGroupListAdapter.getListData())
+                    groupViewModel.setGroupOrderByGroupList(groupListAdapter.getListData())
                     checkTouch = false
                 }
             }
@@ -133,44 +134,38 @@ class GroupList : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private val requestActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            // type 0 : add, 1 : edit, 2 : delete
-            when(it.data?.getIntExtra("type", -1)) {
-                0 -> {
-                    // TODO "AddGroupActivity 에서 food를 생성해서 넘겨주는걸 받게 변경"
-                    val maxId = foodGroupListAdapter.getGroupIdList().maxOrNull() ?: 0
-                    // create a group to add using the value received from EditFoodGroup Activity
-                    val group = Group(maxId + 1, it.data?.getSerializableExtra("name") as String,
-                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String,
-                        maxId + 1)
-                    CoroutineScope(Dispatchers.IO).launch {
-                        groupViewModel.groupInsert(group)
+    private val requestActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                // type 0 : add, 1 : edit, 2 : delete
+                when (it.data?.getIntExtra("type", -1)) {
+                    0 -> {
+                        val group = it.data?.getParcelableExtra<Group>("group")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            groupViewModel.insertGroup(group!!)
+                        }
                     }
-                }
-                1 -> {
-                    // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
-                    val group =it.data?.getParcelableExtra<Group>("group")
-//                    val group = Group(it.data?.getSerializableExtra("id") as Int, it.data?.getSerializableExtra("name") as String,
-//                        it.data?.getSerializableExtra("color") as String, it.data?.getSerializableExtra("theme") as String)
-                    CoroutineScope(Dispatchers.IO).launch {
-                        groupViewModel.updateGroup(group!!)
+                    1 -> {
+                        // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
+                        val group = it.data?.getParcelableExtra<Group>("group")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            groupViewModel.updateGroup(group!!)
+                        }
                     }
-                }
-                2 -> {
-                    // DeleteFoodGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
-                    val groupId = it.data?.getIntegerArrayListExtra("id")
-                    CoroutineScope(Dispatchers.IO).launch {
-                        if (groupId != null)
-                            groupViewModel.groupDelete(groupId)
+                    2 -> {
+                        // DeleteFoodGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
+                        val groupId = it.data?.getIntegerArrayListExtra("id")
+                        CoroutineScope(Dispatchers.IO).launch {
+                            if (groupId != null)
+                                groupViewModel.deleteGroup(groupId)
+                        }
                     }
                 }
             }
         }
-    }
 
     private fun setEmptyRecyclerView() {
-        if (foodGroupListAdapter.itemCount == 0) {
+        if (groupListAdapter.itemCount == 0) {
             binding.recyclerView.visibility = View.INVISIBLE
             binding.emptyText.visibility = View.VISIBLE
         } else {

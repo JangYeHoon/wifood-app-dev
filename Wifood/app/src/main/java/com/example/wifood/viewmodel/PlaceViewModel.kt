@@ -5,15 +5,15 @@ import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.PlaceDto
 import com.example.wifood.entity.Place
 
-class PlaceViewModel(): ViewModel() {
+class PlaceViewModel() : ViewModel() {
     var placeList: LiveData<MutableList<Place>>
     private val placeDto: PlaceDto = PlaceDto()
 
     init {
-        placeList = placeDto.getFoodList()
+        placeList = placeDto.getPlaceList()
     }
 
-    fun getFoodListMaxId() : Int {
+    fun getPlaceListMaxId(): Int {
         val food = placeList.value
         var maxValue = 0
         if (food != null)
@@ -22,7 +22,7 @@ class PlaceViewModel(): ViewModel() {
         return maxValue
     }
 
-    fun getFoodList(groupId: Int): MutableList<Place> {
+    fun getPlaceListByGroupId(groupId: Int): MutableList<Place> {
         val food = mutableListOf<Place>()
         if (groupId != -1) {
             for (f in placeList.value!!) {
@@ -34,16 +34,15 @@ class PlaceViewModel(): ViewModel() {
         return placeList.value!!
     }
 
-    fun insertFoodList(place: Place) {
-        place.id = getFoodListMaxId() + 1
-        placeDto.insertFoodList(place)
+    fun insertPlace(place: Place) {
+        placeDto.insertPlaceList(place)
     }
 
-    fun updateFoodList(place: Place) {
-        placeDto.insertFoodList(place)
+    fun updatePlace(place: Place) {
+        placeDto.insertPlaceList(place)
     }
 
-    fun deleteFood(foodId: Int) {
-        placeDto.deleteFoodList(foodId)
+    fun deletePlace(foodId: Int) {
+        placeDto.deletePlaceList(foodId)
     }
 }

@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Search
 
-class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<SearchPlaceAdapter.SearchPlaceViewHolder>() {
+class SearchPlaceAdapter(private val context: Context) :
+    RecyclerView.Adapter<SearchPlaceAdapter.SearchPlaceViewHolder>() {
 
     private var searchPlaceList = mutableListOf<Search>()
 
@@ -37,9 +38,9 @@ class SearchPlaceAdapter(private val context: Context) : RecyclerView.Adapter<Se
     }
 
     inner class SearchPlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val searchName : TextView = itemView.findViewById(R.id.searchName)
-        val searchAddress : TextView = itemView.findViewById(R.id.searchAddress)
-        val searchBizName : TextView = itemView.findViewById(R.id.searchBizName)
+        val searchName: TextView = itemView.findViewById(R.id.searchName)
+        val searchAddress: TextView = itemView.findViewById(R.id.searchAddress)
+        val searchBizName: TextView = itemView.findViewById(R.id.searchBizName)
     }
 
     interface SearchResultClickListener {

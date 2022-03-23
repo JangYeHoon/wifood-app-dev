@@ -11,15 +11,12 @@ import com.example.wifood.R
 import com.example.wifood.entity.Place
 import kotlin.math.round
 
-class PlaceListAdapter(private val context: Context): RecyclerView.Adapter<PlaceListAdapter.FoodListViewHolder>() {
+class PlaceListAdapter(private val context: Context) :
+    RecyclerView.Adapter<PlaceListAdapter.FoodListViewHolder>() {
     private var foodList = mutableListOf<Place>()
 
-    fun setFoodListData(data:MutableList<Place>) {
+    fun setFoodListData(data: MutableList<Place>) {
         foodList = data
-    }
-
-    fun setListDataClear() {
-        foodList.clear()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
@@ -33,8 +30,8 @@ class PlaceListAdapter(private val context: Context): RecyclerView.Adapter<Place
         holder.foodAddress.text = place.address
         holder.foodMemo.text = place.memo
         if (place.visited == 1) {
-            var gradeScore = (place.myTasteGrade + place.myCleanGrade + place.myKindnessGrade) / 3
-            var grade = "${round(gradeScore * 10) / 10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
+            val gradeScore = (place.myTasteGrade + place.myCleanGrade + place.myKindnessGrade) / 3
+            val grade = "${round(gradeScore * 10) / 10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
             holder.myGrade.text = grade
         } else {
             holder.myGrade.visibility = View.INVISIBLE
@@ -52,11 +49,11 @@ class PlaceListAdapter(private val context: Context): RecyclerView.Adapter<Place
     }
 
     inner class FoodListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val foodName : TextView = itemView.findViewById(R.id.foodName)
-        val foodAddress : TextView = itemView.findViewById(R.id.foodAddress)
-        val foodMemo : TextView = itemView.findViewById(R.id.foodMemo)
-        val myGrade : TextView = itemView.findViewById(R.id.myGrade)
-        val popupMenu : ImageButton = itemView.findViewById(R.id.popupMenu)
+        val foodName: TextView = itemView.findViewById(R.id.foodName)
+        val foodAddress: TextView = itemView.findViewById(R.id.foodAddress)
+        val foodMemo: TextView = itemView.findViewById(R.id.foodMemo)
+        val myGrade: TextView = itemView.findViewById(R.id.myGrade)
+        val popupMenu: ImageButton = itemView.findViewById(R.id.popupMenu)
     }
 
     interface FoodListClickListener {

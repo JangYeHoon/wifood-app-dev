@@ -4,39 +4,40 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.GroupDto
 import com.example.wifood.entity.Group
+import java.lang.Integer.max
 
 // Independent of the lifecycle of the activity.
 // Data retention and sharing
-class GroupViewModel :ViewModel() {
-    var foodGroupList : LiveData<MutableList<Group>>
-    private val foodGroupDto : GroupDto = GroupDto("food")
+class GroupViewModel : ViewModel() {
+    var groupList: LiveData<MutableList<Group>>
+    private val foodGroupDto: GroupDto = GroupDto("food")
 
     init {
-        foodGroupList = foodGroupDto.getGroupList()
+        groupList = foodGroupDto.getGroupList()
     }
 
-    fun groupInsert(group : Group) {
-        foodGroupDto.groupInsert(group)
+    fun insertGroup(group: Group) {
+        foodGroupDto.insertGroup(group)
     }
 
-    fun groupDelete(groupIdList: ArrayList<Int>) {
-        foodGroupDto.groupDelete(groupIdList)
+    fun deleteGroup(groupIdList: ArrayList<Int>) {
+        foodGroupDto.deleteGroup(groupIdList)
     }
 
     fun updateGroup(group: Group) {
         foodGroupDto.updateGroup(group)
     }
 
-    fun setGroupOrder(groupList: ArrayList<Group>) {
+    fun setGroupOrderByGroupList(groupList: ArrayList<Group>) {
         for (i in groupList.indices) {
             groupList[i].order = i + 1
             foodGroupDto.updateGroup(groupList[i])
         }
     }
 
-    fun getGroupName(groupId: Int) : String {
+    fun getGroupNameById(groupId: Int): String {
         if (groupId != -1) {
-            for (group in foodGroupList.value!!) {
+            for (group in groupList.value!!) {
                 if (groupId == group.id)
                     return group.name
             }
@@ -44,12 +45,15 @@ class GroupViewModel :ViewModel() {
         return ""
     }
 
-    fun getGroupList(): MutableList<Group>? {
-        return foodGroupList.value
+    fun getGroupMaxId(): Int {
+        var maxId = 1
+        for (group in groupList.value!!) {
+            maxId = max(maxId, group.id)
+        }
+        return maxId
     }
 
-    fun getGroup(pos: Int): Group {
-        val groupList = foodGroupList.value
-        return groupList!![pos]
+    fun getGroupList(): MutableList<Group>? {
+        return groupList.value
     }
 }

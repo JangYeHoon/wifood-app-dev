@@ -20,8 +20,8 @@ import com.skt.Tmap.TMapTapi
 import com.skt.Tmap.poi_item.TMapPOIItem
 
 class SearchPlace : AppCompatActivity() {
-    lateinit var binding : ActivitySearchPlaceBinding
-    lateinit var searchPlaceAdapter : SearchPlaceAdapter
+    lateinit var binding: ActivitySearchPlaceBinding
+    lateinit var searchPlaceAdapter: SearchPlaceAdapter
     var searchResult = MutableLiveData<MutableList<Search>>()
     lateinit var inputMethodManager: InputMethodManager
 
@@ -47,20 +47,23 @@ class SearchPlace : AppCompatActivity() {
 
         // 검색 버튼
         binding.searchButton.setOnClickListener {
-            clickSearchBtn()
+            setKeyBoardHide()
+            findPlaceBySearchKeyword(binding.keywordText.text.toString())
         }
 
         // 엔터키 버튼 입력
-        binding.keywordText.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.keywordText.setOnEditorActionListener { _, i, _ ->
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
-                clickSearchBtn()
+                setKeyBoardHide()
+                findPlaceBySearchKeyword(binding.keywordText.text.toString())
                 handled = true
             }
             handled
         }
 
-        searchPlaceAdapter.setSearchResultClickListener(object: SearchPlaceAdapter.SearchResultClickListener{
+        searchPlaceAdapter.setSearchResultClickListener(object :
+            SearchPlaceAdapter.SearchResultClickListener {
             override fun onClick(view: View, position: Int, item: Search) {
                 val intent = Intent().apply {
                     putExtra("searchResult", item)
@@ -71,27 +74,30 @@ class SearchPlace : AppCompatActivity() {
         })
     }
 
-    fun clickSearchBtn() {
+    private fun setKeyBoardHide() {
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
-        searchPlace(binding.keywordText.text.toString())
     }
 
     // tmap api에 keyword를 이용해 검색한 결과를 받아와 searchResult에 저장
-    // TODO("ViewModel로 빼기")
-    private fun searchPlace(keyword: String) {
-        val search : MutableList<Search> = mutableListOf()
+    private fun findPlaceBySearchKeyword(keyword: String) {
+        val search: MutableList<Search> = mutableListOf()
         val tmapData = TMapData()
         tmapData.findAllPOI(keyword, TMapData.FindAllPOIListenerCallback {
             for (i in it) {
-                val poiItem:TMapPOIItem = i
-                val bizName: String = poiItem.middleBizName.toString() + "," + poiItem.lowerBizName + "," + poiItem.detailBizName
+                val poiItem: TMapPOIItem = i
+                val bizName: String =
+                    poiItem.middleBizName.toString() + "," + poiItem.lowerBizName + "," + poiItem.detailBizName
                 var addressRoad = ""
                 for (a in poiItem.newAddressList)
                     addressRoad = a.fullAddressRoad
                 addressRoad += poiItem.detailAddrName.replace("null", "")
-                search.add(Search(addressRoad, poiItem.poiName.toString(), poiItem.poiPoint.latitude,
-                        poiItem.poiPoint.longitude, bizName))
+                search.add(
+                    Search(
+                        addressRoad, poiItem.poiName.toString(), poiItem.poiPoint.latitude,
+                        poiItem.poiPoint.longitude, bizName
+                    )
+                )
                 searchResult.postValue(search)
             }
         })

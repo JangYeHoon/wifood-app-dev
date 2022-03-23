@@ -12,7 +12,8 @@ import com.example.wifood.R
 import com.example.wifood.entity.Group
 import com.example.wifood.entity.Menu
 
-class MenuNameAdapter(private val context: Context): RecyclerView.Adapter<MenuNameAdapter.MenuViewHolder>() {
+class MenuNameAdapter(private val context: Context) :
+    RecyclerView.Adapter<MenuNameAdapter.MenuViewHolder>() {
     private var menuList = mutableListOf<Menu>()
 
     fun setListData(data: MutableList<Menu>) {
@@ -40,13 +41,14 @@ class MenuNameAdapter(private val context: Context): RecyclerView.Adapter<MenuNa
     }
 
     inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val menuName : TextView = itemView.findViewById(R.id.menuName)
-        val deleteButton : ImageView = itemView.findViewById(R.id.deleteMenu)
+        val menuName: TextView = itemView.findViewById(R.id.menuName)
+        val deleteButton: ImageView = itemView.findViewById(R.id.deleteMenu)
     }
 
     interface MenuClickListener {
         fun onClick(view: View, position: Int, menu: Menu)
     }
+
     private lateinit var menuClickListener: MenuClickListener
     fun setMenuClickListener(menuClickListener: MenuClickListener) {
         this.menuClickListener = menuClickListener

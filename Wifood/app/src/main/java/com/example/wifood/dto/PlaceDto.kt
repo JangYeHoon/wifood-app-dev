@@ -9,21 +9,21 @@ class PlaceDto() {
     private val placeDao = PlaceDao()
 
     // 디비에서 받아온 정보를 이용해 foodlist 업데이트
-    fun getFoodList() : LiveData<MutableList<Place>> {
-        val mutableFoodList = MutableLiveData<MutableList<Place>>()
-        placeDao.getFoodList().observeForever {
-            mutableFoodList.value = it
+    fun getPlaceList(): LiveData<MutableList<Place>> {
+        val mutablePlaceList = MutableLiveData<MutableList<Place>>()
+        placeDao.getPlaceList().observeForever {
+            mutablePlaceList.value = it
         }
-        return mutableFoodList
+        return mutablePlaceList
     }
 
     // 디비에 저장하기 위해 dao에 food를 넘겨줌
-    fun insertFoodList(place: Place) {
-        placeDao.insertFoodList(place)
+    fun insertPlaceList(place: Place) {
+        placeDao.insertPlaceList(place)
     }
 
     // 디비에서 삭제할 id 정보를 dao에 넘겨줌
-    fun deleteFoodList(deleteId: Int) {
-        placeDao.deleteFoodList(deleteId)
+    fun deletePlaceList(deleteId: Int) {
+        placeDao.deletePlaceList(deleteId)
     }
 }

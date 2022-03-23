@@ -10,20 +10,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.MenuGrade
 
-class MenuGradeInfoAdapter(private val context: Context): RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {
-    private var listMenuGrade = mutableListOf<MenuGrade>()
+class MenuGradeInfoAdapter(private val context: Context) :
+    RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {
+    private var menuGradeList = mutableListOf<MenuGrade>()
 
-    fun setMenuGradeListData(data:MutableList<MenuGrade>) {
-        listMenuGrade = data
+    fun setMenuGradeListData(data: MutableList<MenuGrade>) {
+        menuGradeList = data
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuGradeInfoAdapter.MenuGradeInfoViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MenuGradeInfoAdapter.MenuGradeInfoViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.menu_grade_info, parent, false)
         return MenuGradeInfoViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MenuGradeInfoAdapter.MenuGradeInfoViewHolder, position: Int) {
-        val menuGrade: MenuGrade = listMenuGrade[position]
+    override fun onBindViewHolder(
+        holder: MenuGradeInfoAdapter.MenuGradeInfoViewHolder,
+        position: Int
+    ) {
+        val menuGrade: MenuGrade = menuGradeList[position]
         val menuInfo = menuGrade.name + " - " + menuGrade.price + "원"
         holder.menuName.text = menuInfo
         holder.menuGrade.rating = menuGrade.grade.toFloat()
@@ -31,7 +38,7 @@ class MenuGradeInfoAdapter(private val context: Context): RecyclerView.Adapter<M
     }
 
     override fun getItemCount(): Int {
-        return listMenuGrade.size
+        return menuGradeList.size
     }
 
     inner class MenuGradeInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
