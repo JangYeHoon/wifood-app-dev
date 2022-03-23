@@ -13,9 +13,10 @@ import com.example.wifood.databinding.ActivityDeleteGroupBinding
 import com.example.wifood.entity.Group
 
 class DeleteGroup : AppCompatActivity() {
-    lateinit var binding : ActivityDeleteGroupBinding
-    lateinit var deleteGroupAdapter : DeleteGroupAdapter
+    lateinit var binding: ActivityDeleteGroupBinding
+    lateinit var deleteGroupAdapter: DeleteGroupAdapter
     var foodGroupList = mutableListOf<Group>()
+
     // TODO "해당 Activity 삭제"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
