@@ -36,7 +36,7 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
         foodGroupAdapter.setGroupClickListener(object: GroupSelectAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 val addFood = activity as AddPlace
-                addFood.receiveData(group)
+                addFood.setGroupByGroupEntity(group)
                 dismiss()
             }
         })

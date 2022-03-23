@@ -58,46 +58,25 @@ class AddPlace : AppCompatActivity() {
         binding = ActivityAddPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 툴바 설정
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
+        val type = intent.getStringExtra("type")
+
+        // 툴바 설정
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "맛집리스트 추가"
 
-        // TODO "같은 것 끼리 묶어서 볼 수 있게 변경
+        // 수정/추가에 따른 초기 화면 값 설정
+        initActivityView(type!!)
 
-        val type = intent.getStringExtra("type")
-        if (type == "edit") {
-            insertPlace = intent.getParcelableExtra("food")!!
-            binding.searchName.text = insertPlace.name
-            binding.searchAddress.text = insertPlace.address
-            binding.memoText.setText(insertPlace.memo)
-            updateMenuListAdapter(insertPlace.menu)
-            updateActivityViewByVisit(insertPlace.visited == 1)
-            if (insertPlace.visited == 1) {
-                updateMenuGradeListAdapter(insertPlace.menuGrade)
-                binding.tasteGrade.rating = insertPlace.myTasteGrade.toFloat()
-                binding.kindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
-                binding.cleanGrade.rating = insertPlace.myCleanGrade.toFloat()
-                binding.isVisited.isChecked = true
-                if (insertPlace.imageUri.size > 0) {
-                    downloadImage(insertPlace.imageUri[0], insertPlace.id)
-                    imageList = insertPlace.imageUri
-                    imageCnt = imageList.size
-                }
-            }
-        } else if (type == "add") {
-            insertPlace.groupId = intent.getIntExtra("groupId", -1)
-            insertPlace.id = intent.getIntExtra("foodId", -1)
-        }
-        binding.groupName.text = intent.getStringExtra("groupName").toString()
-
+        // 메뉴 이름 관련 리스트 어뎁터 설정
         adapterMenuName = MenuNameAdapter(this)
         binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
         binding.recyclerView.adapter = adapterMenuName
         updateMenuListAdapter(insertPlace.menu)
 
+        // 메뉴 평가, 가격 관련 리스트 어뎁터 설정
         adapterMenuGrade = MenuGradeAdapter(this)
         binding.recyclerMenuGrade.layoutManager = LinearLayoutManager(this)
         binding.recyclerMenuGrade.adapter = adapterMenuGrade
@@ -105,7 +84,7 @@ class AddPlace : AppCompatActivity() {
 
         imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
 
-        // 맛, 청결, 친절에 대한 별점 리스너 설정
+        // 맛, 청결, 친절에 대한 별점 변경 관련 리스너 설정
         binding.tasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating <= 0.5f) ratingBar.rating = 0.5f
             insertPlace.myTasteGrade = rating.toDouble()
@@ -156,15 +135,18 @@ class AddPlace : AppCompatActivity() {
             }
         })
 
-        // 메뉴 평가 추가 버튼
+        // 메뉴 평가 추가
         binding.addMenuGradeButton.setOnClickListener {
             val name: String = binding.editMenuName.text.toString()
             val price: Int = binding.editMenuPrice.text.toString().toInt()
             val grade: Double = binding.menuGrade.rating.toDouble()
             val memo: String = binding.editMenuMemo.text.toString()
             if (name != "") {
+                // 메뉴 평가 값 리스트에 추가
                 insertPlace.menuGrade.add(MenuGrade(name, price, grade, memo))
                 updateMenuGradeListAdapter(insertPlace.menuGrade)
+
+                // 메뉴 평가 관련 view 초기화
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
                 binding.editMenuName.setText("")
@@ -211,7 +193,6 @@ class AddPlace : AppCompatActivity() {
                     putExtra("food", insertPlace)
                     if (type == "edit") {
                         putExtra("type", 1)
-                        // TODO "food data class 변경해서 food에 group name 추가해서 food만 넘겨주게 변경"
                         putExtra("groupName", binding.groupName.text)
                     } else {
                         putExtra("type", 0)
@@ -250,6 +231,34 @@ class AddPlace : AppCompatActivity() {
             }
         }
 
+    private fun initActivityView(type: String) {
+        if (type == "edit") {
+            insertPlace = intent.getParcelableExtra("food")!!
+            binding.searchName.text = insertPlace.name
+            binding.searchAddress.text = insertPlace.address
+            binding.memoText.setText(insertPlace.memo)
+            updateMenuListAdapter(insertPlace.menu)
+            updateActivityViewByVisit(insertPlace.visited == 1)
+            if (insertPlace.visited == 1) {
+                updateMenuGradeListAdapter(insertPlace.menuGrade)
+                binding.tasteGrade.rating = insertPlace.myTasteGrade.toFloat()
+                binding.kindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
+                binding.cleanGrade.rating = insertPlace.myCleanGrade.toFloat()
+                binding.isVisited.isChecked = true
+                if (insertPlace.imageUri.size > 0) {
+                    getImageToFirebase(insertPlace.imageUri[0], insertPlace.id)
+                    imageList = insertPlace.imageUri
+                    imageCnt = imageList.size
+                }
+            }
+        } else if (type == "add") {
+            insertPlace.groupId = intent.getIntExtra("groupId", -1)
+            insertPlace.id = intent.getIntExtra("foodId", -1)
+        }
+        binding.groupName.text = intent.getStringExtra("groupName").toString()
+    }
+
+    // 메뉴 리스트 추가하고 관련 값 초기화
     private fun insertMenu() {
         if (binding.editMenu.text.toString() != "") {
             insertPlace.menu.add(Menu(binding.editMenu.text.toString()))
@@ -270,6 +279,7 @@ class AddPlace : AppCompatActivity() {
         adapterMenuGrade.notifyDataSetChanged()
     }
 
+    // 방문 여부에 따라 view 설정
     private fun updateActivityViewByVisit(isVisit: Boolean) {
         val view: Int =
             if (isVisit) View.VISIBLE
@@ -290,7 +300,8 @@ class AddPlace : AppCompatActivity() {
         insertPlace.myKindnessGrade = kindness
     }
 
-    fun receiveData(group: Group) {
+    // 그룹 선택 fragment에서 선택 값 가져오는 함수
+    fun setGroupByGroupEntity(group: Group) {
         binding.groupName.text = group.name
         insertPlace.groupId = group.id
     }
@@ -314,18 +325,12 @@ class AddPlace : AppCompatActivity() {
                 if (takePictureIntent.resolveActivity(this.packageManager) != null) {
                     // 촬영한 사진을 파일로 생성
                     val photoFile: File = createImageFile()
-                    if (Build.VERSION.SDK_INT < 24) {
-                        val photoURI = Uri.fromFile(photoFile)
+                    photoFile.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(
+                            this, "com.example.wifood.fileprovider", it
+                        )
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                    } else {
-                        photoFile.also {
-                            val photoURI: Uri = FileProvider.getUriForFile(
-                                this, "com.example.wifood.fileprovider", it
-                            )
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                        }
                     }
                 }
             }
@@ -365,43 +370,34 @@ class AddPlace : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         when (requestCode) {
             1 -> {
                 if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
-                    imageUriList.clear()
-                    imageList.clear()
-                    imageCnt = 0
-                    // 카메라로부터 받은 데이터가 있을경우에만
-                    // TODO 동일한 부분 함수로 빼기
                     val file = File(currentPhotoPath)
-                    binding.foodImage.setImageURI(Uri.fromFile(file))
-                    foodImageUri = Uri.fromFile(file)
-                    imageUriList.add(Uri.fromFile(file))
-                    imageCnt += 1
-                    imageList.add(imageCnt.toString())
-                    binding.foodImage.visibility = View.VISIBLE
+                    updateImageFile(Uri.fromFile(file))
                 }
             }
             2 -> {
                 if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_GALLERY_TAKE) {
-                    // TODO 이미지 한개만 저장일 때 필요 만약 여러개 저장으로 바뀌면 삭제
-                    imageUriList.clear()
-                    imageList.clear()
-                    imageCnt = 0
-                    binding.foodImage.setImageURI(data?.data)
-                    foodImageUri = data?.data!!
-                    imageUriList.add(data.data!!)
-                    imageCnt += 1
-                    imageList.add(imageCnt.toString())
-                    binding.foodImage.visibility = View.VISIBLE
+                    data?.data?.let { updateImageFile(it) }
                 }
             }
         }
     }
 
-    private fun downloadImage(idx: String, foodId: Int) {
+    private fun updateImageFile(imageUri: Uri) {
+        imageUriList.clear()
+        imageList.clear()
+        imageCnt = 0
+        binding.foodImage.setImageURI(imageUri)
+        foodImageUri = imageUri
+        imageUriList.add(imageUri)
+        imageCnt += 1
+        imageList.add(imageCnt.toString())
+        binding.foodImage.visibility = View.VISIBLE
+    }
+
+    private fun getImageToFirebase(idx: String, foodId: Int) {
         val storage: FirebaseStorage = FirebaseStorage.getInstance()
         val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
