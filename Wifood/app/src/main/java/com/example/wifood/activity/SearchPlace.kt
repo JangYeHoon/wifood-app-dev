@@ -32,9 +32,9 @@ class SearchPlace : AppCompatActivity() {
 
         // tmap api에서 받은 검색 결과를 출력하기 위한 recyclerView 설정
         searchPlaceAdapter = SearchPlaceAdapter(this)
-        binding.searchResultRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.searchResultRecyclerView.adapter = searchPlaceAdapter
-        binding.searchResultRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
+        binding.recyclerViewSearchResult.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewSearchResult.adapter = searchPlaceAdapter
+        binding.recyclerViewSearchResult.addItemDecoration(DividerItemDecoration(this, 1))
         searchResult.observe(this) {
             searchPlaceAdapter.setListData(it)
             searchPlaceAdapter.notifyDataSetChanged()
@@ -46,17 +46,17 @@ class SearchPlace : AppCompatActivity() {
 
 
         // 검색 버튼
-        binding.searchButton.setOnClickListener {
+        binding.imageButtonSearch.setOnClickListener {
             setKeyBoardHide()
-            findPlaceBySearchKeyword(binding.keywordText.text.toString())
+            findPlaceBySearchKeyword(binding.editTextKeywordText.text.toString())
         }
 
         // 엔터키 버튼 입력
-        binding.keywordText.setOnEditorActionListener { _, i, _ ->
+        binding.editTextKeywordText.setOnEditorActionListener { _, i, _ ->
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
                 setKeyBoardHide()
-                findPlaceBySearchKeyword(binding.keywordText.text.toString())
+                findPlaceBySearchKeyword(binding.editTextKeywordText.text.toString())
                 handled = true
             }
             handled
@@ -76,7 +76,7 @@ class SearchPlace : AppCompatActivity() {
 
     private fun setKeyBoardHide() {
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(binding.keywordText.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(binding.editTextKeywordText.windowToken, 0)
     }
 
     // tmap api에 keyword를 이용해 검색한 결과를 받아와 searchResult에 저장

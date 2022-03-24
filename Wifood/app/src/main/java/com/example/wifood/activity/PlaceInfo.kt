@@ -49,20 +49,20 @@ class PlaceInfo : AppCompatActivity() {
     }
 
     private fun initActivityViewValue() {
-        binding.groupName.text = groupName
-        binding.foodName.text = place.name
-        binding.foodAddress.text = place.address
-        binding.memoText.text = place.memo
+        binding.textViewGroupName.text = groupName
+        binding.textViewPlaceName.text = place.name
+        binding.textViewAddress.text = place.address
+        binding.textViewPlaceMemo.text = place.memo
         if (place.visited == 1) {
-            binding.tasteGrade.text = place.myTasteGrade.toString()
-            binding.kindnessGrade.text = place.myKindnessGrade.toString()
-            binding.cleanGrade.text = place.myCleanGrade.toString()
+            binding.textViewTasteGrade.text = place.myTasteGrade.toString()
+            binding.textViewKindnessGrade.text = place.myKindnessGrade.toString()
+            binding.textViewCleanGrade.text = place.myCleanGrade.toString()
             if (place.menuGrade.size <= 0)
-                binding.textMenu.visibility = View.GONE
+                binding.textViewMenuGradeTitle.visibility = View.GONE
         } else {
-            binding.textMenu.visibility = View.GONE
-            binding.recyclerView.visibility = View.GONE
-            binding.foodGradeRow.visibility = View.GONE
+            binding.textViewMenuGradeTitle.visibility = View.GONE
+            binding.recyclerViewMenuGradeList.visibility = View.GONE
+            binding.tableRowPlaceGrade.visibility = View.GONE
         }
 
         var s = ""
@@ -71,15 +71,15 @@ class PlaceInfo : AppCompatActivity() {
             if (i != place.menu.size - 1)
                 s += ","
         }
-        binding.foodMenu.text = s
+        binding.textViewMenu.text = s
 
         adapterMenuGradeInfo = MenuGradeInfoAdapter(this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = adapterMenuGradeInfo
+        binding.recyclerViewMenuGradeList.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewMenuGradeList.adapter = adapterMenuGradeInfo
         adapterMenuGradeInfo.setMenuGradeListData(place.menuGrade)
         adapterMenuGradeInfo.notifyDataSetChanged()
 
-        binding.foodAddress.setOnClickListener {
+        binding.textViewAddress.setOnClickListener {
             val intent = Intent(this@PlaceInfo, Map::class.java)
             intent.putExtra("latitude", place.latitude)
             intent.putExtra("longitude", place.longitude)
@@ -95,7 +95,7 @@ class PlaceInfo : AppCompatActivity() {
         val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
-                Glide.with(this@PlaceInfo).load(it.result).into(binding.foodImage)
+                Glide.with(this@PlaceInfo).load(it.result).into(binding.imageViewPlaceImage)
             }
         }
     }

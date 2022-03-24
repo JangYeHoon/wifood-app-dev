@@ -51,25 +51,25 @@ class PlaceList : AppCompatActivity() {
 
         // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
         placeListAdapter = PlaceListAdapter(this)
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerView.adapter = placeListAdapter
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
+        binding.recyclerViewPlaceList.layoutManager = GridLayoutManager(this, 2)
+        binding.recyclerViewPlaceList.adapter = placeListAdapter
+        binding.recyclerViewPlaceList.addItemDecoration(DividerItemDecoration(this, 1))
         setFoodListView()
 
         groupListAdapter = GroupNameAdapter(this)
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this).also {
+        binding.recyclerViewGroupList.layoutManager = LinearLayoutManager(this).also {
             it.orientation = HORIZONTAL
         }
         val spaceDecoration = VerticalSpaceItemDecoration(10)
-        binding.recyclerView2.addItemDecoration(spaceDecoration)
-        binding.recyclerView2.adapter = groupListAdapter
+        binding.recyclerViewGroupList.addItemDecoration(spaceDecoration)
+        binding.recyclerViewGroupList.adapter = groupListAdapter
 
         groupListViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListViewModel.groupList.observe(this) {
             updateGroupAdapterList()
             updateFoodAdapterList()
             setGroupAllButtonColorBySelect(true)
-            binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
+            binding.recyclerViewGroupList.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
 
         groupListAdapter.setGroupClickListener(object : GroupNameAdapter.GroupClickListener {
@@ -81,7 +81,7 @@ class PlaceList : AppCompatActivity() {
             }
         })
 
-        binding.groupAddButton.setOnClickListener {
+        binding.imageButtonGroupInsert.setOnClickListener {
             val intent = Intent(this@PlaceList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
             }
@@ -89,7 +89,7 @@ class PlaceList : AppCompatActivity() {
         }
 
         // foodlist add btn
-        binding.foodListAddButton.setOnClickListener {
+        binding.imageButtonPlaceInsert.setOnClickListener {
             val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListViewModel.getGroupNameById(groupId))
@@ -139,7 +139,7 @@ class PlaceList : AppCompatActivity() {
             }
         })
 
-        binding.groupAll.setOnClickListener {
+        binding.textViewGroupAll.setOnClickListener {
             groupId = -1
             groupListAdapter.setSelectGroupByGroupId(-1)
             updateGroupAdapterList()
@@ -169,7 +169,7 @@ class PlaceList : AppCompatActivity() {
                 }
                 groupId = food!!.groupId
                 updateGroupAdapterList()
-                binding.recyclerView2.smoothScrollToPosition(groupListAdapter.getGroupPosition())
+                binding.recyclerViewGroupList.smoothScrollToPosition(groupListAdapter.getGroupPosition())
                 setGroupAllButtonColorBySelect(false)
             }
         }
@@ -225,23 +225,23 @@ class PlaceList : AppCompatActivity() {
 
     private fun setGroupAllButtonColorBySelect(isSelect: Boolean) {
         if (isSelect) {
-            binding.groupAll.background =
+            binding.textViewGroupAll.background =
                 ContextCompat.getDrawable(this, R.drawable.bg_rounding_box_check)
-            binding.groupAll.setTextColor(Color.WHITE)
+            binding.textViewGroupAll.setTextColor(Color.WHITE)
         } else {
-            binding.groupAll.background =
+            binding.textViewGroupAll.background =
                 ContextCompat.getDrawable(this, R.drawable.bg_rounding_box)
-            binding.groupAll.setTextColor(Color.BLACK)
+            binding.textViewGroupAll.setTextColor(Color.BLACK)
         }
     }
 
     private fun setEmptyRecyclerView() {
         if (placeListAdapter.itemCount == 0) {
-            binding.recyclerView.visibility = View.INVISIBLE
-            binding.emptyText.visibility = View.VISIBLE
+            binding.recyclerViewPlaceList.visibility = View.INVISIBLE
+            binding.textViewEmptyText.visibility = View.VISIBLE
         } else {
-            binding.recyclerView.visibility = View.VISIBLE
-            binding.emptyText.visibility = View.INVISIBLE
+            binding.recyclerViewPlaceList.visibility = View.VISIBLE
+            binding.textViewEmptyText.visibility = View.INVISIBLE
         }
     }
 
