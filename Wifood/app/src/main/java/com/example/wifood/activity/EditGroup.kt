@@ -45,8 +45,8 @@ class EditGroup : AppCompatActivity() {
         if (type == "EDIT") {
             supportActionBar?.title = "그룹 수정"
             editGroup = intent.getParcelableExtra("group")!!
-            binding.groupTitle.setText(editGroup.name)
-            binding.themeTitle.setText(editGroup.theme)
+            binding.editTextGroupName.setText(editGroup.name)
+            binding.editTextTheme.setText(editGroup.theme)
             for (i in pinArray) {
                 if (editGroup.color == i.contentDescription.toString()) {
                     i.scaleX = 2F
@@ -64,7 +64,7 @@ class EditGroup : AppCompatActivity() {
         for (selectPin in pinArray) {
             selectPin.setOnClickListener {
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(binding.groupTitle.windowToken, 0)
+                inputMethodManager.hideSoftInputFromWindow(binding.editTextGroupName.windowToken, 0)
                 editGroup.color = selectPin.contentDescription.toString()
                 selectPin.scaleX = 2F
                 selectPin.scaleY = 2F
@@ -79,9 +79,9 @@ class EditGroup : AppCompatActivity() {
             }
         }
 
-        binding.saveBtn.setOnClickListener {
-            editGroup.name = binding.groupTitle.text.toString()
-            editGroup.theme = binding.themeTitle.text.toString()
+        binding.buttonSave.setOnClickListener {
+            editGroup.name = binding.editTextGroupName.text.toString()
+            editGroup.theme = binding.editTextTheme.text.toString()
             if (editGroup.name.isNotEmpty() && editGroup.color.isNotEmpty()) {
                 val intent = Intent().apply {
                     putExtra("group", editGroup)

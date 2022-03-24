@@ -42,12 +42,12 @@ class GroupList : AppCompatActivity() {
         // Connecting RecyclerView and Adapter
         groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListAdapter = GroupListAdapter(this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = groupListAdapter
-        binding.recyclerView.addItemDecoration(DividerItemDecoration(this, 1))
+        binding.recyclerViewGroupList.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewGroupList.adapter = groupListAdapter
+        binding.recyclerViewGroupList.addItemDecoration(DividerItemDecoration(this, 1))
         val groupItemTouchHelperCallback = GroupItemTouchHelperCallback(groupListAdapter)
         val groupTouchHelper = ItemTouchHelper(groupItemTouchHelperCallback)
-        groupTouchHelper.attachToRecyclerView(binding.recyclerView)
+        groupTouchHelper.attachToRecyclerView(binding.recyclerViewGroupList)
 
         // Automatically change bindings when data changes
         groupViewModel.groupList.observe(this) {
@@ -66,7 +66,7 @@ class GroupList : AppCompatActivity() {
         })
 
         // group add btn
-        binding.groupAddButton.setOnClickListener {
+        binding.imageButtonGroupInsert.setOnClickListener {
             val intent = Intent(this@GroupList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
                 putExtra("groupId", groupViewModel.getGroupMaxId() + 1)
@@ -166,10 +166,10 @@ class GroupList : AppCompatActivity() {
 
     private fun setEmptyRecyclerView() {
         if (groupListAdapter.itemCount == 0) {
-            binding.recyclerView.visibility = View.INVISIBLE
+            binding.recyclerViewGroupList.visibility = View.INVISIBLE
             binding.emptyText.visibility = View.VISIBLE
         } else {
-            binding.recyclerView.visibility = View.VISIBLE
+            binding.recyclerViewGroupList.visibility = View.VISIBLE
             binding.emptyText.visibility = View.INVISIBLE
         }
     }

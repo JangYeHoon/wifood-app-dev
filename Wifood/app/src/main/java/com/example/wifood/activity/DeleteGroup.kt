@@ -40,13 +40,13 @@ class DeleteGroup : AppCompatActivity() {
 
         // 삭제할 foodGroup을 선택할 수 있도록 foodgrouplist에 대한 recyclerView 설정
         deleteGroupAdapter = DeleteGroupAdapter(this)
-        binding.deleteRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.deleteRecyclerView.adapter = deleteGroupAdapter
-        binding.deleteRecyclerView.addItemDecoration(DividerItemDecoration(this, 1))
+        binding.recyclerViewGroupList.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewGroupList.adapter = deleteGroupAdapter
+        binding.recyclerViewGroupList.addItemDecoration(DividerItemDecoration(this, 1))
         deleteGroupAdapter.setListData(foodGroupList)
 
         // 선택된 삭제할 foodGroup들에 대한 id를 FoodGroupActivity로 넘겨줌
-        binding.deleteBtn.setOnClickListener {
+        binding.buttonDelete.setOnClickListener {
             val intent = Intent().apply {
                 putExtra("id", ArrayList(deleteGroupAdapter.getDeleteFoodIdList()))
                 putExtra("type", 2)

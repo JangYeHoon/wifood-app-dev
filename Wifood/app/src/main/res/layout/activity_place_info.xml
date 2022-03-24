@@ -10,7 +10,6 @@
         layout="@layout/toolbar" />
 
     <TableLayout
-        android:id="@+id/tableLayout"
         android:layout_width="376dp"
         android:layout_height="wrap_content"
         android:stretchColumns="*"
@@ -26,7 +25,7 @@
             android:layout_height="100dp"/>
 
         <TextView
-            android:id="@id/groupName"
+            android:id="@+id/groupName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
