@@ -10,28 +10,28 @@ import java.lang.Integer.max
 // Data retention and sharing
 class GroupViewModel : ViewModel() {
     var groupList: LiveData<MutableList<Group>>
-    private val foodGroupDto: GroupDto = GroupDto("food")
+    private val groupDto: GroupDto = GroupDto()
 
     init {
-        groupList = foodGroupDto.getGroupList()
+        groupList = groupDto.getGroupList()
     }
 
     fun insertGroup(group: Group) {
-        foodGroupDto.insertGroup(group)
+        groupDto.insertGroup(group)
     }
 
     fun deleteGroup(groupIdList: ArrayList<Int>) {
-        foodGroupDto.deleteGroup(groupIdList)
+        groupDto.deleteGroup(groupIdList)
     }
 
     fun updateGroup(group: Group) {
-        foodGroupDto.updateGroup(group)
+        groupDto.updateGroup(group)
     }
 
     fun setGroupOrderByGroupList(groupList: ArrayList<Group>) {
         for (i in groupList.indices) {
             groupList[i].order = i + 1
-            foodGroupDto.updateGroup(groupList[i])
+            groupDto.updateGroup(groupList[i])
         }
     }
 
@@ -46,9 +46,11 @@ class GroupViewModel : ViewModel() {
     }
 
     fun getGroupMaxId(): Int {
-        var maxId = 1
-        for (group in groupList.value!!) {
-            maxId = max(maxId, group.id)
+        var maxId = 0
+        if (groupList.value != null) {
+            for (group in groupList.value!!) {
+                maxId = max(maxId, group.id)
+            }
         }
         return maxId
     }

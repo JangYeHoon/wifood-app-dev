@@ -5,7 +5,7 @@ import com.google.firebase.storage.FirebaseStorage
 
 class ImageStoreDao {
     var storage = FirebaseStorage.getInstance().reference
-    fun insertFoodImage(uri: Uri, idx: Int, foodId: Int) {
-        storage.child("$foodId/").child("$idx.png").putFile(uri)
+    fun insertPlaceImage(uri: Uri, idx: Int, placeId: Int) {
+        storage.child("$placeId/").child("$idx.png").putFile(uri)
     }
 }

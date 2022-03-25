@@ -13,7 +13,7 @@ import com.example.wifood.R
 import com.example.wifood.entity.Group
 
 class GroupNameAdapter(private val context: Context) :
-    RecyclerView.Adapter<GroupNameAdapter.FoodGroupViewHolder>() {
+    RecyclerView.Adapter<GroupNameAdapter.GroupNameViewHolder>() {
     private var groupList = mutableListOf<Group>()
     private var selectGroup = 0
     private var groupPosition: Int = 0
@@ -38,12 +38,12 @@ class GroupNameAdapter(private val context: Context) :
         return groupPosition
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupNameViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.group_name, parent, false)
-        return FoodGroupViewHolder(view)
+        return GroupNameViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: GroupNameAdapter.FoodGroupViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupNameAdapter.GroupNameViewHolder, position: Int) {
         val group: Group = groupList[position]
         holder.groupName.text = group.name
         if (group.id == selectGroup) {
@@ -64,8 +64,8 @@ class GroupNameAdapter(private val context: Context) :
         return groupList.size
     }
 
-    inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val groupName: TextView = itemView.findViewById(R.id.group_name)
+    inner class GroupNameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val groupName: TextView = itemView.findViewById(R.id.textView_groupName)
     }
 
     interface GroupClickListener {

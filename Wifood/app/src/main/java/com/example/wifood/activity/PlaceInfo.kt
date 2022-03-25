@@ -43,7 +43,7 @@ class PlaceInfo : AppCompatActivity() {
         placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
 
         // 수정할 맛집에 대한 정보를 받아와 view 설정
-        place = intent.getParcelableExtra<Place>("food")!!
+        place = intent.getParcelableExtra<Place>("place")!!
         groupName = intent.getStringExtra("groupName")!!
         initActivityViewValue()
     }
@@ -120,7 +120,7 @@ class PlaceInfo : AppCompatActivity() {
             }
             R.id.edit_menu -> {
                 val intent = Intent(this@PlaceInfo, AddPlace::class.java).apply {
-                    putExtra("food", place)
+                    putExtra("place", place)
                     putExtra("groupName", groupName)
                     putExtra("type", "edit")
                 }
@@ -133,16 +133,16 @@ class PlaceInfo : AppCompatActivity() {
     private val requestActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                val editFood = it.data?.getParcelableExtra<Place>("food")
+                val editPlace = it.data?.getParcelableExtra<Place>("place")
                 val editGroupName = it.data?.getStringExtra("groupName")
                 // group edit
                 when (it.data?.getIntExtra("type", -1)) {
                     1 -> {
-                        // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
+                        // EditPlaceListActivity에서 받은 수정된 place를 이용해 db 수정
                         CoroutineScope(Dispatchers.IO).launch {
-                            placeViewModel.updatePlace(editFood!!)
+                            placeViewModel.updatePlace(editPlace!!)
                         }
-                        place = editFood!!
+                        place = editPlace!!
                         groupName = editGroupName!!
                         initActivityViewValue()
                     }

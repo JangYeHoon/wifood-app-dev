@@ -49,7 +49,7 @@ class AddPlace : AppCompatActivity() {
     lateinit var adapterMenuGrade: MenuGradeAdapter
     lateinit var inputMethodManager: InputMethodManager
     lateinit var currentPhotoPath: String
-    lateinit var foodImageUri: Uri
+    lateinit var placeImageUri: Uri
     lateinit var imageStoreViewModel: ImageStoreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,18 +182,18 @@ class AddPlace : AppCompatActivity() {
         // 갤러리 버튼
         binding.buttonGallery.setOnClickListener { getGalleryImage() }
 
-        // 맛집리스트를 추가할 수 있도록 설정된 food 정보를 FoodList Activity로 넘겨줌
+        // 맛집리스트를 추가할 수 있도록 설정된 place 정보를 PlaceList Activity로 넘겨줌
         binding.buttonSave.setOnClickListener {
             insertPlace.memo = binding.editTextPlaceMemo.text.toString()
             if (insertPlace.visited == 0) {
                 imageList.clear()
                 insertPlace.menuGrade.clear()
             }
-//            imageStoreViewModel.insertFoodImage(imageUriList, insertFood.id)
+//            imageStoreViewModel.insertPlaceImage(imageUriList, insertPlace.id)
             insertPlace.imageUri = imageList
             if (insertPlace.name != "None" && insertPlace.groupId != -1) {
                 val intent = Intent().apply {
-                    putExtra("food", insertPlace)
+                    putExtra("place", insertPlace)
                     if (type == "edit") {
                         putExtra("type", 1)
                         putExtra("groupName", binding.textViewGroupName.text)
@@ -236,7 +236,7 @@ class AddPlace : AppCompatActivity() {
 
     private fun initActivityView(type: String) {
         if (type == "edit") {
-            insertPlace = intent.getParcelableExtra("food")!!
+            insertPlace = intent.getParcelableExtra("place")!!
             binding.textViewPlaceName.text = insertPlace.name
             binding.textViewAddress.text = insertPlace.address
             binding.editTextPlaceMemo.setText(insertPlace.memo)
@@ -256,7 +256,7 @@ class AddPlace : AppCompatActivity() {
             }
         } else if (type == "add") {
             insertPlace.groupId = intent.getIntExtra("groupId", -1)
-            insertPlace.id = intent.getIntExtra("foodId", -1)
+            insertPlace.id = intent.getIntExtra("placeId", -1)
         }
         binding.textViewGroupName.text = intent.getStringExtra("groupName").toString()
     }
@@ -393,16 +393,16 @@ class AddPlace : AppCompatActivity() {
         imageList.clear()
         imageCnt = 0
         binding.imageViewPlace.setImageURI(imageUri)
-        foodImageUri = imageUri
+        placeImageUri = imageUri
         imageUriList.add(imageUri)
         imageCnt += 1
         imageList.add(imageCnt.toString())
         binding.imageViewPlace.visibility = View.VISIBLE
     }
 
-    private fun getImageToFirebase(idx: String, foodId: Int) {
+    private fun getImageToFirebase(idx: String, placeId: Int) {
         val storage: FirebaseStorage = FirebaseStorage.getInstance()
-        val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
+        val storageRef: StorageReference = storage.reference.child("$placeId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
                 Glide.with(this@AddPlace).load(it.result).into(binding.imageViewPlace)

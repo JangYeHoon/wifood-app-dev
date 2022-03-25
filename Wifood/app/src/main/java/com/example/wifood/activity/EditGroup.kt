@@ -13,7 +13,7 @@ import com.example.wifood.entity.Group
 class EditGroup : AppCompatActivity() {
     lateinit var binding: ActivityEditGroupBinding
     lateinit var inputMethodManager: InputMethodManager
-    lateinit var editGroup: Group
+    private var editGroup: Group = Group()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

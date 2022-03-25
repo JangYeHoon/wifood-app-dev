@@ -14,24 +14,24 @@ class PlaceViewModel() : ViewModel() {
     }
 
     fun getPlaceListMaxId(): Int {
-        val food = placeList.value
+        val place = placeList.value
         var maxValue = 0
-        if (food != null)
-            for (f in food)
+        if (place != null)
+            for (f in place)
                 maxValue = Integer.max(f.id, maxValue)
         return maxValue
     }
 
-    fun getPlaceListByGroupId(groupId: Int): MutableList<Place> {
-        val food = mutableListOf<Place>()
-        if (groupId != -1) {
+    fun getPlaceListByGroupId(groupId: Int): MutableList<Place>? {
+        val place = mutableListOf<Place>()
+        if (groupId != -1 && placeList.value != null) {
             for (f in placeList.value!!) {
                 if (groupId == f.groupId)
-                    food.add(f)
+                    place.add(f)
             }
-            return food
+            return place
         }
-        return placeList.value!!
+        return placeList.value
     }
 
     fun insertPlace(place: Place) {
@@ -42,7 +42,7 @@ class PlaceViewModel() : ViewModel() {
         placeDto.insertPlaceList(place)
     }
 
-    fun deletePlace(foodId: Int) {
-        placeDto.deletePlaceList(foodId)
+    fun deletePlace(placeId: Int) {
+        placeDto.deletePlaceList(placeId)
     }
 }

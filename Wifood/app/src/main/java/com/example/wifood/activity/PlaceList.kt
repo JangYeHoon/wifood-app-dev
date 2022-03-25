@@ -46,15 +46,15 @@ class PlaceList : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = intent.getStringExtra("groupName")
 
-        // 데이터베이스 접근을 위한 food group id정보 받아옴
+        // 데이터베이스 접근을 위한 place group id정보 받아옴
         groupId = intent.getIntExtra("groupId", 0)
 
-        // 데이터베이스에서 받아온 foodlist 정보를 이용해 recyclerView 설정
+        // 데이터베이스에서 받아온 placelist 정보를 이용해 recyclerView 설정
         placeListAdapter = PlaceListAdapter(this)
         binding.recyclerViewPlaceList.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerViewPlaceList.adapter = placeListAdapter
         binding.recyclerViewPlaceList.addItemDecoration(DividerItemDecoration(this, 1))
-        setFoodListView()
+        setPlaceListView()
 
         groupListAdapter = GroupNameAdapter(this)
         binding.recyclerViewGroupList.layoutManager = LinearLayoutManager(this).also {
@@ -67,8 +67,8 @@ class PlaceList : AppCompatActivity() {
         groupListViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListViewModel.groupList.observe(this) {
             updateGroupAdapterList()
-            updateFoodAdapterList()
-            setGroupAllButtonColorBySelect(true)
+            updatePlaceAdapterList()
+            setGroupAllButtonColorBySelect(false)
             binding.recyclerViewGroupList.smoothScrollToPosition(groupListAdapter.getGroupPosition())
         }
 
@@ -76,7 +76,7 @@ class PlaceList : AppCompatActivity() {
             override fun onClick(view: View, position: Int, group: Group) {
                 groupId = group.id
                 updateGroupAdapterList()
-                updateFoodAdapterList()
+                updatePlaceAdapterList()
                 setGroupAllButtonColorBySelect(false)
             }
         })
@@ -84,25 +84,26 @@ class PlaceList : AppCompatActivity() {
         binding.imageButtonGroupInsert.setOnClickListener {
             val intent = Intent(this@PlaceList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
+                putExtra("groupId", groupListViewModel.getGroupMaxId() + 1)
             }
             requestGroupActivity.launch(intent)
         }
 
-        // foodlist add btn
+        // place add btn
         binding.imageButtonPlaceInsert.setOnClickListener {
             val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListViewModel.getGroupNameById(groupId))
-                putExtra("foodId", placeViewModel.getPlaceListMaxId() + 1)
+                putExtra("placeId", placeViewModel.getPlaceListMaxId() + 1)
                 putExtra("type", "add")
             }
             requestActivity.launch(intent)
         }
 
-        placeListAdapter.setFoodListClickListener(object : PlaceListAdapter.FoodListClickListener {
+        placeListAdapter.setPlaceListClickListener(object : PlaceListAdapter.PlaceListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
                 val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
-                    putExtra("food", item)
+                    putExtra("place", item)
                     putExtra("groupName", groupListViewModel.getGroupNameById(item.groupId))
                 }
                 startActivity(intent)
@@ -110,7 +111,7 @@ class PlaceList : AppCompatActivity() {
         })
 
         placeListAdapter.setPopupButtonClickListener(object :
-            PlaceListAdapter.FoodListClickListener {
+            PlaceListAdapter.PlaceListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
                 val popupMenu = PopupMenu(this@PlaceList, view)
                 popupMenu.menuInflater.inflate(R.menu.popup_place_menu, popupMenu.menu)
@@ -124,7 +125,7 @@ class PlaceList : AppCompatActivity() {
                         }
                         R.id.edit_menu -> {
                             val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
-                                putExtra("food", item)
+                                putExtra("place", item)
                                 putExtra(
                                     "groupName",
                                     groupListViewModel.getGroupNameById(item.groupId)
@@ -143,7 +144,7 @@ class PlaceList : AppCompatActivity() {
             groupId = -1
             groupListAdapter.setSelectGroupByGroupId(-1)
             updateGroupAdapterList()
-            updateFoodAdapterList()
+            updatePlaceAdapterList()
             setGroupAllButtonColorBySelect(true)
         }
     }
@@ -151,23 +152,23 @@ class PlaceList : AppCompatActivity() {
     private val requestActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                val food = it.data?.getParcelableExtra<Place>("food")
+                val place = it.data?.getParcelableExtra<Place>("place")
                 // type 0: add, 1: edit, 2: delete
                 when (it.data?.getIntExtra("type", -1)) {
                     0 -> {
-                        // AddFoodListActivity에서 받은 정보를 이용해 food를 생성해 db에 추가
+                        // AddPlaceListActivity에서 받은 정보를 이용해 Place를 생성해 db에 추가
                         CoroutineScope(Dispatchers.IO).launch {
-                            placeViewModel.insertPlace(food!!)
+                            placeViewModel.insertPlace(place!!)
                         }
                     }
                     1 -> {
-                        // EditFoodListActivity에서 받은 수정된 food를 이용해 db 수정
+                        // EditPlaceListActivity에서 받은 수정된 place를 이용해 db 수정
                         CoroutineScope(Dispatchers.IO).launch {
-                            placeViewModel.updatePlace(food!!)
+                            placeViewModel.updatePlace(place!!)
                         }
                     }
                 }
-                groupId = food!!.groupId
+                groupId = place!!.groupId
                 updateGroupAdapterList()
                 binding.recyclerViewGroupList.smoothScrollToPosition(groupListAdapter.getGroupPosition())
                 setGroupAllButtonColorBySelect(false)
@@ -190,15 +191,15 @@ class PlaceList : AppCompatActivity() {
             }
         }
 
-    private fun setFoodListView() {
+    private fun setPlaceListView() {
         placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
         placeViewModel.placeList.observe(this) {
-            updateFoodAdapterList()
+            updatePlaceAdapterList()
         }
     }
 
-    private fun updateFoodAdapterList() {
-        placeListAdapter.setFoodListData(placeViewModel.getPlaceListByGroupId(groupId))
+    private fun updatePlaceAdapterList() {
+        placeViewModel.getPlaceListByGroupId(groupId)?.let { placeListAdapter.setPlaceListData(it) }
         placeListAdapter.notifyDataSetChanged()
         setEmptyRecyclerView()
     }

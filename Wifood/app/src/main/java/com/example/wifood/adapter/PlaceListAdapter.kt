@@ -12,23 +12,23 @@ import com.example.wifood.entity.Place
 import kotlin.math.round
 
 class PlaceListAdapter(private val context: Context) :
-    RecyclerView.Adapter<PlaceListAdapter.FoodListViewHolder>() {
-    private var foodList = mutableListOf<Place>()
+    RecyclerView.Adapter<PlaceListAdapter.PlaceListViewHolder>() {
+    private var placeList = mutableListOf<Place>()
 
-    fun setFoodListData(data: MutableList<Place>) {
-        foodList = data
+    fun setPlaceListData(data: MutableList<Place>) {
+        placeList = data
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceListViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.place_list, parent, false)
-        return FoodListViewHolder(view)
+        return PlaceListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: FoodListViewHolder, position: Int) {
-        val place: Place = foodList[position]
-        holder.foodName.text = place.name
-        holder.foodAddress.text = place.address
-        holder.foodMemo.text = place.memo
+    override fun onBindViewHolder(holder: PlaceListViewHolder, position: Int) {
+        val place: Place = placeList[position]
+        holder.placeName.text = place.name
+        holder.placeAddress.text = place.address
+        holder.placeMemo.text = place.memo
         if (place.visited == 1) {
             val gradeScore = (place.myTasteGrade + place.myCleanGrade + place.myKindnessGrade) / 3
             val grade = "${round(gradeScore * 10) / 10}/5"  // 출력하는 평점은 taste, clean, kind의 평균
@@ -37,7 +37,7 @@ class PlaceListAdapter(private val context: Context) :
             holder.myGrade.visibility = View.INVISIBLE
         }
         holder.itemView.setOnClickListener {
-            foodListClickListener.onClick(it, position, place)
+            placeListClickListener.onClick(it, position, place)
         }
         holder.popupMenu.setOnClickListener {
             popupClickListener.onClick(it, position, place)
@@ -45,29 +45,29 @@ class PlaceListAdapter(private val context: Context) :
     }
 
     override fun getItemCount(): Int {
-        return foodList.size
+        return placeList.size
     }
 
-    inner class FoodListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val foodName: TextView = itemView.findViewById(R.id.foodName)
-        val foodAddress: TextView = itemView.findViewById(R.id.foodAddress)
-        val foodMemo: TextView = itemView.findViewById(R.id.foodMemo)
-        val myGrade: TextView = itemView.findViewById(R.id.myGrade)
-        val popupMenu: ImageButton = itemView.findViewById(R.id.popupMenu)
+    inner class PlaceListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val placeName: TextView = itemView.findViewById(R.id.textView_placeName)
+        val placeAddress: TextView = itemView.findViewById(R.id.textView_placeAddress)
+        val placeMemo: TextView = itemView.findViewById(R.id.textView_placeMemo)
+        val myGrade: TextView = itemView.findViewById(R.id.textView_placeGrade)
+        val popupMenu: ImageButton = itemView.findViewById(R.id.imageButton_popupMenu)
     }
 
-    interface FoodListClickListener {
+    interface PlaceListClickListener {
         fun onClick(view: View, position: Int, item: Place)
     }
 
-    private lateinit var popupClickListener: FoodListClickListener
-    private lateinit var foodListClickListener: FoodListClickListener
+    private lateinit var popupClickListener: PlaceListClickListener
+    private lateinit var placeListClickListener: PlaceListClickListener
 
-    fun setFoodListClickListener(foodListClickListener: FoodListClickListener) {
-        this.foodListClickListener = foodListClickListener
+    fun setPlaceListClickListener(foodListClickListener: PlaceListClickListener) {
+        this.placeListClickListener = foodListClickListener
     }
 
-    fun setPopupButtonClickListener(popupClickListener: FoodListClickListener) {
+    fun setPopupButtonClickListener(popupClickListener: PlaceListClickListener) {
         this.popupClickListener = popupClickListener
     }
 }

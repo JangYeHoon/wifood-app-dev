@@ -42,8 +42,8 @@ class MenuGradeInfoAdapter(private val context: Context) :
     }
 
     inner class MenuGradeInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val menuName: TextView = itemView.findViewById(R.id.menuName)
-        val menuGrade: RatingBar = itemView.findViewById(R.id.menuGrade)
-        val menuMemo: TextView = itemView.findViewById(R.id.menuMemo)
+        val menuName: TextView = itemView.findViewById(R.id.textView_menuName)
+        val menuGrade: RatingBar = itemView.findViewById(R.id.ratingBar_menuGrade)
+        val menuMemo: TextView = itemView.findViewById(R.id.textview_menuMemo)
     }
 }

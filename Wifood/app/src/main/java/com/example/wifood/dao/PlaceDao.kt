@@ -7,37 +7,34 @@ import com.google.firebase.database.*
 
 class PlaceDao() {
     private var databasePlaceList: DatabaseReference =
-        FirebaseDatabase.getInstance().getReference("FoodList")
+        FirebaseDatabase.getInstance().getReference("Place")
 
-    // 디비에서 foodlist 정보 받아옴
     fun getPlaceList(): LiveData<MutableList<Place>> {
-        val foodList = MutableLiveData<MutableList<Place>>()
+        val placeList = MutableLiveData<MutableList<Place>>()
         databasePlaceList.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val dbList: MutableList<Place> = mutableListOf()
                 if (snapshot.exists()) {
-                    for (snapshotFoodList in snapshot.children) {
-                        val food = snapshotFoodList.getValue(Place::class.java)
-                        dbList.add(food!!)
-                        foodList.value = dbList
+                    for (snapshotPlaceList in snapshot.children) {
+                        val place = snapshotPlaceList.getValue(Place::class.java)
+                        dbList.add(place!!)
+                        placeList.value = dbList
                     }
-                } else foodList.postValue(null)
+                } else placeList.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
-        return foodList
+        return placeList
     }
 
-    // 디비에 해당 food 정보 추가 or 수정
     fun insertPlaceList(place: Place) {
         databasePlaceList.child(place.id.toString()).setValue(place)
     }
 
-    // 디비에서 해당 id를 가진 food 삭제
-    fun deletePlaceList(foodId: Int) {
-        databasePlaceList.child(foodId.toString()).removeValue()
+    fun deletePlaceList(placeId: Int) {
+        databasePlaceList.child(placeId.toString()).removeValue()
     }
 }

@@ -16,7 +16,7 @@ import com.example.wifood.entity.Group
 import java.util.*
 
 class GroupListAdapter(private val context: Context) :
-    RecyclerView.Adapter<GroupListAdapter.FoodGroupViewHolder>(),
+    RecyclerView.Adapter<GroupListAdapter.GroupViewHolder>(),
     GroupItemTouchHelperCallback.OnItemMoveListener {
     private var groupList = mutableListOf<Group>()
 
@@ -35,22 +35,22 @@ class GroupListAdapter(private val context: Context) :
         groupList.clear()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.group_list, parent, false)
-        return FoodGroupViewHolder(view)
+        return GroupViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: GroupListAdapter.FoodGroupViewHolder, position: Int) {
-        val foodGroup: Group = groupList[position]
-        holder.groupName.text = foodGroup.name
-        val t = "#" + foodGroup.theme
+    override fun onBindViewHolder(holder: GroupListAdapter.GroupViewHolder, position: Int) {
+        val group: Group = groupList[position]
+        holder.groupName.text = group.name
+        val t = "#" + group.theme
         holder.groupTheme.text = t
-        holder.groupPin.setColorFilter(Color.parseColor(foodGroup.color))
+        holder.groupPin.setColorFilter(Color.parseColor(group.color))
         holder.groupEdit.setOnClickListener {
-            groupEditClickListener.onClick(it, position, foodGroup)
+            groupEditClickListener.onClick(it, position, group)
         }
         holder.itemView.setOnClickListener {
-            groupGoClickListener.onClick(it, position, foodGroup)
+            groupGoClickListener.onClick(it, position, group)
         }
         holder.groupMove.setOnTouchListener { _, motionEvent ->
             when (motionEvent.action) {
@@ -67,12 +67,12 @@ class GroupListAdapter(private val context: Context) :
         return groupList.size
     }
 
-    inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val groupName: TextView = itemView.findViewById(R.id.group_name)
-        val groupTheme: TextView = itemView.findViewById(R.id.group_theme)
-        val groupPin: ImageView = itemView.findViewById(R.id.pinImage)
-        val groupEdit: ImageButton = itemView.findViewById(R.id.editBtn)
-        val groupMove: ImageView = itemView.findViewById(R.id.moveImage)
+    inner class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val groupName: TextView = itemView.findViewById(R.id.textView_groupName)
+        val groupTheme: TextView = itemView.findViewById(R.id.textView_groupTheme)
+        val groupPin: ImageView = itemView.findViewById(R.id.imageView_pinImage)
+        val groupEdit: ImageButton = itemView.findViewById(R.id.imageButton_groupEdit)
+        val groupMove: ImageView = itemView.findViewById(R.id.imageView_scroll)
     }
 
     interface GroupEditClickListener {
@@ -99,7 +99,7 @@ class GroupListAdapter(private val context: Context) :
     }
 
     interface OnStartDragListener {
-        fun onStartDrag(viewHolder: FoodGroupViewHolder)
+        fun onStartDrag(viewHolder: GroupViewHolder)
     }
 
     private lateinit var onStartDragListener: OnStartDragListener

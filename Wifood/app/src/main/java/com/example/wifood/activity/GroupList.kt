@@ -59,7 +59,7 @@ class GroupList : AppCompatActivity() {
 
         // 그룹 순서 변경
         groupListAdapter.setOnStartDragListener(object : GroupListAdapter.OnStartDragListener {
-            override fun onStartDrag(viewHolder: GroupListAdapter.FoodGroupViewHolder) {
+            override fun onStartDrag(viewHolder: GroupListAdapter.GroupViewHolder) {
                 groupTouchHelper.startDrag(viewHolder)
                 checkTouch = true
             }
@@ -146,14 +146,14 @@ class GroupList : AppCompatActivity() {
                         }
                     }
                     1 -> {
-                        // EditFoodGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
+                        // EditPlaceGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
                         val group = it.data?.getParcelableExtra<Group>("group")
                         CoroutineScope(Dispatchers.IO).launch {
                             groupViewModel.updateGroup(group!!)
                         }
                     }
                     2 -> {
-                        // DeleteFoodGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
+                        // DeletePlaceGroup에서 받은 삭제할 id 리스트를 이용해 group 삭제
                         val groupId = it.data?.getIntegerArrayListExtra("id")
                         CoroutineScope(Dispatchers.IO).launch {
                             if (groupId != null)
