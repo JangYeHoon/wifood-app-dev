@@ -1,0 +1,22 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false"
+        android:drawable="@drawable/bg_wh">
+        <shape>
+            <solid android:color="#ffffff"/>
+            <corners android:radius="2dp"/>
+            <stroke
+                android:color="#000000"
+                android:width="2dp" />
+        </shape>
+    </item>
+    <item android:state_checked="true"
+        android:drawable="@drawable/bg_orange">
+        <shape>
+            <solid android:color="#ffffff"/>
+            <corners android:radius="2dp"/>
+            <stroke
+                android:color="#000000"
+                android:width="2dp" />
+        </shape>
+    </item>
+</selector>
