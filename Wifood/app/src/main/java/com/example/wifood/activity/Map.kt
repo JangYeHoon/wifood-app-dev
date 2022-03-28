@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
+import com.example.wifood.adapter.PlaceListAdapter
 import com.example.wifood.databinding.ActivityMapBinding
 import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
@@ -50,16 +50,16 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
 
     // FoodGroup , FoodList 선언
-    lateinit var foodGroupViewModel: FoodGroupViewModel
-    lateinit var foodListViewModel: FoodListViewModel
-    private lateinit var foodListAdapter: FoodListAdapter
+    lateinit var foodGroupViewModel: GroupViewModel
+    lateinit var foodListViewModel: PlaceViewModel
+    private lateinit var foodListAdapter: PlaceListAdapter
     private lateinit var groupListAdapter: GroupNameAdapter
     var arrMarkerList = mutableListOf<Marker>()
     var groupId: Int = 0
     var mColor: String = ""
     
     //var arrFoodGroup = mutableListOf<Group>()   // FoodGroup의 가변리스트
-    var arrFoodList = mutableListOf<Food>()     // FoodList의 가변리스트
+    var arrFoodList = mutableListOf<Place>()     // FoodList의 가변리스트
 
     // Firebase 연결
     /*
@@ -104,7 +104,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         binding.includeMapLayout.filterBtn.addItemDecoration(spaceDecoration)
         binding.includeMapLayout.filterBtn.adapter = groupListAdapter
 
-        foodGroupViewModel.foodGroupList.observe(this) {
+        foodGroupViewModel.groupList.observe(this) {
             updateGroupAdapterList()
             binding.includeMapLayout.allBtn.background = ContextCompat.getDrawable(this@Map, R.drawable.bg_rounding_box)
             binding.includeMapLayout.allBtn.setTextColor(Color.BLACK)
@@ -338,24 +338,24 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     }
 
     private fun getFoodListData(Id: Int) {
-        foodListViewModel = ViewModelProvider(this).get(FoodListViewModel::class.java)
-        foodListViewModel.foodList.observe(this) {
+        foodListViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+        foodListViewModel.placeList.observe(this) {
             arrFoodList.clear()
             Toast.makeText(applicationContext, "getFoodData", Toast.LENGTH_LONG).show()
-            arrFoodList = foodListViewModel.getFoodList(Id)
+            foodListViewModel.getPlaceListByGroupId(Id)?.let { arrFoodList = it }
         }
     }
 
     private fun updateGroupAdapterList() {
         val groupList = foodGroupViewModel.getGroupList()
         if (groupList != null) {
-            groupListAdapter.setSelectGroup(groupId)
+            groupListAdapter.setSelectGroupByGroupId(groupId)
             groupListAdapter.setListData(groupList)
             groupListAdapter.notifyDataSetChanged()
         } else groupListAdapter.setListDataClear()
     }
 
-    private fun drawFoodMarker(fList: MutableList<Food>) {
+    private fun drawFoodMarker(fList: MutableList<Place>) {
         clearFoodMarker()
 
         Toast.makeText(applicationContext, "draw", Toast.LENGTH_LONG).show()
