@@ -31,14 +31,14 @@
             android:name=".activity.DeleteFoodList"
             android:exported="false" />
         <activity
-            android:name=".activity.EditFoodList"
+            android:name=".activity.PlaceInfo"
             android:exported="false" />
         <activity
-            android:name=".activity.AddFoodList"
+            android:name=".activity.AddPlace"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.FoodList"
+            android:name=".activity.PlaceList"
             android:exported="false" />
         <activity
             android:name=".activity.SearchPlace"
@@ -69,7 +69,7 @@
             android:name=".activity.EditGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.FoodGroup"
+            android:name=".activity.GroupList"
             android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

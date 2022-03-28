@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AddFoodList">
+    tools:context=".activity.AddPlace">
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,7 +16,6 @@
             layout="@layout/toolbar" />
 
         <TableLayout
-            android:id="@+id/tableLayout"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/isVisited"
@@ -30,7 +29,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/groupText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -39,7 +37,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/groupName"
+                    android:id="@+id/textView_groupName"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="그룹 선택"
@@ -48,8 +46,9 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/nextGroup"
+                <ImageButton
+                    android:id="@+id/imageButton_nextGroup"
+                    android:background="#ffffff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_next" />
@@ -62,7 +61,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/foodText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -71,7 +69,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/searchName"
+                    android:id="@+id/textView_placeName"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="맛집 선택"
@@ -80,15 +78,16 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/nextSearch"
+                <ImageButton
+                    android:id="@+id/imageButton_nextSearchPlace"
+                    android:background="#ffffff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_next" />
             </TableRow>
 
             <TextView
-                android:id="@+id/searchAddress"
+                android:id="@+id/textView_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="" />
@@ -100,7 +99,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/menuText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -115,7 +113,7 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <EditText
-                    android:id="@+id/editMenu"
+                    android:id="@+id/editText_menuName"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="메뉴 추가"
@@ -132,23 +130,24 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
-                <ImageView
-                    android:id="@+id/insertMenu"
+                <ImageButton
+                    android:id="@+id/imageButton_nextInsertMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="#ffffff"
                     android:src="@drawable/ic_next" />
             </TableRow>
         </TableLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerView_menuList"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="18dp"
             tools:layout_editor_absoluteY="953dp" />
 
         <Switch
-            android:id="@+id/isVisited"
+            android:id="@+id/switch_isVisit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
@@ -157,7 +156,7 @@
             tools:layout_editor_absoluteY="533dp" />
 
         <TableLayout
-            android:id="@+id/tableLayout2"
+            android:id="@+id/tableLayout_placeGrade"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -167,7 +166,6 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/tasteText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="맛"
@@ -181,7 +179,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
                 <RatingBar
-                    android:id="@+id/tasteGrade"
+                    android:id="@+id/ratingBar_tasteGrade"
                     style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -195,7 +193,6 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/cleanText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -208,7 +205,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
                 <RatingBar
-                    android:id="@+id/cleanGrade"
+                    android:id="@+id/ratingBar_cleanGrade"
                     style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -221,7 +218,6 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/kindnessText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -234,7 +230,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/searchName" />
 
                 <RatingBar
-                    android:id="@+id/kindnessGrade"
+                    android:id="@+id/ratingBar_kindnessGrade"
                     style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -247,27 +243,27 @@
         </TableLayout>
 
         <Button
-            android:id="@+id/addGalleryImageButton"
+            android:id="@+id/button_gallery"
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="갤러리"/>
 
         <Button
-            android:id="@+id/addCameraImageButton"
+            android:id="@+id/button_camera"
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="카메라"/>
 
         <ImageView
-            android:id="@+id/foodImage"
+            android:id="@+id/imageView_place"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:visibility="gone"/>
 
         <TableLayout
-            android:id="@+id/menuGradeText"
+            android:id="@+id/tableLayout_menuGradeTitle"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:visibility="gone">
@@ -283,7 +279,7 @@
                     android:paddingRight="240dp"/>
 
                 <ImageButton
-                    android:id="@+id/addMenuGradeButton"
+                    android:id="@+id/imageButton_addMenuGrade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#ffffff"
@@ -293,7 +289,7 @@
         </TableLayout>
 
         <TableLayout
-            android:id="@+id/menuTable"
+            android:id="@+id/tableLayout_menuGrade"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -307,7 +303,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/menuName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -316,7 +311,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editMenuName"
+                    android:id="@+id/editText_menuGradeName"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="메뉴명 입력"
@@ -333,7 +328,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/menuPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -342,7 +336,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editMenuPrice"
+                    android:id="@+id/editText_menuPrice"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="메뉴 가격 입력"
@@ -360,7 +354,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/textMenuGrade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -369,7 +362,7 @@
                     android:textSize="20sp" />
 
                 <RatingBar
-                    android:id="@+id/menuGrade"
+                    android:id="@+id/ratingBar_menuGrade"
                     style="@android:style/Widget.DeviceDefault.Light.RatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -387,7 +380,6 @@
                 android:shrinkColumns="0">
 
                 <TextView
-                    android:id="@+id/menuMemo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="20px"
@@ -396,7 +388,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editMenuMemo"
+                    android:id="@+id/editText_menuMemo"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:hint="메모"
@@ -408,7 +400,7 @@
         </TableLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerMenuGrade"
+            android:id="@+id/recyclerView_menuGradeList"
             android:layout_width="376dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -416,7 +408,7 @@
             tools:layout_editor_absoluteY="953dp" />
 
         <EditText
-            android:id="@+id/memoText"
+            android:id="@+id/editText_placeMemo"
             android:layout_width="376dp"
             android:layout_height="100dp"
             android:background="@drawable/memo_border"
@@ -427,7 +419,7 @@
             tools:layout_editor_absoluteY="1609dp" />
 
         <Button
-            android:id="@+id/saveBtn"
+            android:id="@+id/button_save"
             android:layout_width="367dp"
             android:layout_height="48dp"
             android:text="저장"

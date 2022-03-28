@@ -24,10 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.adapter.FoodListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityMapBinding
-import com.example.wifood.entity.Food
+import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.FoodGroupViewModel
-import com.example.wifood.viewmodel.FoodListViewModel
+import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.android.material.navigation.NavigationView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -92,11 +92,10 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         navigationView = findViewById(R.id.main_navigationView)
         navigationView.setNavigationItemSelectedListener(this)
 
-
         // 데이터베이스 접근을 위한 food group id정보 받아옴
         groupId = intent.getIntExtra("groupId", 0)
         // 툴바 하단 그룹리스트 버튼 생성
-        foodGroupViewModel = ViewModelProvider(this).get(FoodGroupViewModel::class.java)
+        foodGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         groupListAdapter = GroupNameAdapter(this)
         binding.includeMapLayout.filterBtn.layoutManager = LinearLayoutManager(this).also {
             it.orientation = LinearLayoutManager.HORIZONTAL
@@ -143,8 +142,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         }
 
         // button event : go to my list
-        binding.btnGoMyList.setOnClickListener {
-            val intent = Intent(this, FoodGroup::class.java)
+        btnGoMyList.setOnClickListener {
+            val intent = Intent(this, GroupList::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }

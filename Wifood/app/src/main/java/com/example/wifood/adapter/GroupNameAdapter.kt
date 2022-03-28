@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.Group
 
-class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<GroupNameAdapter.FoodGroupViewHolder>() {
+class GroupNameAdapter(private val context: Context) :
+    RecyclerView.Adapter<GroupNameAdapter.GroupNameViewHolder>() {
     private var groupList = mutableListOf<Group>()
     private var selectGroup = 0
     private var groupPosition: Int = 0
 
-    fun setListData(data:MutableList<Group>) {
+    fun setListData(data: MutableList<Group>) {
         groupList = data
     }
 
@@ -25,7 +26,7 @@ class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<Group
         groupList.clear()
     }
 
-    fun setSelectGroup(groupId: Int) {
+    fun setSelectGroupByGroupId(groupId: Int) {
         selectGroup = groupId
     }
 
@@ -37,29 +38,24 @@ class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<Group
         return groupPosition
     }
 
-    fun getGroupIdList() : MutableList<Int> {
-        var nameList = mutableListOf<Int>()
-        for (l in groupList)
-            nameList.add(l.id)
-        return nameList
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodGroupViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupNameViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.group_name, parent, false)
-        return FoodGroupViewHolder(view)
+        return GroupNameViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: GroupNameAdapter.FoodGroupViewHolder, position: Int) {
-        val group : Group = groupList[position]
-        holder.group_name.text = group.name
+    override fun onBindViewHolder(holder: GroupNameAdapter.GroupNameViewHolder, position: Int) {
+        val group: Group = groupList[position]
+        holder.groupName.text = group.name
         if (group.id == selectGroup) {
-            holder.group_name.background = ContextCompat.getDrawable(context, R.drawable.bg_rounding_box_check)
-            holder.group_name.setTextColor(Color.WHITE)
+            holder.groupName.background =
+                ContextCompat.getDrawable(context, R.drawable.bg_rounding_box_check)
+            holder.groupName.setTextColor(Color.WHITE)
         } else {
-            holder.group_name.background = ContextCompat.getDrawable(context, R.drawable.bg_rounding_box)
-            holder.group_name.setTextColor(Color.BLACK)
+            holder.groupName.background =
+                ContextCompat.getDrawable(context, R.drawable.bg_rounding_box)
+            holder.groupName.setTextColor(Color.BLACK)
         }
-        holder.group_name.setOnClickListener {
+        holder.groupName.setOnClickListener {
             groupClickListener.onClick(it, position, group)
         }
     }
@@ -68,13 +64,14 @@ class GroupNameAdapter(private val context: Context): RecyclerView.Adapter<Group
         return groupList.size
     }
 
-    inner class FoodGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val group_name : TextView = itemView.findViewById(R.id.group_name)
+    inner class GroupNameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val groupName: TextView = itemView.findViewById(R.id.textView_groupName)
     }
 
     interface GroupClickListener {
         fun onClick(view: View, position: Int, group: Group)
     }
+
     private lateinit var groupClickListener: GroupClickListener
     fun setGroupClickListener(groupClickListener: GroupClickListener) {
         this.groupClickListener = groupClickListener

@@ -8,96 +8,88 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditGroupBinding
-import com.example.wifood.entity.Food
 import com.example.wifood.entity.Group
 
 class EditGroup : AppCompatActivity() {
-    lateinit var binding : ActivityEditGroupBinding
-    var pinColor : String = ""
+    lateinit var binding: ActivityEditGroupBinding
     lateinit var inputMethodManager: InputMethodManager
-    lateinit var group:Group
+    private var editGroup: Group = Group()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 툴바 설정
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
+        // ImageView Array
+        val pinArray = arrayOf(
+            binding.pinImage1,
+            binding.pinImage2,
+            binding.pinImage3,
+            binding.pinImage4,
+            binding.pinImage5,
+            binding.pinImage6,
+            binding.pinImage7,
+            binding.pinImage8,
+            binding.pinImage9,
+            binding.pinImage10
+        )
+        val type = intent.getStringExtra("type") as String
+
+        // 툴바 설정
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
-        // ImageView Array
-        val pinArray = arrayOf(binding.pinImage1, binding.pinImage2, binding.pinImage3, binding.pinImage4, binding.pinImage5, binding.pinImage6,
-            binding.pinImage7, binding.pinImage8, binding.pinImage9, binding.pinImage10)
-        val type = intent.getStringExtra("type") as String
-        val id = intent.getIntExtra("groupId", 0)
-
         // Initialize the value in case of edit
         if (type == "EDIT") {
             supportActionBar?.title = "그룹 수정"
-            group = intent.getParcelableExtra("group")!!
-            binding.groupTitle.setText(group.name)
-            binding.themeTitle.setText(group.theme)
+            editGroup = intent.getParcelableExtra("group")!!
+            binding.editTextGroupName.setText(editGroup.name)
+            binding.editTextTheme.setText(editGroup.theme)
             for (i in pinArray) {
-                if (group.color == i.contentDescription.toString()) {
-                    pinColor = group.color
+                if (editGroup.color == i.contentDescription.toString()) {
                     i.scaleX = 2F
                     i.scaleY = 2F
                     break
                 }
             }
-        } else supportActionBar?.title = "그룹 추가"
+        } else {
+            editGroup.id = intent.getIntExtra("groupId", 1)
+            editGroup.order = editGroup.id
+            supportActionBar?.title = "그룹 추가"
+        }
 
         // click image size conversion
-        for (i in pinArray) {
-            i.setOnClickListener {
+        for (selectPin in pinArray) {
+            selectPin.setOnClickListener {
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(binding.groupTitle.windowToken, 0)
-                pinColor = i.contentDescription.toString()
-                i.scaleX = 2F
-                i.scaleY = 2F
-                i.requestLayout()
-                for (j in pinArray) {
-                    if (i != j) {
-                        j.scaleX = 1F
-                        j.scaleY = 1F
-                        j.requestLayout()
+                inputMethodManager.hideSoftInputFromWindow(binding.editTextGroupName.windowToken, 0)
+                editGroup.color = selectPin.contentDescription.toString()
+                selectPin.scaleX = 2F
+                selectPin.scaleY = 2F
+                selectPin.requestLayout()
+                for (pin in pinArray) {
+                    if (selectPin != pin) {
+                        pin.scaleX = 1F
+                        pin.scaleY = 1F
+                        pin.requestLayout()
                     }
                 }
             }
         }
 
-        // TODO("로직 수정")
-        binding.saveBtn.setOnClickListener {
-            val title = binding.groupTitle.text.toString()
-            val theme = binding.themeTitle.text.toString()
-            // when adding a group
-            if (type == "ADD") {
-                if (title.isNotEmpty() && pinColor.isNotEmpty()) {
-                    val intent = Intent().apply {
-                        putExtra("name", title)
-                        putExtra("color", pinColor)
-                        putExtra("theme", theme)
-                        putExtra("type", 0)
-                    }
-                    setResult(RESULT_OK, intent)
-                    finish()
+        binding.buttonSave.setOnClickListener {
+            editGroup.name = binding.editTextGroupName.text.toString()
+            editGroup.theme = binding.editTextTheme.text.toString()
+            if (editGroup.name.isNotEmpty() && editGroup.color.isNotEmpty()) {
+                val intent = Intent().apply {
+                    putExtra("group", editGroup)
+                    if (type == "ADD") putExtra("type", 0)
+                    else putExtra("type", 1)
                 }
-            // when editing a group
-            } else {
-                if (title.isNotEmpty() && pinColor.isNotEmpty()) {
-                    group.name = title
-                    group.theme = theme
-                    group.color = pinColor
-                    val intent = Intent().apply {
-                        putExtra("group", group)
-                        putExtra("type", 1)
-                    }
-                    setResult(RESULT_OK, intent)
-                    finish()
-                }
+                setResult(RESULT_OK, intent)
+                finish()
             }
         }
     }

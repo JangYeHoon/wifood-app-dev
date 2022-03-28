@@ -148,7 +148,7 @@
         app:tint="#E91E63" />
 
     <EditText
-        android:id="@+id/groupTitle"
+        android:id="@+id/editText_groupName"
         android:layout_width="366dp"
         android:layout_height="48dp"
         android:hint="그룹명을 입력해주세요."
@@ -161,7 +161,7 @@
         app:layout_constraintVertical_bias="0.100000024" />
 
     <EditText
-        android:id="@+id/themeTitle"
+        android:id="@+id/editText_theme"
         android:layout_width="366dp"
         android:layout_height="wrap_content"
         android:hint="테마 등록"
@@ -176,7 +176,7 @@
         app:layout_constraintVertical_bias="0.191" />
 
     <Button
-        android:id="@+id/saveBtn"
+        android:id="@+id/button_save"
         android:layout_width="367dp"
         android:layout_height="48dp"
         android:text="저장"

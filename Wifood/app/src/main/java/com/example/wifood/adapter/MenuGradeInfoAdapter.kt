@@ -8,24 +8,29 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Food
 import com.example.wifood.entity.MenuGrade
-import kotlin.math.round
 
-class MenuGradeInfoAdapter(private val context: Context): RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {
-    private var listMenuGrade = mutableListOf<MenuGrade>()
+class MenuGradeInfoAdapter(private val context: Context) :
+    RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {
+    private var menuGradeList = mutableListOf<MenuGrade>()
 
-    fun setMenuGradeListData(data:MutableList<MenuGrade>) {
-        listMenuGrade = data
+    fun setMenuGradeListData(data: MutableList<MenuGrade>) {
+        menuGradeList = data
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuGradeInfoAdapter.MenuGradeInfoViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MenuGradeInfoAdapter.MenuGradeInfoViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.menu_grade_info, parent, false)
         return MenuGradeInfoViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MenuGradeInfoAdapter.MenuGradeInfoViewHolder, position: Int) {
-        val menuGrade: MenuGrade = listMenuGrade[position]
+    override fun onBindViewHolder(
+        holder: MenuGradeInfoAdapter.MenuGradeInfoViewHolder,
+        position: Int
+    ) {
+        val menuGrade: MenuGrade = menuGradeList[position]
         val menuInfo = menuGrade.name + " - " + menuGrade.price + "원"
         holder.menuName.text = menuInfo
         holder.menuGrade.rating = menuGrade.grade.toFloat()
@@ -33,12 +38,12 @@ class MenuGradeInfoAdapter(private val context: Context): RecyclerView.Adapter<M
     }
 
     override fun getItemCount(): Int {
-        return listMenuGrade.size
+        return menuGradeList.size
     }
 
     inner class MenuGradeInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val menuName: TextView = itemView.findViewById(R.id.menuName)
-        val menuGrade: RatingBar = itemView.findViewById(R.id.menuGrade)
-        val menuMemo: TextView = itemView.findViewById(R.id.menuMemo)
+        val menuName: TextView = itemView.findViewById(R.id.textView_menuName)
+        val menuGrade: RatingBar = itemView.findViewById(R.id.ratingBar_menuGrade)
+        val menuMemo: TextView = itemView.findViewById(R.id.textview_menuMemo)
     }
 }

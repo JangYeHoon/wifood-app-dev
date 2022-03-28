@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.entity.MenuGrade
 
-class MenuGradeAdapter(private val context: Context): RecyclerView.Adapter<MenuGradeAdapter.MenuGradeViewHolder>() {
+class MenuGradeAdapter(private val context: Context) :
+    RecyclerView.Adapter<MenuGradeAdapter.MenuGradeViewHolder>() {
     private var listMenuGrade = mutableListOf<MenuGrade>()
 
     fun setListData(data: MutableList<MenuGrade>) {
@@ -39,9 +40,9 @@ class MenuGradeAdapter(private val context: Context): RecyclerView.Adapter<MenuG
     }
 
     inner class MenuGradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name : TextView = itemView.findViewById(R.id.editMenuName)
-        val price : TextView = itemView.findViewById(R.id.editMenuPrice)
-        val grade : RatingBar = itemView.findViewById(R.id.menuGrade)
-        val memo : TextView = itemView.findViewById(R.id.editMenuMemo)
+        val name: TextView = itemView.findViewById(R.id.textView_menuName)
+        val price: TextView = itemView.findViewById(R.id.textView_menuPrice)
+        val grade: RatingBar = itemView.findViewById(R.id.ratingBar_menuGrade)
+        val memo: TextView = itemView.findViewById(R.id.textView_menuMemo)
     }
 }

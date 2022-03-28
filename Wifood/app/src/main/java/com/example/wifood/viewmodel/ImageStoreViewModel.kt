@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.ImageStoreDto
 
-class ImageStoreViewModel(): ViewModel() {
+class ImageStoreViewModel() : ViewModel() {
     private val imageStoreDto: ImageStoreDto = ImageStoreDto()
-    fun insertFoodImage(uri: ArrayList<Uri>, foodId:Int) {
-        imageStoreDto.insertFoodImage(uri, foodId)
+    fun insertPlaceImage(uri: ArrayList<Uri>, groupId: Int) {
+        imageStoreDto.insertPlaceImage(uri, groupId)
     }
 }
