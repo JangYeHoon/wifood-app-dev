@@ -189,7 +189,6 @@ class AddPlace : AppCompatActivity() {
                 imageList.clear()
                 insertPlace.menuGrade.clear()
             }
-//            imageStoreViewModel.insertPlaceImage(imageUriList, insertPlace.id)
             insertPlace.imageUri = imageList
             if (insertPlace.name != "None" && insertPlace.groupId != -1) {
                 val intent = Intent().apply {
@@ -203,14 +202,11 @@ class AddPlace : AppCompatActivity() {
                     }
                 }
                 setResult(RESULT_OK, intent)
-                // TODO "ViewModel로 수정"
                 if (imageList.size > 0) {
-                    val storage = FirebaseStorage.getInstance().reference
-                    val uploadTask = storage.child(insertPlace.id.toString() + "/").child("1.png")
-                        .putFile(imageUriList[0])
-                    uploadTask.addOnSuccessListener {
-                        finish()
-                    }
+                    imageStoreViewModel.insertPlaceImage(imageUriList, insertPlace.id)
+                        .addOnSuccessListener {
+                            finish()
+                        }
                 } else {
                     finish()
                 }
@@ -249,7 +245,15 @@ class AddPlace : AppCompatActivity() {
                 binding.ratingBarCleanGrade.rating = insertPlace.myCleanGrade.toFloat()
                 binding.switchIsVisit.isChecked = true
                 if (insertPlace.imageUri.size > 0) {
-                    getImageToFirebase(insertPlace.imageUri[0], insertPlace.id)
+                    imageStoreViewModel.getPlaceImage(
+                        insertPlace.imageUri[0].toInt(),
+                        insertPlace.id
+                    ).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Glide.with(this@AddPlace).load(it.result).into(binding.imageViewPlace)
+                            imageUriList.add(it.result)
+                        }
+                    }
                     imageList = insertPlace.imageUri
                     imageCnt = imageList.size
                 }
@@ -398,17 +402,6 @@ class AddPlace : AppCompatActivity() {
         imageCnt += 1
         imageList.add(imageCnt.toString())
         binding.imageViewPlace.visibility = View.VISIBLE
-    }
-
-    private fun getImageToFirebase(idx: String, placeId: Int) {
-        val storage: FirebaseStorage = FirebaseStorage.getInstance()
-        val storageRef: StorageReference = storage.reference.child("$placeId/$idx.png")
-        storageRef.downloadUrl.addOnCompleteListener {
-            if (it.isSuccessful) {
-                Glide.with(this@AddPlace).load(it.result).into(binding.imageViewPlace)
-                imageUriList.add(it.result)
-            }
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
