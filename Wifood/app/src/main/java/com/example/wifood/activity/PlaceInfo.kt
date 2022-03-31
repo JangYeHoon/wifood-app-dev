@@ -1,8 +1,10 @@
 package com.example.wifood.activity
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,20 +16,26 @@ import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityPlaceInfoBinding
+import com.example.wifood.entity.Group
 import com.example.wifood.entity.Place
+import com.example.wifood.viewmodel.PlaceInfoViewModel
 import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.*
+import com.naver.maps.map.overlay.Marker
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.Map
 
-class PlaceInfo : AppCompatActivity() {
+class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
     lateinit var binding: ActivityPlaceInfoBinding
     lateinit var adapterMenuGradeInfo: MenuGradeInfoAdapter
     lateinit var place: Place
     lateinit var groupName: String
     lateinit var placeViewModel: PlaceViewModel
+    lateinit var placeInfoViewModel: PlaceInfoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +48,20 @@ class PlaceInfo : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
-        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
-
         // 수정할 맛집에 대한 정보를 받아와 view 설정
         place = intent.getParcelableExtra<Place>("place")!!
         groupName = intent.getStringExtra("groupName")!!
-        initActivityViewValue()
+
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+        placeInfoViewModel = ViewModelProvider(this, PlaceInfoViewModel.Factory(place.groupId)).get(
+            PlaceInfoViewModel::class.java
+        )
+
+        placeInfoViewModel.getGroupTaskToFireBase(place.groupId).addOnSuccessListener {
+            it.getValue(Group::class.java)
+                ?.let { group -> placeInfoViewModel.setGroupInstance(group) }
+            initActivityViewValue()
+        }
     }
 
     private fun initActivityViewValue() {
@@ -88,6 +104,13 @@ class PlaceInfo : AppCompatActivity() {
 
         if (place.imageUri.size > 0)
             getImageToDatabase(place.imageUri[0], place.id)
+
+        val fm = supportFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.fragment_placeMap) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.fragment_placeMap, it).commit()
+            }
+        mapFragment.getMapAsync(this)
     }
 
     private fun getImageToDatabase(idx: String, foodId: Int) {
@@ -149,4 +172,18 @@ class PlaceInfo : AppCompatActivity() {
                 }
             }
         }
+
+    override fun onMapReady(p0: NaverMap) {
+        val naverMap: NaverMap = p0
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(place.latitude, place.longitude))
+        naverMap.moveCamera(cameraUpdate)
+        val cameraZoomUpdate = CameraUpdate.zoomTo(16.0)
+            .animate(CameraAnimation.Easing, 1000)
+        naverMap.moveCamera(cameraZoomUpdate)
+
+        val marker = Marker()
+        marker.position = LatLng(place.latitude, place.longitude)
+        marker.iconTintColor = Color.parseColor(placeInfoViewModel.getGroupPinColor())
+        marker.map = naverMap
+    }
 }
