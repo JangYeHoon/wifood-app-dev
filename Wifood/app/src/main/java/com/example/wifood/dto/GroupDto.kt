@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wifood.dao.GroupDao
 import com.example.wifood.entity.Group
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
 
 // Connect DAO and ViewModel
 // Class to prevent direct DB access from view
@@ -35,5 +37,9 @@ class GroupDto {
 
     fun updateGroup(group: Group) {
         groupDao.updateGroup(group)
+    }
+
+    fun getGroupById(groupId: Int): Task<DataSnapshot> {
+        return groupDao.getGroupById(groupId)
     }
 }
