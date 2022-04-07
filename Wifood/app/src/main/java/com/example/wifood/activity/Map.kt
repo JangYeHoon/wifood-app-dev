@@ -26,13 +26,12 @@ import com.example.wifood.adapter.PlaceListAdapter
 import com.example.wifood.databinding.ActivityMapBinding
 import com.example.wifood.entity.Place
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupViewModel
-import com.example.wifood.viewmodel.PlaceViewModel
+import com.example.wifood.viewmodel.GroupListViewModel
+import com.example.wifood.viewmodel.PlaceListViewModel
 import com.google.android.material.navigation.NavigationView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.util.MarkerIcons
 import kotlinx.android.synthetic.main.*;
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.menu_nav_header.view.*
@@ -50,8 +49,8 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     private var placeLongitude = 0.0
 
     // FoodGroup , FoodList 선언
-    lateinit var foodGroupViewModel: GroupViewModel
-    lateinit var foodListViewModel: PlaceViewModel
+    lateinit var foodGroupListViewModel: GroupListViewModel
+    lateinit var foodListListViewModel: PlaceListViewModel
     private lateinit var foodListAdapter: PlaceListAdapter
     private lateinit var groupListAdapter: GroupNameAdapter
     var arrMarkerList = mutableListOf<Marker>()
@@ -95,7 +94,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         // 데이터베이스 접근을 위한 food group id정보 받아옴
         groupId = intent.getIntExtra("groupId", 0)
         // 툴바 하단 그룹리스트 버튼 생성
-        foodGroupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        foodGroupListViewModel = ViewModelProvider(this).get(GroupListViewModel::class.java)
         groupListAdapter = GroupNameAdapter(this)
         binding.includeMapLayout.filterBtn.layoutManager = LinearLayoutManager(this).also {
             it.orientation = LinearLayoutManager.HORIZONTAL
@@ -104,7 +103,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         binding.includeMapLayout.filterBtn.addItemDecoration(spaceDecoration)
         binding.includeMapLayout.filterBtn.adapter = groupListAdapter
 
-        foodGroupViewModel.groupList.observe(this) {
+        foodGroupListViewModel.groupList.observe(this) {
             updateGroupAdapterList()
             binding.includeMapLayout.allBtn.background = ContextCompat.getDrawable(this@Map, R.drawable.bg_rounding_box)
             binding.includeMapLayout.allBtn.setTextColor(Color.BLACK)
@@ -338,16 +337,16 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
     }
 
     private fun getFoodListData(Id: Int) {
-        foodListViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
-        foodListViewModel.placeList.observe(this) {
+        foodListListViewModel = ViewModelProvider(this).get(PlaceListViewModel::class.java)
+        foodListListViewModel.placeList.observe(this) {
             arrFoodList.clear()
             Toast.makeText(applicationContext, "getFoodData", Toast.LENGTH_LONG).show()
-            foodListViewModel.getPlaceListByGroupId(Id)?.let { arrFoodList = it }
+            foodListListViewModel.getPlaceListByGroupId(Id)?.let { arrFoodList = it }
         }
     }
 
     private fun updateGroupAdapterList() {
-        val groupList = foodGroupViewModel.getGroupList()
+        val groupList = foodGroupListViewModel.getGroupList()
         if (groupList != null) {
             groupListAdapter.setSelectGroupByGroupId(groupId)
             groupListAdapter.setListData(groupList)

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.activity.AddPlace
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.GroupListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class GroupSelectBottom : BottomSheetDialogFragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var groupSelectAdapter: GroupSelectAdapter
-    private val groupViewModel: GroupViewModel by viewModels()
+    private val groupListViewModel: GroupListViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +27,7 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
         recyclerView = rootView.findViewById(R.id.recyclerView_groupList) as RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = groupSelectAdapter
-        groupViewModel.groupList.observe(viewLifecycleOwner) {
+        groupListViewModel.groupList.observe(viewLifecycleOwner) {
             if (it != null) groupSelectAdapter.setListData(it)
             else groupSelectAdapter.setListDataClear()
             groupSelectAdapter.notifyDataSetChanged()

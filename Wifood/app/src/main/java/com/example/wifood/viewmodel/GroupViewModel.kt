@@ -1,61 +1,24 @@
 package com.example.wifood.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.GroupDto
 import com.example.wifood.entity.Group
-import java.lang.Integer.max
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
 
-// Independent of the lifecycle of the activity.
-// Data retention and sharing
-class GroupViewModel : ViewModel() {
-    var groupList: LiveData<MutableList<Group>>
+class GroupViewModel() : ViewModel() {
+    lateinit var group: Group
     private val groupDto: GroupDto = GroupDto()
 
-    init {
-        groupList = groupDto.getGroupList()
+    fun getGroupTaskToFireBase(groupId: Int): Task<DataSnapshot> {
+        return groupDto.getGroupById(groupId)
     }
 
-    fun insertGroup(group: Group) {
-        groupDto.insertGroup(group)
+    fun setGroupInstance(group: Group) {
+        this.group = group
     }
 
-    fun deleteGroup(groupIdList: ArrayList<Int>) {
-        groupDto.deleteGroup(groupIdList)
-    }
-
-    fun updateGroup(group: Group) {
-        groupDto.updateGroup(group)
-    }
-
-    fun setGroupOrderByGroupList(groupList: ArrayList<Group>) {
-        for (i in groupList.indices) {
-            groupList[i].order = i + 1
-            groupDto.updateGroup(groupList[i])
-        }
-    }
-
-    fun getGroupNameById(groupId: Int): String {
-        if (groupId != -1) {
-            for (group in groupList.value!!) {
-                if (groupId == group.id)
-                    return group.name
-            }
-        }
-        return ""
-    }
-
-    fun getGroupMaxId(): Int {
-        var maxId = 0
-        if (groupList.value != null) {
-            for (group in groupList.value!!) {
-                maxId = max(maxId, group.id)
-            }
-        }
-        return maxId
-    }
-
-    fun getGroupList(): MutableList<Group>? {
-        return groupList.value
+    fun getGroupPinColor(): String {
+        return group.color
     }
 }
