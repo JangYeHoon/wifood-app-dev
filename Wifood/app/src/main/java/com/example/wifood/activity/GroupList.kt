@@ -17,7 +17,7 @@ import com.example.wifood.adapter.GroupListAdapter
 import com.example.wifood.adapter.GroupItemTouchHelperCallback
 import com.example.wifood.databinding.ActivityGroupListBinding
 import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.GroupListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class GroupList : AppCompatActivity() {
     lateinit var binding: ActivityGroupListBinding
     private lateinit var groupListAdapter: GroupListAdapter
-    private lateinit var groupViewModel: GroupViewModel
+    private lateinit var groupListViewModel: GroupListViewModel
     var checkTouch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class GroupList : AppCompatActivity() {
         supportActionBar?.title = "맛집 그룹"
 
         // Connecting RecyclerView and Adapter
-        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+        groupListViewModel = ViewModelProvider(this).get(GroupListViewModel::class.java)
         groupListAdapter = GroupListAdapter(this)
         binding.recyclerViewGroupList.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewGroupList.adapter = groupListAdapter
@@ -50,7 +50,7 @@ class GroupList : AppCompatActivity() {
         groupTouchHelper.attachToRecyclerView(binding.recyclerViewGroupList)
 
         // Automatically change bindings when data changes
-        groupViewModel.groupList.observe(this) {
+        groupListViewModel.groupList.observe(this) {
             if (it != null) groupListAdapter.setListData(it)
             else groupListAdapter.setListDataClear()
             groupListAdapter.notifyDataSetChanged()
@@ -69,7 +69,7 @@ class GroupList : AppCompatActivity() {
         binding.imageButtonGroupInsert.setOnClickListener {
             val intent = Intent(this@GroupList, EditGroup::class.java).apply {
                 putExtra("type", "ADD")
-                putExtra("groupId", groupViewModel.getGroupMaxId() + 1)
+                putExtra("groupId", groupListViewModel.getGroupMaxId() + 1)
             }
             requestActivity.launch(intent)
         }
@@ -115,7 +115,7 @@ class GroupList : AppCompatActivity() {
         when (ev!!.action) {
             MotionEvent.ACTION_UP -> {
                 if (checkTouch) {
-                    groupViewModel.setGroupOrderByGroupList(groupListAdapter.getListData())
+                    groupListViewModel.setGroupOrderByGroupList(groupListAdapter.getListData())
                     checkTouch = false
                 }
             }
@@ -142,14 +142,14 @@ class GroupList : AppCompatActivity() {
                     0 -> {
                         val group = it.data?.getParcelableExtra<Group>("group")
                         CoroutineScope(Dispatchers.IO).launch {
-                            groupViewModel.insertGroup(group!!)
+                            groupListViewModel.insertGroup(group!!)
                         }
                     }
                     1 -> {
                         // EditPlaceGroup에서 받은 수정된 정보들을 이용해 새로운 group을 생성해 수정
                         val group = it.data?.getParcelableExtra<Group>("group")
                         CoroutineScope(Dispatchers.IO).launch {
-                            groupViewModel.updateGroup(group!!)
+                            groupListViewModel.updateGroup(group!!)
                         }
                     }
                     2 -> {
@@ -157,7 +157,7 @@ class GroupList : AppCompatActivity() {
                         val groupId = it.data?.getIntegerArrayListExtra("id")
                         CoroutineScope(Dispatchers.IO).launch {
                             if (groupId != null)
-                                groupViewModel.deleteGroup(groupId)
+                                groupListViewModel.deleteGroup(groupId)
                         }
                     }
                 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.PlaceDto
 import com.example.wifood.entity.Place
 
-class PlaceViewModel() : ViewModel() {
+class PlaceListViewModel() : ViewModel() {
     var placeList: LiveData<MutableList<Place>>
     private val placeDto: PlaceDto = PlaceDto()
 

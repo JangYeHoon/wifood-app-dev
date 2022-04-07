@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,8 +17,8 @@ import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityPlaceInfoBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.entity.Place
-import com.example.wifood.viewmodel.PlaceInfoViewModel
-import com.example.wifood.viewmodel.PlaceViewModel
+import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.viewmodel.PlaceListViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.naver.maps.geometry.LatLng
@@ -34,8 +33,8 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
     lateinit var adapterMenuGradeInfo: MenuGradeInfoAdapter
     lateinit var place: Place
     lateinit var groupName: String
-    lateinit var placeViewModel: PlaceViewModel
-    lateinit var placeInfoViewModel: PlaceInfoViewModel
+    lateinit var placeListViewModel: PlaceListViewModel
+    lateinit var groupViewModel: GroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +51,12 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
         place = intent.getParcelableExtra<Place>("place")!!
         groupName = intent.getStringExtra("groupName")!!
 
-        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
-        placeInfoViewModel = ViewModelProvider(this, PlaceInfoViewModel.Factory(place.groupId)).get(
-            PlaceInfoViewModel::class.java
-        )
+        placeListViewModel = ViewModelProvider(this).get(PlaceListViewModel::class.java)
+        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
 
-        placeInfoViewModel.getGroupTaskToFireBase(place.groupId).addOnSuccessListener {
+        groupViewModel.getGroupTaskToFireBase(place.groupId).addOnSuccessListener {
             it.getValue(Group::class.java)
-                ?.let { group -> placeInfoViewModel.setGroupInstance(group) }
+                ?.let { group -> groupViewModel.setGroupInstance(group) }
             initActivityViewValue()
         }
     }
@@ -137,7 +134,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
             }
             R.id.delete_menu -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    placeViewModel.deletePlace(place.id)
+                    placeListViewModel.deletePlace(place.id)
                 }
                 finish()
             }
@@ -163,7 +160,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
                     1 -> {
                         // EditPlaceListActivity에서 받은 수정된 place를 이용해 db 수정
                         CoroutineScope(Dispatchers.IO).launch {
-                            placeViewModel.updatePlace(editPlace!!)
+                            placeListViewModel.updatePlace(editPlace!!)
                         }
                         place = editPlace!!
                         groupName = editGroupName!!
@@ -183,7 +180,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
 
         val marker = Marker()
         marker.position = LatLng(place.latitude, place.longitude)
-        marker.iconTintColor = Color.parseColor(placeInfoViewModel.getGroupPinColor())
+        marker.iconTintColor = Color.parseColor(groupViewModel.getGroupPinColor())
         marker.map = naverMap
     }
 }
