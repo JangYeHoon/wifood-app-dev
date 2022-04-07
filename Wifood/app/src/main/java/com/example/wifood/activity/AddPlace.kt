@@ -66,9 +66,6 @@ class AddPlace : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = "맛집리스트 추가"
 
-        // 수정/추가에 따른 초기 화면 값 설정
-        initActivityView(type!!)
-
         // 메뉴 이름 관련 리스트 어뎁터 설정
         adapterMenuName = MenuNameAdapter(this)
         binding.recyclerViewMenuList.layoutManager = GridLayoutManager(this, 3)
@@ -82,6 +79,9 @@ class AddPlace : AppCompatActivity() {
         updateMenuGradeListAdapter(insertPlace.menuGrade)
 
         imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
+
+        // 수정/추가에 따른 초기 화면 값 설정
+        initActivityView(type!!)
 
         // 맛, 청결, 친절에 대한 별점 변경 관련 리스너 설정
         binding.ratingBarTasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
