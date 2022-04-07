@@ -202,7 +202,7 @@ class AddPlace : AppCompatActivity() {
                     }
                 }
                 setResult(RESULT_OK, intent)
-                if (imageList.size > 0) {
+                if (imageList.size > 0 && imageUriList.isNotEmpty()) {
                     imageStoreViewModel.insertPlaceImage(imageUriList, insertPlace.id)
                         .addOnSuccessListener {
                             finish()
