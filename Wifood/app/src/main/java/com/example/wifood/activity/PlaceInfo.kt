@@ -19,6 +19,7 @@ import com.example.wifood.entity.Group
 import com.example.wifood.entity.Place
 import com.example.wifood.viewmodel.GroupViewModel
 import com.example.wifood.viewmodel.PlaceListViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.naver.maps.geometry.LatLng
@@ -31,9 +32,7 @@ import kotlin.collections.Map
 class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
     lateinit var binding: ActivityPlaceInfoBinding
     lateinit var adapterMenuGradeInfo: MenuGradeInfoAdapter
-    lateinit var place: Place
-    lateinit var groupName: String
-    lateinit var placeListViewModel: PlaceListViewModel
+    lateinit var placeViewModel: PlaceViewModel
     lateinit var groupViewModel: GroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,30 +46,30 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
         // 수정할 맛집에 대한 정보를 받아와 view 설정
-        place = intent.getParcelableExtra<Place>("place")!!
-        groupName = intent.getStringExtra("groupName")!!
+        placeViewModel.initPlace(intent.getParcelableExtra("place")!!)
 
-        placeListViewModel = ViewModelProvider(this).get(PlaceListViewModel::class.java)
         groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
 
-        groupViewModel.getGroupTaskToFireBase(place.groupId).addOnSuccessListener {
-            it.getValue(Group::class.java)
-                ?.let { group -> groupViewModel.setGroupInstance(group) }
-            initActivityViewValue()
-        }
+        groupViewModel.getGroupTaskToFireBase(placeViewModel.getPlaceGroupId())
+            .addOnSuccessListener {
+                it.getValue(Group::class.java)
+                    ?.let { group -> groupViewModel.setGroupInstance(group) }
+                initActivityViewValue()
+            }
     }
 
     private fun initActivityViewValue() {
-        binding.textViewGroupName.text = groupName
-        binding.textViewPlaceName.text = place.name
-        binding.textViewAddress.text = place.address
-        binding.textViewPlaceMemo.text = place.memo
-        if (place.visited == 1) {
-            binding.textViewTasteGrade.text = place.myTasteGrade.toString()
-            binding.textViewKindnessGrade.text = place.myKindnessGrade.toString()
-            binding.textViewCleanGrade.text = place.myCleanGrade.toString()
-            if (place.menuGrade.size <= 0)
+        binding.textViewGroupName.text = groupViewModel.getGroupName()
+        binding.textViewPlaceName.text = placeViewModel.getPlaceName()
+        binding.textViewAddress.text = placeViewModel.getPlaceAddress()
+        binding.textViewPlaceMemo.text = placeViewModel.getPlaceMemo()
+        if (placeViewModel.isVisited()) {
+            binding.textViewTasteGrade.text = placeViewModel.getTasteGrade().toString()
+            binding.textViewKindnessGrade.text = placeViewModel.getKindnessGrade().toString()
+            binding.textViewCleanGrade.text = placeViewModel.getCleanGrade().toString()
+            if (placeViewModel.isMenuGradeEmpty())
                 binding.textViewMenuGradeTitle.visibility = View.GONE
         } else {
             binding.textViewMenuGradeTitle.visibility = View.GONE
@@ -78,29 +77,23 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
             binding.tableRowPlaceGrade.visibility = View.GONE
         }
 
-        var s = ""
-        for (i in 0 until place.menu.size) {
-            s += place.menu[i].name
-            if (i != place.menu.size - 1)
-                s += ","
-        }
-        binding.textViewMenu.text = s
+        binding.textViewMenu.text = placeViewModel.getMenuListToString()
 
         adapterMenuGradeInfo = MenuGradeInfoAdapter(this)
         binding.recyclerViewMenuGradeList.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewMenuGradeList.adapter = adapterMenuGradeInfo
-        adapterMenuGradeInfo.setMenuGradeListData(place.menuGrade)
+        adapterMenuGradeInfo.setMenuGradeListData(placeViewModel.getMenuGradeList())
         adapterMenuGradeInfo.notifyDataSetChanged()
 
         binding.textViewAddress.setOnClickListener {
             val intent = Intent(this@PlaceInfo, Map::class.java)
-            intent.putExtra("latitude", place.latitude)
-            intent.putExtra("longitude", place.longitude)
+            intent.putExtra("latitude", placeViewModel.getPlaceLatitude())
+            intent.putExtra("longitude", placeViewModel.getPlaceLongitude())
             startActivity(intent)
         }
 
-        if (place.imageUri.size > 0)
-            getImageToDatabase(place.imageUri[0], place.id)
+        if (!placeViewModel.isImageEmpty())
+            getImageToDatabase(placeViewModel.getImageUri(), placeViewModel.getPlaceId())
 
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.fragment_placeMap) as MapFragment?
@@ -134,14 +127,14 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
             }
             R.id.delete_menu -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    placeListViewModel.deletePlace(place.id)
+                    placeViewModel.deletePlace()
                 }
                 finish()
             }
             R.id.edit_menu -> {
                 val intent = Intent(this@PlaceInfo, AddPlace::class.java).apply {
-                    putExtra("place", place)
-                    putExtra("groupName", groupName)
+                    putExtra("place", placeViewModel.getPlaceInstance())
+                    putExtra("groupName", groupViewModel.getGroupName())
                     putExtra("type", "edit")
                 }
                 requestActivity.launch(intent)
@@ -160,10 +153,10 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
                     1 -> {
                         // EditPlaceListActivity에서 받은 수정된 place를 이용해 db 수정
                         CoroutineScope(Dispatchers.IO).launch {
-                            placeListViewModel.updatePlace(editPlace!!)
+                            placeViewModel.updatePlace(editPlace!!)
                         }
-                        place = editPlace!!
-                        groupName = editGroupName!!
+                        placeViewModel.initPlace(editPlace!!)
+                        groupViewModel.setGroupName(editGroupName!!)
                         initActivityViewValue()
                     }
                 }
@@ -172,14 +165,22 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(p0: NaverMap) {
         val naverMap: NaverMap = p0
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(place.latitude, place.longitude))
+        val cameraUpdate = CameraUpdate.scrollTo(
+            LatLng(
+                placeViewModel.getPlaceLatitude(),
+                placeViewModel.getPlaceLongitude()
+            )
+        )
         naverMap.moveCamera(cameraUpdate)
         val cameraZoomUpdate = CameraUpdate.zoomTo(16.0)
             .animate(CameraAnimation.Easing, 1000)
         naverMap.moveCamera(cameraZoomUpdate)
 
         val marker = Marker()
-        marker.position = LatLng(place.latitude, place.longitude)
+        marker.position = LatLng(
+            placeViewModel.getPlaceLatitude(),
+            placeViewModel.getPlaceLongitude()
+        )
         marker.iconTintColor = Color.parseColor(groupViewModel.getGroupPinColor())
         marker.map = naverMap
     }
