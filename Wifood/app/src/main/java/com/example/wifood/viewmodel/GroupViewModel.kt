@@ -18,6 +18,14 @@ class GroupViewModel() : ViewModel() {
         this.group = group
     }
 
+    fun getGroupName(): String {
+        return group.name
+    }
+
+    fun setGroupName(name: String) {
+        group.name = name
+    }
+
     fun getGroupPinColor(): String {
         return group.color
     }
