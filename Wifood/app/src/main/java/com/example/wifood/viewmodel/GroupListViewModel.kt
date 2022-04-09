@@ -10,6 +10,7 @@ import java.lang.Integer.max
 // Data retention and sharing
 class GroupListViewModel : ViewModel() {
     var groupList: LiveData<MutableList<Group>>
+    private var selectGroupId: Int = 0
     private val groupDto: GroupDto = GroupDto()
 
     init {
@@ -35,10 +36,10 @@ class GroupListViewModel : ViewModel() {
         }
     }
 
-    fun getGroupNameById(groupId: Int): String {
-        if (groupId != -1) {
+    fun getSelectGroupName(): String {
+        if (selectGroupId != -1) {
             for (group in groupList.value!!) {
-                if (groupId == group.id)
+                if (selectGroupId == group.id)
                     return group.name
             }
         }
@@ -57,5 +58,13 @@ class GroupListViewModel : ViewModel() {
 
     fun getGroupList(): MutableList<Group>? {
         return groupList.value
+    }
+
+    fun getSelectGroupId(): Int {
+        return selectGroupId
+    }
+
+    fun setSelectGroupId(id: Int) {
+        selectGroupId = id
     }
 }
