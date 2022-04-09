@@ -6,14 +6,16 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditGroupBinding
 import com.example.wifood.entity.Group
+import com.example.wifood.viewmodel.GroupViewModel
 
 class EditGroup : AppCompatActivity() {
     lateinit var binding: ActivityEditGroupBinding
     lateinit var inputMethodManager: InputMethodManager
-    private var editGroup: Group = Group()
+    lateinit var groupViewModel: GroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,22 +43,23 @@ class EditGroup : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
 
+        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
+
         // Initialize the value in case of edit
         if (type == "EDIT") {
             supportActionBar?.title = "그룹 수정"
-            editGroup = intent.getParcelableExtra("group")!!
-            binding.editTextGroupName.setText(editGroup.name)
-            binding.editTextTheme.setText(editGroup.theme)
+            groupViewModel.setGroupInstance(intent.getParcelableExtra("group")!!)
+            binding.editTextGroupName.setText(groupViewModel.getGroupName())
+            binding.editTextTheme.setText(groupViewModel.getGroupTheme())
             for (i in pinArray) {
-                if (editGroup.color == i.contentDescription.toString()) {
+                if (groupViewModel.getGroupPinColor() == i.contentDescription.toString()) {
                     i.scaleX = 2F
                     i.scaleY = 2F
                     break
                 }
             }
         } else {
-            editGroup.id = intent.getIntExtra("groupId", 1)
-            editGroup.order = editGroup.id
+            groupViewModel.setGroupIdAndOrder(intent.getIntExtra("groupId", 1))
             supportActionBar?.title = "그룹 추가"
         }
 
@@ -65,7 +68,7 @@ class EditGroup : AppCompatActivity() {
             selectPin.setOnClickListener {
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(binding.editTextGroupName.windowToken, 0)
-                editGroup.color = selectPin.contentDescription.toString()
+                groupViewModel.setGroupPinColor(selectPin.contentDescription.toString())
                 selectPin.scaleX = 2F
                 selectPin.scaleY = 2F
                 selectPin.requestLayout()
@@ -80,11 +83,11 @@ class EditGroup : AppCompatActivity() {
         }
 
         binding.buttonSave.setOnClickListener {
-            editGroup.name = binding.editTextGroupName.text.toString()
-            editGroup.theme = binding.editTextTheme.text.toString()
-            if (editGroup.name.isNotEmpty() && editGroup.color.isNotEmpty()) {
+            groupViewModel.setGroupName(binding.editTextGroupName.text.toString())
+            groupViewModel.setGroupTheme(binding.editTextTheme.text.toString())
+            if (!groupViewModel.isGroupEmpty()) {
                 val intent = Intent().apply {
-                    putExtra("group", editGroup)
+                    putExtra("group", groupViewModel.getGroupInstance())
                     if (type == "ADD") putExtra("type", 0)
                     else putExtra("type", 1)
                 }
