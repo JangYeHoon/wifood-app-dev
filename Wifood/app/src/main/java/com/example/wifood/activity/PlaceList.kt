@@ -32,7 +32,6 @@ class PlaceList : AppCompatActivity() {
     lateinit var placeListViewModel: PlaceListViewModel
     private lateinit var groupListAdapter: GroupNameAdapter
     lateinit var groupListListViewModel: GroupListViewModel
-    var groupId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +44,6 @@ class PlaceList : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       // 뒤로가기 버튼 활성화
         supportActionBar?.setDisplayShowTitleEnabled(true)                      // 툴바에 타이틀 안보이게 설정
         supportActionBar?.title = intent.getStringExtra("groupName")
-
-        // 데이터베이스 접근을 위한 place group id정보 받아옴
-        groupId = intent.getIntExtra("groupId", 0)
 
         // 데이터베이스에서 받아온 placelist 정보를 이용해 recyclerView 설정
         placeListAdapter = PlaceListAdapter(this)
@@ -65,6 +61,9 @@ class PlaceList : AppCompatActivity() {
         binding.recyclerViewGroupList.adapter = groupListAdapter
 
         groupListListViewModel = ViewModelProvider(this).get(GroupListViewModel::class.java)
+        // 데이터베이스 접근을 위한 place group id정보 받아옴
+        groupListListViewModel.setSelectGroupId(intent.getIntExtra("groupId", 0))
+
         groupListListViewModel.groupList.observe(this) {
             updateGroupAdapterList()
             updatePlaceAdapterList()
@@ -74,7 +73,7 @@ class PlaceList : AppCompatActivity() {
 
         groupListAdapter.setGroupClickListener(object : GroupNameAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
-                groupId = group.id
+                groupListListViewModel.setSelectGroupId(group.id)
                 updateGroupAdapterList()
                 updatePlaceAdapterList()
                 setGroupAllButtonColorBySelect(false)
@@ -92,19 +91,20 @@ class PlaceList : AppCompatActivity() {
         // place add btn
         binding.imageButtonPlaceInsert.setOnClickListener {
             val intent = Intent(this@PlaceList, EditPlace::class.java).apply {
-                putExtra("groupId", groupId)
-                putExtra("groupName", groupListListViewModel.getGroupNameById(groupId))
+                putExtra("groupId", groupListListViewModel.getSelectGroupId())
+                putExtra("groupName", groupListListViewModel.getSelectGroupName())
                 putExtra("placeId", placeListViewModel.getPlaceListMaxId() + 1)
                 putExtra("type", "add")
             }
             requestActivity.launch(intent)
         }
 
-        placeListAdapter.setPlaceListClickListener(object : PlaceListAdapter.PlaceListClickListener {
+        placeListAdapter.setPlaceListClickListener(object :
+            PlaceListAdapter.PlaceListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
                 val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
                     putExtra("place", item)
-                    putExtra("groupName", groupListListViewModel.getGroupNameById(item.groupId))
+                    putExtra("groupName", groupListListViewModel.getSelectGroupName())
                 }
                 startActivity(intent)
             }
@@ -128,7 +128,7 @@ class PlaceList : AppCompatActivity() {
                                 putExtra("place", item)
                                 putExtra(
                                     "groupName",
-                                    groupListListViewModel.getGroupNameById(item.groupId)
+                                    groupListListViewModel.getSelectGroupName()
                                 )
                                 putExtra("type", "edit")
                             }
@@ -141,8 +141,7 @@ class PlaceList : AppCompatActivity() {
         })
 
         binding.textViewGroupAll.setOnClickListener {
-            groupId = -1
-            groupListAdapter.setSelectGroupByGroupId(-1)
+            groupListListViewModel.setSelectGroupId(-1)
             updateGroupAdapterList()
             updatePlaceAdapterList()
             setGroupAllButtonColorBySelect(true)
@@ -168,7 +167,7 @@ class PlaceList : AppCompatActivity() {
                         }
                     }
                 }
-                groupId = place!!.groupId
+                groupListListViewModel.setSelectGroupId(place!!.groupId)
                 updateGroupAdapterList()
                 binding.recyclerViewGroupList.smoothScrollToPosition(groupListAdapter.getGroupPosition())
                 setGroupAllButtonColorBySelect(false)
@@ -184,7 +183,7 @@ class PlaceList : AppCompatActivity() {
                         val group = it.data?.getParcelableExtra<Group>("group")
                         CoroutineScope(Dispatchers.IO).launch {
                             groupListListViewModel.insertGroup(group!!)
-                            groupId = group.id
+                            groupListListViewModel.setSelectGroupId(group.id)
                         }
                     }
                 }
@@ -199,7 +198,8 @@ class PlaceList : AppCompatActivity() {
     }
 
     private fun updatePlaceAdapterList() {
-        placeListViewModel.getPlaceListByGroupId(groupId)?.let { placeListAdapter.setPlaceListData(it) }
+        placeListViewModel.getPlaceListByGroupId(groupListListViewModel.getSelectGroupId())
+            ?.let { placeListAdapter.setPlaceListData(it) }
         placeListAdapter.notifyDataSetChanged()
         setEmptyRecyclerView()
     }
@@ -207,7 +207,7 @@ class PlaceList : AppCompatActivity() {
     private fun updateGroupAdapterList() {
         val groupList = groupListListViewModel.getGroupList()
         if (groupList != null) {
-            groupListAdapter.setSelectGroupByGroupId(groupId)
+            groupListAdapter.setSelectGroupByGroupId(groupListListViewModel.getSelectGroupId())
             groupListAdapter.setListData(groupList)
             groupListAdapter.notifyDataSetChanged()
         } else groupListAdapter.setListDataClear()
