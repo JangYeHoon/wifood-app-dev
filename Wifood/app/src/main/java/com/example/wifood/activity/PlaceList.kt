@@ -91,7 +91,7 @@ class PlaceList : AppCompatActivity() {
 
         // place add btn
         binding.imageButtonPlaceInsert.setOnClickListener {
-            val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
+            val intent = Intent(this@PlaceList, EditPlace::class.java).apply {
                 putExtra("groupId", groupId)
                 putExtra("groupName", groupListListViewModel.getGroupNameById(groupId))
                 putExtra("placeId", placeListViewModel.getPlaceListMaxId() + 1)
@@ -124,7 +124,7 @@ class PlaceList : AppCompatActivity() {
                             }
                         }
                         R.id.edit_menu -> {
-                            val intent = Intent(this@PlaceList, AddPlace::class.java).apply {
+                            val intent = Intent(this@PlaceList, EditPlace::class.java).apply {
                                 putExtra("place", item)
                                 putExtra(
                                     "groupName",
