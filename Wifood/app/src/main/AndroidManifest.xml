@@ -28,13 +28,10 @@
             android:name=".activity.FindPassword"
             android:exported="false" />
         <activity
-            android:name=".activity.DeleteFoodList"
-            android:exported="false" />
-        <activity
             android:name=".activity.PlaceInfo"
             android:exported="false" />
         <activity
-            android:name=".activity.AddPlace"
+            android:name=".activity.EditPlace"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

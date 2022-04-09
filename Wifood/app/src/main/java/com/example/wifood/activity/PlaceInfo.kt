@@ -132,7 +132,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             }
             R.id.edit_menu -> {
-                val intent = Intent(this@PlaceInfo, AddPlace::class.java).apply {
+                val intent = Intent(this@PlaceInfo, EditPlace::class.java).apply {
                     putExtra("place", placeViewModel.getPlaceInstance())
                     putExtra("groupName", groupViewModel.getGroupName())
                     putExtra("type", "edit")

@@ -24,11 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.*
-import com.example.wifood.databinding.ActivityAddPlaceBinding
+import com.example.wifood.databinding.ActivityEditPlaceBinding
 import com.example.wifood.entity.*
 import com.example.wifood.viewmodel.ImageStoreViewModel
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,13 +35,13 @@ import kotlin.collections.ArrayList
 const val REQUEST_IMAGE_CAPTURE = 1
 const val REQUEST_GALLERY_TAKE = 2
 
-class AddPlace : AppCompatActivity() {
+class EditPlace : AppCompatActivity() {
     var imageCnt: Int = 0
     var insertPlace: Place = Place()
     var imageList: ArrayList<String> = ArrayList(0)
     var imageUriList: ArrayList<Uri> = ArrayList(0)
 
-    lateinit var binding: ActivityAddPlaceBinding
+    lateinit var binding: ActivityEditPlaceBinding
     lateinit var searchResult: Search
     lateinit var adapterMenuName: MenuNameAdapter
     lateinit var adapterMenuGrade: MenuGradeAdapter
@@ -54,7 +52,7 @@ class AddPlace : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddPlaceBinding.inflate(layoutInflater)
+        binding = ActivityEditPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar: Toolbar = findViewById(R.id.main_layout_toolbar)
@@ -158,11 +156,11 @@ class AddPlace : AppCompatActivity() {
         // 맛집 검색 SearchPlace Activity로 이동
         if (type != "edit") {
             binding.textViewPlaceName.setOnClickListener {
-                val intent = Intent(this@AddPlace, SearchPlace::class.java).apply {}
+                val intent = Intent(this@EditPlace, SearchPlace::class.java).apply {}
                 requestActivity.launch(intent)
             }
             binding.imageButtonNextSearchPlace.setOnClickListener {
-                val intent = Intent(this@AddPlace, SearchPlace::class.java).apply {}
+                val intent = Intent(this@EditPlace, SearchPlace::class.java).apply {}
                 requestActivity.launch(intent)
             }
         }
@@ -250,7 +248,7 @@ class AddPlace : AppCompatActivity() {
                         insertPlace.id
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            Glide.with(this@AddPlace).load(it.result).into(binding.imageViewPlace)
+                            Glide.with(this@EditPlace).load(it.result).into(binding.imageViewPlace)
                             imageUriList.add(it.result)
                         }
                     }
