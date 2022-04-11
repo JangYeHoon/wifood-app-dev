@@ -17,7 +17,7 @@ class SearchPlaceViewModel(context: Context) : ViewModel() {
         tmapTAPI.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
     }
 
-    fun getSearchResultByString(keyword: String) {
+    fun setSearchResultByString(keyword: String) {
         val search: MutableList<Search> = mutableListOf()
         val tmapData = TMapData()
         tmapData.findAllPOI(keyword, TMapData.FindAllPOIListenerCallback {
