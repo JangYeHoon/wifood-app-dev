@@ -7,11 +7,15 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.adapter.SearchPlaceAdapter
 import com.example.wifood.databinding.ActivitySearchPlaceBinding
 import com.example.wifood.entity.Search
+import com.example.wifood.viewmodel.GroupListViewModel
+import com.example.wifood.viewmodel.SearchPlaceViewModel
 import com.skt.Tmap.TMapData
 import com.skt.Tmap.TMapTapi
 import com.skt.Tmap.poi_item.TMapPOIItem
@@ -21,6 +25,7 @@ class SearchPlace : AppCompatActivity() {
     lateinit var searchPlaceAdapter: SearchPlaceAdapter
     var searchResult = MutableLiveData<MutableList<Search>>()
     lateinit var inputMethodManager: InputMethodManager
+    lateinit var searchPlaceViewModel: SearchPlaceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +42,20 @@ class SearchPlace : AppCompatActivity() {
             searchPlaceAdapter.notifyDataSetChanged()
         }
 
-        // tmap api 사용을 위한 key 설정
-        val tmapTAPI = TMapTapi(this)
-        tmapTAPI.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+        searchPlaceViewModel = ViewModelProvider(
+            this,
+            SearchPlaceViewModel.Factory(this)
+        ).get(SearchPlaceViewModel::class.java)
 
+        searchPlaceViewModel.searchResult.observe(this) {
+            searchPlaceAdapter.setListData(it)
+            searchPlaceAdapter.notifyDataSetChanged()
+        }
 
         // 검색 버튼
         binding.imageButtonSearch.setOnClickListener {
             setKeyBoardHide()
-            findPlaceBySearchKeyword(binding.editTextKeywordText.text.toString())
+            searchPlaceViewModel.getSearchResultByString(binding.editTextKeywordText.text.toString())
         }
 
         // 엔터키 버튼 입력
@@ -53,7 +63,7 @@ class SearchPlace : AppCompatActivity() {
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
                 setKeyBoardHide()
-                findPlaceBySearchKeyword(binding.editTextKeywordText.text.toString())
+                searchPlaceViewModel.getSearchResultByString(binding.editTextKeywordText.text.toString())
                 handled = true
             }
             handled
@@ -74,29 +84,5 @@ class SearchPlace : AppCompatActivity() {
     private fun setKeyBoardHide() {
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.editTextKeywordText.windowToken, 0)
-    }
-
-    // tmap api에 keyword를 이용해 검색한 결과를 받아와 searchResult에 저장
-    private fun findPlaceBySearchKeyword(keyword: String) {
-        val search: MutableList<Search> = mutableListOf()
-        val tmapData = TMapData()
-        tmapData.findAllPOI(keyword, TMapData.FindAllPOIListenerCallback {
-            for (i in it) {
-                val poiItem: TMapPOIItem = i
-                val bizName: String =
-                    poiItem.middleBizName.toString() + "," + poiItem.lowerBizName + "," + poiItem.detailBizName
-                var addressRoad = ""
-                for (a in poiItem.newAddressList)
-                    addressRoad = a.fullAddressRoad
-                addressRoad += poiItem.detailAddrName.replace("null", "")
-                search.add(
-                    Search(
-                        addressRoad, poiItem.poiName.toString(), poiItem.poiPoint.latitude,
-                        poiItem.poiPoint.longitude, bizName
-                    )
-                )
-                searchResult.postValue(search)
-            }
-        })
     }
 }
