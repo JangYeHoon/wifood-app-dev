@@ -55,7 +55,7 @@ class SearchPlace : AppCompatActivity() {
         // 검색 버튼
         binding.imageButtonSearch.setOnClickListener {
             setKeyBoardHide()
-            searchPlaceViewModel.getSearchResultByString(binding.editTextKeywordText.text.toString())
+            searchPlaceViewModel.setSearchResultByString(binding.editTextKeywordText.text.toString())
         }
 
         // 엔터키 버튼 입력
@@ -63,7 +63,7 @@ class SearchPlace : AppCompatActivity() {
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
                 setKeyBoardHide()
-                searchPlaceViewModel.getSearchResultByString(binding.editTextKeywordText.text.toString())
+                searchPlaceViewModel.setSearchResultByString(binding.editTextKeywordText.text.toString())
                 handled = true
             }
             handled
