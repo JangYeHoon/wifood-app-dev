@@ -12,7 +12,7 @@ import com.example.wifood.databinding.ActivityEditGroupBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.GroupViewModel
 
-class EditGroup : AppCompatActivity() {
+class EditGroupView : AppCompatActivity() {
     lateinit var binding: ActivityEditGroupBinding
     lateinit var inputMethodManager: InputMethodManager
     lateinit var groupViewModel: GroupViewModel
