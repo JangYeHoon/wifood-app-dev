@@ -81,7 +81,7 @@ class PlaceList : AppCompatActivity() {
         })
 
         binding.imageButtonGroupInsert.setOnClickListener {
-            val intent = Intent(this@PlaceList, EditGroup::class.java).apply {
+            val intent = Intent(this@PlaceList, EditGroupView::class.java).apply {
                 putExtra("type", "ADD")
                 putExtra("groupId", groupListListViewModel.getGroupMaxId() + 1)
             }

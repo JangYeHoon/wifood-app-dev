@@ -63,7 +63,7 @@
             android:name=".activity.DeleteGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.EditGroup"
+            android:name=".activity.EditGroupView"
             android:exported="false" />
         <activity
             android:name=".activity.GroupList"

@@ -67,7 +67,7 @@ class GroupList : AppCompatActivity() {
 
         // group add btn
         binding.imageButtonGroupInsert.setOnClickListener {
-            val intent = Intent(this@GroupList, EditGroup::class.java).apply {
+            val intent = Intent(this@GroupList, EditGroupView::class.java).apply {
                 putExtra("type", "ADD")
                 putExtra("groupId", groupListViewModel.getGroupMaxId() + 1)
             }
@@ -89,7 +89,7 @@ class GroupList : AppCompatActivity() {
             GroupListAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val intent = Intent(this@GroupList, EditGroup::class.java).apply {
+                    val intent = Intent(this@GroupList, EditGroupView::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("group", group)
                     }
