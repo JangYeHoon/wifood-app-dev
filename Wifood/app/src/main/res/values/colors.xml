@@ -14,4 +14,6 @@
     <color name="windowBackground">#ffffff</color>
     <color name="GR80">#ffffff</color>
 
+    <drawable name="bg_orange">#FF8C00</drawable>
+    <drawable name="bg_wh">#FFFFFFFF</drawable>
 </resources>

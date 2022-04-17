@@ -1,10 +1,17 @@
 package com.example.wifood.entity
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Place(val id:Int = 0, val name:String = "Name", val address:String = "None",
-                val latitude:Double = 0.0, val longitude:Double = 0.0,
-                var tasteGrade:Double = 0.0, var cleanGrade:Double = 0.0,
-                var kindnessGrade:Double = 0.0, var personCount:Int = 0)  : Parcelable
+data class Place(
+    var id: Int = 0, var name: String = "None",
+    var memo: String = "None", var address: String = "None",
+    var latitude: Double = 0.0, var longitude: Double = 0.0,
+    var myTasteGrade: Double = 0.0, var myCleanGrade: Double = 0.0,
+    var myKindnessGrade: Double = 0.0, var visited: Int = 0,
+    var groupId: Int = -1, var menu: ArrayList<Menu> = ArrayList(0),
+    var menuGrade: ArrayList<MenuGrade> = ArrayList(0),
+    var imageUri: ArrayList<String> = ArrayList(0)
+) : Parcelable

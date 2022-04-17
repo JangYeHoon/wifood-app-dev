@@ -1,73 +1,102 @@
 package com.example.wifood.viewmodel
 
-import androidx.lifecycle.LiveData
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.PlaceDto
+import com.example.wifood.entity.MenuGrade
 import com.example.wifood.entity.Place
 
-class PlaceViewModel: ViewModel() {
-    var placeList: LiveData<MutableList<Place>>
-    private val placeDto = PlaceDto()
+class PlaceViewModel : ViewModel() {
+    private val placeDto: PlaceDto = PlaceDto()
+    lateinit var place: Place
 
-    init {
-        placeList = placeDto.getPlaceList()
+    fun initPlace(place: Place) {
+        this.place = place
     }
 
-    fun insertPlace(place:Place) {
-        placeDto.insertPlace(place)
+    fun getPlaceInstance(): Place {
+        return place
     }
 
-    fun getPlaceId(name:String): Int {
-        for (place in placeList.value!!) {
-            if (place.name == name)
-                return place.id
+    fun getPlaceName(): String {
+        return place.name
+    }
+
+    fun getPlaceAddress(): String {
+        return place.address
+    }
+
+    fun getPlaceMemo(): String {
+        return place.memo
+    }
+
+    fun getTasteGrade(): Double {
+        return place.myTasteGrade
+    }
+
+    fun getKindnessGrade(): Double {
+        return place.myKindnessGrade
+    }
+
+    fun getCleanGrade(): Double {
+        return place.myCleanGrade
+    }
+
+    fun getMenuListToString(): String {
+        var ret = ""
+        for (i in 0 until place.menu.size) {
+            ret += place.menu[i].name
+            if (i != place.menu.size - 1)
+                ret += ","
         }
-        return 0
+        return ret
     }
 
-    fun getPlaceMaxId(): Int {
-        var maxValue = 0
-        for (place in placeList.value!!)
-            maxValue = Integer.max(place.id, maxValue)
-        return maxValue
+    fun getMenuGradeList(): ArrayList<MenuGrade> {
+        return place.menuGrade
     }
 
-    fun setPlaceGrade(placeId:Int, taste:Double, clean:Double, kindness:Double) {
-        for (place in placeList.value!!) {
-            if (place.id == placeId) {
-                place.tasteGrade += taste
-                place.cleanGrade += clean
-                place.kindnessGrade += kindness
-                break
-            }
-        }
+    fun getPlaceLatitude(): Double {
+        return place.latitude
     }
 
-    fun getPlaceGrade(placeId:Int):DoubleArray {
-        var arr = DoubleArray(3) { 0.0 }
-        for (place in placeList.value!!) {
-            if (place.id == placeId) {
-                arr[0] = place.tasteGrade
-                arr[1] = place.cleanGrade
-                arr[2] = place.tasteGrade
-                break
-            }
-        }
-        return arr
+    fun getPlaceLongitude(): Double {
+        return place.longitude
     }
 
-    fun setPlaceVisit(placeId:Int) {
-        for (place in placeList.value!!) {
-            if (place.id == placeId)
-                place.personCount++
-        }
+    fun getImageUri(): String {
+        return place.imageUri[0]
     }
 
-    fun getPlaceVisit(placeId:Int):Int {
-        for (place in placeList.value!!) {
-            if (place.id == placeId)
-                return place.personCount
-        }
-        return 0
+    fun getPlaceId(): Int {
+        return place.id
+    }
+
+    fun getPlaceGroupId(): Int {
+        return place.groupId
+    }
+
+    fun isVisited(): Boolean {
+        return place.visited == 1
+    }
+
+    fun isImageEmpty(): Boolean {
+        return place.imageUri.isEmpty()
+    }
+
+    fun isMenuGradeEmpty(): Boolean {
+        return place.menuGrade.isEmpty()
+    }
+
+    fun insertPlace(place: Place) {
+        placeDto.insertPlaceList(place)
+    }
+
+    fun updatePlace(place: Place) {
+        placeDto.insertPlaceList(place)
+    }
+
+    fun deletePlace() {
+        placeDto.deletePlaceList(place.id)
     }
 }

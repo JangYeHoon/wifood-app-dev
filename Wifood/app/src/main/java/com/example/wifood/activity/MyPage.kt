@@ -39,9 +39,11 @@ class MyPage : AppCompatActivity() {
 
         // button event : modify my info
         btnMyPageModifyMyInfo.setOnClickListener {
-            val intent = Intent(this, Joinin::class.java)
-            intent.putExtra("UserEmail",userEmail)
-            startActivity(intent)
+            //val intent = Intent(this, Joinin::class.java)
+            //intent.putExtra("UserEmail",userEmail)sssss
+            // joinin 가서 user email가지고 나머지 정보 채우고 deactivate 해줘야함
+                    // 체크도 간소화해서 하자.
+            //startActivity(intent)
         }
 
         // button event : modify my favor
