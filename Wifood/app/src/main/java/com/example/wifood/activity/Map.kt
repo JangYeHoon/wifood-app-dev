@@ -142,7 +142,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
         // button event : go to my list
         btnGoMyList.setOnClickListener {
-            val intent = Intent(this, GroupList::class.java)
+            val intent = Intent(this, GroupListView::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
         }

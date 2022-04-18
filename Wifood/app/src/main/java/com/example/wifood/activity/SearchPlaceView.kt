@@ -20,7 +20,7 @@ import com.skt.Tmap.TMapData
 import com.skt.Tmap.TMapTapi
 import com.skt.Tmap.poi_item.TMapPOIItem
 
-class SearchPlace : AppCompatActivity() {
+class SearchPlaceView : AppCompatActivity() {
     lateinit var binding: ActivitySearchPlaceBinding
     lateinit var searchPlaceAdapter: SearchPlaceAdapter
     var searchResult = MutableLiveData<MutableList<Search>>()

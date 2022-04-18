@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlaceList : AppCompatActivity() {
+class PlaceListView : AppCompatActivity() {
     lateinit var binding: ActivityPlaceListBinding
     private lateinit var placeListAdapter: PlaceListAdapter
     lateinit var placeListViewModel: PlaceListViewModel
@@ -81,7 +81,7 @@ class PlaceList : AppCompatActivity() {
         })
 
         binding.imageButtonGroupInsert.setOnClickListener {
-            val intent = Intent(this@PlaceList, EditGroupView::class.java).apply {
+            val intent = Intent(this@PlaceListView, EditGroupView::class.java).apply {
                 putExtra("type", "ADD")
                 putExtra("groupId", groupListListViewModel.getGroupMaxId() + 1)
             }
@@ -90,7 +90,7 @@ class PlaceList : AppCompatActivity() {
 
         // place add btn
         binding.imageButtonPlaceInsert.setOnClickListener {
-            val intent = Intent(this@PlaceList, EditPlace::class.java).apply {
+            val intent = Intent(this@PlaceListView, EditPlaceView::class.java).apply {
                 putExtra("groupId", groupListListViewModel.getSelectGroupId())
                 putExtra("groupName", groupListListViewModel.getSelectGroupName())
                 putExtra("placeId", placeListViewModel.getPlaceListMaxId() + 1)
@@ -102,7 +102,7 @@ class PlaceList : AppCompatActivity() {
         placeListAdapter.setPlaceListClickListener(object :
             PlaceListAdapter.PlaceListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
-                val intent = Intent(this@PlaceList, PlaceInfo::class.java).apply {
+                val intent = Intent(this@PlaceListView, PlaceInfoView::class.java).apply {
                     putExtra("place", item)
                     putExtra("groupName", groupListListViewModel.getSelectGroupName())
                 }
@@ -113,7 +113,7 @@ class PlaceList : AppCompatActivity() {
         placeListAdapter.setPopupButtonClickListener(object :
             PlaceListAdapter.PlaceListClickListener {
             override fun onClick(view: View, position: Int, item: Place) {
-                val popupMenu = PopupMenu(this@PlaceList, view)
+                val popupMenu = PopupMenu(this@PlaceListView, view)
                 popupMenu.menuInflater.inflate(R.menu.popup_place_menu, popupMenu.menu)
                 popupMenu.show()
                 popupMenu.setOnMenuItemClickListener {
@@ -124,14 +124,15 @@ class PlaceList : AppCompatActivity() {
                             }
                         }
                         R.id.edit_menu -> {
-                            val intent = Intent(this@PlaceList, EditPlace::class.java).apply {
-                                putExtra("place", item)
-                                putExtra(
-                                    "groupName",
-                                    groupListListViewModel.getSelectGroupName()
-                                )
-                                putExtra("type", "edit")
-                            }
+                            val intent =
+                                Intent(this@PlaceListView, EditPlaceView::class.java).apply {
+                                    putExtra("place", item)
+                                    putExtra(
+                                        "groupName",
+                                        groupListListViewModel.getSelectGroupName()
+                                    )
+                                    putExtra("type", "edit")
+                                }
                             requestActivity.launch(intent)
                         }
                     }

@@ -18,7 +18,6 @@ import com.example.wifood.databinding.ActivityPlaceInfoBinding
 import com.example.wifood.entity.Group
 import com.example.wifood.entity.Place
 import com.example.wifood.viewmodel.GroupViewModel
-import com.example.wifood.viewmodel.PlaceListViewModel
 import com.example.wifood.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -29,7 +28,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.Map
 
-class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
+class PlaceInfoView : AppCompatActivity(), OnMapReadyCallback {
     lateinit var binding: ActivityPlaceInfoBinding
     lateinit var adapterMenuGradeInfo: MenuGradeInfoAdapter
     lateinit var placeViewModel: PlaceViewModel
@@ -86,7 +85,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
         adapterMenuGradeInfo.notifyDataSetChanged()
 
         binding.textViewAddress.setOnClickListener {
-            val intent = Intent(this@PlaceInfo, Map::class.java)
+            val intent = Intent(this@PlaceInfoView, Map::class.java)
             intent.putExtra("latitude", placeViewModel.getPlaceLatitude())
             intent.putExtra("longitude", placeViewModel.getPlaceLongitude())
             startActivity(intent)
@@ -108,7 +107,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
         val storageRef: StorageReference = storage.reference.child("$foodId/$idx.png")
         storageRef.downloadUrl.addOnCompleteListener {
             if (it.isSuccessful) {
-                Glide.with(this@PlaceInfo).load(it.result).into(binding.imageViewPlaceImage)
+                Glide.with(this@PlaceInfoView).load(it.result).into(binding.imageViewPlaceImage)
             }
         }
     }
@@ -132,7 +131,7 @@ class PlaceInfo : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             }
             R.id.edit_menu -> {
-                val intent = Intent(this@PlaceInfo, EditPlace::class.java).apply {
+                val intent = Intent(this@PlaceInfoView, EditPlaceView::class.java).apply {
                     putExtra("place", placeViewModel.getPlaceInstance())
                     putExtra("groupName", groupViewModel.getGroupName())
                     putExtra("type", "edit")

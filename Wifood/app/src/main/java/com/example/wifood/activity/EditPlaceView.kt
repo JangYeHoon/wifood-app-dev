@@ -35,7 +35,7 @@ import kotlin.collections.ArrayList
 const val REQUEST_IMAGE_CAPTURE = 1
 const val REQUEST_GALLERY_TAKE = 2
 
-class EditPlace : AppCompatActivity() {
+class EditPlaceView : AppCompatActivity() {
     var imageCnt: Int = 0
     var insertPlace: Place = Place()
     var imageList: ArrayList<String> = ArrayList(0)
@@ -156,11 +156,11 @@ class EditPlace : AppCompatActivity() {
         // 맛집 검색 SearchPlace Activity로 이동
         if (type != "edit") {
             binding.textViewPlaceName.setOnClickListener {
-                val intent = Intent(this@EditPlace, SearchPlace::class.java).apply {}
+                val intent = Intent(this@EditPlaceView, SearchPlaceView::class.java).apply {}
                 requestActivity.launch(intent)
             }
             binding.imageButtonNextSearchPlace.setOnClickListener {
-                val intent = Intent(this@EditPlace, SearchPlace::class.java).apply {}
+                val intent = Intent(this@EditPlaceView, SearchPlaceView::class.java).apply {}
                 requestActivity.launch(intent)
             }
         }
@@ -248,7 +248,8 @@ class EditPlace : AppCompatActivity() {
                         insertPlace.id
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            Glide.with(this@EditPlace).load(it.result).into(binding.imageViewPlace)
+                            Glide.with(this@EditPlaceView).load(it.result)
+                                .into(binding.imageViewPlace)
                             imageUriList.add(it.result)
                         }
                     }
