@@ -58,7 +58,8 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이디 찾기" />
+            android:text="아이디 찾기"
+            />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -180,6 +181,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayout_findPwd"
         android:layout_width="358dp"
         android:layout_height="514dp"
         android:visibility="visible"

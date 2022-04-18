@@ -39,6 +39,30 @@ class Login : AppCompatActivity() {
         mBinding= null
         super.onDestroy()
     }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.buttonLogin.setOnClickListener {
+            val intent = Intent(this@Login,Map::class.java)
+            intent.putExtra("UserEmail","testingEmail")
+            startActivity(intent)
+        }
+
+        binding.textViewJoinin.setOnClickListener {
+            val intent = Intent(this@Login,Joinin::class.java)
+            startActivity(intent)
+        }
+
+        // find password button
+        binding.textViewFindIdPwd.setOnClickListener{
+            val intent = Intent(this@Login,FindIdOrPwd::class.java)
+            startActivity(intent)
+        }
+    }
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
@@ -142,7 +166,7 @@ class Login : AppCompatActivity() {
             }
         })
 
-    }
+    }*/
 
     var backKeyPressedTime : Long = 0
     override fun onBackPressed() {
@@ -155,4 +179,5 @@ class Login : AppCompatActivity() {
             finishAffinity()
         }
     }
+
 }

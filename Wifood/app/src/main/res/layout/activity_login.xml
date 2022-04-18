@@ -20,15 +20,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView_id"
         android:layout_width="280dp"
         android:layout_height="46dp"
         android:layout_marginTop="173dp"
         android:background="@drawable/rectangle"
+        android:fontFamily="@font/font_wifood_formenable"
         android:gravity="center_vertical"
         android:hint="   아이디"
-        android:fontFamily="@font/font_wifood_formenable"
         android:textColor="@color/gray01"
         android:textColorHint="@color/enable"
         android:textSize="14sp"
@@ -37,15 +37,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/textView_pwd"
         android:layout_width="280dp"
         android:layout_height="46dp"
         android:layout_marginTop="224dp"
         android:background="@drawable/rectangle"
+        android:fontFamily="@font/font_wifood_formenable"
         android:gravity="center_vertical"
         android:hint="   비밀번호"
-        android:fontFamily="@font/font_wifood_formenable"
         android:textColor="@color/gray01"
         android:textColorHint="@color/enable"
         android:textSize="14sp"

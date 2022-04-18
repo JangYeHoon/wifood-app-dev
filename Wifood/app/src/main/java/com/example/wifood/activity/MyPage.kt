@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.wifood.R
+import com.example.wifood.databinding.ActivityFindIdOrPwdBinding
+import com.example.wifood.databinding.ActivityMypagehomeBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -17,6 +19,46 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_map.*
 
 class MyPage : AppCompatActivity() {
+
+    private var mBinding: ActivityMypagehomeBinding?=null
+    private val binding get() = mBinding!!
+
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = ActivityMypagehomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        binding.buttonModifyMyInfo.setOnClickListener {
+            val intent = Intent(this, ModifyMyProfile::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
+        binding.buttonGoToList.setOnClickListener {
+            val intent = Intent(this, GroupList::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
+        binding.buttonGoToMap.setOnClickListener {
+            val intent = Intent(this, Map::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
+        binding.buttonLogout.setOnClickListener{
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
@@ -91,4 +133,5 @@ class MyPage : AppCompatActivity() {
             builder.show()
         }
     }
+    */
 }
