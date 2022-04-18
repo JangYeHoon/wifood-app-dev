@@ -26,14 +26,23 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.wifood.R
 import java.util.regex.Pattern
+import com.example.wifood.databinding.ActivityLoginBinding
 
 class Login : AppCompatActivity() {
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
     val TAG = "Login Page LOG : "
 
+    private var mBinding: ActivityLoginBinding?=null
+    private val binding get() = mBinding!!
+
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        mBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Firebase
         val db = Firebase.database;
@@ -54,24 +63,24 @@ class Login : AppCompatActivity() {
 
 
         // login button
-        btnGoHomeButton.setOnClickListener {
-            pwdValidation = Pattern.matches(pwdStringLambda, editTextPassword.text)
-            if (editTextId.text.toString().length == 0)
+         binding.buttonLogin.setOnClickListener {
+            pwdValidation = Pattern.matches(pwdStringLambda, binding.textViewPwd.text)
+            if (binding.textViewId.text.toString().length == 0)
             // when no id input
                 Toast.makeText(this@Login, "아이디 없음", Toast.LENGTH_SHORT).show()
             else if (!idValidation)
             // when id format is wrong
                 Toast.makeText(this@Login, "아이디 형식 오류", Toast.LENGTH_SHORT).show()
-            else if (editTextPassword.text.toString().length == 0)
+            else if (binding.textViewPwd.text.toString().length == 0)
                 Toast.makeText(this@Login, "비밀번호 없음", Toast.LENGTH_SHORT).show()
             else if (!pwdValidation)
                 Toast.makeText(this@Login, "비밀번호 형식 오류", Toast.LENGTH_SHORT).show()
             else {
                 dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapShot: DataSnapshot) {
-                        val idText = editTextId.text.toString()
+                        val idText = binding.textViewId.text.toString()
                             .replace(".com", "_com") // change to firebase string
-                        val pwdText = editTextPassword.text.toString()
+                        val pwdText = binding.textViewPwd.text.toString()
                             .replace('.', '_')// change to firebase string
                         var accountTrue = false;
 
@@ -83,25 +92,13 @@ class Login : AppCompatActivity() {
                                 Toast.makeText(this@Login, "패스워드 실패", Toast.LENGTH_SHORT).show()
                             if (accountTrue) {
                                 // set auto login
-                                if (switchAutoLogin.isChecked){
-                                    autoLoginEditor.putString("WifoodLoginId",idText)
-                                    autoLoginEditor.apply()
-                                }
-                                else{
-                                    // if user didnt add food favorite, then go to food favorite page
-                                    if (snapShot.child(idText).hasChild("Taste_Favorite")){
-                                        val intent = Intent(this@Login, Map::class.java)
-                                        intent.putExtra("UserEmail",idText)
-                                        startActivity(intent)
-                                    }
-                                    else{
-                                        // put user email info to
-                                        val intent = Intent(this@Login, JoininFoodFavoriteInfo::class.java)
-                                        intent.putExtra("UserEmail",idText)
-                                        startActivity(intent)
+                                autoLoginEditor.putString("WifoodLoginId",idText)
+                                autoLoginEditor.apply()
+                                // if user didnt add food favorite, then go to food favorite page
+                                val intent = Intent(this@Login, Map::class.java)
+                                intent.putExtra("UserEmail",idText)
+                                startActivity(intent)
 
-                                    }
-                                }
                             }
                             // go to home activiy
                         } else {
@@ -117,30 +114,29 @@ class Login : AppCompatActivity() {
 
 
         // joinin button
-        btnGoJoinIn.setOnClickListener {
+        binding.textViewJoinin.setOnClickListener {
             val intent = Intent(this@Login,Joinin::class.java)
             startActivity(intent)
         }
 
         // find password button
-        btnFindPwd.setOnClickListener{
-            val intent = Intent(this@Login,FindPassword::class.java)
+        binding.textViewFindIdPwd.setOnClickListener{
+            val intent = Intent(this@Login,FindIdOrPwd::class.java)
             startActivity(intent)
         }
 
         // check id(email) listener
-        editTextId.addTextChangedListener(object : TextWatcher {
+        binding.textViewId.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?){
             }
             override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
             }
             override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                if (android.util.Patterns.EMAIL_ADDRESS.matcher(editTextId.text.toString()).matches()){
-                    editTextId.setTextColor(Color.BLACK)
+                if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.textViewId.text.toString()).matches()){
                     idValidation = true
                 }
                 else{
-                    editTextId.setTextColor(Color.RED)
+                    binding.textViewId.setTextColor(Color.RED)
                     idValidation = false
                 }
             }
