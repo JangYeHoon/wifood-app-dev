@@ -28,17 +28,17 @@
             android:name=".activity.FindPassword"
             android:exported="false" />
         <activity
-            android:name=".activity.PlaceInfo"
+            android:name=".activity.PlaceInfoView"
             android:exported="false" />
         <activity
-            android:name=".activity.EditPlace"
+            android:name=".activity.EditPlaceView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.PlaceList"
+            android:name=".activity.PlaceListView"
             android:exported="false" />
         <activity
-            android:name=".activity.SearchPlace"
+            android:name=".activity.SearchPlaceView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -66,7 +66,7 @@
             android:name=".activity.EditGroupView"
             android:exported="false" />
         <activity
-            android:name=".activity.GroupList"
+            android:name=".activity.GroupListView"
             android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

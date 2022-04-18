@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.activity.EditPlace
+import com.example.wifood.activity.EditPlaceView
 import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.GroupListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -35,7 +35,7 @@ class GroupSelectBottom : BottomSheetDialogFragment() {
 
         groupSelectAdapter.setGroupClickListener(object : GroupSelectAdapter.GroupClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
-                val addPlace = activity as EditPlace
+                val addPlace = activity as EditPlaceView
                 addPlace.setGroupByGroupEntity(group)
                 dismiss()
             }

@@ -22,7 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GroupList : AppCompatActivity() {
+class GroupListView : AppCompatActivity() {
     lateinit var binding: ActivityGroupListBinding
     private lateinit var groupListAdapter: GroupListAdapter
     private lateinit var groupListViewModel: GroupListViewModel
@@ -67,7 +67,7 @@ class GroupList : AppCompatActivity() {
 
         // group add btn
         binding.imageButtonGroupInsert.setOnClickListener {
-            val intent = Intent(this@GroupList, EditGroupView::class.java).apply {
+            val intent = Intent(this@GroupListView, EditGroupView::class.java).apply {
                 putExtra("type", "ADD")
                 putExtra("groupId", groupListViewModel.getGroupMaxId() + 1)
             }
@@ -89,7 +89,7 @@ class GroupList : AppCompatActivity() {
             GroupListAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val intent = Intent(this@GroupList, EditGroupView::class.java).apply {
+                    val intent = Intent(this@GroupListView, EditGroupView::class.java).apply {
                         putExtra("type", "EDIT")
                         putExtra("group", group)
                     }
@@ -102,7 +102,7 @@ class GroupList : AppCompatActivity() {
         groupListAdapter.setGroupGoClickListener(object :
             GroupListAdapter.GroupGoClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
-                val intent = Intent(this@GroupList, PlaceList::class.java).apply {
+                val intent = Intent(this@GroupListView, PlaceListView::class.java).apply {
                     putExtra("groupName", group.name)
                     putExtra("groupId", group.id)
                 }
