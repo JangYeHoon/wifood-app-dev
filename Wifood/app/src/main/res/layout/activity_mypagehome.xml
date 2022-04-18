@@ -52,7 +52,9 @@
         android:layout_marginTop="68dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
     <TextView
         android:id="@+id/textView_nickName"
@@ -65,7 +67,8 @@
         android:textColor="#000000"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
         android:id="@+id/textView_email"
@@ -78,7 +81,8 @@
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageButton
         android:id="@+id/button_modifyProfile"
@@ -89,7 +93,8 @@
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/go_button" />
+        app:srcCompat="@drawable/go_button"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -107,7 +112,8 @@
         android:textAlignment="textStart"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_modifyMyFavorite"
@@ -123,7 +129,8 @@
         android:textAlignment="textStart"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_modifyMyInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/button_modifyMyInfo"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_setting"
@@ -139,6 +146,7 @@
         android:textAlignment="textStart"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_modifyMyFavorite" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -156,6 +164,7 @@
         android:textAlignment="textStart"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_setting" />
 
     <TextView
