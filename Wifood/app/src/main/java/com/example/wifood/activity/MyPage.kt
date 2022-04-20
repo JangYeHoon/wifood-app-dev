@@ -40,7 +40,7 @@ class MyPage : AppCompatActivity() {
         }
 
         binding.buttonGoToList.setOnClickListener {
-            val intent = Intent(this, GroupList::class.java)
+            val intent = Intent(this, GroupListView::class.java)
             intent.putExtra("UserEmail", "testingEmail")
             startActivity(intent)
         }
