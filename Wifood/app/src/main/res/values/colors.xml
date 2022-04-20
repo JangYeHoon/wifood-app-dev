@@ -14,6 +14,12 @@
     <color name="windowBackground">#ffffff</color>
     <color name="GR80">#ffffff</color>
 
+    <color name="main">#FFEA7434</color>
+    <color name="enable">#FFCFCFCF</color>
+    <color name="error">#FFEF3900</color>
+    <color name="gray01">#FF565656</color>
+    <color name="bottom_enable">#54000000</color>
+
     <drawable name="bg_orange">#FF8C00</drawable>
     <drawable name="bg_wh">#FFFFFFFF</drawable>
 </resources>
