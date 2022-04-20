@@ -1,6 +1,7 @@
 package com.example.wifood.activity
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -9,17 +10,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
 import com.example.wifood.R
+import com.example.wifood.databinding.ActivityJoininBinding
+import com.example.wifood.databinding.ActivityLoginBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_joinin.*
-import kotlinx.android.synthetic.main.activity_login.*
 import java.util.regex.Pattern
 import kotlin.collections.Map
 
-//TODO("본인 확인 구현 필요")
 class Joinin : AppCompatActivity() {
     var emailValid = false
     var passwordValid = false
@@ -30,270 +31,262 @@ class Joinin : AppCompatActivity() {
     var phoneNumberValid = false
     var nickNameValid = false
     var genderValue = ""
-    var userHomeLatitude = 37.50786489934014
-    var userHomeLongitude = 126.94754349105091
 
+    val TAG = "JoinInUserInfoActivity : "
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
     private val nicknameStringLambda = "^[a-zA-Z0-9가-힣]*\$"
     private val fineAddressStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$-])"
 
+    private var mBinding: ActivityJoininBinding?=null
+    private val binding get() = mBinding!!
+
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_joinin)
+        mBinding = ActivityJoininBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // firebase variables
-        val db = Firebase.database;
-        val dbRootPath = "kg_test_db";
-        val dbRef = db.getReference(dbRootPath);
+        binding.buttonJoinin.setOnClickListener {
+            val intent = Intent(this@Joinin, Map::class.java)
+            intent.putExtra("UserEmail","testingEmail")
+            startActivity(intent)
+        }
 
-        val modifyUserEmail = intent.getStringExtra("UserEmail").toString()
+    }
 
-        if (modifyUserEmail  != "null"){
+        /*
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            mBinding = ActivityJoininBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-            dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapShot: DataSnapshot) {
-                    // put user email = false
-                    editTextJoinEmail.setText(modifyUserEmail.replace("_com",".com"))
-                    editTextJoinNickName.setText(snapShot.child(modifyUserEmail).child("info").child("nickname").value.toString())
-                    editTextJoinPhone.setText(snapShot.child(modifyUserEmail).child("info").child("phoneNumber").value.toString())
-                    //editTextJoinCoarseAddress.setText(snapShot.child(modifyUserEmail).child("info").child("coarseAddress").getValue().toString())
-                    editTextJoinCoarseAddress.setText("아직 구현이 안됌 ㅠㅠ")
-                    editTextJoinFineAddress.setText(snapShot.child(modifyUserEmail).child("info").child("fineAddress").value.toString())
-                    userHomeLatitude = snapShot.child(modifyUserEmail).child("info").child("homeLatitude").value.toString().toDouble()
-                    userHomeLongitude = snapShot.child(modifyUserEmail).child("info").child("homeLongitude").value.toString().toDouble()
-                    if (snapShot.child(modifyUserEmail).child("info").child("gender").value.toString() == "Male"){
-                        radioButtonJoinMale.isChecked = true
-                        radioButtonJoinFemale.isChecked = false
+            // firebase variables
+            val db = Firebase.database;
+            val dbRootPath = "kg_test_db";
+            val dbRef = db.getReference(dbRootPath);
+
+            // email check
+            binding.textViewId.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?){}
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    if (android.util.Patterns.EMAIL_ADDRESS.matcher(binding.textViewId.text.toString()).matches())
+                    {
+                        binding.textViewIdError.setEnabled(false)
+                        emailValid = true
                     }
                     else{
-                        radioButtonJoinMale.isChecked = false
-                        radioButtonJoinFemale.isChecked = true
+                        binding.textViewIdError.setEnabled(true)
+                        emailValid = true
                     }
+                    checkValid()
                 }
-                override fun onCancelled(error: DatabaseError) {}
             })
-            // set editText not clickable
-            editTextJoinEmail.setBackgroundColor(Color.LTGRAY)
-            editTextJoinEmail.isClickable = false
-            editTextJoinNickName.setBackgroundColor(Color.LTGRAY)
-            editTextJoinNickName.isClickable = false
-            radioButtonJoinMale.isClickable = false
-            radioButtonJoinFemale.isClickable = false
-            editTextJoinPassword.text.clear()
-            editTextJoinPasswordCheck.text.clear()
-        }
+            // password check
+            binding.textViewPwd.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?){
+                }
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    passwordValid =  Pattern.matches(pwdStringLambda,binding.textViewPwd.text)
+                    checkValid()
+                }
+            })
+            // password check again
+            binding.textViewPwdCheck.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?){}
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    passwordValidCheck = Pattern.matches(pwdStringLambda,binding.textViewPwdCheck.text)
+                    checkValid()
+                }
+            })
+            // nick name check
+            binding.textViewNickName.addTextChangedListener(object:TextWatcher{
+                override fun afterTextChanged(s: Editable?){}
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    if (Pattern.matches(nicknameStringLambda,binding.textViewNickName.text.toString())){
+                        binding.textViewNickNameError.setEnabled(false)
+                        nickNameValid = true
+                    }
+                    else{
+                        binding.textViewNickNameError.setEnabled(true)
+                        nickNameValid = false
+                    }
+                    checkValid()
+                }
+            })
+            // phone number check
+            binding.textViewPhoneCheck.addTextChangedListener(object:TextWatcher{
+                override fun afterTextChanged(s: Editable?){}
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    if (android.util.Patterns.PHONE.matcher(binding.textViewPhoneCheck.text.toString()).matches() && binding.textViewPhoneCheck.text.toString().length == 11){
+                        binding.textViewPhoneCheckError.setEnabled(false)
+                        phoneNumberValid = true
+                    }
+                    else{
+                        binding.textViewPhoneCheckError.setEnabled(true)
+                        phoneNumberValid = false
+                    }
+                    checkValid()
+                }
 
-        // email check
-        editTextJoinEmail.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?){}
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                if (android.util.Patterns.EMAIL_ADDRESS.matcher(editTextJoinEmail.text.toString()).matches())
-                {
-                    editTextJoinEmail.setTextColor(Color.BLACK)
-                    emailValid = true
+            })
+            // address check
+            //TODO("Coarse Address input")
+
+            //TODO("Fine Address input")
+            binding.textViewAddress.addTextChangedListener(object:TextWatcher{
+                override fun afterTextChanged(s: Editable?){}
+                override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
+                override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
+                    //TODO("should convert to fineAddreesLambda")
+                    if(Pattern.matches(nicknameStringLambda,binding.textViewAddress.text.toString())){
+                        binding.textViewAddressError.setEnabled(false)
+                        fineAddressValid=true
+                    }else{
+                        binding.textViewAddressError.setEnabled(true)
+                        fineAddressValid=false
+                    }
+                    checkValid()
                 }
-                else{
-                    editTextJoinEmail.setTextColor(Color.RED)
-                    emailValid = true
-                }
-                checkValid()
-            }
-        })
-        // password check
-        editTextJoinPassword.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?){
-            }
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                passwordValid =  Pattern.matches(pwdStringLambda,editTextJoinPassword.text)
-                checkValid()
-            }
-        })
-        // password check again
-        editTextJoinPasswordCheck.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?){}
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                passwordValidCheck = Pattern.matches(pwdStringLambda,editTextJoinPasswordCheck.text)
-                checkValid()
-            }
-        })
-        // nick name check
-        editTextJoinNickName.addTextChangedListener(object:TextWatcher{
-            override fun afterTextChanged(s: Editable?){}
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                if (Pattern.matches(nicknameStringLambda,editTextJoinNickName.text.toString())){
-                    editTextJoinNickName.setTextColor(Color.BLACK)
-                    nickNameValid = true
-                }
-                else{
-                    editTextJoinNickName.setTextColor(Color.RED)
-                    nickNameValid = false
-                }
-                checkValid()
-            }
-        })
-        // phone number check
-        editTextJoinPhone.addTextChangedListener(object:TextWatcher{
-            override fun afterTextChanged(s: Editable?){}
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                if (android.util.Patterns.PHONE.matcher(editTextJoinPhone.text.toString()).matches() && editTextJoinPhone.text.toString().length == 11){
-                    editTextJoinPhone.setTextColor(Color.BLACK)
-                    phoneNumberValid = true
-                }
-                else{
-                    editTextJoinPhone.setTextColor(Color.RED)
-                    phoneNumberValid = false
-                }
+            })
+            // gender check
+            binding.radioGroupGender.setOnCheckedChangeListener{group,checkedId->
+                if (binding.radioButtonGenderMale.isChecked)
+                    genderValue = "Male"
+                else if (binding.radioButtonGenderFemale.isChecked)
+                    genderValue = "Female"
+                genderValid = true
                 checkValid()
             }
 
-        })
-        // address check ( set latitude and longitude
-        //TODO("Coarse Address input")
-        editTextJoinCoarseAddress.setText("아직 구현이 안됌 ㅠㅠ")
-
-        //TODO("Fine Address input")
-        editTextJoinFineAddress.addTextChangedListener(object:TextWatcher{
-            override fun afterTextChanged(s: Editable?){}
-            override fun beforeTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){}
-            override fun onTextChanged(s: CharSequence?, start:Int, before:Int, count : Int){
-                //TODO("should convert to fineAddreesLambda")
-                if(Pattern.matches(nicknameStringLambda,editTextJoinFineAddress.text.toString())){
-                    editTextJoinFineAddress.setTextColor(Color.BLACK)
-                    fineAddressValid=true
-                }else{
-                    editTextJoinFineAddress.setTextColor(Color.RED)
-                    fineAddressValid=false
+            binding.buttonJoinin.setOnClickListener {
+                // Check if error exists
+                if (binding.textViewId.text.toString().length == 0){
+                    binding.textViewIdError.setEnabled(true)
+                    Toast.makeText(this@Joinin, "이메일 입력 없음", Toast.LENGTH_SHORT).show()
                 }
-                checkValid()
-            }
-        })
+                else if (!emailValid){
+                    binding.textViewIdError.setEnabled(true)
+                    Toast.makeText(this@Joinin, "이메일 형식 오류", Toast.LENGTH_SHORT).show()
+                }
+                else if (binding.textViewPwd.text.toString().length == 0){
+                    binding.textViewPwderror.setEnabled(true)
+                    Toast.makeText(this@Joinin, "비밀번호 입력 없음", Toast.LENGTH_SHORT).show()
+                }
+                else if (!passwordValid){
 
-        // gender check
-        radioGroupJoinGender.setOnCheckedChangeListener{group,checkedId->
-            if (radioButtonJoinMale.isChecked)
-                genderValue = "Male"
-            else if (radioButtonJoinFemale.isChecked)
-                genderValue = "Female"
-            genderValid = true
-            checkValid()
-        }
+                    Toast.makeText(this@Joinin, "비밀번호 형식 오류", Toast.LENGTH_SHORT).show()
+                }
+                else if (binding.textViewPwdCheck.text.toString().length == 0){
 
-        btnGoJoinInFoodInfo.setOnClickListener {
-            // Check if error exists
-            if (editTextJoinEmail.text.isEmpty())
-                Toast.makeText(this@Joinin, "이메일 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!emailValid){
-                Toast.makeText(this@Joinin, "이메일 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinPassword.text.clear()
-            }
-            else if (editTextJoinPassword.text.isEmpty())
-                Toast.makeText(this@Joinin, "비밀번호 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!passwordValid){
-                Toast.makeText(this@Joinin, "비밀번호 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinPassword.text.clear()
-            }
-            else if (editTextJoinPasswordCheck.text.isEmpty())
-                Toast.makeText(this@Joinin, "비밀번호 확인 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!passwordValidCheck){
-                Toast.makeText(this@Joinin, "비밀번호 확인 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinPasswordCheck.text.clear()
-            }
-            else if (editTextJoinPassword.text.equals(editTextJoinPasswordCheck.text)){
-                Toast.makeText(this@Joinin, "비밀번호 일치 안함", Toast.LENGTH_SHORT).show()
-                editTextJoinPassword.text.clear()
-                editTextJoinPasswordCheck.text.clear()
-            }
-            else if (editTextJoinNickName.text.isEmpty())
-                Toast.makeText(this@Joinin, "닉네임 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!nickNameValid){
-                Toast.makeText(this@Joinin, "닉네임 입력 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinNickName.text.clear()
-            }
-            else if (editTextJoinPhone.text.isEmpty())
-                Toast.makeText(this@Joinin, "핸드폰 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!phoneNumberValid){
-                Toast.makeText(this@Joinin, "핸드폰 입력 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinPhone.text.clear()
-            }
-            else if (!coarseAddressValid)
-                Toast.makeText(this@Joinin, "주소 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (editTextJoinFineAddress.text.isEmpty())
-                Toast.makeText(this@Joinin, "상세 주소 입력 없음", Toast.LENGTH_SHORT).show()
-            else if (!fineAddressValid){
-                Toast.makeText(this@Joinin, "상세 주소 입력 형식 오류", Toast.LENGTH_SHORT).show()
-                editTextJoinFineAddress.text.clear()
-            }
-            else if (!genderValid)
-                Toast.makeText(this@Joinin, "성별 입력 없음", Toast.LENGTH_SHORT).show()
-            else {
+                    Toast.makeText(this@Joinin, "비밀번호 확인 입력 없음", Toast.LENGTH_SHORT).show()
+                }
+                else if (!passwordValidCheck){
+                    binding.textViewPwdCheckError.setEnabled(true)
+                    Toast.makeText(this@Joinin, "비밀번호 확인 형식 오류", Toast.LENGTH_SHORT).show()
+                }
+                else if (binding.textViewPwd.text.equals(binding.textViewPwdCheck.text))
+                    Toast.makeText(this@Joinin, "비밀번호 확인 일치 오류", Toast.LENGTH_SHORT).show()
+
+                // 이메일 중복
+                // 비밀번호 재입력 체크
+                // 닉네임 없음
+                // 닉네임 형식 오류
+                // 닉네임 중복 체크
+                // 핸드폰번호 없음
+                // 핸드폰번호 형식 오류 ( 넘어가거나 - 있으면)
+                // 핸드폰번호 중복 오류
+                // coarse 주소 입력
+                // Fine 주소 없음
+                // Fine 주소 형식 오류
+                // 성별 체크 오류
+
+
                 // already is email exists check
-                val userEmail = editTextJoinEmail.text.toString().replace(".com","_com")
+                val idText = binding.textViewId.text.toString().replace('.', '_') // change to firebase string
                 dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapShot: DataSnapshot) {
-                        // check email is exists
-                        if (snapShot.hasChild(userEmail)) {
+                        val builder = AlertDialog.Builder(this@Joinin)
+                        builder.setTitle("아이디 중복 체크")
+                        if (snapShot.hasChild(idText)) {
+                            builder.setMessage("아이디 존재")
                             emailValid = false
-                            editTextJoinEmail.text.clear()
-                            Toast.makeText(this@Joinin, "이메일 존재", Toast.LENGTH_SHORT).show()
+                            binding.textViewId.setText("")
+                            builder.show()
                         }
-                        // check nickname and phone number is exists
-                        val nicknameString = editTextJoinNickName.text.toString()
-                        val phoneString = editTextJoinPhone.text.toString()
-                        var isNicknameExists = false
-                        var isPhoneExists = false
-                        for (user in snapShot.children){
-                            isNicknameExists = nicknameString.equals(user.child("name").value)
-                            isPhoneExists = phoneString.equals(user.child("phoneNumber").value)
-                        }
-                        if (isNicknameExists)
-                            Toast.makeText(this@Joinin, "닉네임 존재", Toast.LENGTH_SHORT).show()
-                        if (isPhoneExists)
-                            Toast.makeText(this@Joinin, "핸드폰 번호 존재", Toast.LENGTH_SHORT).show()
-
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })
 
+                // check password is same
+                if (binding.textViewPwd.text.equals(binding.textViewPwdCheck.text)){
+                    val builder = AlertDialog.Builder(this@Joinin)
+                    builder.setTitle("비밀번호 재확인 요청")
+                    builder.setMessage("비밀번호가 같지 않습니다")
+                    binding.textViewPwdCheck.setText("")
+                    passwordValidCheck = false
+                    builder.show()
+                }
+
+                // nickname check
+                dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapShot: DataSnapshot) {
+                        val nicknameString = binding.textViewNickName.text.toString()
+                        var isNicknameExists = false
+                        for (user in snapShot.children)
+                            isNicknameExists = nicknameString.equals(user.child("name").value)
+
+                        val builder = AlertDialog.Builder(this@Joinin)
+                        builder.setTitle("닉네임 중복 체크")
+                        if (isNicknameExists){
+                            builder.setMessage("닉네임 존재")
+                            nickNameValid = false
+                            binding.textViewNickName.setText("")
+                            builder.show()
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+
+                val userEmail = binding.textViewId.text.toString().replace(".com","_com")
                 // TODO("should password security")
                 // go food info after check
                 if(checkValid()){
                     val userInfoObject = UserInfo(
                         //TODO("add correct code for user home lat lon using api")
-                        password = editTextJoinPasswordCheck.text.toString(),
-                        nickname = editTextJoinNickName.text.toString(),
-                        phoneNumber = editTextJoinPhone.text.toString(),
+                        password = binding.textViewPwdCheck.text.toString(),
+                        nickname = binding.textViewNickName.text.toString(),
+                        phoneNumber = binding.textViewPhoneCheck.text.toString(),
                         coarseAddress = "노량진 제 1동 만양로 39",
                         fineAddress = "B01호",
                         gender = genderValue,
-                        homeLatitude = userHomeLatitude,
-                        homeLongitude = userHomeLongitude
+                        homeLatitude = 37.50786489934014,
+                        homeLongitude = 126.94754349105091
                     )
                     dbRef.child(userEmail).child("info").setValue(userInfoObject)
 
-                    if (modifyUserEmail  != "null"){ // if modify case
-                        val intent = Intent(this@Joinin, Map::class.java)
-                        intent.putExtra("UserEmail",userEmail)
-                        startActivity(intent)
-                    }
-                    else { // if new user case
-                        val intent = Intent(this@Joinin,JoininFoodFavoriteInfo::class.java)
-                        intent.putExtra("UserEmail",userEmail)
-                        startActivity(intent)
-                    }
+                    val intent = Intent(this@Joinin,Map::class.java)
+                    intent.putExtra("UserEmail",userEmail)
+                    startActivity(intent)
                 }
+
             }
+
+
         }
-    }
+         */
 
     fun checkValid() : Boolean{
         return emailValid && passwordValid && passwordValidCheck && genderValid && coarseAddressValid && fineAddressValid && phoneNumberValid && nickNameValid
     }
-
 }
 
 data class UserInfo(

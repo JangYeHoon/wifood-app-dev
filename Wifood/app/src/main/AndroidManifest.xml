@@ -8,9 +8,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+=======
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+>>>>>>> b79329eff173fd2828d06db67194197fb621228a
 
     <application
         android:allowBackup="true"
@@ -22,7 +28,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.CoarseAddressDaumApi"
+            android:name=".activity.ModifyMyProfile"
+            android:exported="false" />
+        <activity
+            android:name=".activity.FindIdOrPwd"
             android:exported="false" />
         <activity
             android:name=".activity.MyPage"
