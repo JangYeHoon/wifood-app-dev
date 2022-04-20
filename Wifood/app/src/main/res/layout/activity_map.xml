@@ -54,12 +54,12 @@
            android:textColor="#000000"
             android:textSize="16sp" />
 
-
     </fragment>
 
     <!--메인 레이아웃-->
 
     <include
+        android:id="@+id/include_map_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         layout="@layout/map_layout" />
@@ -73,11 +73,5 @@
         app:headerLayout="@layout/menu_nav_header"
         app:menu="@menu/menu_nav">
     </com.google.android.material.navigation.NavigationView>
-
-    <!--    <com.naver.maps.map.widget.LocationButtonView-->
-    <!--        android:id="@+id/navermap_location_button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_margin="12dp" />-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

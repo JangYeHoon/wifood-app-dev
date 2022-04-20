@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -28,19 +31,17 @@
             android:name=".activity.FindPassword"
             android:exported="false" />
         <activity
-            android:name=".activity.DeleteFoodList"
+            android:name=".activity.PlaceInfoView"
             android:exported="false" />
         <activity
-            android:name=".activity.EditFoodList"
+            android:name=".activity.EditPlaceView"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.PlaceListView"
             android:exported="false" />
         <activity
-            android:name=".activity.AddFoodList"
-            android:exported="false" />
-        <activity
-            android:name=".activity.FoodList"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SearchPlace"
+            android:name=".activity.SearchPlaceView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -65,14 +66,23 @@
             android:name=".activity.DeleteGroup"
             android:exported="false" />
         <activity
-            android:name=".activity.EditGroup"
+            android:name=".activity.EditGroupView"
             android:exported="false" />
         <activity
-            android:name=".activity.FoodGroup"
+            android:name=".activity.GroupListView"
             android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="28l8cj5f00" />
+        <provider
+            android:authorities="com.example.wifood.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
     </application>
 
 </manifest>

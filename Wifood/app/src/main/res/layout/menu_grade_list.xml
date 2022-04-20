@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TableLayout
+        android:layout_width="376dp"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:shrinkColumns="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20px"
+                android:text="메뉴명"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_menuName"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="메뉴명 입력"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:shrinkColumns="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20px"
+                android:text="가격"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_menuPrice"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="메뉴 가격 입력"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:shrinkColumns="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20px"
+                android:text="평가"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar_menuGrade"
+                style="@android:style/Widget.DeviceDefault.Light.RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0.5"
+                android:stepSize="0.5" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:shrinkColumns="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20px"
+                android:text="메모"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView_menuMemo"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="메모"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

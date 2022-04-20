@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".activity.GroupListView">
+
+    <include layout="@layout/toolbar"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_groupList"
+        android:layout_width="411dp"
+        android:layout_height="620dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageButton
+        android:id="@+id/imageButton_groupDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView_groupList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.873"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <ImageButton
+        android:id="@+id/imageButton_groupInsert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView_groupList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.873"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="#000000" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="284dp"
+        android:layout_height="134dp"
+        android:text="데이터가 없습니다."
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView_groupList"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView_groupList"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView_groupList"
+        app:layout_constraintTop_toTopOf="@+id/recyclerView_groupList" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

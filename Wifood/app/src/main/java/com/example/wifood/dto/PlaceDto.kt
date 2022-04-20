@@ -5,18 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.dao.PlaceDao
 import com.example.wifood.entity.Place
 
-class PlaceDto {
+class PlaceDto() {
     private val placeDao = PlaceDao()
 
-    fun getPlaceList() : LiveData<MutableList<Place>> {
-        val mutablePlace = MutableLiveData<MutableList<Place>>()
+    fun getPlaceList(): LiveData<MutableList<Place>> {
+        val mutablePlaceList = MutableLiveData<MutableList<Place>>()
         placeDao.getPlaceList().observeForever {
-            mutablePlace.value = it
+            mutablePlaceList.value = it
         }
-        return mutablePlace
+        return mutablePlaceList
     }
 
-    fun insertPlace(place:Place) {
-        placeDao.insertPlace(place)
+    fun insertPlaceList(place: Place) {
+        placeDao.insertPlaceList(place)
+    }
+
+    fun deletePlaceList(deleteId: Int) {
+        placeDao.deletePlaceList(deleteId)
     }
 }

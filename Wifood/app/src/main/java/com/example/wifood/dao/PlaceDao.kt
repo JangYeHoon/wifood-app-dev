@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.entity.Place
 import com.google.firebase.database.*
 
-class PlaceDao {
-    private var databasePlace: DatabaseReference = FirebaseDatabase.getInstance().getReference("Place")
+class PlaceDao() {
+    private var databasePlaceList: DatabaseReference =
+        FirebaseDatabase.getInstance().getReference("Place")
 
-    fun getPlaceList() : LiveData<MutableList<Place>> {
+    fun getPlaceList(): LiveData<MutableList<Place>> {
         val placeList = MutableLiveData<MutableList<Place>>()
-        databasePlace.addValueEventListener(object: ValueEventListener {
+        databasePlaceList.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val dbList : MutableList<Place> = mutableListOf()
+                val dbList: MutableList<Place> = mutableListOf()
                 if (snapshot.exists()) {
                     for (snapshotPlaceList in snapshot.children) {
                         val place = snapshotPlaceList.getValue(Place::class.java)
@@ -29,7 +30,11 @@ class PlaceDao {
         return placeList
     }
 
-    fun insertPlace(place:Place) {
-        databasePlace.child(place.id.toString()).setValue(place)
+    fun insertPlaceList(place: Place) {
+        databasePlaceList.child(place.id.toString()).setValue(place)
+    }
+
+    fun deletePlaceList(placeId: Int) {
+        databasePlaceList.child(placeId.toString()).removeValue()
     }
 }
