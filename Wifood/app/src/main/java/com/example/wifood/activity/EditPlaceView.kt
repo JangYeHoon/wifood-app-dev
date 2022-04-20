@@ -27,6 +27,9 @@ import com.example.wifood.adapter.*
 import com.example.wifood.databinding.ActivityEditPlaceBinding
 import com.example.wifood.entity.*
 import com.example.wifood.viewmodel.ImageStoreViewModel
+import com.example.wifood.viewmodel.PlaceListViewModel
+import com.example.wifood.viewmodel.PlaceViewModel
+import com.example.wifood.viewmodel.SearchPlaceViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,9 +39,6 @@ const val REQUEST_IMAGE_CAPTURE = 1
 const val REQUEST_GALLERY_TAKE = 2
 
 class EditPlaceView : AppCompatActivity() {
-    var imageCnt: Int = 0
-    var insertPlace: Place = Place()
-    var imageList: ArrayList<String> = ArrayList(0)
     var imageUriList: ArrayList<Uri> = ArrayList(0)
 
     lateinit var binding: ActivityEditPlaceBinding
@@ -47,8 +47,9 @@ class EditPlaceView : AppCompatActivity() {
     lateinit var adapterMenuGrade: MenuGradeAdapter
     lateinit var inputMethodManager: InputMethodManager
     lateinit var currentPhotoPath: String
-    lateinit var placeImageUri: Uri
     lateinit var imageStoreViewModel: ImageStoreViewModel
+    lateinit var placeViewModel: PlaceViewModel
+    lateinit var searchPlaceViewModel: SearchPlaceViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,15 +69,21 @@ class EditPlaceView : AppCompatActivity() {
         adapterMenuName = MenuNameAdapter(this)
         binding.recyclerViewMenuList.layoutManager = GridLayoutManager(this, 3)
         binding.recyclerViewMenuList.adapter = adapterMenuName
-        updateMenuListAdapter(insertPlace.menu)
+//        updateMenuListAdapter(insertPlace.menu)
 
         // 메뉴 평가, 가격 관련 리스트 어뎁터 설정
         adapterMenuGrade = MenuGradeAdapter(this)
         binding.recyclerViewMenuGradeList.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewMenuGradeList.adapter = adapterMenuGrade
-        updateMenuGradeListAdapter(insertPlace.menuGrade)
+//        updateMenuGradeListAdapter(insertPlace.menuGrade)
 
         imageStoreViewModel = ViewModelProvider(this).get(ImageStoreViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+        placeViewModel = ViewModelProvider(this).get(PlaceViewModel::class.java)
+        searchPlaceViewModel = ViewModelProvider(
+            this,
+            SearchPlaceViewModel.Factory(this)
+        ).get(SearchPlaceViewModel::class.java)
 
         // 수정/추가에 따른 초기 화면 값 설정
         initActivityView(type!!)
@@ -84,29 +91,29 @@ class EditPlaceView : AppCompatActivity() {
         // 맛, 청결, 친절에 대한 별점 변경 관련 리스너 설정
         binding.ratingBarTasteGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating <= 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myTasteGrade = rating.toDouble()
+            placeViewModel.setTasteGrade(rating.toDouble())
         }
         binding.ratingBarCleanGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating < 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myCleanGrade = rating.toDouble()
+            placeViewModel.setCleanGrade(rating.toDouble())
         }
         binding.ratingBarKindnessGrade.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating < 0.5f) ratingBar.rating = 0.5f
-            insertPlace.myKindnessGrade = rating.toDouble()
+            placeViewModel.setKindnessGrade(rating.toDouble())
         }
 
         // 방문 여부 체크
         binding.switchIsVisit.setOnCheckedChangeListener { _, onSwitch ->
-            insertPlace.visited = onSwitch.toInt()
+            placeViewModel.setVisited(onSwitch.toInt())
             updateActivityViewByVisit(onSwitch)
             if (onSwitch) {
-                updatePlaceGrade(
+                placeViewModel.updatePlaceGrade(
                     binding.ratingBarTasteGrade.rating.toDouble(),
                     binding.ratingBarCleanGrade.rating.toDouble(),
                     binding.ratingBarKindnessGrade.rating.toDouble()
                 )
             } else {
-                updatePlaceGrade(0.0, 0.0, 0.0)
+                placeViewModel.updatePlaceGrade(0.0, 0.0, 0.0)
             }
         }
 
@@ -127,8 +134,8 @@ class EditPlaceView : AppCompatActivity() {
         // 메뉴 삭제 버튼
         adapterMenuName.setMenuClickListener(object : MenuNameAdapter.MenuClickListener {
             override fun onClick(view: View, position: Int, menu: Menu) {
-                insertPlace.menu.removeAt(position)
-                updateMenuListAdapter(insertPlace.menu)
+                placeViewModel.deleteMenuByIdx(position)
+                updateMenuListAdapter(placeViewModel.getPlaceMenuList())
             }
         })
 
@@ -140,8 +147,8 @@ class EditPlaceView : AppCompatActivity() {
             val memo: String = binding.editTextMenuMemo.text.toString()
             if (name != "") {
                 // 메뉴 평가 값 리스트에 추가
-                insertPlace.menuGrade.add(MenuGrade(name, price, grade, memo))
-                updateMenuGradeListAdapter(insertPlace.menuGrade)
+                placeViewModel.insertMenuGrade(MenuGrade(name, price, grade, memo))
+                updateMenuGradeListAdapter(placeViewModel.getMenuGradeList())
 
                 // 메뉴 평가 관련 view 초기화
                 inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -182,15 +189,14 @@ class EditPlaceView : AppCompatActivity() {
 
         // 맛집리스트를 추가할 수 있도록 설정된 place 정보를 PlaceList Activity로 넘겨줌
         binding.buttonSave.setOnClickListener {
-            insertPlace.memo = binding.editTextPlaceMemo.text.toString()
-            if (insertPlace.visited == 0) {
-                imageList.clear()
-                insertPlace.menuGrade.clear()
+            placeViewModel.setPlaceMemo(binding.editTextPlaceMemo.text.toString())
+            if (!placeViewModel.isVisited()) {
+                placeViewModel.initImageList()
+                placeViewModel.initMenuGrade()
             }
-            insertPlace.imageUri = imageList
-            if (insertPlace.name != "None" && insertPlace.groupId != -1) {
+            if (!placeViewModel.isPlaceNameEmpty() && !placeViewModel.isPlaceGroupEmpty()) {
                 val intent = Intent().apply {
-                    putExtra("place", insertPlace)
+                    putExtra("place", placeViewModel.getPlaceInstance())
                     if (type == "edit") {
                         putExtra("type", 1)
                         putExtra("groupName", binding.textViewGroupName.text)
@@ -200,8 +206,8 @@ class EditPlaceView : AppCompatActivity() {
                     }
                 }
                 setResult(RESULT_OK, intent)
-                if (imageList.size > 0 && imageUriList.isNotEmpty()) {
-                    imageStoreViewModel.insertPlaceImage(imageUriList, insertPlace.id)
+                if (!placeViewModel.isImageEmpty() && imageUriList.isNotEmpty()) {
+                    imageStoreViewModel.insertPlaceImage(imageUriList, placeViewModel.getPlaceId())
                         .addOnSuccessListener {
                             finish()
                         }
@@ -218,34 +224,34 @@ class EditPlaceView : AppCompatActivity() {
     private val requestActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                searchResult = it.data?.getParcelableExtra("searchResult")!!
-                binding.textViewPlaceName.text = searchResult.name
-                binding.textViewAddress.text = searchResult.fullAddress
-                insertPlace.name = searchResult.name
-                insertPlace.address = searchResult.fullAddress
-                insertPlace.latitude = searchResult.latitude
-                insertPlace.longitude = searchResult.longitude
+                searchPlaceViewModel.setSearchResultInstance(it.data?.getParcelableExtra("searchResult")!!)
+                binding.textViewPlaceName.text = searchPlaceViewModel.getSearchName()
+                binding.textViewAddress.text = searchPlaceViewModel.getSearchAddress()
+                placeViewModel.setPlaceName(searchPlaceViewModel.getSearchName())
+                placeViewModel.setPlaceAddress(searchPlaceViewModel.getSearchAddress())
+                placeViewModel.setPlaceLatitude(searchPlaceViewModel.getSearchLatitude())
+                placeViewModel.setPlaceLongitude(searchPlaceViewModel.getSearchLongitude())
             }
         }
 
     private fun initActivityView(type: String) {
         if (type == "edit") {
-            insertPlace = intent.getParcelableExtra("place")!!
-            binding.textViewPlaceName.text = insertPlace.name
-            binding.textViewAddress.text = insertPlace.address
-            binding.editTextPlaceMemo.setText(insertPlace.memo)
-            updateMenuListAdapter(insertPlace.menu)
-            updateActivityViewByVisit(insertPlace.visited == 1)
-            if (insertPlace.visited == 1) {
-                updateMenuGradeListAdapter(insertPlace.menuGrade)
-                binding.ratingBarTasteGrade.rating = insertPlace.myTasteGrade.toFloat()
-                binding.ratingBarKindnessGrade.rating = insertPlace.myKindnessGrade.toFloat()
-                binding.ratingBarCleanGrade.rating = insertPlace.myCleanGrade.toFloat()
+            placeViewModel.initPlace(intent.getParcelableExtra("place")!!)
+            binding.textViewPlaceName.text = placeViewModel.getPlaceName()
+            binding.textViewAddress.text = placeViewModel.getPlaceAddress()
+            binding.editTextPlaceMemo.setText(placeViewModel.getPlaceMemo())
+            updateMenuListAdapter(placeViewModel.getPlaceMenuList())
+            updateActivityViewByVisit(placeViewModel.isVisited())
+            if (placeViewModel.isVisited()) {
+                updateMenuGradeListAdapter(placeViewModel.getMenuGradeList())
+                binding.ratingBarTasteGrade.rating = placeViewModel.getTasteGrade().toFloat()
+                binding.ratingBarKindnessGrade.rating = placeViewModel.getKindnessGrade().toFloat()
+                binding.ratingBarCleanGrade.rating = placeViewModel.getCleanGrade().toFloat()
                 binding.switchIsVisit.isChecked = true
-                if (insertPlace.imageUri.size > 0) {
+                if (!placeViewModel.isImageEmpty()) {
                     imageStoreViewModel.getPlaceImage(
-                        insertPlace.imageUri[0].toInt(),
-                        insertPlace.id
+                        placeViewModel.getImageName().toInt(),
+                        placeViewModel.getPlaceId()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
                             Glide.with(this@EditPlaceView).load(it.result)
@@ -253,13 +259,11 @@ class EditPlaceView : AppCompatActivity() {
                             imageUriList.add(it.result)
                         }
                     }
-                    imageList = insertPlace.imageUri
-                    imageCnt = imageList.size
                 }
             }
         } else if (type == "add") {
-            insertPlace.groupId = intent.getIntExtra("groupId", -1)
-            insertPlace.id = intent.getIntExtra("placeId", -1)
+            placeViewModel.setPlaceGroupId(intent.getIntExtra("groupId", -1))
+            placeViewModel.setPlaceId(intent.getIntExtra("placeId", -1))
         }
         binding.textViewGroupName.text = intent.getStringExtra("groupName").toString()
     }
@@ -267,8 +271,8 @@ class EditPlaceView : AppCompatActivity() {
     // 메뉴 리스트 추가하고 관련 값 초기화
     private fun insertMenu() {
         if (binding.editTextMenuName.text.toString() != "") {
-            insertPlace.menu.add(Menu(binding.editTextMenuName.text.toString()))
-            updateMenuListAdapter(insertPlace.menu)
+            placeViewModel.insertPlaceMenu(Menu(binding.editTextMenuName.text.toString()))
+            updateMenuListAdapter(placeViewModel.getPlaceMenuList())
             inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.editTextMenuName.windowToken, 0)
             binding.editTextMenuName.setText("")
@@ -300,16 +304,10 @@ class EditPlaceView : AppCompatActivity() {
         binding.imageViewPlace.visibility = view
     }
 
-    private fun updatePlaceGrade(taste: Double, clean: Double, kindness: Double) {
-        insertPlace.myTasteGrade = taste
-        insertPlace.myCleanGrade = clean
-        insertPlace.myKindnessGrade = kindness
-    }
-
     // 그룹 선택 fragment에서 선택 값 가져오는 함수
     fun setGroupByGroupEntity(group: Group) {
         binding.textViewGroupName.text = group.name
-        insertPlace.groupId = group.id
+        placeViewModel.setPlaceGroupId(group.id)
     }
 
     private fun getCameraTakeImage() {
@@ -393,13 +391,10 @@ class EditPlaceView : AppCompatActivity() {
 
     private fun updateImageFile(imageUri: Uri) {
         imageUriList.clear()
-        imageList.clear()
-        imageCnt = 0
+        placeViewModel.initImageList()
         binding.imageViewPlace.setImageURI(imageUri)
-        placeImageUri = imageUri
         imageUriList.add(imageUri)
-        imageCnt += 1
-        imageList.add(imageCnt.toString())
+        placeViewModel.insertImageName("1")
         binding.imageViewPlace.visibility = View.VISIBLE
     }
 
