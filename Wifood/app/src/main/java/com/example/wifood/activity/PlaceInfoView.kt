@@ -92,7 +92,7 @@ class PlaceInfoView : AppCompatActivity(), OnMapReadyCallback {
         }
 
         if (!placeViewModel.isImageEmpty())
-            getImageToDatabase(placeViewModel.getImageUri(), placeViewModel.getPlaceId())
+            getImageToDatabase(placeViewModel.getImageName(), placeViewModel.getPlaceId())
 
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.fragment_placeMap) as MapFragment?
