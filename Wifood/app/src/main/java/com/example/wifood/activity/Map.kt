@@ -32,9 +32,6 @@ import com.google.android.material.navigation.NavigationView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.Marker
-import kotlinx.android.synthetic.main.*;
-import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.menu_nav_header.view.*
 
 class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding : ActivityMapBinding
@@ -141,7 +138,7 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
         }
 
         // button event : go to my list
-        btnGoMyList.setOnClickListener {
+        binding.btnGoMyList.setOnClickListener {
             val intent = Intent(this, GroupListView::class.java)
             intent.putExtra("UserEmail",userEmail)
             startActivity(intent)
@@ -252,12 +249,6 @@ class Map : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigation
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    }
-
-    // 검색, 공유 Event 버튼 툴바에 집어 넣기
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
     }
 
     // 툴바의 버튼 클릭 시 호출 함수
