@@ -5,13 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.wifood.R
+import com.example.wifood.databinding.ActivityJoininFoodInfoBinding
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_joinin_food_info.*
 
 class JoininFoodFavoriteInfo : AppCompatActivity() {
+    lateinit var binding: ActivityJoininFoodInfoBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityJoininFoodInfoBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_joinin_food_info)
 
         // database setting
@@ -25,7 +27,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
         var userTasteFavoriteInfo = UserTasteFavoriteBaseInfo()
 
         // put each value of radiogroup to data class
-        radioGroupSaltiness.setOnCheckedChangeListener{group,checkedId->
+        binding.radioGroupSaltiness.setOnCheckedChangeListener{group,checkedId->
             when(checkedId){
                 R.id.radioButtonSaltiness1-> userTasteFavoriteInfo.Saltiness = 1
                 R.id.radioButtonSaltiness2-> userTasteFavoriteInfo.Saltiness = 2
@@ -34,7 +36,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
                 R.id.radioButtonSaltiness5-> userTasteFavoriteInfo.Saltiness = 5
             }
         }
-        radioGroupSweetness.setOnCheckedChangeListener{group,checkedId->
+        binding.radioGroupSweetness.setOnCheckedChangeListener{group,checkedId->
             when(checkedId){
                 R.id.radioButtonSweetness1-> userTasteFavoriteInfo.Sweetness = 1
                 R.id.radioButtonSweetness2-> userTasteFavoriteInfo.Sweetness = 2
@@ -43,7 +45,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
                 R.id.radioButtonSweetness5-> userTasteFavoriteInfo.Sweetness = 5
             }
         }
-        radioGroupSourness.setOnCheckedChangeListener{group,checkedId->
+        binding.radioGroupSourness.setOnCheckedChangeListener{group,checkedId->
             when(checkedId){
                 R.id.radioButtonSourness1-> userTasteFavoriteInfo.Sourness = 1
                 R.id.radioButtonSourness2-> userTasteFavoriteInfo.Sourness = 2
@@ -52,7 +54,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
                 R.id.radioButtonSourness5-> userTasteFavoriteInfo.Sourness = 5
             }
         }
-        radioGroupSavory.setOnCheckedChangeListener{group,checkedId->
+        binding.radioGroupSavory.setOnCheckedChangeListener{group,checkedId->
             when(checkedId){
                 R.id.radioButtonSavory1-> userTasteFavoriteInfo.Savory = 1
                 R.id.radioButtonSavory2-> userTasteFavoriteInfo.Savory = 2
@@ -61,7 +63,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
                 R.id.radioButtonSavory5-> userTasteFavoriteInfo.Savory = 5
             }
         }
-        radioGroupSpiciness.setOnCheckedChangeListener{group,checkedId->
+        binding.radioGroupSpiciness.setOnCheckedChangeListener{group,checkedId->
             when(checkedId){
                 R.id.radioButtonSpiciness1-> userTasteFavoriteInfo.Spiciness = 1
                 R.id.radioButtonSpiciness2-> userTasteFavoriteInfo.Spiciness = 2
@@ -71,7 +73,7 @@ class JoininFoodFavoriteInfo : AppCompatActivity() {
             }
         }
 
-        btnGoToMap.setOnClickListener({
+        binding.btnGoToMap.setOnClickListener({
             // check if there is something null in data class
             if (userTasteFavoriteInfo.Saltiness == 0)
                 Toast.makeText(this@JoininFoodFavoriteInfo, "짠맛 선호도를 선택해주세요", Toast.LENGTH_SHORT).show()

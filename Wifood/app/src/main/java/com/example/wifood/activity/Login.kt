@@ -10,7 +10,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import kotlinx.android.synthetic.main.activity_login.*
 import android.util.Log;
 
 // firebase import

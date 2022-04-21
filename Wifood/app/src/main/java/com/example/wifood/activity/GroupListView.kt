@@ -89,10 +89,11 @@ class GroupListView : AppCompatActivity() {
             GroupListAdapter.GroupEditClickListener {
             override fun onClick(view: View, position: Int, group: Group) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val intent = Intent(this@GroupListView, EditGroupView::class.java).apply {
-                        putExtra("type", "EDIT")
-                        putExtra("group", group)
-                    }
+                    val intent =
+                        Intent(this@GroupListView, EditGroupComposeView::class.java).apply {
+                            putExtra("type", "EDIT")
+                            putExtra("group", group)
+                        }
                     requestActivity.launch(intent)
                 }
             }

@@ -112,11 +112,6 @@ class PlaceInfoView : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.popup_place_menu, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭한 툴바 메뉴 아이템의 id마다 다르게 실행하도록 설정
         when (item.itemId) {
