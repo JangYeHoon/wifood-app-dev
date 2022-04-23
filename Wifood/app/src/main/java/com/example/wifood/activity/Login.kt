@@ -63,15 +63,15 @@ class Login : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        mBinding= null
-        super.onDestroy()
-    }
-
     fun hideKeyboard(v : View){
         if(v != null){
             imm?.hideSoftInputFromWindow(v.windowToken,0)
         }
+    }
+
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
     }
 
 

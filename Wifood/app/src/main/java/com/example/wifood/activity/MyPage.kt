@@ -33,6 +33,12 @@ class MyPage : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        binding.buttonBack.setOnClickListener {
+            val intent = Intent(this, Map::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
         binding.buttonModifyProfile.setOnClickListener {
             val intent = Intent(this, ModifyMyProfile::class.java)
             intent.putExtra("UserEmail", "testingEmail")
