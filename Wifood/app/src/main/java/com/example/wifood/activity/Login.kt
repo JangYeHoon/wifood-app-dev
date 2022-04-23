@@ -10,7 +10,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import kotlinx.android.synthetic.main.activity_login.*
 import android.util.Log;
 
 // firebase import
@@ -21,6 +20,8 @@ import com.google.firebase.database.ktx.*
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,34 +35,47 @@ class Login : AppCompatActivity() {
 
     private var mBinding: ActivityLoginBinding?=null
     private val binding get() = mBinding!!
+    var imm : InputMethodManager ?= null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // add keybord event
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
+        binding.buttonLogin.setOnClickListener {
+            val intent = Intent(this@Login, Map::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
+        binding.textJoinin.setOnClickListener {
+            val intent = Intent(this@Login,Joinin::class.java)
+            startActivity(intent)
+        }
+
+        // find password button
+        binding.textFindIdPwd.setOnClickListener{
+            val intent = Intent(this@Login,FindIdOrPwd::class.java)
+            startActivity(intent)
+        }
+    }
 
     override fun onDestroy() {
         mBinding= null
         super.onDestroy()
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mBinding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.buttonLogin.setOnClickListener {
-            val intent = Intent(this@Login,Map::class.java)
-            intent.putExtra("UserEmail","testingEmail")
-            startActivity(intent)
-        }
-
-        binding.textViewJoinin.setOnClickListener {
-            val intent = Intent(this@Login,Joinin::class.java)
-            startActivity(intent)
-        }
-
-        // find password button
-        binding.textViewFindIdPwd.setOnClickListener{
-            val intent = Intent(this@Login,FindIdOrPwd::class.java)
-            startActivity(intent)
+    fun hideKeyboard(v : View){
+        if(v != null){
+            imm?.hideSoftInputFromWindow(v.windowToken,0)
         }
     }
+
+
+
     /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
