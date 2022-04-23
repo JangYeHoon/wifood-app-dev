@@ -33,19 +33,19 @@ class MyPage : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.buttonModifyMyInfo.setOnClickListener {
+        binding.buttonModifyProfile.setOnClickListener {
             val intent = Intent(this, ModifyMyProfile::class.java)
             intent.putExtra("UserEmail", "testingEmail")
             startActivity(intent)
         }
 
-        binding.buttonGoToList.setOnClickListener {
-            val intent = Intent(this, GroupList::class.java)
+        binding.buttonGoList.setOnClickListener {
+            val intent = Intent(this, GroupListView::class.java)
             intent.putExtra("UserEmail", "testingEmail")
             startActivity(intent)
         }
 
-        binding.buttonGoToMap.setOnClickListener {
+        binding.buttonGoMap.setOnClickListener {
             val intent = Intent(this, Map::class.java)
             intent.putExtra("UserEmail", "testingEmail")
             startActivity(intent)
