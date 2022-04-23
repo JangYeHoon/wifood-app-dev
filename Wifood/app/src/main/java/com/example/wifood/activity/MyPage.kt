@@ -39,6 +39,18 @@ class MyPage : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.buttonModifyMyFavorite.setOnClickListener{
+            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
+        }
+
+        binding.buttonModifyMyInfo.setOnClickListener{
+            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
+        }
+
+        binding.buttonLogout.setOnClickListener{
+            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
+        }
+
         binding.buttonGoList.setOnClickListener {
             val intent = Intent(this, GroupListView::class.java)
             intent.putExtra("UserEmail", "testingEmail")
