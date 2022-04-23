@@ -2,63 +2,63 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="360dp"
-    android:layout_height="640dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="hideKeyboard"
+    >
 
-
-    <TextView
-        android:id="@+id/textView_wifoodLogo"
+    <ImageView
+        android:id="@+id/imageLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="91dp"
-        android:fontFamily="@font/font_wifood_title"
-        android:text="YOGO"
-        android:textColor="@color/main"
-        android:textSize="25sp"
-        android:textStyle="normal"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_login_logo" />
 
     <EditText
-        android:id="@+id/textView_id"
+        android:id="@+id/textId"
         android:layout_width="280dp"
         android:layout_height="46dp"
         android:layout_marginTop="173dp"
         android:background="@drawable/rectangle"
         android:fontFamily="@font/font_wifood_formenable"
         android:gravity="center_vertical"
-        android:hint="   아이디"
+        android:hint="아이디"
+        android:paddingLeft="25dp"
         android:textColor="@color/gray01"
         android:textColorHint="@color/enable"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/textView_pwd"
+        android:id="@+id/textPassword"
         android:layout_width="280dp"
         android:layout_height="46dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/rectangle"
         android:fontFamily="@font/font_wifood_formenable"
         android:gravity="center_vertical"
-        android:hint="   비밀번호"
+        android:hint="비밀번호"
+        android:paddingLeft="25dp"
         android:textColor="@color/gray01"
         android:textColorHint="@color/enable"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textId" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_login"
+        android:id="@+id/buttonLogin"
         android:layout_width="280dp"
         android:layout_height="46dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/btn_loginrectangle"
         android:fontFamily="@font/pbold"
         android:gravity="center"
@@ -66,85 +66,125 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPassword"
         tools:ignore="TouchTargetSizeCheck" />
 
+
     <TextView
-        android:id="@+id/textView_findIdPwd"
+        android:id="@+id/textFindIdPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="346dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/pregular"
         android:text="아이디/비밀번호찾기"
         android:textColor="#979797"
         android:textSize="12sp"
-        android:fontFamily="@font/pregular"
-        app:layout_constraintEnd_toStartOf="@+id/textView_joinin"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <TextView
-        android:id="@+id/textView_joinin"
+        android:id="@+id/textJoinin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="346dp"
-        android:text="회원가입"
-        android:textSize="12sp"
-        android:textColor="@color/gray01"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/pregular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.713"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="회원가입"
+        android:textColor="@color/gray01"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
 
     <View
         android:id="@+id/view"
         android:layout_width="269dp"
-        android:layout_height="5px"
-        android:layout_marginTop="408dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="80dp"
         android:background="#FFE4E4E4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <TextView
-        android:id="@+id/textView_sns"
+        android:id="@+id/textViewSNS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="440dp"
+        android:fontFamily="@font/pregular"
         android:text="SNS 계정으로 간편 로그인/회원가입"
         android:textColor="#757575"
         android:textSize="12sp"
-        android:fontFamily="@font/pregular"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <!--android:padding="20dp"-->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_naverLogin"
+        android:id="@+id/buttonNaverLogin"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="280dp"
         android:layout_height="46dp"
-        android:layout_marginTop="469dp"
         android:background="@drawable/rectangle"
-        android:drawableLeft="@drawable/btn_naverlogin_image"
-
+        android:drawableLeft="@drawable/ic_login_naver_login"
         android:fontFamily="@font/pmedium"
         android:gravity="left|center_vertical"
         android:paddingLeft="95dp"
         android:text="  네이버 로그인"
         android:textColor="#979797"
         android:textSize="12sp"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSNS"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonKakaoLogin"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="280dp"
+        android:layout_height="46dp"
+        android:background="@drawable/rectangle"
+        android:drawableLeft="@drawable/ic_more_vert"
+        android:fontFamily="@font/pmedium"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="95dp"
+        android:text="  카카오 로그인"
+        android:textColor="#979797"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNaverLogin"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonGoogleLogin"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="280dp"
+        android:layout_height="46dp"
+        android:background="@drawable/rectangle"
+        android:drawableLeft="@drawable/ic_more_vert"
+        android:fontFamily="@font/pmedium"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="95dp"
+        android:text="  구글 로그인"
+        android:textColor="#979797"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonKakaoLogin"
         tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
