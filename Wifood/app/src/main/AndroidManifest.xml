@@ -52,18 +52,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.Joinin"
-            android:exported="false" />
-        <activity
-            android:name=".activity.Login"
-            android:exported="true"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            />
         <activity
             android:name=".activity.JoininFoodFavoriteInfo"
             android:exported="false" />
@@ -79,6 +70,17 @@
         <activity
             android:name=".activity.GroupListView"
             android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
+        <activity
+            android:name=".activity.Login"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="28l8cj5f00" />

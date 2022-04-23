@@ -29,6 +29,7 @@ class FindIdOrPwd : AppCompatActivity() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?){
 
+
             }
             override fun onTabUnselected(tab: TabLayout.Tab?){
 

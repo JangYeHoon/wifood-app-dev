@@ -2,12 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="360dp"
-    android:layout_height="640dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="hideKeyboard"
+    >
 
 
     <ImageButton
-        android:id="@+id/_imageButton_back"
+        android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -15,11 +17,11 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_button"
+        app:srcCompat="@drawable/ic_back_arrow"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/textView_top"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -27,14 +29,15 @@
         android:text="회원가입"
         android:textColor="#000000"
         android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/view_top"
+        android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         android:layout_marginTop="56dp"
         android:background="#0c000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,21 +45,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/ScrollView"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_top">
+        app:layout_constraintTop_toBottomOf="@+id/view">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:onClick="hideKeyboard"
         android:visibility="visible"
         >
         <TextView
-            android:id="@+id/textView_registText"
+            android:id="@+id/textActivityExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
@@ -69,7 +73,7 @@
 
 
         <TextView
-            android:id="@+id/textView_id"
+            android:id="@+id/textId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="31dp"
@@ -82,7 +86,7 @@
             android:textSize="15sp"
             android:textStyle="bold" />
         <TextView
-            android:id="@+id/textView_idExplain"
+            android:id="@+id/textIdExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -92,23 +96,27 @@
             android:textColor="@color/gray01"
             android:textSize="12sp" />
 
-        <EditText
-            android:id="@+id/editText_id"
-            android:layout_width="330dp"
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editTextId"
+            android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="@color/enable"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="아이디"
             android:inputType="textEmailAddress"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:cursorVisible="false"
+            android:textSize="14sp"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_idError"
+            android:id="@+id/textIdError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -120,7 +128,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_pwd"
+            android:id="@+id/textPwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -133,7 +141,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView_pwdExplain"
+            android:id="@+id/textPwdExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -144,22 +152,26 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/editText_pwd"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editTextPwd"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="@color/enable"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:hint="비밀번호"
             android:inputType="textPassword"
             android:password="true"
             android:textColor="@color/gray01"
             android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_pwderror"
+            android:id="@+id/textPwdError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -171,24 +183,24 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_pwdCheck"
+            android:id="@+id/textViewPwdCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/font_wifood_formtit"
+            android:fontFamily="@font/pbold"
             android:text="비밀번호 확인"
             android:textColor="#424242"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editText_pwdCheck"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editTextpwdCheck"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/enable"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/font_wifood_formenable"
             android:hint="비밀번호 확인"
@@ -196,10 +208,14 @@
             android:password="true"
             android:textColor="@color/gray01"
             android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_pwdCheckError"
+            android:id="@+id/textPwdCheckError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -211,7 +227,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_nickName"
+            android:id="@+id/textNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -220,10 +236,12 @@
             android:text="닉네임"
             android:textColor="#424242"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLength="15"
+            />
 
         <TextView
-            android:id="@+id/textView_nickNameExplain"
+            android:id="@+id/textNicknameExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -234,12 +252,12 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/editText_nickName"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editTextNickName"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="별명 (2~15자)"
@@ -247,10 +265,14 @@
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
             android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_nickNameError"
+            android:id="@+id/textNicknameError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -262,7 +284,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_phoneCheck"
+            android:id="@+id/textPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -274,38 +296,47 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editText_phoneCheck"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editTextPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
-
+            android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="휴대폰번호 ('-' 제외)"
             android:inputType="number|phone"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLength="10"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <EditText
-            android:id="@+id/editText_phoneCheckNumber"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editTextPhoneNumberCheck"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="인증번호 입력 (3분이내)"
             android:inputType="number"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLength="4"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_phoneCheckError"
+            android:id="@+id/textViewPhoneNumberError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -317,7 +348,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_address"
+            android:id="@+id/textAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -329,37 +360,45 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editText_addressCoarse"
+            android:id="@+id/editTextAddressCoarse"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="주소 검색"
             android:inputType="textPostalAddress"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <EditText
-            android:id="@+id/editText_addressFine"
+            android:id="@+id/editTextAddressFine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="상세 주소 입력"
             android:inputType="text"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_addressError"
+            android:id="@+id/textAddressError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -371,7 +410,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_birthDate"
+            android:id="@+id/textBirthDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -382,21 +421,26 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/editText_birthDate"
+            android:id="@+id/editTextBirthDate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
+            android:layout_marginRight="15dp"
             android:ems="10"
             android:hint="YYYYMMDD"
             android:inputType="date"
             android:textColor="@color/gray01"
             android:textColorHint="@color/enable"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLength="8"
+            android:cursorVisible="false"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
 
         <TextView
-            android:id="@+id/textView_birthDateError"
+            android:id="@+id/textViewBirthDateError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -408,7 +452,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_gender"
+            android:id="@+id/textGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -419,28 +463,27 @@
             android:textSize="15sp" />
 
         <RadioGroup
-            android:id="@+id/radioGroup_gender"
+            android:id="@+id/radioGroupGender"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radioButton_genderMale"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonGenderMale"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:buttonTint="@color/enable"
+                android:buttonTint="@color/main"
                 android:fontFamily="@font/pregular"
                 android:text="남"
                 android:textColor="#424242"
                 android:textSize="15sp" />
-
-            <RadioButton
-                android:id="@+id/radioButton_genderFemale"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonGenderFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:buttonTint="@color/enable"
+                android:buttonTint="@color/main"
                 android:fontFamily="@font/pregular"
                 android:text="여"
                 android:textColor="#424242"
@@ -448,7 +491,7 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/textView_genderError"
+            android:id="@+id/textGenderError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -462,7 +505,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_agreements"
+            android:id="@+id/textPersonalAgreements"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -471,22 +514,20 @@
             android:text="약관동의"
             android:textColor="#424242"
             android:textSize="15sp" />
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/radioButton_agreements"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:buttonTint="@color/enable"
-            android:fontFamily="@font/pregular"
-            android:text="개인정보수집 및 이용동의 (필수)"
-            android:textColor="@color/gray01"
-            android:textSize="15sp"
-            />
-
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonPersonalAgreements"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:buttonTint="@color/main"
+                android:fontFamily="@font/pregular"
+                android:text="개인정보수집 및 이용동의 (필수)"
+                android:textColor="@color/gray01"
+                android:textSize="15sp"
+                />
         <TextView
-            android:id="@+id/textView_agreementsContents"
+            android:id="@+id/textPersonalAgreementsContents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -497,7 +538,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/textView_agreementsError"
+            android:id="@+id/textPersonalAgreementsError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -509,10 +550,10 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView_detailInfo"
+            android:id="@+id/textGetDetailInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="95dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="39dp"
             android:fontFamily="@font/font_wifood_forminfo"
             android:text="정보 더 입력받고 자세한 추천 받기 >"
@@ -520,14 +561,13 @@
             android:textSize="12sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_joinin"
+            android:id="@+id/buttonJoinin"
             android:layout_width="280dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_loginrectangle"
-            android:enabled="false"
             android:fontFamily="@font/pbold"
             android:text="회원가입하기"
             android:textColor="@color/white"
@@ -535,490 +575,4 @@
 
         </LinearLayout>
     </ScrollView>
-    <!--
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/_textView_registText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="37dp"
-            android:text="나만의 맛집을 기록"
-            android:textColor="@color/gray01"
-            android:textSize="16sp"
-            android:fontFamily="@font/pbold"
-            />
-
-
-        <TextView
-            android:id="@+id/_textView_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="31dp"
-            android:layout_marginLeft="15dp"
-
-            android:fontFamily="@font/pbold"
-            android:includeFontPadding="false"
-            android:text="아이디"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/_textView_idExplain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/font_wifood_forminfo"
-            android:text="이메일 형식으로 입력해주세요"
-            android:textColor="@color/gray01"
-            android:textSize="12sp" />
-
-        <EditText
-            android:id="@+id/_editText_id"
-            android:layout_width="330dp"
-            android:layout_height="49dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="아이디"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/_textView_idError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 아이디가 이미 있어요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_pwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-
-            android:fontFamily="@font/pbold"
-            android:text="비밀번호"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/_textView_pwdExplain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/font_wifood_forminfo"
-            android:text="영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요"
-            android:textColor="@color/gray01"
-            android:textSize="12sp" />
-
-        <EditText
-            android:id="@+id/_editText_pwd"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:hint="비밀번호"
-            android:inputType="textPassword"
-            android:password="true"
-            android:textColor="@color/gray01"
-            android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/_textView_pwderror"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 비밀번호를 다시 확인해주세요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_pwdCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/font_wifood_formtit"
-            android:text="비밀번호 확인"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/_editText_pwdCheck"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/font_wifood_formenable"
-            android:hint="비밀번호 확인"
-            android:inputType="text|textPassword"
-            android:password="true"
-            android:textColor="@color/gray01"
-            android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/_textView_pwdCheckError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 비밀번호가 같지 않아요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_nickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pbold"
-            android:text="닉네임"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/_textView_nickNameExplain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="다른 유저와 겹치지 않는 별명을 입력해주세요 (2~15자)"
-            android:textColor="@color/gray01"
-            android:textSize="12sp" />
-
-        <EditText
-            android:id="@+id/_editText_nickName"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="별명 (2~15자)"
-            android:inputType="text"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/_textView_nickNameError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 닉네임이 이미 있어요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_phoneCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pbold"
-            android:text="본인인증"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/_editText_phoneCheck"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
-            android:drawableRight="@drawable/backButton"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="휴대폰번호 ('-' 제외)"
-            android:inputType="number|phone"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/_editText_phoneCheckNumber"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="인증번호 입력 (3분이내)"
-            android:inputType="number"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/_textView_phoneCheckError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 인증번호가 같지 않아요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pbold"
-            android:text="주소"
-            android:textColor="#424242"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/_editText_addressCoarse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="주소 검색"
-            android:inputType="textPostalAddress"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/_editText_addressFine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="#c4c4c4"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="상세 주소 입력"
-            android:inputType="text"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/_textView_addressError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 상세 주소를 입력해주세요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_birthDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/pbold"
-            android:text="생년월일"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/_editText_birthDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#c4c4c4"
-            android:ems="10"
-            android:hint="YYYYMMDD"
-            android:inputType="date"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/_textView_birthDateError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* YYYYMMDD 형식으로 다시 입력해주세요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/font_wifood_formtit"
-            android:text="성별"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <RadioGroup
-            android:id="@+id/_radioGroup_gender"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/_radioButton_genderMale"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:buttonTint="@color/enable"
-                android:fontFamily="@font/pregular"
-                android:text="남"
-                android:textColor="#424242"
-                android:textSize="15sp" />
-
-            <RadioButton
-                android:id="@+id/_radioButton_genderFemale"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:buttonTint="@color/enable"
-                android:fontFamily="@font/pregular"
-                android:text="여"
-                android:textColor="#424242"
-                android:textSize="15sp" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/_textView_genderError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:cursorVisible="false"
-            android:fontFamily="@font/pregular"
-            android:text="* 남자인지 여자인지 클릭해주세요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_agreements"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/font_wifood_formtit"
-            android:text="약관동의"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/_radioButton_agreements"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:buttonTint="@color/enable"
-            android:fontFamily="@font/pregular"
-            android:text="개인정보수집 및 이용동의 (필수)"
-            android:textColor="@color/gray01"
-            android:textSize="15sp"
-            />
-
-        <TextView
-            android:id="@+id/_textView_agreementsContents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="수집 목적 : 정보를 이용한 내용 내용 내용 내용 내용\n보유 및 이용기간 : 회원가입 철회 시 까지"
-            android:textColor="#979797"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/_textView_agreementsError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/pregular"
-            android:text="* 개인정보수집 및 이용동의를 동의해주세요"
-            android:textColor="#ef3900"
-            android:textSize="10sp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/_textView_detailInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="95dp"
-            android:layout_marginTop="39dp"
-            android:fontFamily="@font/font_wifood_forminfo"
-            android:text="정보 더 입력받고 자세한 추천 받기 >"
-            android:textColor="@color/main"
-            android:textSize="12sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/_button_detailInfo"
-            android:layout_width="280dp"
-            android:layout_height="46dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="19dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/btn_loginrectangle"
-            android:enabled="false"
-            android:fontFamily="@font/pbold"
-            android:text="회원가입하기"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-    </FrameLayout>
--->
 </androidx.constraintlayout.widget.ConstraintLayout>
