@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="360dp"
-    android:layout_height="640dp"
-    android:backgroundTint="#c4c4c4">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="hideKeyboard"
+    >
 
     <ImageButton
         android:id="@+id/imageButton_back"
@@ -15,7 +16,7 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_button"
+        app:srcCompat="@drawable/ic_back_arrow"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
@@ -28,14 +29,15 @@
         android:text="아이디/비밀번호 찾기"
         android:textColor="#000000"
         android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/view_top"
-        android:layout_width="0dp"
-        android:layout_height="5px"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginTop="48dp"
         android:background="#F1F1F1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,12 +71,156 @@
     </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout_findId"
-        android:layout_width="358dp"
-        android:layout_height="514dp"
+        android:id="@+id/frameLayout_findPwd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        android:layout_marginTop="120dp"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        android:onClick="hideKeyboard"
+        >
+
+        <TextView
+            android:id="@+id/findPwdTab_textView_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="41dp"
+            android:fontFamily="@font/pbold"
+            android:text="아이디"
+            android:textColor="#424242"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/findPwdTab_editText_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="69dp"
+            android:ems="10"
+            android:fontFamily="@font/pregular"
+            android:hint="이름"
+            android:inputType="textPersonName"
+            android:textColor="@color/gray01"
+            android:textColorHint="@color/enable"
+            android:textSize="14sp"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/findPwdTab_textView_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="134dp"
+            android:fontFamily="@font/pbold"
+            android:text="이름"
+            android:textColor="#424242"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/findPwdTab_editText_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="162dp"
+            android:ems="10"
+            android:fontFamily="@font/pregular"
+            android:hint="이름"
+            android:inputType="textPersonName"
+            android:textColor="@color/gray01"
+            android:textColorHint="@color/enable"
+            android:textSize="14sp"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
+
+        <TextView
+            android:id="@+id/findPwdTab_textView_phoneCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="227dp"
+            android:fontFamily="@font/pbold"
+            android:text="본인인증"
+            android:textColor="#424242"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/findPwdTab_editText_phoneCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="255dp"
+            android:ems="10"
+            android:fontFamily="@font/pregular"
+            android:hint="휴대폰번호 ('-'제외)"
+            android:inputType="phone"
+            android:textColorHint="@color/enable"
+            android:textSize="14sp"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/findPwdTab_button_phoneCheck"
+            android:layout_width="78dp"
+            android:layout_height="18dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="263dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_grayrectangle"
+            android:fontFamily="@font/rregular"
+            android:text="인증번호 받기"
+            android:textColor="#999999"
+            android:textSize="10sp" />
+
+        <EditText
+            android:id="@+id/findPwdTab_editText_phoneCheckNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="300dp"
+            android:backgroundTint="@color/enable"
+            android:ems="10"
+            android:fontFamily="@font/pregular"
+            android:hint="인증번호 입력 (3분 이내)"
+            android:inputType="number"
+            android:textColor="@color/gray01"
+            android:textColorHint="@color/enable"
+            android:textSize="14sp" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/findPwdTab_button_findPwd"
+            android:layout_width="280dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="420dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_loginrectangle"
+            android:fontFamily="@font/pbold"
+            android:text="비밀번호 찾기"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout_findId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="0dp"
+        android:onClick="hideKeyboard"
+        >
 
         <TextView
             android:id="@+id/findIdTab_textView_id"
@@ -90,11 +236,13 @@
 
         <EditText
             android:id="@+id/findIdTab_editText_id"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_marginTop="69dp"
-            android:backgroundTint="@color/enable"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="이름"
@@ -117,11 +265,13 @@
 
         <EditText
             android:id="@+id/findIdTab_editText_phoneCheck"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_marginTop="162dp"
-            android:backgroundTint="@color/enable"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="휴대폰번호 ('-'제외)"
@@ -135,7 +285,8 @@
             android:id="@+id/findIdTab_button_phoneCheck"
             android:layout_width="78dp"
             android:layout_height="18dp"
-            android:layout_marginLeft="259dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="170dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_grayrectangle"
@@ -148,11 +299,13 @@
 
         <EditText
             android:id="@+id/findIdTab_editText_phoneCheckNumber"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             android:layout_marginTop="207dp"
-            android:backgroundTint="@color/enable"
+            style="@style/EditTextStyle"
+            app:theme="@style/EditTextStyle"
             android:ems="10"
             android:fontFamily="@font/pregular"
             android:hint="인증번호 입력 (3분 이내)"
@@ -167,149 +320,16 @@
             android:id="@+id/findIdTab_button_findId"
             android:layout_width="280dp"
             android:layout_height="46dp"
-            android:layout_marginLeft="42dp"
             android:layout_marginTop="420dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_loginrectangle"
-            android:enabled="false"
             android:fontFamily="@font/pbold"
             android:text="아이디 찾기"
             android:textColor="@color/white"
             android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
             tools:ignore="TouchTargetSizeCheck" />
-
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/frameLayout_findPwd"
-        android:layout_width="358dp"
-        android:layout_height="514dp"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-        >
-
-        <TextView
-            android:id="@+id/findPwdTab_textView_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="41dp"
-            android:fontFamily="@font/pbold"
-            android:text="아이디"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/findPwdTab_editText_id"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="69dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="이름"
-            android:inputType="textPersonName"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/findPwdTab_textView_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="134dp"
-            android:fontFamily="@font/pbold"
-            android:text="이름"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/findPwdTab_editText_name"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="162dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="이름"
-            android:inputType="textPersonName"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/findPwdTab_textView_phoneCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="227dp"
-            android:fontFamily="@font/pbold"
-            android:text="본인인증"
-            android:textColor="#424242"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/findPwdTab_editText_phoneCheck"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="255dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="휴대폰번호 ('-'제외)"
-            android:inputType="phone"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/findPwdTab_button_phoneCheck"
-            android:layout_width="78dp"
-            android:layout_height="18dp"
-            android:layout_marginLeft="259dp"
-            android:layout_marginTop="263dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/btn_grayrectangle"
-            android:enabled="false"
-            android:fontFamily="@font/rregular"
-            android:text="인증번호 받기"
-            android:textColor="#999999"
-            android:textSize="10sp" />
-
-        <EditText
-            android:id="@+id/findPwdTab_editText_phoneCheckNumber"
-            android:layout_width="330dp"
-            android:layout_height="36dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="300dp"
-            android:backgroundTint="@color/enable"
-            android:ems="10"
-            android:fontFamily="@font/pregular"
-            android:hint="인증번호 입력 (3분 이내)"
-            android:inputType="number"
-            android:textColor="@color/gray01"
-            android:textColorHint="@color/enable"
-            android:textSize="14sp" />
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/findPwdTab_button_findPwd"
-            android:layout_width="280dp"
-            android:layout_height="46dp"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="420dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/btn_loginrectangle"
-            android:enabled="false"
-            android:fontFamily="@font/pbold"
-            android:text="비밀번호 찾기"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

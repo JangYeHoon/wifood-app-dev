@@ -4,7 +4,6 @@
         // Attributes from material Theme
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
 
         // Attributes from android framework
         <item name="android:windowBackground">#ffffff</item>
@@ -12,5 +11,27 @@
 
         // Attributes that I've defined
         <item name="colorImagePlaceHolder">@color/GR80</item>
+        <item name="colorControlActivated">@color/main</item>
+        <item name="colorAccent">@color/radioButtonClicked</item>
+
+
+    </style>
+
+    <style name="EditTextStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        // Attributes from material Theme
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        // Attributes from android framework
+        <item name="android:windowBackground">#ffffff</item>
+        <item name="android:windowActivityTransitions">true</item>
+
+        // Attributes that I've defined
+        <item name="colorImagePlaceHolder">@color/GR80</item>
+        <item name="colorControlActivated">@color/main</item>
+        <item name="colorControlNormal">#FFC4C4C4</item>
+        <item name="colorAccent">@color/radioButtonClicked</item>
+
+
     </style>
 </resources>

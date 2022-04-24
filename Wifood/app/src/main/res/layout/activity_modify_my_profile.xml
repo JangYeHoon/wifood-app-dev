@@ -2,12 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="360dp"
-    android:layout_height="640dp"
-    android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:onClick="hideKeyboard"
+    >
 
     <ImageButton
-        android:id="@+id/imageButton_back"
+        android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -15,10 +17,10 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_button" />
+        app:srcCompat="@drawable/ic_back_arrow" />
 
     <TextView
-        android:id="@+id/textView_title"
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -31,9 +33,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/view_top"
+        android:id="@+id/viewTop"
         android:layout_width="0dp"
-        android:layout_height="2px"
+        android:layout_height="1dp"
         android:layout_marginTop="48dp"
         android:background="@color/enable"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,12 +43,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView_profile"
+        android:id="@+id/iamgeProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="84dp"
         android:src="@drawable/profile"
-        app:civ_border_color="#FF000000"
+        app:civ_border_color="#FFFFFFFF"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,15 +56,15 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/button_selectImage"
+        android:id="@+id/buttonSelectIamge"
         android:layout_width="27dp"
         android:layout_height="27dp"
         android:background="@drawable/profile_rectangle"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_profile"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_profile" />
+        app:layout_constraintBottom_toBottomOf="@+id/iamgeProfile"
+        app:layout_constraintEnd_toEndOf="@+id/iamgeProfile" />
 
     <TextView
-        android:id="@+id/textView_nickName"
+        android:id="@+id/textNickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -76,10 +78,12 @@
 
     <EditText
         android:id="@+id/editText_nickName"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="247dp"
+        android:paddingLeft ="10dp"
         android:ems="10"
         android:fontFamily="@font/pregular"
         android:hint="닉네임"
@@ -89,7 +93,10 @@
         android:textColorHint="@color/enable"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/EditTextStyle"
+        app:theme="@style/EditTextStyle"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

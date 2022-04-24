@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityJoininBinding
@@ -18,9 +20,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.regex.Pattern
-import kotlin.collections.Map
 
 class Joinin : AppCompatActivity() {
+
+    var imm : InputMethodManager?= null
+
     var emailValid = false
     var passwordValid = false
     var passwordValidCheck = false
@@ -39,22 +43,76 @@ class Joinin : AppCompatActivity() {
     private var mBinding: ActivityJoininBinding?=null
     private val binding get() = mBinding!!
 
-    override fun onDestroy() {
-        mBinding= null
-        super.onDestroy()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityJoininBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonJoinin.setOnClickListener {
-            val intent = Intent(this@Joinin, Map::class.java)
-            intent.putExtra("UserEmail","testingEmail")
+        // add keybord event
+        imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+
+
+        // back button
+        binding.buttonBack.setOnClickListener{
+            val intent = Intent(this@Joinin, Login::class.java)
             startActivity(intent)
         }
 
+        // single radio buttion event
+        var PersonalAgreementsChecked:Boolean = false
+        binding.radioButtonPersonalAgreements.setOnClickListener {
+            if (PersonalAgreementsChecked == false){
+                PersonalAgreementsChecked = true
+                binding.radioButtonPersonalAgreements.setChecked(true)
+            } else {
+                PersonalAgreementsChecked = false
+                if (binding.radioButtonPersonalAgreements.isChecked()){
+                    binding.radioButtonPersonalAgreements.setChecked(false)
+                }
+            }
+        }
+
+        // join button
+        binding.buttonJoinin.setOnClickListener {
+            var complete = true
+            if (binding.editTextId.text.isNullOrEmpty()){
+                binding.textIdError.setText("* 아이디를 입력해주세요")
+                binding.textIdError.setVisibility(View.VISIBLE)
+                complete = false
+            }
+            if (binding.editTextPwd.text.isNullOrEmpty()){
+                binding.textPwdError.setText("* 비밀번호를 입력해주세요")
+                binding.textPwdError.setVisibility(View.VISIBLE)
+                complete = false
+            }
+
+            if (complete)
+            {
+                // complete join and go to map
+                val intent = Intent(this@Joinin, Map::class.java)
+                intent.putExtra("UserEmail","testingEmail")
+                startActivity(intent)
+            }
+            else {
+                Toast.makeText(this@Joinin, "다시 확인해주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
+    }
+
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
+    }
+
+
+    fun hideKeyboard(v : View){
+        if(v != null){
+            imm?.hideSoftInputFromWindow(v.windowToken,0)
+        }
     }
 
         /*
