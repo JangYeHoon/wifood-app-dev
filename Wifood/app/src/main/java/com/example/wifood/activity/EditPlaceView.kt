@@ -35,7 +35,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+const val REQUEST_IMAGE_CAPTURE = 1
+const val REQUEST_GALLERY_TAKE = 2
 class EditPlaceView : AppCompatActivity() {
     var imageUriList: ArrayList<Uri> = ArrayList(0)
 

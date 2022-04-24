@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wifood" >
+    package="com.example.wifood">
     <!-- set internet permission (for join in) -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- use for password event sms -->
@@ -20,7 +20,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activity.ModifyMyInfo"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ModifyPassword"
+            android:exported="false" />
         <activity
             android:name=".activity.EditGroupComposeView"
             android:exported="false"
@@ -29,8 +35,7 @@
         <activity
             android:name=".activity.ModifyMyProfile"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.FindIdOrPwd"
             android:exported="false" />
@@ -57,8 +62,7 @@
         <activity
             android:name=".activity.Joinin"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.JoininFoodFavoriteInfo"
             android:exported="false" />
@@ -77,14 +81,14 @@
         <activity
             android:name=".activity.Login"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="28l8cj5f00" />
@@ -93,7 +97,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.wifood.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
