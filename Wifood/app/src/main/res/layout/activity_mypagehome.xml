@@ -161,6 +161,7 @@
         style="?android:attr/borderlessButtonStyle"
         app:layout_constraintTop_toBottomOf="@+id/buttonModifyMyFavorite" />
 
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonLogout"
         android:layout_width="match_parent"
@@ -185,7 +186,6 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:background="@drawable/btn_rectangle"
-        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
