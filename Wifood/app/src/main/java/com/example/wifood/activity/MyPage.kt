@@ -54,8 +54,10 @@ class MyPage : AppCompatActivity() {
         }
 
 
-        binding.buttonLogout.setOnClickListener{
-            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
+        binding.buttonSetting.setOnClickListener{
+            val intent = Intent(this, Settings::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
         }
 
         binding.buttonGoList.setOnClickListener {

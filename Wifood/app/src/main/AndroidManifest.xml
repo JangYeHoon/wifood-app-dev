@@ -22,6 +22,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.Settings"
+            android:exported="false" />
+        <activity
             android:name=".activity.ModifyMyInfo"
             android:exported="false" />
         <activity
