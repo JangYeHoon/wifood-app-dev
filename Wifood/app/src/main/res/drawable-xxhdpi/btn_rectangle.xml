@@ -17,7 +17,7 @@
             android:angle="270"
             android:endColor="@color/white"
             android:startColor="@color/gray01"/>
-        <stroke android:width="4dp" android:color="@color/enable"/>
+        <stroke android:width="2dp" android:color="@color/enable"/>
         <solid android:color = "#FFFFFF"/>
         <corners android:radius="20dp"/>
 

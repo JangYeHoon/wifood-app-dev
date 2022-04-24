@@ -5,10 +5,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.wifood.R
-import com.example.wifood.databinding.ActivityFindIdOrPwdBinding
 import com.example.wifood.databinding.ActivityMypagehomeBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,11 +21,8 @@ class MyPage : AppCompatActivity() {
 
     private var mBinding: ActivityMypagehomeBinding?=null
     private val binding get() = mBinding!!
+    var imm : InputMethodManager?= null
 
-    override fun onDestroy() {
-        mBinding= null
-        super.onDestroy()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMypagehomeBinding.inflate(layoutInflater)
@@ -43,16 +41,23 @@ class MyPage : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        binding.buttonModifyMyInfo.setOnClickListener{
+            val intent = Intent(this, ModifyMyInfo::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
+        }
+
+
         binding.buttonModifyMyFavorite.setOnClickListener{
             Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
         }
 
-        binding.buttonModifyMyInfo.setOnClickListener{
-            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
-        }
 
-        binding.buttonLogout.setOnClickListener{
-            Toast.makeText(this@MyPage, "미구현",Toast.LENGTH_SHORT).show()
+        binding.buttonSetting.setOnClickListener{
+            val intent = Intent(this, Settings::class.java)
+            intent.putExtra("UserEmail", "testingEmail")
+            startActivity(intent)
         }
 
         binding.buttonGoList.setOnClickListener {
@@ -74,6 +79,10 @@ class MyPage : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        mBinding= null
+        super.onDestroy()
+    }
     /*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
