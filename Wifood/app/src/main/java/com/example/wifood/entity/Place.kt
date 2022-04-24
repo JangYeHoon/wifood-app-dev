@@ -13,5 +13,5 @@ data class Place(
     var myKindnessGrade: Double = 0.0, var visited: Int = 0,
     var groupId: Int = -1, var menu: ArrayList<Menu> = ArrayList(0),
     var menuGrade: ArrayList<MenuGrade> = ArrayList(0),
-    var imageUri: ArrayList<String> = ArrayList(0)
+    var imageName: ArrayList<String> = ArrayList(0)
 ) : Parcelable

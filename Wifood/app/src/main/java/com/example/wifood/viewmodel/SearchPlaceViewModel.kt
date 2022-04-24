@@ -12,9 +12,30 @@ import com.skt.Tmap.poi_item.TMapPOIItem
 class SearchPlaceViewModel(context: Context) : ViewModel() {
     private val tmapTAPI = TMapTapi(context)
     var searchResult = MutableLiveData<MutableList<Search>>()
+    var search = Search()
 
     init {
         tmapTAPI.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+    }
+
+    fun setSearchResultInstance(search: Search) {
+        this.search = search
+    }
+
+    fun getSearchName(): String {
+        return search.name
+    }
+
+    fun getSearchAddress(): String {
+        return search.fullAddress
+    }
+
+    fun getSearchLatitude(): Double {
+        return search.latitude
+    }
+
+    fun getSearchLongitude(): Double {
+        return search.longitude
     }
 
     fun setSearchResultByString(keyword: String) {

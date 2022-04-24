@@ -137,7 +137,7 @@
         android:id="@+id/pinImage2"
         android:layout_width="51dp"
         android:layout_height="40dp"
-        android:contentDescription="#E91E63"
+        android:contentDescription="#EEDFCC"
         android:src="@drawable/ic_group_pin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +145,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.276"
-        app:tint="#E91E63" />
+        app:tint="#EEDFCC" />
 
     <EditText
         android:id="@+id/editText_groupName"

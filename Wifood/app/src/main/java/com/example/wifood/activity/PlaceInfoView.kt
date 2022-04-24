@@ -92,7 +92,7 @@ class PlaceInfoView : AppCompatActivity(), OnMapReadyCallback {
         }
 
         if (!placeViewModel.isImageEmpty())
-            getImageToDatabase(placeViewModel.getImageUri(), placeViewModel.getPlaceId())
+            getImageToDatabase(placeViewModel.getImageName(), placeViewModel.getPlaceId())
 
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.fragment_placeMap) as MapFragment?
@@ -110,11 +110,6 @@ class PlaceInfoView : AppCompatActivity(), OnMapReadyCallback {
                 Glide.with(this@PlaceInfoView).load(it.result).into(binding.imageViewPlaceImage)
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.popup_place_menu, menu)
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
