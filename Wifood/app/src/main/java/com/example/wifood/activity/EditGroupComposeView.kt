@@ -1,26 +1,35 @@
 package com.example.wifood.activity
 
+import android.content.Intent
 import androidx.compose.ui.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.R
+import com.example.wifood.viewmodel.GroupComposeViewModel
 import com.example.wifood.viewmodel.GroupViewModel
+import java.nio.file.Files.size
 
 class EditGroupComposeView : ComponentActivity() {
-    lateinit var groupViewModel: GroupViewModel
+    private val viewModel by viewModels<GroupComposeViewModel>()
     private val colorList = listOf(
         Color(0xFFFF9800),
         Color(0xFF009688),
@@ -37,45 +46,53 @@ class EditGroupComposeView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val type = intent.getStringExtra("type") as String
-        groupViewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
         if (type == "EDIT")
-            groupViewModel.setGroupInstance(intent.getParcelableExtra("group")!!)
+            viewModel.initGroup(intent.getParcelableExtra("group")!!)
         Log.d("composeViewLog", colorList[0].toString())
         setContent {
-            Screen(groupViewModel, colorList)
+            Screen(viewModel, colorList)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Screen(viewModel: GroupViewModel, colors: List<Color>) {
+fun Screen(viewModel: GroupComposeViewModel, colors: List<Color>) {
     Column {
         TextField(
-            value = viewModel.getGroupName(),
+            value = viewModel.name.value,
             singleLine = true,
-            onValueChange = viewModel::setGroupName
+            onValueChange = viewModel::updateGroupName
         )
 
         TextField(
-            value = viewModel.getGroupTheme(),
+            value = viewModel.theme.value,
             singleLine = true,
-            onValueChange = viewModel::setGroupTheme
+            onValueChange = viewModel::updateGroupTheme
         )
 
+        /* TODO: 핀 선택 시 선택한 핀만 커지도록 변경 */
         LazyVerticalGrid(cells = GridCells.Fixed(5)) {
             items(colors) { color ->
-                Button(onClick = { /*TODO*/ }) {
+                Button(
+                    onClick = {
+                        viewModel.updatePinByColor(color)
+                    },
+                ) {
                     Image(
                         painterResource(id = R.drawable.ic_group_pin),
-                        contentDescription = "#FF9800",
-                        colorFilter = ColorFilter.tint(color)
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(color),
                     )
                 }
             }
         }
 
-        Button(onClick = { /*TODO*/ }) {
+        Button(
+            onClick = {
+                Log.d("groupComposeView", viewModel.getGroupInstance().toString())
+            }
+        ) {
             Text("저장")
         }
     }
