@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.R
+import com.example.wifood.entity.Group
 import com.example.wifood.viewmodel.GroupComposeViewModel
 import com.example.wifood.viewmodel.GroupViewModel
 import java.nio.file.Files.size
@@ -46,18 +47,23 @@ class EditGroupComposeView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val type = intent.getStringExtra("type") as String
+        var group = Group()
         if (type == "EDIT")
-            viewModel.initGroup(intent.getParcelableExtra("group")!!)
-        Log.d("composeViewLog", colorList[0].toString())
+            group = intent.getParcelableExtra("group")!!
         setContent {
-            Screen(viewModel, colorList)
+            Screen(viewModel, colorList, group)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Screen(viewModel: GroupComposeViewModel, colors: List<Color>) {
+fun Screen(viewModel: GroupComposeViewModel, colors: List<Color>, group: Group) {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.initGroup(group)
+    }
+
     Column {
         TextField(
             value = viewModel.name.value,
@@ -90,7 +96,7 @@ fun Screen(viewModel: GroupComposeViewModel, colors: List<Color>) {
 
         Button(
             onClick = {
-                Log.d("groupComposeView", viewModel.getGroupInstance().toString())
+                // TODO "DB에 Group 추가하고 페이지 이동"
             }
         ) {
             Text("저장")

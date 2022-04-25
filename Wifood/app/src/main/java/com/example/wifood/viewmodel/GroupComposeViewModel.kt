@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import com.example.wifood.dto.GroupDto
 import com.example.wifood.entity.Group
 
 class GroupComposeViewModel : ViewModel() {
@@ -29,16 +30,6 @@ class GroupComposeViewModel : ViewModel() {
         _group.value = group
         _name.value = group.name
         _theme.value = group.theme
-    }
-
-    fun getGroupInstance(): Group {
-        return Group(
-            name = name.value,
-            theme = theme.value,
-            red = red.value,
-            blue = blue.value,
-            green = green.value
-        )
     }
 
     fun updateGroupName(name: String) {
