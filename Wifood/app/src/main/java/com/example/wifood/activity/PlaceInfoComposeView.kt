@@ -3,16 +3,21 @@ package com.example.wifood.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,162 +41,174 @@ class PlaceInfoComposeView : ComponentActivity() {
 
 @Composable
 fun Greeting() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Row {
-            IconButton(
-                onClick = {
-                    /*TODO*/
-                }
-            ) {
-                Icon(Icons.Filled.ArrowBack, "")
-            }
-
-            Spacer(Modifier.size(275.dp))
-
-            IconButton(
-                onClick = {
-                    /*TODO*/
-                }
-            ) {
-                Icon(Icons.Filled.Info, "")
-            }
-        }
-
-        Icon(
-            painterResource(id = R.drawable.ic_group_pin),
-            contentDescription = "",
-            Modifier.size(360.dp, 230.dp)
-        )
-
-        Column(
-            modifier = Modifier.padding(14.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter
         ) {
-            Spacer(Modifier.height(188.dp))
-            Card(
-                modifier = Modifier
-                    .width(332.dp)
-                    .height(125.dp)
+            Image(
+                painterResource(id = R.drawable.plcae_image),
+                contentDescription = "",
+                Modifier
+                    .fillMaxWidth()
+                    .height(230.dp)
+            )
+
+            Row(
+                modifier = Modifier.padding(14.dp)
             ) {
-                Column(
+                IconButton(
                     modifier = Modifier
-                        .padding(
-                            start = 21.dp,
-                            top = 15.dp,
-                            end = 21.dp,
-                            bottom = 18.dp
-                        )
+                        .background(Color.White, CircleShape),
+                    onClick = {
+                        /*TODO*/
+                    }
                 ) {
-                    Text(
-                        text = "#맛집 테마",
-                        fontSize = 10.sp
-                    )
+                    Icon(Icons.Default.ArrowBack, "")
+                }
 
-                    Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.size(275.dp))
 
-                    Text(
-                        text = "맛집 이름",
-                        fontSize = 15.sp
-                    )
+                IconButton(
+                    modifier = Modifier
+                        .background(Color.White, CircleShape),
+                    onClick = {
+                        /*TODO*/
+                    }
+                ) {
+                    Icon(Icons.Default.Menu, "")
+                }
+            }
 
-                    Spacer(Modifier.height(6.dp))
+            Column(
+                modifier = Modifier.padding(35.dp)
+            ) {
+                Spacer(Modifier.height(188.dp))
+                Card(
+                    modifier = Modifier
+                        .width(332.dp)
+                        .height(125.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                start = 21.dp,
+                                top = 15.dp,
+                                end = 21.dp,
+                                bottom = 18.dp
+                            )
+                    ) {
+                        Text(
+                            text = "#맛집 테마",
+                            fontSize = 10.sp
+                        )
 
-                    LazyRow {
-                        // TODO: items(메뉴) 리스트로 변경
-                        item {
+                        Spacer(Modifier.height(4.dp))
+
+                        Text(
+                            text = "맛집 이름",
+                            fontSize = 15.sp
+                        )
+
+                        Spacer(Modifier.height(6.dp))
+
+                        LazyRow {
+                            // TODO: items(메뉴) 리스트로 변경
+                            item {
+                                Text(
+                                    text = "하와이안 피자",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+
+                        Spacer(Modifier.height(14.dp))
+
+                        Row {
                             Text(
-                                text = "하와이안 피자",
-                                fontSize = 12.sp,
-                                color = Color.Gray
+                                text = "맛",
+                                fontSize = 12.sp
+                            )
+                            Text(
+                                text = "4.2",
+                                fontSize = 16.sp
+                            )
+                            Text(
+                                text = "청결",
+                                fontSize = 12.sp
+                            )
+                            Text(
+                                text = "4.2",
+                                fontSize = 16.sp
+                            )
+                            Text(
+                                text = "친절",
+                                fontSize = 12.sp
+                            )
+                            Text(
+                                text = "4.2",
+                                fontSize = 16.sp
                             )
                         }
                     }
-
-                    Spacer(Modifier.height(14.dp))
-
-                    Row {
-                        Text(
-                            text = "맛",
-                            fontSize = 12.sp
-                        )
-                        Text(
-                            text = "4.2",
-                            fontSize = 16.sp
-                        )
-                        Text(
-                            text = "청결",
-                            fontSize = 12.sp
-                        )
-                        Text(
-                            text = "4.2",
-                            fontSize = 16.sp
-                        )
-                        Text(
-                            text = "친절",
-                            fontSize = 12.sp
-                        )
-                        Text(
-                            text = "4.2",
-                            fontSize = 16.sp
-                        )
-                    }
                 }
-            }
 
-            Row {
-                Icon(
-                    painterResource(id = R.drawable.ic_group_pin),
-                    contentDescription = ""
+                Row {
+                    Icon(
+                        painterResource(id = R.drawable.ic_group_pin),
+                        contentDescription = ""
+                    )
+
+                    Text(text = "서울시 용산구 효창동 522-2", fontSize = 13.sp)
+                }
+
+                GoogleMap(
+                    modifier = Modifier
+                        .size(250.dp, 55.dp),
+                    cameraPositionState = rememberCameraPositionState {
+                        position =
+                            CameraPosition.fromLatLngZoom(LatLng(37.56253812, 126.9856316), 15f)
+                    }
+                ) {
+                    Marker(
+                        position = LatLng(37.56253812, 126.9856316),
+                        title = "명동교자 본점"
+                    )
+                }
+
+                Divider(
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
                 )
 
-                Text(text = "서울시 용산구 효창동 522-2", fontSize = 13.sp)
-            }
+                Text(text = "메뉴", fontSize = 15.sp)
 
-            GoogleMap(
-                modifier = Modifier
-                    .size(250.dp, 55.dp),
-                cameraPositionState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(LatLng(37.56253812, 126.9856316), 15f)
-                }
-            ) {
-                Marker(
-                    position = LatLng(37.56253812, 126.9856316),
-                    title = "명동교자 본점"
-                )
-            }
-
-            Divider(
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-            )
-
-            Text(text = "메뉴", fontSize = 15.sp)
-
-            LazyColumn {
-                // TODO: items(메뉴평가) 리스트로 변경
-                item {
-                    Row {
-                        Text(text = "알리오 올리오", fontSize = 12.sp)
-                        Text(text = "18,000원", fontSize = 12.sp)
+                LazyColumn {
+                    // TODO: items(메뉴평가) 리스트로 변경
+                    item {
+                        Row {
+                            Text(text = "알리오 올리오", fontSize = 12.sp)
+                            Text(text = "18,000원", fontSize = 12.sp)
+                        }
+                        Text(text = "비린내", fontSize = 12.sp)
                     }
-                    Text(text = "비린내", fontSize = 12.sp)
                 }
+
+                Divider(
+                    color = Color.Gray,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                )
+
+                Text(text = "메모", fontSize = 15.sp)
+                Text(text = "골목에 있어서 차 못들어감 참고하기", fontSize = 12.sp)
             }
-
-            Divider(
-                color = Color.Gray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-            )
-
-            Text(text = "메모", fontSize = 15.sp)
-            Text(text = "골목에 있어서 차 못들어감 참고하기", fontSize = 12.sp)
         }
     }
 }
