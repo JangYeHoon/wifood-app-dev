@@ -96,6 +96,7 @@ fun EditProfileComposeView() {
                     modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
                     Text(text = "닉네임", fontSize = 15.sp)
+                    // TODO: "입력되는 텍스트 위치 왼쪽 끝으로 이동"
                     TextField(
                         value = editNickname.value,
                         onValueChange = { editNickname.value = it },
