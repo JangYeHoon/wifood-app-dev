@@ -1,5 +1,6 @@
 package com.example.wifood.activity
 
+import com.example.wifood.activity.SearchPlaceView
 import android.Manifest
 import android.app.Activity
 import android.content.Intent

@@ -30,6 +30,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
     }
 
     viewBinding {
@@ -42,6 +43,12 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerVersion '1.5.21'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
@@ -63,6 +70,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation 'com.google.ar.sceneform:filament-android:1.17.1'
@@ -105,5 +115,5 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
-
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01"
 }
