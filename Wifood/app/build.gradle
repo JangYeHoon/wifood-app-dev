@@ -115,5 +115,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+    // Compose GoogleMap
+    implementation "com.google.maps.android:maps-compose:1.0.0"
+    implementation "com.google.android.gms:play-services-maps:18.0.2"
+
+    // Compose Rating Bar OpenSource
+    implementation 'io.github.a914-gowtham:compose-ratingbar:1.2.3'
+    // Compose constraintLayout
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01"
 }

@@ -22,6 +22,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.PlaceInfoComposeView"
+            android:exported="false"
+            android:label="@string/title_activity_place_info_compose_view"
             android:name=".activity.FindIdOrPwdView"
             android:exported="false"
             android:label="@string/title_activity_find_id_or_pwd_view"
@@ -110,6 +113,10 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="28l8cj5f00" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAW3MQPW6em5uTkRjqGdEB2WBE481LjtKU" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
