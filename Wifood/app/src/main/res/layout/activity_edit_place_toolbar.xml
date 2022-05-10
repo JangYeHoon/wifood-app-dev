@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 상단 Toolbar 생성 -->
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/white">
+    <ImageButton
+        android:id="@+id/imageButton_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_back_arrow"
+        />
+
+
+    <TextView
+        android:id="@+id/textView_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/pbold"
+        android:text="맛집 등록"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/textView_top2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/pbold"
+        android:text="12"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:layout_gravity="right"
+        />
+
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="48dp"
+        android:background="#F1F1F1"
+        />
+
+
+</androidx.appcompat.widget.Toolbar>

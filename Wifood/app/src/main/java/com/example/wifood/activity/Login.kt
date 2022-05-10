@@ -46,7 +46,8 @@ class Login : AppCompatActivity() {
         imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
         binding.buttonLogin.setOnClickListener {
-            val intent = Intent(this@Login, Map::class.java)
+            //val intent = Intent(this@Login, Map::class.java)
+            val intent = Intent(this@Login, LoginView::class.java)
             intent.putExtra("UserEmail", "testingEmail")
             startActivity(intent)
         }
