@@ -22,15 +22,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.PlaceInfoComposeView"
+            android:name=".view.PlaceInfoComposeView"
             android:exported="false"
-            android:label="@string/title_activity_place_info_compose_view"
-            android:name=".activity.FindIdOrPwdView"
+            android:label="@string/title_activity_place_info_compose_view"/>
+        <activity
+            android:name=".view.FindIdOrPwdView"
             android:exported="false"
             android:label="@string/title_activity_find_id_or_pwd_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.JoininView"
+            android:name=".view.JoininView"
             android:exported="false"
             android:label="@string/title_activity_joinin_view"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -45,12 +46,12 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activity.EditGroupComposeView"
+            android:name=".view.EditGroupComposeView"
             android:exported="false"
             android:label="@string/title_activity_edit_group_compose_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.LoginView"
+            android:name=".view.LoginView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -70,7 +71,7 @@
             android:name=".activity.PlaceInfoView"
             android:exported="false" />
         <activity
-            android:name=".activity.EditPlaceView"
+            android:name=".view.EditPlaceView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

@@ -1,4 +1,4 @@
-package com.example.wifood.activity
+package com.example.wifood.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import com.example.wifood.activity.ui.theme.WifoodTheme
+import com.example.wifood.activity.Map
 
 class JoininView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

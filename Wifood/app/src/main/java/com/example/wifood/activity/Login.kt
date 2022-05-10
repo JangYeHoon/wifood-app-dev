@@ -1,33 +1,19 @@
 package com.example.wifood.activity
 
-import android.Manifest
-import android.app.AlertDialog
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.net.Uri
-import android.util.Log;
 
 // firebase import
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.*
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.*
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.example.wifood.R
-import java.util.regex.Pattern
 import com.example.wifood.databinding.ActivityLoginBinding
+import com.example.wifood.view.LoginView
 
 class Login : AppCompatActivity() {
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"
