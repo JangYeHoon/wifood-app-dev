@@ -25,6 +25,14 @@
             android:name=".activity.PlaceInfoComposeView"
             android:exported="false"
             android:label="@string/title_activity_place_info_compose_view"
+            android:name=".activity.FindIdOrPwdView"
+            android:exported="false"
+            android:label="@string/title_activity_find_id_or_pwd_view"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.JoininView"
+            android:exported="false"
+            android:label="@string/title_activity_joinin_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.Settings"
@@ -34,12 +42,17 @@
             android:exported="false" />
         <activity
             android:name=".activity.ModifyPassword"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.EditGroupComposeView"
             android:exported="false"
             android:label="@string/title_activity_edit_group_compose_view"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.LoginView"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.ModifyMyProfile"
             android:exported="false"

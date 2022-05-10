@@ -15,4 +15,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_edit_group_compose_view">EditGroupComposeView</string>
     <string name="title_activity_place_info_compose_view">PlaceInfoComposeView</string>
+    <string name="title_activity_joinin_view">JoininView</string>
+    <string name="title_activity_find_id_or_pwd_view">FindIdOrPwdView</string>
 </resources>
