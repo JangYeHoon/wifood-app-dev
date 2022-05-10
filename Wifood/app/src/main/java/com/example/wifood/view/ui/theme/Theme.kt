@@ -1,4 +1,4 @@
-package com.example.wifood.activity.ui.theme
+package com.example.wifood.view.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

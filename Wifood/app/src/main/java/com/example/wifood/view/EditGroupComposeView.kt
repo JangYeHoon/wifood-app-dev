@@ -1,4 +1,4 @@
-package com.example.wifood.activity
+package com.example.wifood.view
 
 import android.content.Intent
 import androidx.compose.ui.graphics.Color

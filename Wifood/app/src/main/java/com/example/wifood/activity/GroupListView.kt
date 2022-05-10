@@ -85,19 +85,19 @@ class GroupListView : AppCompatActivity() {
 //        }
 
         // group edit btn
-        groupListAdapter.setGroupEditClickListener(object :
-            GroupListAdapter.GroupEditClickListener {
-            override fun onClick(view: View, position: Int, group: Group) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val intent =
-                        Intent(this@GroupListView, EditGroupComposeView::class.java).apply {
-                            putExtra("type", "EDIT")
-                            putExtra("group", group)
-                        }
-                    requestActivity.launch(intent)
-                }
-            }
-        })
+//        groupListAdapter.setGroupEditClickListener(object :
+//            GroupListAdapter.GroupEditClickListener {
+//            override fun onClick(view: View, position: Int, group: Group) {
+//                CoroutineScope(Dispatchers.IO).launch {
+//                    val intent =
+//                        Intent(this@GroupListView, EditGroupComposeView::class.java).apply {
+//                            putExtra("type", "EDIT")
+//                            putExtra("group", group)
+//                        }
+//                    requestActivity.launch(intent)
+//                }
+//            }
+//        })
 
         // group go btn
         groupListAdapter.setGroupGoClickListener(object :

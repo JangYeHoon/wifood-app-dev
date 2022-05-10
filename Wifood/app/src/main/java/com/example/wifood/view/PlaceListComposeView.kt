@@ -1,4 +1,4 @@
-package com.example.wifood.activity
+package com.example.wifood.view
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing

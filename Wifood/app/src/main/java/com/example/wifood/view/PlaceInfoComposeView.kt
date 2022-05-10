@@ -1,4 +1,4 @@
-package com.example.wifood.activity
+package com.example.wifood.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
