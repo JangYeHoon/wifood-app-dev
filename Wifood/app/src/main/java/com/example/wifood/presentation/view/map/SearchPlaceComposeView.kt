@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
-@Preview
 @Composable
-fun SearchPlaceComposeView() {
+fun SearchPlaceComposeView(
+    navController: NavController
+) {
     val searchKeyword = remember {
         mutableStateOf("")
     }
@@ -38,7 +40,10 @@ fun SearchPlaceComposeView() {
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(40.dp)) {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier.size(40.dp)
+                    ) {
                         Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = ""

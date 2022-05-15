@@ -18,11 +18,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.wifood.R
 
-@Preview
 @Composable
-fun EditProfileComposeView() {
+fun EditProfileComposeView(
+    navController: NavController
+) {
     val editNickname = remember {
         mutableStateOf("")
     }
@@ -40,7 +42,10 @@ fun EditProfileComposeView() {
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(40.dp)) {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier.size(40.dp)
+                    ) {
                         Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = ""

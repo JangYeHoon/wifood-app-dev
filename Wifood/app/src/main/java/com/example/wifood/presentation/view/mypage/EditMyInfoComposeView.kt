@@ -13,10 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
-@Preview
 @Composable
-fun EditMyInfoComposeView() {
+fun EditMyInfoComposeView(
+    navController: NavController
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -30,7 +32,10 @@ fun EditMyInfoComposeView() {
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(40.dp)) {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        modifier = Modifier.size(40.dp)
+                    ) {
                         Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = ""
@@ -51,13 +56,18 @@ fun EditMyInfoComposeView() {
             items(listOf("비밀번호 변경", "휴대폰 번호 변경", "주소 변경", "내 입맛 수정", "회원탈퇴")) {
                 // TODO: settings, mypage view에서 동일하게 쓰임, 공통부분 함수로 빼기
                 Box(
-                    modifier = Modifier.fillMaxWidth().height(45.dp).padding(24.dp, 0.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(45.dp)
+                        .padding(24.dp, 0.dp)
                 ) {
                     Text(text = it, modifier = Modifier.align(Alignment.CenterStart))
                     if (it != "회원탈퇴") {
                         IconButton(
                             onClick = { /*TODO*/ },
-                            modifier = Modifier.align(Alignment.CenterEnd).size(20.dp, 25.dp)
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .size(20.dp, 25.dp)
                         ) {
                             Icon(
                                 Icons.Filled.ArrowForward,

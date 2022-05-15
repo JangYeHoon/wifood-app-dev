@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -37,6 +38,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wifood.presentation.util.NavItem
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.maps.model.*
@@ -84,7 +86,8 @@ fun MapView(
                 title = {
                     TextField(
                         value = viewModel.input.value,
-                        modifier = Modifier.focusRequester(focusRequester),
+                        modifier = Modifier
+                            .focusRequester(focusRequester),
                         onValueChange = viewModel::inputChanged,
                         colors = TextFieldDefaults.textFieldColors(
                             backgroundColor = Color.White,
@@ -97,7 +100,7 @@ fun MapView(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            viewModel.showSnackBar("fun(현재 위치로 이동)")
+                            navController.navigate(Route.Search.route)
                             focusManager.clearFocus()
                         }
                     ) {
@@ -145,7 +148,7 @@ fun MapView(
                     Icon(Icons.Filled.CenterFocusStrong, contentDescription = null)
                 }
                 FloatingActionButton(
-                    onClick = { viewModel.showSnackBar("그룹 추가") },
+                    onClick = { navController.navigate(Route.EditPlace.route) },
                     backgroundColor = Main,
                     contentColor = Color.White,
                     modifier = Modifier.size(75.dp)

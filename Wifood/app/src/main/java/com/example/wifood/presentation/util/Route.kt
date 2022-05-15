@@ -12,4 +12,8 @@ sealed class Route(val route: String) {
     object PlaceList : Route("placelistview")
     object MyPage : Route("mypageview")
     object PlaceInfo : Route("placeinfoview")
+    object Joinin : Route("joinview")
+    object EditPlace : Route("editplaceview")
+    object Search : Route("searchplaceview")
+    object EditProfile : Route("editprofileview")
 }

@@ -16,11 +16,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.presentation.util.Route
 
-@Preview
 @Composable
-fun MyPageComposeView() {
+fun MyPageComposeView(
+    navController: NavController
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -75,7 +78,7 @@ fun MyPageComposeView() {
                 }
 
                 IconButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate(Route.EditProfile.route) },
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .size(20.dp, 25.dp)
