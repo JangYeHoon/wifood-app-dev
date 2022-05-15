@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view
+package com.example.wifood.presentation.view.placeList
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -28,17 +28,8 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
-class PlaceInfoComposeView : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            Greeting()
-        }
-    }
-}
-
 @Composable
-fun Greeting() {
+fun PlaceInfoComposeView() {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -209,10 +200,4 @@ fun Greeting() {
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Greeting()
 }

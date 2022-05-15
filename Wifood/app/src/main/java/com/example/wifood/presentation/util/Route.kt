@@ -10,4 +10,6 @@ sealed class Route(val route: String) {
     object Login : Route("loginview")
     object Map : Route("mapview")
     object PlaceList : Route("placelistview")
+    object MyPage : Route("mypageview")
+    object PlaceInfo : Route("placeinfoview")
 }

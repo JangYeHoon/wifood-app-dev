@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.component
 import android.view.animation.BounceInterpolator
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.placeList.PlaceListViewModel
 import kotlinx.coroutines.launch
 
@@ -20,7 +23,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun AnimateVisibility(
     modalBottomSheetState: ModalBottomSheetState,
-    viewModel: PlaceListViewModel
+    viewModel: PlaceListViewModel,
+    navController: NavController
 ) {
     val scope = rememberCoroutineScope()
     val visible = viewModel.visible.value
@@ -61,7 +65,12 @@ fun AnimateVisibility(
                         )
                     )
         ) {
-            Text(text = "짜잔!")
+            Text(
+                text = "짜잔!",
+                modifier = Modifier.clickable {
+                    navController.navigate(Route.PlaceInfo.route)
+                }
+            )
         }
     }
 }

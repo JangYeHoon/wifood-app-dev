@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 fun PlaceListComposeView(
+    navController: NavController,
     viewModel: PlaceListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
@@ -144,7 +146,7 @@ fun PlaceListComposeView(
                                 .fillMaxSize(),
                             elevation = 10.dp
                         ) {
-                            AnimateVisibility(modalBottomSheetState, viewModel)
+                            AnimateVisibility(modalBottomSheetState, viewModel, navController)
                         }
                     }
                 }
