@@ -20,91 +20,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.Wifood"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".presentation.view.PlaceInfoComposeView"
-            android:exported="false"
-            android:label="@string/title_activity_place_info_compose_view"/>
-        <activity
-            android:name=".presentation.view.FindIdOrPwdView"
-            android:exported="false"
-            android:label="@string/title_activity_find_id_or_pwd_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".presentation.view.JoininView"
-            android:exported="false"
-            android:label="@string/title_activity_joinin_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activity.Settings"
-            android:exported="false" />
-        <activity
-            android:name=".activity.ModifyMyInfo"
-            android:exported="false" />
-        <activity
-            android:name=".activity.ModifyPassword"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".presentation.view.EditGroupComposeView"
-            android:exported="false"
-            android:label="@string/title_activity_edit_group_compose_view"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".presentation.view.LoginView"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activity.ModifyMyProfile"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".activity.FindIdOrPwd"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MyPage"
-            android:exported="false" />
-        <activity
-            android:name=".activity.FindPassword"
-            android:exported="false" />
-        <activity
-            android:name=".activity.PlaceInfoView"
-            android:exported="false" />
-        <activity
-            android:name=".view.EditPlaceView"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activity.PlaceListView"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SearchPlaceView"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activity.Joinin"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".activity.JoininFoodFavoriteInfo"
-            android:exported="false" />
-        <activity
-            android:name=".activity.Map"
-            android:exported="false" />
-        <activity
-            android:name=".activity.DeleteGroup"
-            android:exported="false" />
-        <activity
-            android:name=".activity.EditGroupView"
-            android:exported="false" />
-        <activity
-            android:name=".activity.GroupListView"
-            android:exported="false" /> <!-- 네이버 지도 api 인증키 -->
-        <activity
-            android:name=".activity.Login"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".presentation.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

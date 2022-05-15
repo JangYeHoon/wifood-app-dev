@@ -18,22 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.example.wifood.R
+import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
+import com.example.wifood.presentation.view.placeList.PlaceListViewModel
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Preview
 @Composable
-fun PlaceListComposeView() {
+fun PlaceListComposeView(
+    viewModel: PlaceListViewModel = hiltViewModel()
+) {
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    var visible by remember {
-        mutableStateOf(false)
-    }
     var initallyVisible by remember {
         mutableStateOf(false)
     }
@@ -139,41 +141,10 @@ fun PlaceListComposeView() {
                     items(listOf("전체", "위시리스트", "나만의 맛집")) {
                         Card(
                             modifier = Modifier
-                                .width(370.dp)
-                                .height(86.dp)
-                                .padding(8.dp),
+                                .fillMaxSize(),
                             elevation = 10.dp
                         ) {
-                            Column {
-                                Row() {
-                                    Text(text = it)
-                                    IconButton(onClick = {
-                                        visible = true
-                                    }) {
-                                        Icon(Icons.Filled.ArrowDropDown, "menu")
-                                    }
-                                    Spacer(modifier = Modifier.width(250.dp))
-                                    IconButton(
-                                        onClick = {
-                                            scope.launch {
-                                                modalBottomSheetState.show()
-                                            }
-                                        }
-                                    ) {
-                                        Icon(Icons.Filled.Menu, "menu")
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Text(text = "회사 근처 맛집")
-                                AnimatedVisibility(
-                                    visible = visible,
-                                    initiallyVisible = initallyVisible,
-                                    enter = enterExpand + enterFadeIn,
-                                    exit = exitCollapse + exitFadeOut
-                                ) {
-                                    Text(text = "짜잔!")
-                                }
-                            }
+                            AnimateVisibility(modalBottomSheetState, viewModel)
                         }
                     }
                 }

@@ -1,16 +1,32 @@
-package com.example.wifood.presentation.viewmodel
+package com.example.wifood.presentation.view.placeList
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.PlaceDto
 import com.example.wifood.domain.entity.Place
+import java.lang.Integer.max
 
 class PlaceListViewModel() : ViewModel() {
     var placeList: LiveData<MutableList<Place>>
     private val placeDto: PlaceDto = PlaceDto()
 
+    private val _visible = mutableStateOf(false)
+    val visible: State<Boolean> = _visible
+
     init {
         placeList = placeDto.getPlaceList()
+    }
+
+    fun expandVisibility() {
+        _visible.value = true
+    }
+
+    fun collapseVisibility() {
+        _visible.value = false
     }
 
     fun getPlaceListMaxId(): Int {
@@ -18,7 +34,7 @@ class PlaceListViewModel() : ViewModel() {
         var maxValue = 0
         if (place != null)
             for (f in place)
-                maxValue = Integer.max(f.id, maxValue)
+                maxValue = max(f.id, maxValue)
         return maxValue
     }
 

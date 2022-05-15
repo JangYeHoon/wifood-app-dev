@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.wifood.R
-import com.example.wifood.activity.Map
 
 class LoginView : ComponentActivity() {
 
