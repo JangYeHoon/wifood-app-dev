@@ -1,42 +1,57 @@
 package com.example.wifood.presentation.view.login
 
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType.Companion.Email
+import androidx.compose.ui.text.input.KeyboardType.Companion.Password
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.FindIdOrPwdView
 import com.example.wifood.ui.theme.robotoFamily
+import com.example.wifood.view.ui.theme.Error
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginView(
-    navController: NavController
+    navController: NavController,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize(),
     ) {
+        // Don't touch
+        val state = viewModel.state
+        val context = LocalContext.current
+
+        LaunchedEffect(key1 = context) {
+            viewModel.validationEvents.collectLatest { event ->
+                when(event) {
+                    is LoginViewModel.ValidationEvent.Success -> {
+                        navController.navigate(Route.Map.route)
+                    }
+                }
+            }
+        }
 
         // create refs
         val (image_logo, text_id, text_pwd, button_login, button_find_idOrPwd, button_joinin, line, text_simpleLogin, button_naverLogin, button_kakaoLogin, button_googleLogin) = createRefs()
@@ -58,10 +73,11 @@ fun LoginView(
         )
 
         OutlinedTextField(
-            value = idText,
+            value = state.email,
             onValueChange = {
-                idText = it
+                viewModel.onEvent(LoginFormEvent.EmailChanged(it))
             },
+            isError = state.emailError != null,
             maxLines = 1,
             placeholder = {
                 Text(
@@ -86,12 +102,21 @@ fun LoginView(
                     top.linkTo(image_logo.bottom, margin = 53.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
+                },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = Email
+            )
         )
+        if (state.emailError != null) {
+            Text(
+                text = state.emailError,
+                color = Error
+            )
+        }
         OutlinedTextField(
-            value = pwdText,
+            value = state.password,
             onValueChange = {
-                pwdText = it
+                viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
             },
             placeholder = {
                 Text(
@@ -112,13 +137,23 @@ fun LoginView(
                     top.linkTo(text_id.bottom, margin = 5.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }
+                },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = Password
+            ),
+            visualTransformation = PasswordVisualTransformation()
         )
+        if (state.passwordError != null) {
+            Text(
+                text = state.passwordError,
+                color = Error
+            )
+        }
 
         TextButton(
             shape = RoundedCornerShape(25.dp),
             onClick = {
-                navController.navigate(Route.Map.route)
+                viewModel.onEvent(LoginFormEvent.Login)
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color(0xFFEA7434)
