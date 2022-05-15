@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Group
+import com.example.wifood.domain.entity.Group
 
 class GroupSelectAdapter(private val context: Context) :
     RecyclerView.Adapter<GroupSelectAdapter.GroupSelectViewHolder>() {

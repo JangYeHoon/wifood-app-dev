@@ -2,7 +2,6 @@ package com.example.wifood.adapter
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Group
+import com.example.wifood.domain.entity.Group
 
 class GroupNameAdapter(private val context: Context) :
     RecyclerView.Adapter<GroupNameAdapter.GroupNameViewHolder>() {

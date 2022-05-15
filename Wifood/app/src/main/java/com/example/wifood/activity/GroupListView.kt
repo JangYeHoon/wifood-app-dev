@@ -16,8 +16,8 @@ import com.example.wifood.R
 import com.example.wifood.adapter.GroupListAdapter
 import com.example.wifood.adapter.GroupItemTouchHelperCallback
 import com.example.wifood.databinding.ActivityGroupListBinding
-import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupListViewModel
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.presentation.viewmodel.GroupListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

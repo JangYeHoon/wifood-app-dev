@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Group
+import com.example.wifood.domain.entity.Group
 import java.util.*
 
 class GroupListAdapter(private val context: Context) :

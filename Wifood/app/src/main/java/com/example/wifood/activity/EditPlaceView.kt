@@ -1,6 +1,5 @@
 package com.example.wifood.activity
 
-import com.example.wifood.activity.SearchPlaceView
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
@@ -26,11 +25,14 @@ import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.*
 import com.example.wifood.databinding.ActivityEditPlaceBinding
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.domain.entity.Menu
+import com.example.wifood.domain.entity.MenuGrade
+import com.example.wifood.domain.entity.Search
 import com.example.wifood.entity.*
-import com.example.wifood.viewmodel.ImageStoreViewModel
-import com.example.wifood.viewmodel.PlaceListViewModel
-import com.example.wifood.viewmodel.PlaceViewModel
-import com.example.wifood.viewmodel.SearchPlaceViewModel
+import com.example.wifood.presentation.viewmodel.ImageStoreViewModel
+import com.example.wifood.presentation.viewmodel.PlaceViewModel
+import com.example.wifood.presentation.viewmodel.SearchPlaceViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

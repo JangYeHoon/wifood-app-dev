@@ -2,7 +2,7 @@ package com.example.wifood.dao
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.wifood.entity.Place
+import com.example.wifood.domain.entity.Place
 import com.google.firebase.database.*
 
 class PlaceDao() {

@@ -13,7 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.example.wifood.databinding.ActivityLoginBinding
-import com.example.wifood.view.LoginView
+import com.example.wifood.presentation.view.LoginView
 
 class Login : AppCompatActivity() {
     private val pwdStringLambda = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[\$@\$!%*?&]).{8,15}.\$"

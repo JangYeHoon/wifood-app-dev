@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Place
+import com.example.wifood.domain.entity.Place
 import kotlin.math.round
 
 class PlaceListAdapter(private val context: Context) :

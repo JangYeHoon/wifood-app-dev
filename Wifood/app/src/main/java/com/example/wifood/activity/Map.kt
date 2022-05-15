@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import androidx.annotation.UiThread
 import com.example.wifood.R
 
@@ -24,10 +23,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.adapter.PlaceListAdapter
 import com.example.wifood.databinding.ActivityMapBinding
-import com.example.wifood.entity.Place
-import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupListViewModel
-import com.example.wifood.viewmodel.PlaceListViewModel
+import com.example.wifood.domain.entity.Place
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.presentation.viewmodel.GroupListViewModel
+import com.example.wifood.presentation.viewmodel.PlaceListViewModel
 import com.google.android.material.navigation.NavigationView
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*

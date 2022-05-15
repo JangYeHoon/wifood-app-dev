@@ -7,18 +7,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.adapter.SearchPlaceAdapter
 import com.example.wifood.databinding.ActivitySearchPlaceBinding
-import com.example.wifood.entity.Search
-import com.example.wifood.viewmodel.GroupListViewModel
-import com.example.wifood.viewmodel.SearchPlaceViewModel
-import com.skt.Tmap.TMapData
-import com.skt.Tmap.TMapTapi
-import com.skt.Tmap.poi_item.TMapPOIItem
+import com.example.wifood.domain.entity.Search
+import com.example.wifood.presentation.viewmodel.SearchPlaceViewModel
 
 class SearchPlaceView : AppCompatActivity() {
     lateinit var binding: ActivitySearchPlaceBinding

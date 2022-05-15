@@ -3,7 +3,7 @@ package com.example.wifood.dto
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wifood.dao.GroupDao
-import com.example.wifood.entity.Group
+import com.example.wifood.domain.entity.Group
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 

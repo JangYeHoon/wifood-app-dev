@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Search
+import com.example.wifood.domain.entity.Search
 
 class SearchPlaceAdapter(private val context: Context) :
     RecyclerView.Adapter<SearchPlaceAdapter.SearchPlaceViewHolder>() {

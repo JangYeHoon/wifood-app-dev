@@ -9,8 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.example.wifood.R
 import com.example.wifood.databinding.ActivityEditGroupBinding
-import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupViewModel
+import com.example.wifood.presentation.viewmodel.GroupViewModel
 
 class EditGroupView : AppCompatActivity() {
     lateinit var binding: ActivityEditGroupBinding

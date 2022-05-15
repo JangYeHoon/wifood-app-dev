@@ -8,7 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.MenuGrade
+import com.example.wifood.domain.entity.MenuGrade
 
 class MenuGradeInfoAdapter(private val context: Context) :
     RecyclerView.Adapter<MenuGradeInfoAdapter.MenuGradeInfoViewHolder>() {

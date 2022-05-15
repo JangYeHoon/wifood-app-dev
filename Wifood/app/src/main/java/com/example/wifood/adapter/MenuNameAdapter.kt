@@ -1,17 +1,14 @@
 package com.example.wifood.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
-import com.example.wifood.entity.Group
-import com.example.wifood.entity.Menu
+import com.example.wifood.domain.entity.Menu
 
 class MenuNameAdapter(private val context: Context) :
     RecyclerView.Adapter<MenuNameAdapter.MenuViewHolder>() {

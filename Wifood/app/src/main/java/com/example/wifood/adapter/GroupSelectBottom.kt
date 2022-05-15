@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wifood.R
 import com.example.wifood.activity.EditPlaceView
-import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupListViewModel
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.presentation.viewmodel.GroupListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class GroupSelectBottom : BottomSheetDialogFragment() {

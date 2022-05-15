@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,10 +14,10 @@ import com.bumptech.glide.Glide
 import com.example.wifood.R
 import com.example.wifood.adapter.MenuGradeInfoAdapter
 import com.example.wifood.databinding.ActivityPlaceInfoBinding
-import com.example.wifood.entity.Group
-import com.example.wifood.entity.Place
-import com.example.wifood.viewmodel.GroupViewModel
-import com.example.wifood.viewmodel.PlaceViewModel
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.domain.entity.Place
+import com.example.wifood.presentation.viewmodel.GroupViewModel
+import com.example.wifood.presentation.viewmodel.PlaceViewModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.naver.maps.geometry.LatLng

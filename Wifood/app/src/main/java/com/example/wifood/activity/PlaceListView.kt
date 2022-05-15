@@ -18,10 +18,10 @@ import com.example.wifood.R
 import com.example.wifood.adapter.PlaceListAdapter
 import com.example.wifood.adapter.GroupNameAdapter
 import com.example.wifood.databinding.ActivityPlaceListBinding
-import com.example.wifood.entity.Place
-import com.example.wifood.entity.Group
-import com.example.wifood.viewmodel.GroupListViewModel
-import com.example.wifood.viewmodel.PlaceListViewModel
+import com.example.wifood.domain.entity.Place
+import com.example.wifood.domain.entity.Group
+import com.example.wifood.presentation.viewmodel.GroupListViewModel
+import com.example.wifood.presentation.viewmodel.PlaceListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

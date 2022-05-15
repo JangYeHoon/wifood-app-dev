@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wifood.R
 import com.example.wifood.adapter.DeleteGroupAdapter
 import com.example.wifood.databinding.ActivityDeleteGroupBinding
-import com.example.wifood.entity.Group
+import com.example.wifood.domain.entity.Group
 
 class DeleteGroup : AppCompatActivity() {
     lateinit var binding: ActivityDeleteGroupBinding
