@@ -31,12 +31,12 @@ class LoginViewModel @Inject constructor(
                 state = state.copy(password = event.password)
             }
             is LoginFormEvent.Login -> {
-                LoginData()
+                loginData()
             }
         }
     }
 
-    private fun LoginData() {
+    private fun loginData() {
         val emailResult = useCases.validateEmail(state.email)
         val passwordResult = useCases.validatePassword(state.password)
 
