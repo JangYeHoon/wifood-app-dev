@@ -1,4 +1,4 @@
-package com.example.wifood.domain.entity
+package com.example.wifood.data.remote.dto
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -10,3 +10,4 @@ data class MenuGrade(
     var price: Int,
     var memo: String
 ) : Parcelable
+

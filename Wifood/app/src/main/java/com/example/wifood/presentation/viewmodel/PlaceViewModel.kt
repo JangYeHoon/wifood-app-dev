@@ -2,7 +2,6 @@ package com.example.wifood.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.wifood.dto.PlaceDto
-import com.example.wifood.domain.entity.Menu
 import com.example.wifood.domain.entity.MenuGrade
 import com.example.wifood.domain.entity.Place
 
@@ -88,10 +87,6 @@ class PlaceViewModel : ViewModel() {
         return place.menuGrade
     }
 
-    fun getPlaceMenuList(): ArrayList<Menu> {
-        return place.menu
-    }
-
     fun getPlaceLatitude(): Double {
         return place.latitude
     }
@@ -158,10 +153,6 @@ class PlaceViewModel : ViewModel() {
 
     fun insertMenuGrade(menuGrade: MenuGrade) {
         place.menuGrade.add(menuGrade)
-    }
-
-    fun insertPlaceMenu(menu: Menu) {
-        place.menu.add(menu)
     }
 
     fun insertImageName(imageName: String) {
