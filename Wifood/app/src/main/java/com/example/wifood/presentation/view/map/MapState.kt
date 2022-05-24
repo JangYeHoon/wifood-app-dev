@@ -1,7 +1,7 @@
 package com.example.wifood.presentation.view.map
 
-import com.example.wifood.domain.entity.Group
-import com.example.wifood.domain.entity.Place
+import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 import com.google.maps.android.compose.MapProperties
 
 data class MapState(

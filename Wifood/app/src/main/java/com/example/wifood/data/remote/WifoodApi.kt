@@ -1,8 +1,8 @@
 package com.example.wifood.data.remote
 
 import androidx.lifecycle.LiveData
-import com.example.wifood.domain.entity.Group
-import com.example.wifood.domain.entity.Place
+import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 
 interface WifoodApi {
 

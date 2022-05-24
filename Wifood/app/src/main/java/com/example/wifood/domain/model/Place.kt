@@ -1,11 +1,11 @@
-package com.example.wifood.domain.entity
+package com.example.wifood.domain.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
+@Entity
 data class Place(
-    val placeId: Int,
+    @PrimaryKey val placeId: Int,
     val groupId: Int,
     var name: String,
     var menu: String,
@@ -14,10 +14,9 @@ data class Place(
     var tasteChk: Boolean,
     var cleanChk: Boolean,
     var kindChk: Boolean,
-    var imageNameList: ArrayList<String>,
+    var imageNameList: List<String>,
     var review: String,
     var latitude: Float,
     var longitude: Float,
-    var address: String,
-    val menuGradeList: ArrayList<MenuGrade>
-) : Parcelable
+    var address: String
+)

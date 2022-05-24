@@ -24,16 +24,14 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
-import com.example.wifood.presentation.view.placeList.PlaceListViewModel
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
-@Preview
 @Composable
 fun PlaceListComposeView(
     navController: NavController,
-    viewModel: PlaceListViewModel = hiltViewModel()
+//    viewModel: PlaceListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
@@ -146,7 +144,7 @@ fun PlaceListComposeView(
                                 .fillMaxSize(),
                             elevation = 10.dp
                         ) {
-                            AnimateVisibility(modalBottomSheetState, viewModel, navController)
+//                            AnimateVisibility(modalBottomSheetState, viewModel, navController)
                         }
                     }
                 }

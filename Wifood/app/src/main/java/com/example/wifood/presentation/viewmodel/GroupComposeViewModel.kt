@@ -4,11 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.wifood.domain.entity.Group
+import com.example.wifood.domain.model.Group
 
 class GroupComposeViewModel : ViewModel() {
-    private val _group = mutableStateOf(Group())
-    val group: State<Group> = _group
+//    private val _group = mutableStateOf(Group())
+//    val group: State<Group> = _group
 
     private val _name = mutableStateOf("")
     val name: State<String> = _name
@@ -25,11 +25,11 @@ class GroupComposeViewModel : ViewModel() {
     private val _green = mutableStateOf(255F)
     val green: State<Float> = _green
 
-    fun initGroup(group: Group) {
-        _group.value = group
-        _name.value = group.name
-        _theme.value = group.theme
-    }
+//    fun initGroup(group: Group) {
+//        _group.value = group
+//        _name.value = group.name
+////        _theme.value = group.theme
+//    }
 
     fun updateGroupName(name: String) {
         _name.value = name

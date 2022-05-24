@@ -1,7 +1,13 @@
 package com.example.wifood.di
 
+import android.app.Application
+import androidx.room.Room
+import com.example.wifood.data.local.dao.WifoodDatabase
+import com.example.wifood.data.local.util.Converters
 import com.example.wifood.data.remote.WifoodApi
 import com.example.wifood.data.remote.WifoodApiImpl
+import com.example.wifood.data.repository.WifoodRepositoryImpl
+import com.example.wifood.domain.repository.WifoodRepository
 import com.example.wifood.domain.usecase.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -15,26 +21,42 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton
-    @Provides
-    fun provideDatabase(): DatabaseReference {
-        return FirebaseDatabase.getInstance().reference
-    }
-
     @Provides
     @Singleton
-    fun provideUseCases(): WifoodUseCases {
+    fun provideUseCases(repository: WifoodRepository): WifoodUseCases {
         return WifoodUseCases(
-            validateEmail = ValidateEmail(),
-            validatePassword = ValidatePassword(),
-            validateRepeatedPassword = ValidateRepeatedPassword(),
-            validateTerms = ValidateTerms()
+            validateEmail = ValidateEmail(repository),
+            validatePassword = ValidatePassword(repository),
+            validateRepeatedPassword = ValidateRepeatedPassword(repository),
+            validateTerms = ValidateTerms(repository)
         )
     }
 
     @Provides
     @Singleton
-    fun provideApi(db: DatabaseReference): WifoodApi {
-        return WifoodApiImpl(db)
+    fun provideRepository(db: WifoodDatabase, api: WifoodApi): WifoodRepository {
+        return WifoodRepositoryImpl(db.wifoodDao, api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApi(fb: DatabaseReference): WifoodApi {
+        return WifoodApiImpl(fb)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebase(): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(app: Application): WifoodDatabase {
+        return Room.databaseBuilder(
+            app,
+            WifoodDatabase::class.java,
+            WifoodDatabase.DATABASE_NAME
+        ).build()
     }
 }

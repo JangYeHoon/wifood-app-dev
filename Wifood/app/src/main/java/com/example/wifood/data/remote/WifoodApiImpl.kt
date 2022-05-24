@@ -2,8 +2,8 @@ package com.example.wifood.data.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.wifood.domain.entity.Group
-import com.example.wifood.domain.entity.Place
+import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference

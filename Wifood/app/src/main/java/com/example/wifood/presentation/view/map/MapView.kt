@@ -211,14 +211,14 @@ fun MapView(
                 uiSettings = uiSettings,
                 cameraPositionState = camera
             ) {
-                state.placeList.forEach { place ->
-                    Marker(
-                        position = LatLng(place.latitude, place.longitude),
-                        title = place.name,
-                        visible = state.selected == 0 || place.groupId == state.selected,
-                        snippet = place.memo
-                    )
-                }
+//                state.placeList.forEach { place ->
+//                    Marker(
+//                        position = LatLng(place.latitude, place.longitude),
+//                        title = place.name,
+//                        visible = state.selected == 0 || place.groupId == state.selected,
+//                        snippet = place.memo
+//                    )
+//                }
             }
         }
         LazyRow(
@@ -270,9 +270,9 @@ fun MapView(
                     modifier = Modifier
                         .padding(5.dp)
                         .selectable(
-                            selected = group.id == selectedMenu,
+                            selected = group.groupId == selectedMenu,
                             onClick = {
-                                selectedMenu = if (selectedMenu != group.id) group.id else 0
+                                selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
                                 viewModel.selectedGroupId(selectedMenu)
 //                                val location = LatLng(grouplatitude, place.longitude)
 //                                builder.include(location)
@@ -281,19 +281,19 @@ fun MapView(
                         )
                         .height(32.dp),
                     onClick = {
-                        selectedMenu = if (selectedMenu != group.id) group.id else 0
+                        selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
                         viewModel.selectedGroupId(selectedMenu)
                     },
                     shape = RoundedCornerShape(15.dp),
                     border = BorderStroke(1.dp, Main),
                     interactionSource = interactionSource,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = if (selectedMenu == group.id) Main else Color.White
+                        backgroundColor = if (selectedMenu == group.groupId) Main else Color.White
                     )
                 ) {
                     Text(
                         text = group.name,
-                        color = if (selectedMenu == group.id) Color.White else Main,
+                        color = if (selectedMenu == group.groupId) Color.White else Main,
                         style = TextStyle(
                             fontFamily = robotoFamily,
                             fontWeight = FontWeight.Normal,

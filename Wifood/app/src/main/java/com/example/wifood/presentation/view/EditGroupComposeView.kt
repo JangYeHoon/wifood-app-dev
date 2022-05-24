@@ -16,7 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import com.example.wifood.R
-import com.example.wifood.domain.entity.Group
+import com.example.wifood.domain.model.Group
 import com.example.wifood.presentation.viewmodel.GroupComposeViewModel
 
 class EditGroupComposeView : ComponentActivity() {
@@ -37,12 +37,12 @@ class EditGroupComposeView : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val type = intent.getStringExtra("type") as String
-        var group = Group()
-        if (type == "EDIT")
-            group = intent.getParcelableExtra("group")!!
-        setContent {
-            Screen(viewModel, colorList, group)
-        }
+//        var group = Group()
+//        if (type == "EDIT")
+//            group = intent.getParcelableExtra("group")!!
+//        setContent {
+//            Screen(viewModel, colorList, group)
+//        }
     }
 }
 
@@ -51,7 +51,7 @@ class EditGroupComposeView : ComponentActivity() {
 fun Screen(viewModel: GroupComposeViewModel, colors: List<Color>, group: Group) {
 
     LaunchedEffect(key1 = true) {
-        viewModel.initGroup(group)
+//        viewModel.initGroup(group)
     }
 
     Column {

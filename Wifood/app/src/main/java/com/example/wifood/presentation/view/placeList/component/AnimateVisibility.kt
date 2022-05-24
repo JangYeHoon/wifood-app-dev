@@ -15,25 +15,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.placeList.PlaceListViewModel
 import kotlinx.coroutines.launch
 
-@Preview
 @ExperimentalMaterialApi
 @Composable
 fun AnimateVisibility(
     modalBottomSheetState: ModalBottomSheetState,
-    viewModel: PlaceListViewModel,
+//    viewModel: PlaceListViewModel,
     navController: NavController
 ) {
     val scope = rememberCoroutineScope()
-    val visible = viewModel.visible.value
+//    val visible = viewModel.visible.value
 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth()) {
             Text(text = "위시리스트")
             IconButton(onClick = {
-                if (visible) viewModel.collapseVisibility() else viewModel.expandVisibility()
+//                if (visible) viewModel.collapseVisibility() else viewModel.expandVisibility()
             }) {
                 Icon(Icons.Filled.ArrowDropDown, "menu")
             }
@@ -50,27 +48,27 @@ fun AnimateVisibility(
         }
         Spacer(modifier = Modifier.height(5.dp))
         Text(text = "회사 근처 맛집")
-        AnimatedVisibility(
-            visible = visible,
-            enter = fadeIn(animationSpec = tween(1000)) +
-                    expandVertically(
-                        animationSpec = tween(
-                            1500
-                        )
-                    ),
-            exit = fadeOut(animationSpec = tween(1000)) +
-                    shrinkVertically(
-                        animationSpec = tween(
-                            1500
-                        )
-                    )
-        ) {
-            Text(
-                text = "짜잔!",
-                modifier = Modifier.clickable {
-                    navController.navigate(Route.PlaceInfo.route)
-                }
-            )
-        }
+//        AnimatedVisibility(
+//            visible = visible,
+//            enter = fadeIn(animationSpec = tween(1000)) +
+//                    expandVertically(
+//                        animationSpec = tween(
+//                            1500
+//                        )
+//                    ),
+//            exit = fadeOut(animationSpec = tween(1000)) +
+//                    shrinkVertically(
+//                        animationSpec = tween(
+//                            1500
+//                        )
+//                    )
+//        ) {
+//            Text(
+//                text = "짜잔!",
+//                modifier = Modifier.clickable {
+//                    navController.navigate(Route.PlaceInfo.route)
+//                }
+//            )
+//        }
     }
 }
