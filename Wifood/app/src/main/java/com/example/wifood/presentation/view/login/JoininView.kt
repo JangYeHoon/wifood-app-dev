@@ -4,139 +4,149 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.wifood.R
 
+fun JoinView(navController: NavController){
+
+}
+
+val fontPretendard = FontFamily(
+    Font(R.font.pbold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.pmedium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.pregular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.plight, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.pthin, FontWeight.Thin, FontStyle.Normal),
+)
+
+@Preview(showBackground =  true)
 @Composable
-fun JoinView(
-    navController: NavController
-) {
-    var idText by remember { mutableStateOf("") }
-    var pwdText by remember { mutableStateOf("") }
-    var pwdCheckText by remember { mutableStateOf("") }
-    var nicknameText by remember { mutableStateOf("") }
-    var phoneText by remember { mutableStateOf("") }
-    var phoneCheckText by remember { mutableStateOf("") }
-    var addressCoarseText by remember { mutableStateOf("") }
-    var addressFindText by remember { mutableStateOf("") }
-    var birthText by remember { mutableStateOf("") }
+fun JoininContent(){
+    var id by rememberSaveable {mutableStateOf("")}
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        Alignment.Center
+                    ) {
+                        Text(text = "회원가입")
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.width(40.dp).height(40.dp))
+                    {
+                        Icon(
+                            ImageVector.vectorResource(id = R.drawable.ic_arrow),
+                            contentDescription = "back button",
+                            modifier = Modifier.fillMaxSize(),
+                            tint = Color.Unspecified
+                        )
+                    }
+                },
+                backgroundColor = Color.White,
+                actions = {
+                    Spacer(modifier = Modifier.width(70.dp))
+                }
+            )
+        }
 
-    Column {
-        TextField(
-            value = idText,
-            onValueChange = { idText = it },
-            placeholder = {
-                Text(
-                    text = "아이디",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
+    ){
+        Column(Modifier.padding(24.dp,16.dp)){
+            Spacer(Modifier.height(15.dp))
+            Text(
+                text="아이디",
+                color = Color(0xFF424242),
+                fontSize = 15.sp,
+                fontFamily = fontPretendard,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(5.dp))
+            Text(
+                text="영문 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요",
+                color = Color(0xFF565656),
+                fontSize = 12.sp,
+                fontFamily = fontPretendard,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(Modifier.height(5.dp))
+            TextField(
+                value = id,
+                onValueChange = { id = it },
+                placeholder = {
+                    Text(
+                        text = "아이디",
+                        color = Color(0xFFCFCFCF)
+                    )
+                },
+                singleLine = true,
+                modifier = Modifier.width(312.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color(0xFF565656),
+                    backgroundColor = Color.White,
+                    cursorColor = Color.Transparent,
+                    focusedBorderColor = Color(0xFFEA7434),
+                    unfocusedBorderColor = Color(0xFFE4E4E4)
+                ),
+            )
 
-        TextField(
-            value = pwdText,
-            onValueChange = { pwdText = it },
-            placeholder = {
-                Text(
-                    text = "비밀번호",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = pwdCheckText,
-            onValueChange = { pwdCheckText = it },
-            placeholder = {
-                Text(
-                    text = "비밀번호 확인",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = nicknameText,
-            onValueChange = { nicknameText = it },
-            placeholder = {
-                Text(
-                    text = "닉네임",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = phoneText,
-            onValueChange = { phoneText = it },
-            placeholder = {
-                Text(
-                    text = "핸드폰 번호",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = phoneCheckText,
-            onValueChange = { phoneCheckText = it },
-            placeholder = {
-                Text(
-                    text = "인증번호",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = addressCoarseText,
-            onValueChange = { addressCoarseText = it },
-            placeholder = {
-                Text(
-                    text = "주소",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = addressFindText,
-            onValueChange = { addressFindText = it },
-            placeholder = {
-                Text(
-                    text = "상세주소",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-        TextField(
-            value = birthText,
-            onValueChange = { birthText = it },
-            placeholder = {
-                Text(
-                    text = "생년월일",
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-        )
-
-        TextButton(
-            shape = RoundedCornerShape(25.dp),
-            onClick = {
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFFEA7434)
-            ),
-            modifier = Modifier
-                .width(280.dp)
-                .height(46.dp)
-        )
-        {
-            Text(text = "회원가입하기", color = Color.White)
+            Spacer(Modifier.height(5.dp))
+            Text(
+                text="아이디",
+                color = Color(0xFF424242),
+                fontSize = 15.sp,
+                fontFamily = fontPretendard,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(5.dp))
+            Text(
+                text="영문 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요",
+                color = Color(0xFF565656),
+                fontSize = 12.sp,
+                fontFamily = fontPretendard,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(Modifier.height(5.dp))
+            TextField(
+                value = id,
+                onValueChange = { id = it },
+                placeholder = {
+                    Text(
+                        text = "아이디",
+                        color = Color(0xFFCFCFCF)
+                    )
+                },
+                singleLine = true,
+                modifier = Modifier.width(312.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Color(0xFF565656),
+                    backgroundColor = Color.White,
+                    cursorColor = Color.Transparent,
+                    focusedBorderColor = Color(0xFFEA7434),
+                    unfocusedBorderColor = Color(0xFFE4E4E4)
+                ),
+            )
         }
     }
+
 }
