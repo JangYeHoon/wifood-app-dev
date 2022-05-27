@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Route(val route: String) {
+    object Main : Route("mainview")
     object Login : Route("loginview")
     object Map : Route("mapview")
     object PlaceList : Route("placelistview")

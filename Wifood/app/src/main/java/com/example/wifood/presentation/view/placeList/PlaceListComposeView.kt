@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view
+package com.example.wifood.presentation.view.placeList
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -30,12 +30,16 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @Composable
 fun PlaceListComposeView(
+    modalBottomSheetState: ModalBottomSheetState,
     navController: NavController,
 //    viewModel: PlaceListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val modalBottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+
+    var visible by remember {
+        mutableStateOf(false)
+    }
+
     var initallyVisible by remember {
         mutableStateOf(false)
     }
@@ -62,89 +66,54 @@ fun PlaceListComposeView(
         shrinkVertically(animationSpec = tween(1000))
     }
 
-    ModalBottomSheetLayout(
-        sheetContent = {
-            BottomSheetContent()
-        },
-        sheetState = modalBottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetBackgroundColor = Color(0xFF222222)
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopStart,
     ) {
-        Scaffold(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(text = "맛집 리스트")
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Filled.ArrowBack, "backIcon")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Filled.Menu, "menu")
-                        }
-                    }
-                )
-            },
-            bottomBar = {
-                BottomNavigation() {
-                    val selectedIndex = remember { mutableStateOf(0) }
-                    BottomNavigation(elevation = 10.dp) {
-
-                        BottomNavigationItem(icon = {
-                            Icon(imageVector = Icons.Default.Home, "")
-                        },
-                            label = { Text(text = "Home") },
-                            selected = (selectedIndex.value == 0),
-                            onClick = {
-                                selectedIndex.value = 0
-                            }
-                        )
-
-                        BottomNavigationItem(icon = {
-                            Icon(imageVector = Icons.Default.Favorite, "")
-                        },
-                            label = { Text(text = "Favorite") },
-                            selected = (selectedIndex.value == 1),
-                            onClick = {
-                                selectedIndex.value = 1
-                            }
-                        )
-
-                        BottomNavigationItem(icon = {
-                            Icon(imageVector = Icons.Default.Person, "")
-                        },
-                            label = { Text(text = "Profile") },
-                            selected = (selectedIndex.value == 2),
-                            onClick = {
-                                selectedIndex.value = 2
-                            }
-                        )
-                    }
-                }
-            }
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.TopStart,
-            ) {
-                LazyColumn(
+            items(listOf("전체", "위시리스트", "나만의 맛집")) {
+                Card(
                     modifier = Modifier
                         .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    elevation = 10.dp
                 ) {
-                    items(listOf("전체", "위시리스트", "나만의 맛집")) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            elevation = 10.dp
+                    Column {
+                        Row() {
+                            Text(text = it)
+                            IconButton(onClick = {
+                                visible = !visible
+                            }) {
+                                Icon(Icons.Filled.ArrowDropDown, "menu")
+                            }
+                            Spacer(modifier = Modifier.width(250.dp))
+                            IconButton(
+                                onClick = {
+                                    scope.launch {
+                                        modalBottomSheetState.show()
+                                    }
+                                }
+                            ) {
+                                Icon(Icons.Filled.Menu, "menu")
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(250.dp))
+//                        IconButton(onClick = {}) {
+//                            Icon(Icons.Filled.Menu, "menu")
+//                            Spacer(modifier = Modifier.height(5.dp))
+//                            Text(text = "회사 근처 맛집")
+//                        }
+                        AnimatedVisibility(
+                            visible = visible,
+                            initiallyVisible = initallyVisible,
+                            enter = enterExpand + enterFadeIn,
+                            exit = exitCollapse + exitFadeOut
                         ) {
-//                            AnimateVisibility(modalBottomSheetState, viewModel, navController)
+                            Text(text = "짜잔!")
                         }
                     }
                 }

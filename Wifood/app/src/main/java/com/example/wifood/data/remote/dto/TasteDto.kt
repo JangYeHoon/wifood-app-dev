@@ -3,13 +3,13 @@ package com.example.wifood.data.remote.dto
 import com.example.wifood.domain.model.Taste
 
 data class TasteDto(
-    val userId: String,
-    val tasteId: Int,
-    val spicy: Int,
-    val salty: Int,
-    val acidity: Int,
-    val sour: Int,
-    val sweet: Int
+    val userId: String = "",
+    val tasteId: Int = -1,
+    val spicy: Int = -1,
+    val salty: Int = -1,
+    val acidity: Int = -1,
+    val sour: Int = -1,
+    val sweet: Int = -1
 ) {
     fun toTaste(): Taste {
         return Taste(

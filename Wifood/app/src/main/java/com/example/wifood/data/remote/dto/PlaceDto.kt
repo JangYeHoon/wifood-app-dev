@@ -3,21 +3,21 @@ package com.example.wifood.data.remote.dto
 import com.example.wifood.domain.model.Place
 
 data class PlaceDto(
-    val placeId: Int,
-    val groupId: Int,
-    var name: String,
-    var menu: String,
-    var visited: Boolean,
-    var score: Float,
-    var tasteChk: Boolean,
-    var cleanChk: Boolean,
-    var kindChk: Boolean,
-    var imageNameList: List<String>,
-    var review: String,
-    var latitude: Float,
-    var longitude: Float,
-    var address: String,
-    val menuGradeDtoList: List<MenuGradeDto>
+    val placeId: Int = -1,
+    val groupId: Int = -1,
+    var name: String = "",
+    var menu: String = "",
+    var visited: Boolean = false,
+    var score: Float = 0f,
+    var tasteChk: Boolean = false,
+    var cleanChk: Boolean = false,
+    var kindChk: Boolean = false,
+    var imageNameList: ArrayList<String> = arrayListOf(),
+    var review: String = "",
+    var latitude: Float = 0f,
+    var longitude: Float = 0f,
+    var address: String = "",
+    val menuGradeDtoList: ArrayList<MenuGradeDto> = arrayListOf()
 ) {
 //    fun toPlace(): Place {
 //        return Place(

@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(
                 emailError = emailResult.errorMessage,
                 passwordError = passwordResult.errorMessage
             )
-            return
+            //return
         }
         viewModelScope.launch {
             validateEventChannel.send(ValidationEvent.Success)

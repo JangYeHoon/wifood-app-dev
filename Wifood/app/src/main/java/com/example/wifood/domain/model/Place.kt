@@ -3,9 +3,8 @@ package com.example.wifood.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
 data class Place(
-    @PrimaryKey val placeId: Int,
+    val placeId: Int,
     val groupId: Int,
     var name: String,
     var menu: String,
@@ -18,5 +17,6 @@ data class Place(
     var review: String,
     var latitude: Float,
     var longitude: Float,
-    var address: String
+    var address: String,
+    val menuList: List<MenuGrade>
 )

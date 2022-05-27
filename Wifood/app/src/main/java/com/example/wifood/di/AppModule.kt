@@ -3,7 +3,6 @@ package com.example.wifood.di
 import android.app.Application
 import androidx.room.Room
 import com.example.wifood.data.local.dao.WifoodDatabase
-import com.example.wifood.data.local.util.Converters
 import com.example.wifood.data.remote.WifoodApi
 import com.example.wifood.data.remote.WifoodApiImpl
 import com.example.wifood.data.repository.WifoodRepositoryImpl
@@ -28,7 +27,8 @@ object AppModule {
             validateEmail = ValidateEmail(repository),
             validatePassword = ValidatePassword(repository),
             validateRepeatedPassword = ValidateRepeatedPassword(repository),
-            validateTerms = ValidateTerms(repository)
+            validateTerms = ValidateTerms(repository),
+            GetAll = GetAll(repository)
         )
     }
 

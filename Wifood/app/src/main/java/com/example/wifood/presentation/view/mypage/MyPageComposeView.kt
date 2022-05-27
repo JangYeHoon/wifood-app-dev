@@ -24,94 +24,71 @@ import com.example.wifood.presentation.util.Route
 fun MyPageComposeView(
     navController: NavController
 ) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        Alignment.Center
-                    ) {
-                        Text(text = "마이페이지")
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(40.dp)) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = ""
-                        )
-                    }
-                },
-                backgroundColor = Color.White,
-                actions = {
-                    Spacer(modifier = Modifier.width(70.dp))
-                }
-            )
-        }
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(95.dp)
+                .padding(24.dp, 20.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(95.dp)
-                    .padding(24.dp, 20.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Image(
-                        painterResource(id = R.drawable.profile),
-                        contentDescription = "",
-                        Modifier.size(60.dp),
-                        contentScale = ContentScale.FillBounds
-                    )
+                Image(
+                    painterResource(id = R.drawable.profile),
+                    contentDescription = "",
+                    Modifier.size(60.dp),
+                    contentScale = ContentScale.FillBounds
+                )
 
-                    Column {
-                        Text(text = "닉네임")
-                        Text(text = "UserName@wifood.com")
-                    }
-                }
-
-                IconButton(
-                    onClick = { navController.navigate(Route.EditProfile.route) },
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .size(20.dp, 25.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowForward,
-                        contentDescription = ""
-                    )
+                Column {
+                    Text(text = "닉네임")
+                    Text(text = "UserName@wifood.com")
                 }
             }
 
-            Divider(color = Color.Gray, modifier = Modifier.height(1.dp))
-
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            IconButton(
+                onClick = { navController.navigate(Route.EditProfile.route) },
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(20.dp, 25.dp)
             ) {
-                items(listOf("내 정보 수정", "앱정보", "로그아웃")) {
-                    // TODO: settings, mypage view에서 동일하게 쓰임, 공통부분 함수로 빼기
-                    Box(
-                        modifier = Modifier.fillMaxWidth().height(45.dp).padding(24.dp, 0.dp)
-                    ) {
-                        Text(text = it, modifier = Modifier.align(Alignment.CenterStart))
-                        if (it != "로그아웃") {
-                            IconButton(
-                                onClick = { /*TODO*/ },
-                                modifier = Modifier.align(Alignment.CenterEnd).size(20.dp, 25.dp)
-                            ) {
-                                Icon(
-                                    Icons.Filled.ArrowForward,
-                                    contentDescription = ""
-                                )
-                            }
+                Icon(
+                    Icons.Filled.ArrowForward,
+                    contentDescription = ""
+                )
+            }
+        }
+
+        Divider(color = Color.Gray, modifier = Modifier.height(1.dp))
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            items(listOf("내 정보 수정", "앱정보", "로그아웃")) {
+                // TODO: settings, mypage view에서 동일하게 쓰임, 공통부분 함수로 빼기
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(45.dp)
+                        .padding(24.dp, 0.dp)
+                ) {
+                    Text(text = it, modifier = Modifier.align(Alignment.CenterStart))
+                    if (it != "로그아웃") {
+                        IconButton(
+                            onClick = { /*TODO*/ },
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .size(20.dp, 25.dp)
+                        ) {
+                            Icon(
+                                Icons.Filled.ArrowForward,
+                                contentDescription = ""
+                            )
                         }
                     }
                 }

@@ -18,7 +18,7 @@ import com.example.wifood.data.remote.dto.PlaceDto
     ]
 )
 data class GroupEntity(
-    @PrimaryKey val groupid: Int,
+    @PrimaryKey val groupId: Int,
     val parentUserId: String,
     val name: String,
     val description: String,

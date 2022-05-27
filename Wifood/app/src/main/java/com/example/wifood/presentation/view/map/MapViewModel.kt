@@ -1,20 +1,21 @@
 package com.example.wifood.presentation.view.map
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.data.remote.WifoodApi
+import com.example.wifood.domain.usecase.WifoodUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val api: WifoodApi
-): ViewModel() {
+    private val useCases: WifoodUseCases
+) : ViewModel() {
     private val _input = mutableStateOf("")
     val input: State<String> = _input
 
@@ -26,11 +27,6 @@ class MapViewModel @Inject constructor(
 
     private val _readOnly = mutableStateOf(false)
     val readOnly: State<Boolean> = _readOnly
-
-    init {
-        getGroupList()
-        getPlaceList()
-    }
 
     fun inputChanged(text: String) {
         _input.value = text
@@ -48,19 +44,10 @@ class MapViewModel @Inject constructor(
         )
     }
 
-    fun getGroupList() {
-        api.getGroupList().observeForever {
-            _state.value = state.value.copy(
-                groupList = it
-            )
-        }
-    }
+    fun getAll(userId: String) {
+        Log.d("TEST", "MapViewModel launched")
+        useCases.GetAll("kmh@naver.com").onEach {
 
-    fun getPlaceList() {
-        api.getPlaceList().observeForever {
-            _state.value = state.value.copy(
-                placeList = it
-            )
-        }
+        }.launchIn(viewModelScope)
     }
 }

@@ -10,6 +10,7 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
 import com.example.wifood.presentation.view.login.JoinView
+import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
 
@@ -20,13 +21,13 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Route.Login.route
+        startDestination = Route.Main.route
     ) {
+        composable(Route.Main.route) {
+            MainView(navController)
+        }
         composable(Route.Login.route) {
             LoginView(navController)
-        }
-        composable(Route.PlaceList.route) {
-            PlaceListComposeView(navController)
         }
         composable(Route.Map.route) {
             MapView(navController)
