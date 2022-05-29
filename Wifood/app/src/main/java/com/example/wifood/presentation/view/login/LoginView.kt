@@ -9,10 +9,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType.Companion.Email
@@ -115,9 +117,12 @@ fun LoginView(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun LoginContent(){
+
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+
     Scaffold(
     ){
         Column(
@@ -128,22 +133,24 @@ fun LoginContent(){
             LogoImage()
             Spacer(Modifier.height(50.dp))
             RoundedTextField(
-                text = "아이디",
+                text="", /*TODO*/
+                placeholder = "아이디",
                 isPassword = false,
-                onValueChange = {}
+                onValueChange = {/*TODO*/}
             )
             Spacer(Modifier.height(5.dp))
             RoundedTextField(
-                text = "비밀번호",
+                text="",/*TODO*/
+                placeholder = "비밀번호",
                 isPassword = true,
-                onValueChange = {}
+                onValueChange = {/*TODO*/}
             )
             Spacer(Modifier.height(10.dp))
             MainButton(
                 text="로그인",
                 width = 280,
                 height = 50,
-                onClick = {}
+                onClick = {/*TODO*/}
             )
             Spacer(Modifier.height(10.dp))
             Row() {
@@ -153,7 +160,7 @@ fun LoginContent(){
                     textSize = 12,
                     width = 150,
                     height = 30,
-                    onClick = {}
+                    onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(5.dp))
                 TransparentButton(
@@ -162,7 +169,7 @@ fun LoginContent(){
                     textSize = 12,
                     width = 80,
                     height = 30,
-                    onClick={}
+                    onClick={/*TODO*/}
                 )
             }
             Spacer(Modifier.height(40.dp))
@@ -184,17 +191,17 @@ fun LoginContent(){
             Row(){
                 SnsIconButton(
                     resourceId = R.drawable.ic_naver_login_icon,
-                    onClick = {}
+                    onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(20.dp))
                 SnsIconButton(
                     resourceId = R.drawable.ic_kakao_login_icon,
-                    onClick = {}
+                    onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(20.dp))
                 SnsIconButton(
                     resourceId = R.drawable.ic_google_login_icon,
-                    onClick = {}
+                    onClick = {/*TODO*/}
                 )
             }
         }

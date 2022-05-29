@@ -25,6 +25,7 @@ import com.example.wifood.view.ui.theme.Enable
 @Composable
 fun RoundedTextField(
     text: String,
+    placeholder:String,
     isPassword: Boolean = false,
     width:Int = 280,
     height:Int = 50,

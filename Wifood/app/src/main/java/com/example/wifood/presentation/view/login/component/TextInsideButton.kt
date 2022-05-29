@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.component
+package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -10,35 +10,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.Gray09Color
+import com.example.wifood.view.ui.theme.InsideButtonTextColor
 
 @Composable
-fun MainButton(
-    text:String,
-    width:Int = 280,
-    height:Int = 50,
-    onClick:() -> Unit
+fun TextInsideButton(
+    text:String = "인증번호 받기",
+    modifier:Modifier,
+    width:Int = 85,
+    height:Int = 30,
+    onClick:() -> Unit = {}
 ){
     TextButton(
-        shape = RoundedCornerShape(23.dp),
+        shape = RoundedCornerShape(12.dp),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MainColor
+            backgroundColor = Gray09Color
         ),
-        modifier = Modifier
+        modifier = modifier
             .width(width.dp)
             .height(height.dp)
     )
     {
         Text(
             text = text,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Bold
+            color = InsideButtonTextColor,
+            fontSize = 10.sp,
+            fontFamily = fontRoboto,
+            fontWeight = FontWeight.Normal
         )
     }
 }
