@@ -11,3 +11,11 @@ val Gray03 = Color(0xFF979797)
 val Star = Color(0xFFFFD56A)
 val White = Color.White
 val Gray09 = Color(0xFFF5F6F7)
+
+val RoundedTextFieldTextColor = Color(0xFF565656)
+val RoundedTextFieldFocusColor = Color(0xFFEA7434)
+val RoundedTextFieldUnFocusColor = Color(0xFFE4E4E4)
+val EnableColor = Color(0xFFCFCFCF)
+val Gray03Color = Color(0xFF979797)
+val Gray01Color = Color(0xFF565656)
+val DividerColor = Color(0xFFE4E4E4)

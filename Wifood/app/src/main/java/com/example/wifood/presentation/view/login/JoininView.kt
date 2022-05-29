@@ -28,14 +28,6 @@ fun JoinView(navController: NavController){
 
 }
 
-val fontPretendard = FontFamily(
-    Font(R.font.pbold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.pmedium, FontWeight.Medium, FontStyle.Normal),
-    Font(R.font.pregular, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.plight, FontWeight.Light, FontStyle.Normal),
-    Font(R.font.pthin, FontWeight.Thin, FontStyle.Normal),
-)
-
 @Preview(showBackground =  true)
 @Composable
 fun JoininContent(){

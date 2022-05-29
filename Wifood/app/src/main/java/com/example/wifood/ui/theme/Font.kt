@@ -1,0 +1,25 @@
+package com.example.wifood.ui.theme
+
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import com.example.wifood.R
+
+val fontPretendard = FontFamily(
+    Font(R.font.pbold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.pmedium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.pregular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.plight, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.pthin, FontWeight.Thin, FontStyle.Normal),
+)
+
+val fontRoboto = FontFamily(
+    Font(R.font.rbold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.rmedium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.rregular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.rlight, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.rthin, FontWeight.Thin, FontStyle.Normal),
+)
+
+val mainFont = fontPretendard
