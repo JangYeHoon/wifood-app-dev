@@ -1,6 +1,11 @@
 package com.example.wifood.domain.repository
 
-interface WifoodRepository {
+import androidx.lifecycle.LiveData
+import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.User
 
-    suspend fun getAll(userId: String)
+interface WifoodRepository {
+    fun getGroupList(user: User): LiveData<MutableList<Group>>
+
+    fun getUser(id: String): LiveData<User>
 }

@@ -10,8 +10,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.example.wifood.view.ui.theme.WifoodTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalPermissionsApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @AndroidEntryPoint

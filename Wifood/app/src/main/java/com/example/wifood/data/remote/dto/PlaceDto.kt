@@ -14,28 +14,28 @@ data class PlaceDto(
     var kindChk: Boolean = false,
     var imageNameList: ArrayList<String> = arrayListOf(),
     var review: String = "",
-    var latitude: Float = 0f,
-    var longitude: Float = 0f,
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0,
     var address: String = "",
-    val menuGradeDtoList: ArrayList<MenuGradeDto> = arrayListOf()
+    val menuList: List<MenuGradeDto> = arrayListOf()
 ) {
-//    fun toPlace(): Place {
-//        return Place(
-//            placeId = placeId,
-//            groupId = groupId,
-//            name = name,
-//            menu = menu,
-//            visited = visited,
-//            score = score,
-//            tasteChk = tasteChk,
-//            cleanChk = cleanChk,
-//            kindChk = kindChk,
-//            imageNameList = imageNameList,
-//            review = review,
-//            latitude = latitude,
-//            longitude = longitude,
-//            address = address,
-//            menuGradeList = menuGradeDtoList.map { it.toMenuGrade() }
-//        )
-//    }
+    fun toPlace(): Place {
+        return Place(
+            placeId = placeId,
+            groupId = groupId,
+            name = name,
+            menu = menu,
+            visited = visited,
+            score = score,
+            tasteChk = tasteChk,
+            cleanChk = cleanChk,
+            kindChk = kindChk,
+            imageNameList = imageNameList,
+            review = review,
+            latitude = latitude,
+            longitude = longitude,
+            address = address,
+            menuList = menuList.map { it.toMenuGrade() }
+        )
+    }
 }

@@ -28,7 +28,7 @@ object AppModule {
             validatePassword = ValidatePassword(repository),
             validateRepeatedPassword = ValidateRepeatedPassword(repository),
             validateTerms = ValidateTerms(repository),
-            GetAll = GetAll(repository)
+            GetUser = GetUser(repository)
         )
     }
 

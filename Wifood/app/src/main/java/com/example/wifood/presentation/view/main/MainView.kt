@@ -1,5 +1,11 @@
 package com.example.wifood.presentation.view.main
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,15 +20,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.PermissionChecker.checkPermission
+import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.wifood.presentation.util.NavItem
-import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.*
+import com.example.wifood.presentation.util.checkPermission
+import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.ListTopAppBar
@@ -32,7 +46,12 @@ import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.flow.collectLatest
 
+@ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
@@ -44,6 +63,26 @@ fun MainView(
     val scaffoldState = rememberScaffoldState()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val context = LocalContext.current
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    var locationPermissionGranted = false
+    val permissionState = rememberPermissionState(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    var lastKnownLocation: Location? = null
+
+    fun checkPermission(permission: String) {
+        if (context.checkPermission(permission)) {
+            locationPermissionGranted = true
+        } else {
+            context.findActivity().shouldShowRationale(permission)
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.init()
+        viewModel.toast.collectLatest { message ->
+            scaffoldState.snackbarHostState.showSnackbar(message)
+        }
+    }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -77,10 +116,20 @@ fun MainView(
                     if (isMapView) {
                         FloatingActionButton(
                             onClick = {
-//                        camera.position = CameraPosition.fromLatLngZoom(
-//                            LatLng(35.toDouble(), 128.toDouble()),
-//                            15f
-//                        )
+                                checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                                if (locationPermissionGranted) {
+                                    val locationResult = fusedLocationProviderClient.lastLocation
+                                    locationResult.addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            lastKnownLocation = task.result
+                                            if (lastKnownLocation != null) {
+                                                viewModel.onUiEvent(UiEvent.ShowSnackBar("${lastKnownLocation!!.latitude}"))
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
+                                }
                             },
                             backgroundColor = Color.White,
                             contentColor = Main
@@ -124,7 +173,7 @@ fun MainView(
                             unselectedContentColor = Color.Black,
                             onClick = {
                                 if (current != item.id) viewModel.onEvent(
-                                    MainEvent.itemClicked(
+                                    MainEvent.ItemClicked(
                                         item.id
                                     )
                                 )
@@ -166,3 +215,4 @@ fun MainView(
         }
     }
 }
+

@@ -1,6 +1,8 @@
 package com.example.wifood.presentation.view.map
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -40,8 +42,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wifood.presentation.util.NavItem
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.main.MainEvent
+import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdate
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
@@ -52,13 +59,13 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun MapView(
     navController: NavController,
-    viewModel: MapViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
     val interactionSource = remember { MutableInteractionSource() }
     val interactions = remember { mutableStateListOf<Interaction>() }
     val scope = rememberCoroutineScope()
-    val state = viewModel.state.value
+    val state = viewModel.state
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     var selectedMenu by remember { mutableStateOf(0) }
@@ -75,8 +82,6 @@ fun MapView(
     }
 
     LaunchedEffect(true) {
-        Log.d("TEST", "MapView launched")
-        viewModel.getAll("")
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
         }
@@ -89,14 +94,14 @@ fun MapView(
             uiSettings = uiSettings,
             cameraPositionState = camera
         ) {
-//                state.placeList.forEach { place ->
-//                    Marker(
-//                        position = LatLng(place.latitude, place.longitude),
-//                        title = place.name,
-//                        visible = state.selected == 0 || place.groupId == state.selected,
-//                        snippet = place.memo
-//                    )
-//                }
+            state.places.forEach { place ->
+                Marker(
+                    position = LatLng(place.latitude, place.longitude),
+                    title = place.name,
+                    visible = state.selectedGroupId == 0 || place.groupId == state.selectedGroupId,
+                    snippet = place.review
+                )
+            }
         }
     }
     LazyRow(
@@ -114,7 +119,7 @@ fun MapView(
                         selected = 0 == selectedMenu,
                         onClick = {
                             selectedMenu = 0
-                            viewModel.selectedGroupId(selectedMenu)
+                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
 //                                val location = LatLng(grouplatitude, place.longitude)
 //                                builder.include(location)
 //                                camera.move(CameraUpdateFactory.newLatLngBounds(builder.build(), 64))
@@ -123,7 +128,7 @@ fun MapView(
                     .height(32.dp),
                 onClick = {
                     selectedMenu = 0
-                    viewModel.selectedGroupId(selectedMenu)
+                    viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                 },
                 shape = RoundedCornerShape(15.dp),
                 border = BorderStroke(1.dp, Main),
@@ -143,7 +148,7 @@ fun MapView(
                 )
             }
         }
-        items(state.groupList) { group ->
+        items(state.groups) { group ->
             TextButton(
                 modifier = Modifier
                     .padding(5.dp)
@@ -151,7 +156,7 @@ fun MapView(
                         selected = group.groupId == selectedMenu,
                         onClick = {
                             selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
-                            viewModel.selectedGroupId(selectedMenu)
+                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
 //                                val location = LatLng(grouplatitude, place.longitude)
 //                                builder.include(location)
 //                                camera.move(CameraUpdateFactory.newLatLngBounds(builder.build(), 64))
@@ -160,7 +165,7 @@ fun MapView(
                     .height(32.dp),
                 onClick = {
                     selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
-                    viewModel.selectedGroupId(selectedMenu)
+                    viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                 },
                 shape = RoundedCornerShape(15.dp),
                 border = BorderStroke(1.dp, Main),

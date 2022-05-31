@@ -5,11 +5,15 @@ import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.presentation.util.NavItem
+import com.google.maps.android.compose.MapProperties
 
 data class MainState(
     val user: User? = null,
-    val groups: MutableMap<Int, List<Group>> = mutableMapOf(),
-    val places: MutableMap<Int, List<Place>> = mutableMapOf(),
-    val menus: MutableMap<Int, List<MenuGrade>> = mutableMapOf(),
-    val selected: String = NavItem.Map.id
+    val groups: List<Group> = emptyList(),
+    val places: List<Place> = emptyList(),
+    val menus: List<MenuGrade> = emptyList(),
+    val selected: String = NavItem.Map.id,
+    val isLoading: Boolean = false,
+    val properties: MapProperties = MapProperties(),
+    val selectedGroupId: Int = 0
 )

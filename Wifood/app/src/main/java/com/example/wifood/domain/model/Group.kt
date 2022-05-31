@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 data class Group(
     val groupId: Int,
-    val userId: Int,
+    val userId: String,
     val name: String,
     val description: String,
     val color: Int,

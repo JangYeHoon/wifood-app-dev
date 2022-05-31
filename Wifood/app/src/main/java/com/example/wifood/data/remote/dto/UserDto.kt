@@ -1,5 +1,7 @@
 package com.example.wifood.data.remote.dto
 
+import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 
 data class UserDto(
@@ -10,19 +12,21 @@ data class UserDto(
     val address: String = "",
     val birthday: String = "",
     val gender: Int = -1,
-    val groupList: ArrayList<GroupDto> = arrayListOf(),
-    val taste: TasteDto? = null
+    var groupList: List<GroupDto> = emptyList(),
+    var taste: TasteDto? = null
 ) {
-//    fun toUser(): User {
-//        return User(
-//            userId = userId,
-//            pwd = pwd,
-//            nickname = nickname,
-//            phoneNumber = phoneNumber,
-//            address = address,
-//            birthday = birthday,
-//            gender = gender
-//        )
-//    }
+    fun toUser(): User {
+        return User(
+            userId = userId,
+            pwd = pwd,
+            nickname = nickname,
+            phoneNumber = phoneNumber,
+            address = address,
+            birthday = birthday,
+            gender = gender,
+            groupList = groupList.map { it.toGroup() },
+            taste = taste!!.toTaste()
+        )
+    }
 }
 

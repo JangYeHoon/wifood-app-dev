@@ -13,7 +13,9 @@ import com.example.wifood.presentation.view.login.JoinView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
+@ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable

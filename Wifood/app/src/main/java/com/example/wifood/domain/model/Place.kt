@@ -15,8 +15,8 @@ data class Place(
     var kindChk: Boolean,
     var imageNameList: List<String>,
     var review: String,
-    var latitude: Float,
-    var longitude: Float,
+    var latitude: Double,
+    var longitude: Double,
     var address: String,
     val menuList: List<MenuGrade>
 )

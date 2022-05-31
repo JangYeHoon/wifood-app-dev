@@ -5,5 +5,5 @@ data class WifoodUseCases(
     val validatePassword: ValidatePassword,
     val validateRepeatedPassword: ValidateRepeatedPassword,
     val validateTerms: ValidateTerms,
-    val GetAll: GetAll
+    val GetUser: GetUser
 )

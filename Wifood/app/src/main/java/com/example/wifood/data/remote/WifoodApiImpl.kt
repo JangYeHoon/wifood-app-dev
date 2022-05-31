@@ -8,7 +8,9 @@ import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.data.remote.dto.TasteDto
 import com.example.wifood.data.remote.dto.UserDto
 import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.Place
+import com.example.wifood.domain.model.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,15 +21,16 @@ import javax.inject.Inject
 class WifoodApiImpl @Inject constructor(
     private val db: DatabaseReference
 ) : WifoodApi {
-    override fun getGroupList(): LiveData<MutableList<GroupDto>> {
-        val groupList = MutableLiveData<MutableList<GroupDto>>()
-        db.child("1").addValueEventListener(object : ValueEventListener {
+    override fun getGroupList(user: User): LiveData<MutableList<Group>> {
+        val groupList = MutableLiveData<MutableList<Group>>()
+        val id = user.userId.replace('.','_')
+        db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list: MutableList<GroupDto> = mutableListOf()
+                val list: MutableList<Group> = mutableListOf()
                 if (snapshot.exists()) {
-                    for (foodGroupSnapshot in snapshot.children) {
-                        val group = foodGroupSnapshot.getValue(GroupDto::class.java)
-                        list.add(group!!)
+                    for (groupId in snapshot.child("Group").children) {
+                        val group = groupId.getValue(GroupDto::class.java)!!.toGroup()
+                        list.add(group)
                         groupList.value = list
                     }
                 } else groupList.postValue(null)
@@ -61,30 +64,35 @@ class WifoodApiImpl @Inject constructor(
         return placeList
     }
 
-    override suspend fun getAll(userId: String) {
-        Log.d("TEST", "API launched")
-        db.child(userId).addValueEventListener(object : ValueEventListener {
+    override fun getUser(id: String): LiveData<User> {
+        Log.d("TEST", "API Launched")
+        val user = MutableLiveData<User>()
+        db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val placeList = mutableListOf<PlaceDto>()
-                Log.d("TEST", "Firebase connected")
-                val user = snapshot.getValue(UserDto::class.java)
-                val groupList =
-                    snapshot.child("Group").children.map {
-                        it.getValue(GroupDto::class.java)
-                        it.child("Place").children.map { place ->
-                            place.getValue(PlaceDto::class.java)
+                if (snapshot.exists()) {
+                    val userDto = snapshot.getValue(UserDto::class.java)
+                    val taste = snapshot.child("Taste").getValue(TasteDto::class.java)
+                    userDto!!.groupList =
+                        snapshot.child("Group").children.map {
+                            it.getValue(GroupDto::class.java)!!
                         }
+                    userDto.taste = snapshot.child("Taste").getValue(TasteDto::class.java)
+                    for (group in userDto.groupList) {
+                        group.placeList =
+                            snapshot.child("Group/${group.groupId}/Place").children.map {
+                                it.getValue(PlaceDto::class.java)!!
+                            }
                     }
-                val taste = snapshot.child("Taste").getValue(TasteDto::class.java)
-                Log.d("TEST", user.toString())
-                Log.d("TEST", groupList.toString())
-                Log.d("TEST", taste.toString())
-                Log.d("TEST", placeList.toString())
+                    user.postValue(
+                        userDto.toUser()
+                    )
+                } else user.postValue(null)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.d("TEST", "Firebase cancelled")
             }
         })
+        return user
     }
 }
