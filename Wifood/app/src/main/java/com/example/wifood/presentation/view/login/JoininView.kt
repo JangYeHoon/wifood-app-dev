@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.component.navigationBackButton
 import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.ui.theme.fontRoboto
@@ -51,35 +52,18 @@ fun JoininContent() {
     var is_agreement:Boolean = false
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        Alignment.Center
-                    ) {
-                        Text(text = "회원가입")
-                    }
-                },
-                navigationIcon = {
-                    navigationBackButton(
-                        onClick = { /*TODO*/ }
-                    )
-                },
-                backgroundColor = Color.White,
-                actions = {
-                    Spacer(modifier = Modifier.width(70.dp))
-                }
+            YOGOTopAppBar(
+                text="회원가입",
+                onBackButtonClicked={/*TODO*/}
             )
         }
-
     ) {
         Column(
             Modifier
-                .padding(24.dp, 16.dp)
+                .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState)
         ) {
-            Spacer(Modifier.height(15.dp))
-
+            Spacer(Modifier.height(31.dp))
             // set id
             TitleText("아이디")
             Spacer(Modifier.height(5.dp))
@@ -181,7 +165,6 @@ fun JoininContent() {
                             text = "",/*TODO*/
                             placeholder = "YYMMDD",
                             onValueChange = {/*TODO*/ },
-                            width = 160
                         )
                     }
                     Column() {
@@ -259,7 +242,6 @@ fun JoininContent() {
             Spacer(Modifier.height(17.dp))
             MainButton(
                 text = "회원가입하기",
-                width = 312,
                 onClick = {/*TODO*/ }
             )
         }

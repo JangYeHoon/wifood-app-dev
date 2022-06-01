@@ -62,8 +62,6 @@ fun WorkThroughView3() {
             Spacer(Modifier.height(99.dp))
             MainButton(
                 text="시작하기",
-                width = 312,
-                height = 46,
                 onClick = {/*TODO*/}
             )
         }

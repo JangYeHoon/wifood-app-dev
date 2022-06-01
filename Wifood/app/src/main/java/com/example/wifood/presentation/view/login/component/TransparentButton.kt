@@ -14,16 +14,18 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.Gray03Color
 
 @Composable
 fun TransparentButton(
     text:String,
     textColor:Color,
-    textSize:Int,
+    textSize:Int = 12,
     width:Int,
-    height:Int,
+    height:Int = 30,
     onClick:()->Unit,
-    textDecoration:TextDecoration? = null
+    textDecoration:TextDecoration? = null,
+    customModifier:Modifier?=null,
 ){
     TextButton(
         shape = RoundedCornerShape(23.dp),

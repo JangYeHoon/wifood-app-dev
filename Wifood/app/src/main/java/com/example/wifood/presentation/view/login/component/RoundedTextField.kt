@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +28,6 @@ fun RoundedTextField(
     text: String,
     placeholder:String,
     isPassword: Boolean = false,
-    width:Int = 280,
     height:Int = 50,
     onValueChange: (String) -> Unit,
     ){
@@ -35,8 +35,8 @@ fun RoundedTextField(
         value = "",
         onValueChange = onValueChange,
         modifier = Modifier
+            .fillMaxWidth()
             .height(height.dp)
-            .width(width.dp)
         ,
         maxLines = 1,
         placeholder = {

@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +19,6 @@ import com.example.wifood.view.ui.theme.MainColor
 @Composable
 fun MainButton(
     text:String,
-    width:Int = 280,
-    height:Int = 50,
     onClick:() -> Unit
 ){
     TextButton(
@@ -28,9 +27,8 @@ fun MainButton(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MainColor
         ),
-        modifier = Modifier
-            .width(width.dp)
-            .height(height.dp)
+        modifier = Modifier.fillMaxWidth()
+            .height(46.dp)
     )
     {
         Text(

@@ -24,7 +24,6 @@ fun InputTextField(
     text:String = "",
     placeholder:String= "아이디",
     onValueChange:(String)->Unit = {},
-    width:Int = 312,
     height:Int = 50,
     isPassword:Boolean = false,
 ){
@@ -38,7 +37,7 @@ fun InputTextField(
             )
         },
         singleLine = true,
-        modifier = Modifier.width(width.dp).height(height.dp),
+        modifier = Modifier.fillMaxWidth().height(height.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = Gray01Color,
             backgroundColor = Color.White,

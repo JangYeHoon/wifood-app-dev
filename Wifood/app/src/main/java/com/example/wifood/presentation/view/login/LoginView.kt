@@ -126,7 +126,7 @@ fun LoginContent(){
     Scaffold(
     ){
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.padding(horizontal=24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -150,8 +150,6 @@ fun LoginContent(){
             Spacer(Modifier.height(10.dp))
             MainButton(
                 text="로그인",
-                width = 280,
-                height = 50,
                 onClick = {/*TODO*/}
             )
             Spacer(Modifier.height(10.dp))
@@ -159,18 +157,14 @@ fun LoginContent(){
                 TransparentButton(
                     text="아이디/비밀번호찾기",
                     textColor = Gray03Color,
-                    textSize = 12,
                     width = 150,
-                    height = 30,
                     onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(5.dp))
                 TransparentButton(
                     text="회원가입",
                     textColor = Gray01Color,
-                    textSize = 12,
                     width = 80,
-                    height = 30,
                     onClick={/*TODO*/}
                 )
             }
