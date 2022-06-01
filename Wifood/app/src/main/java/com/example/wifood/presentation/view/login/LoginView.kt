@@ -130,7 +130,10 @@ fun LoginContent(){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            LogoImage()
+            LogoImage(
+                width = 86,
+                height = 28
+            )
             Spacer(Modifier.height(50.dp))
             RoundedTextField(
                 text="", /*TODO*/

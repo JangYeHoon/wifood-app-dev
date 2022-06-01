@@ -22,4 +22,9 @@ val fontRoboto = FontFamily(
     Font(R.font.rthin, FontWeight.Thin, FontStyle.Normal),
 )
 
+val fontTmoney = FontFamily(
+    Font(R.font.tmoney_bold, FontWeight.Bold,FontStyle.Normal),
+    Font(R.font.tmoney_normal, FontWeight.Normal,FontStyle.Normal)
+)
+
 val mainFont = fontPretendard

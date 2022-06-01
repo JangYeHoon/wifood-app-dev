@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
@@ -21,7 +22,8 @@ fun TransparentButton(
     textSize:Int,
     width:Int,
     height:Int,
-    onClick:()->Unit
+    onClick:()->Unit,
+    textDecoration:TextDecoration? = null
 ){
     TextButton(
         shape = RoundedCornerShape(23.dp),
@@ -40,6 +42,7 @@ fun TransparentButton(
             fontSize = textSize.sp,
             fontFamily = mainFont,
             fontWeight = FontWeight.Normal,
+            textDecoration = textDecoration
         )
     }
 }

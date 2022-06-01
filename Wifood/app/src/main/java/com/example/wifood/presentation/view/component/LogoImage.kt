@@ -12,17 +12,17 @@ import androidx.compose.ui.unit.dp
 import com.example.wifood.R
 
 @Composable
-fun LogoImage(){
+fun LogoImage(
+    width:Int = 86,
+    height:Int = 28
+){
     val logoResource = R.drawable.ic_login_logo
-    val logoWidth = 86.dp
-    val logoHeight = 28.dp
-
     Image(
         painter = painterResource(logoResource),
         contentDescription = "YOGO Login Logo",
         modifier = Modifier
-            .height(logoHeight)
-            .width(logoWidth),
+            .height(height.dp)
+            .width(width.dp),
     )
 }
 
