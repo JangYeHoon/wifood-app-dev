@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.MainColor
 
 @Preview(showBackground = true)
 @Composable
-fun ListSelectionButton(
+fun ListSelectionButtonWithIcon(
     buttonText:String = "그룹 선택",
     onClick:()->Unit = {}
 ){
@@ -68,5 +69,32 @@ fun ListSelectionButton(
             tint = Color.Unspecified
         )
 
+    }
+}
+@Composable
+fun ListSelectionButtonWithoutIcon(
+    buttonText:String = "그룹 선택",
+    onClick:()->Unit = {}
+){
+    TextButton(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.Transparent
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(35.dp),
+
+        )
+    {
+
+        Text(
+            text = buttonText,
+            color = EnableColor,
+            fontSize = 15.sp,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.weight(1f))
     }
 }

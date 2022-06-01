@@ -192,6 +192,7 @@ fun JoininContent() {
                     .fillMaxWidth()
                     .height(2.dp),
             )
+            Spacer(Modifier.height(30.dp))
             TitleText("약관동의")
             Spacer(Modifier.height(16.dp))
             Row()

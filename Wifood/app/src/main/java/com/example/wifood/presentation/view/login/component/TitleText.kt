@@ -17,6 +17,6 @@ fun TitleText(
         color = TitleTextColor,
         fontSize = 15.sp,
         fontFamily = mainFont,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
     )
 }
