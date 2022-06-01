@@ -153,7 +153,7 @@ fun JoininContent() {
             Spacer(Modifier.height(20.dp))
 
             // Set address
-            TitleText("본인인증")
+            TitleText("주소")
             Spacer(Modifier.height(5.dp))
             //ExplainText("")
             Spacer(Modifier.height(5.dp))

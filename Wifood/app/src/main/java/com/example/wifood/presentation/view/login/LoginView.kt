@@ -116,7 +116,7 @@ fun LoginView(
         }
     }
 }
-
+//@Preview(showBackground=true)
 @Composable
 fun LoginContent(){
 
@@ -135,7 +135,6 @@ fun LoginContent(){
             RoundedTextField(
                 text="", /*TODO*/
                 placeholder = "아이디",
-                isPassword = false,
                 onValueChange = {/*TODO*/}
             )
             Spacer(Modifier.height(5.dp))
