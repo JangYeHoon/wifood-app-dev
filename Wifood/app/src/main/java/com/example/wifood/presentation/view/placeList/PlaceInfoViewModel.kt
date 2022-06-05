@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -22,37 +23,39 @@ class PlaceInfoViewModel @Inject constructor(
     var state by mutableStateOf(PlaceInfoState())
 
     init {
-        // 전 화면(그룹리스트)에서 이 화면으로 클릭된 place가 어떤 place인지 알만한 정보를 넘겨줘야 함
-        // 그 때 넘겨준 정보가 savedStateHandle에 담겨있음
-        // 어떤 데이터 형태로 넘겨줄지는 결정해야 함
-        // 아래는 예시
+        // PlaceList에서 받은 place 정보
         savedStateHandle.get<Place>("place")?.let { place ->
             state = state.copy(placeInfo = place)
+        }
+
+        // PlaceList에서 받은 groupNmae 정보
+        savedStateHandle.get<String>("groupName")?.let { groupName ->
+            state = state.copy(groupName = groupName)
+        }
+
+        Log.d(
+            "PlaceInfoViewModel",
+            "get place info from PlaceList : " + state.placeInfo.toString() + ", " + state.groupName
+        )
+
+        // Firebase storage에서 해당 place에 저장된 이미지 리스트 받아와서 저장
+        state.placeInfo?.let {
+            useCases.GetPlaceImageList(0, 0).observeForever { uriList ->
+                state = state.copy(imageUri = uriList)
+                Log.d(
+                    "PlaceInfoViewModel",
+                    "get image uri list from firebase : " + state.imageUri.toString()
+                )
+            }
         }
     }
 
     // event
     fun onEvent(event: PlaceInfoEvent) {
         when (event) {
-            is PlaceInfoEvent.SomeEvent -> {
-
-            }
-            is PlaceInfoEvent.OtherEvent -> {
-
+            is PlaceInfoEvent.PlaceDeleteEvent -> {
+                useCases.DeletePlace(state.placeInfo!!.groupId, state.placeInfo!!.placeId)
             }
         }
     }
-
-    // Ui 관련된 이벤트가 필요하면 여기로 따로 빼야 함
-    // 없을 수도 있어서 없으면 삭제
-    // ex) Toast 메세지 띄우기, Snackbar 띄우기, 지도 다시 그리기 등
-    fun onUiEvent(event: UiEvent) {
-
-    }
-}
-
-// Ui 관련된 이벤트가 필요하면 여기로 따로 빼야 함
-// 없을 수도 있어서 없으면 삭제
-sealed class UiEvent {
-    data class ShowSnackBar(val message: String) : UiEvent()
 }

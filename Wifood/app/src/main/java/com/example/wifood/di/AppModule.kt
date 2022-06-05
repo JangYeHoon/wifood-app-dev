@@ -10,6 +10,7 @@ import com.example.wifood.domain.repository.WifoodRepository
 import com.example.wifood.domain.usecase.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.StorageReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +29,9 @@ object AppModule {
             validatePassword = ValidatePassword(repository),
             validateRepeatedPassword = ValidateRepeatedPassword(repository),
             validateTerms = ValidateTerms(repository),
-            GetUser = GetUser(repository)
+            GetUser = GetUser(repository),
+            DeletePlace = DeletePlace(repository),
+            GetPlaceImageList = GetPlaceImageList(repository)
         )
     }
 

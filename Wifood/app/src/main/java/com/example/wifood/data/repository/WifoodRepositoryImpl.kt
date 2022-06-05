@@ -1,5 +1,6 @@
 package com.example.wifood.data.repository
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.wifood.data.local.dao.WifoodDao
@@ -15,6 +16,14 @@ class WifoodRepositoryImpl(
 ) : WifoodRepository {
     override fun getGroupList(user: User): LiveData<MutableList<Group>> {
         return api.getGroupList(user)
+    }
+
+    override fun getPlaceImageList(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
+        return api.getPlaceImageList(groupId, placeId)
+    }
+
+    override fun deletePlace(groupId: Int, placeId: Int) {
+        api.deletePlace(groupId, placeId)
     }
 
     override fun getUser(id: String): LiveData<User> {

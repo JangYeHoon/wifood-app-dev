@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import kotlinx.coroutines.launch
@@ -113,7 +114,11 @@ fun PlaceListComposeView(
                             enter = enterExpand + enterFadeIn,
                             exit = exitCollapse + exitFadeOut
                         ) {
-                            Text(text = "짜잔!")
+                            IconButton(onClick = {
+                                navController.navigate(Route.PlaceInfo.route)
+                            }) {
+                                Icon(Icons.Filled.ArrowForward, "place")
+                            }
                         }
                     }
                 }

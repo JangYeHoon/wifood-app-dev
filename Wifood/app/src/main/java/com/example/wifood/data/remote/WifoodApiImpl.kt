@@ -1,5 +1,6 @@
 package com.example.wifood.data.remote
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,14 +9,16 @@ import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.data.remote.dto.TasteDto
 import com.example.wifood.data.remote.dto.UserDto
 import com.example.wifood.domain.model.Group
-import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.flow.Flow
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
+import com.google.firebase.storage.StorageReference
 import javax.inject.Inject
 
 class WifoodApiImpl @Inject constructor(
@@ -23,7 +26,7 @@ class WifoodApiImpl @Inject constructor(
 ) : WifoodApi {
     override fun getGroupList(user: User): LiveData<MutableList<Group>> {
         val groupList = MutableLiveData<MutableList<Group>>()
-        val id = user.userId.replace('.','_')
+        val id = user.userId.replace('.', '_')
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: MutableList<Group> = mutableListOf()
@@ -62,6 +65,30 @@ class WifoodApiImpl @Inject constructor(
             }
         })
         return placeList
+    }
+
+    override fun getPlaceImageList(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
+        // TODO "싱글톤에 지정해서 storage를 인자로 받도록 변경 필요"
+        val storage = FirebaseStorage.getInstance().reference
+        val imageUrlList = MutableLiveData<MutableList<Uri>>()
+        storage.child("19/").listAll()
+            .addOnSuccessListener {
+                val list: MutableList<Uri> = mutableListOf()
+                for (item in it.items) {
+                    item.downloadUrl.addOnCompleteListener { url ->
+                        if (url.isSuccessful) {
+                            list.add(url.result)
+                            imageUrlList.value = list
+                        }
+                    }
+                }
+            }
+        return imageUrlList
+    }
+
+    override fun deletePlace(groupId: Int, placeId: Int) {
+        // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
+        db.child("kmh@naver.com/$groupId/$placeId").removeValue()
     }
 
     override fun getUser(id: String): LiveData<User> {
