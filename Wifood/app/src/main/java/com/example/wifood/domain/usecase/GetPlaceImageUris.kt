@@ -7,18 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wifood.domain.repository.WifoodRepository
 import javax.inject.Inject
 
-class GetPlaceImageList @Inject constructor(
+class GetPlaceImageUris @Inject constructor(
     private val repository: WifoodRepository
 ) {
     operator fun invoke(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
-        val imageList = MutableLiveData<MutableList<Uri>>()
-        repository.getPlaceImageList(groupId, placeId).observeForever {
-            imageList.value = it
-            Log.d(
-                "usecase",
-                "get image url list from Firebase Storage : ${imageList.value.toString()}"
-            )
+        val imageUris = MutableLiveData<MutableList<Uri>>()
+        repository.getPlaceImageUris(groupId, placeId).observeForever {
+            imageUris.value = it
         }
-        return imageList
+        return imageUris
     }
 }

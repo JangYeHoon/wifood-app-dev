@@ -67,28 +67,35 @@ class WifoodApiImpl @Inject constructor(
         return placeList
     }
 
-    override fun getPlaceImageList(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
+    override fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
         // TODO "싱글톤에 지정해서 storage를 인자로 받도록 변경 필요"
         val storage = FirebaseStorage.getInstance().reference
-        val imageUrlList = MutableLiveData<MutableList<Uri>>()
+        val imageUrisForObserve = MutableLiveData<MutableList<Uri>>()
         storage.child("19/").listAll()
             .addOnSuccessListener {
-                val list: MutableList<Uri> = mutableListOf()
+                val uris: MutableList<Uri> = mutableListOf()
                 for (item in it.items) {
                     item.downloadUrl.addOnCompleteListener { url ->
                         if (url.isSuccessful) {
-                            list.add(url.result)
-                            imageUrlList.value = list
+                            uris.add(url.result)
+                            imageUrisForObserve.value = uris
                         }
+                        Log.d(
+                            "Firebase",
+                            "get image url list from Firebase Storage : ${imageUrisForObserve.value.toString()}"
+                        )
                     }
                 }
             }
-        return imageUrlList
+        return imageUrisForObserve
     }
 
     override fun deletePlace(groupId: Int, placeId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
+        Log.d("Firebase", "delete place : groupId-$groupId, placeId-$placeId")
         db.child("kmh@naver.com/$groupId/$placeId").removeValue()
+            .addOnSuccessListener { Log.d("Firebase", "Success place delete") }
+            .addOnFailureListener { Log.d("Firebase", "Fail place delete : $it") }
     }
 
     override fun getUser(id: String): LiveData<User> {

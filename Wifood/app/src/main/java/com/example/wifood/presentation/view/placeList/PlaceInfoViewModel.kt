@@ -25,7 +25,7 @@ class PlaceInfoViewModel @Inject constructor(
     init {
         // PlaceList에서 받은 place 정보
         savedStateHandle.get<Place>("place")?.let { place ->
-            state = state.copy(placeInfo = place)
+            state = state.copy(place = place)
         }
 
         // PlaceList에서 받은 groupNmae 정보
@@ -35,16 +35,16 @@ class PlaceInfoViewModel @Inject constructor(
 
         Log.d(
             "PlaceInfoViewModel",
-            "get place info from PlaceList : " + state.placeInfo.toString() + ", " + state.groupName
+            "get place info from PlaceList : " + state.place.toString() + ", " + state.groupName
         )
 
         // Firebase storage에서 해당 place에 저장된 이미지 리스트 받아와서 저장
-        state.placeInfo?.let {
-            useCases.GetPlaceImageList(0, 0).observeForever { uriList ->
-                state = state.copy(imageUri = uriList)
+        state.place?.let {
+            useCases.GetPlaceImageUris(0, 0).observeForever { uris ->
+                state = state.copy(placeImageUris = uris)
                 Log.d(
                     "PlaceInfoViewModel",
-                    "get image uri list from firebase : " + state.imageUri.toString()
+                    "get image uri list from firebase : " + state.placeImageUris.toString()
                 )
             }
         }
@@ -54,7 +54,7 @@ class PlaceInfoViewModel @Inject constructor(
     fun onEvent(event: PlaceInfoEvent) {
         when (event) {
             is PlaceInfoEvent.PlaceDeleteEvent -> {
-                useCases.DeletePlace(state.placeInfo!!.groupId, state.placeInfo!!.placeId)
+                useCases.DeletePlace(state.place!!.groupId, state.place!!.placeId)
             }
         }
     }
