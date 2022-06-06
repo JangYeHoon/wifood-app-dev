@@ -46,6 +46,14 @@ class WifoodApiImpl @Inject constructor(
         return groupList
     }
 
+    override fun deleteGroup(groupId: Int) {
+        // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
+        Log.d("Firebase", "delete group : groupId-$groupId")
+        db.child("kmh@naver.com/$groupId").removeValue()
+            .addOnSuccessListener { Log.d("Firebase", "Success group delete") }
+            .addOnFailureListener { Log.d("Firebase", "Fail group delete : $it") }
+    }
+
     override fun getPlaceList(): LiveData<MutableList<Place>> {
         val placeList = MutableLiveData<MutableList<Place>>()
         db.child("Place").addValueEventListener(object : ValueEventListener {

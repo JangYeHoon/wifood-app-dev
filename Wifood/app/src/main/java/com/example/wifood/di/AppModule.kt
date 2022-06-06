@@ -31,7 +31,8 @@ object AppModule {
             validateTerms = ValidateTerms(repository),
             GetUser = GetUser(repository),
             DeletePlace = DeletePlace(repository),
-            GetPlaceImageUris = GetPlaceImageUris(repository)
+            GetPlaceImageUris = GetPlaceImageUris(repository),
+            DeleteGroup = DeleteGroup(repository)
         )
     }
 

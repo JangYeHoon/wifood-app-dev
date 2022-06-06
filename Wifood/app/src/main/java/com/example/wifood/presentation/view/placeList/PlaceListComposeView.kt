@@ -25,6 +25,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
+import com.example.wifood.presentation.view.main.MainViewModel
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -33,9 +34,10 @@ import kotlinx.coroutines.launch
 fun PlaceListComposeView(
     modalBottomSheetState: ModalBottomSheetState,
     navController: NavController,
-//    viewModel: PlaceListViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
+    val state = viewModel.state
 
     var visible by remember {
         mutableStateOf(false)
@@ -77,7 +79,7 @@ fun PlaceListComposeView(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(listOf("전체", "위시리스트", "나만의 맛집")) {
+            items(state.groups) { group ->
                 Card(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -85,7 +87,7 @@ fun PlaceListComposeView(
                 ) {
                     Column {
                         Row() {
-                            Text(text = it)
+                            Text(text = group.name)
                             IconButton(onClick = {
                                 visible = !visible
                             }) {

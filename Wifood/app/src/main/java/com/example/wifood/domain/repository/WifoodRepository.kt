@@ -8,6 +8,8 @@ import com.example.wifood.domain.model.User
 interface WifoodRepository {
     fun getGroupList(user: User): LiveData<MutableList<Group>>
 
+    fun deleteGroup(groupId: Int)
+
     fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>>
 
     fun deletePlace(groupId: Int, placeId: Int)

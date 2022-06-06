@@ -36,6 +36,9 @@ class MainViewModel @Inject constructor(
             is MainEvent.GroupClicked -> {
                 state = state.copy(selectedGroupId = event.selectedGroupId)
             }
+            is MainEvent.DeleteGroupEvent -> {
+                useCases.DeleteGroup(event.groupId)
+            }
         }
     }
 
@@ -60,6 +63,7 @@ class MainViewModel @Inject constructor(
                 }
             }
             state = state.copy(places = placeList)
+            Log.d("MainViewModel", "get user from firebase : ${state.user.toString()}")
         }
     }
 }

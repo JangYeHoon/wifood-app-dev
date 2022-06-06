@@ -7,5 +7,6 @@ data class WifoodUseCases(
     val validateTerms: ValidateTerms,
     val GetUser: GetUser,
     val DeletePlace: DeletePlace,
-    val GetPlaceImageUris: GetPlaceImageUris
+    val GetPlaceImageUris: GetPlaceImageUris,
+    val DeleteGroup: DeleteGroup
 )
