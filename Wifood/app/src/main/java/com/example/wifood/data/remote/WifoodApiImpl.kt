@@ -137,4 +137,13 @@ class WifoodApiImpl @Inject constructor(
         })
         return user
     }
+
+    override fun checkNickname(nickname: String): Boolean {
+        return true
+    }
+
+    override fun insertUser(user: User) {
+        db.push().setValue(user)
+        // 씨발 왜 안들어가  ㅡㅡ
+    }
 }

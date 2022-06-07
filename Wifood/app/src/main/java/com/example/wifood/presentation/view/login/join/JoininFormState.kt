@@ -21,4 +21,5 @@ data class JoininFormState(
     val birthdayError: String? = null,
     var terms: Boolean = false,
     val termsError: String? = null,
+    val isLoading: Boolean = false
 )

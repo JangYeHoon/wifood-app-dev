@@ -15,4 +15,8 @@ interface WifoodRepository {
     fun deletePlace(groupId: Int, placeId: Int)
 
     fun getUser(id: String): LiveData<User>
+
+    fun checkNickname(nickname: String): Boolean
+
+    fun insertUser(user: User)
 }

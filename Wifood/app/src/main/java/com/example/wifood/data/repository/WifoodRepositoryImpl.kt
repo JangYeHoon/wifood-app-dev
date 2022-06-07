@@ -34,4 +34,12 @@ class WifoodRepositoryImpl(
         Log.d("TEST", "Repository Launched")
         return api.getUser(id)
     }
+
+    override fun checkNickname(nickname: String): Boolean {
+        return api.checkNickname(nickname)
+    }
+
+    override fun insertUser(user: User) {
+        api.insertUser(user)
+    }
 }

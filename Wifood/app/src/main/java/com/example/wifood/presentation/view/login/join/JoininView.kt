@@ -42,6 +42,7 @@ import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 //@Preview(showBackground = true)
 @Composable
@@ -53,6 +54,8 @@ fun JoininView(
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.validationEvents.collectLatest { event ->
@@ -61,13 +64,14 @@ fun JoininView(
                     navController.navigateUp()
                 }
                 is ValidationEvent.Error -> {
-
+                    scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
             }
         }
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             YOGOTopAppBar(
                 text = "회원가입",
@@ -92,7 +96,9 @@ fun JoininView(
                 text = formState.email,
                 placeholder = "아이디",
                 onValueChange = {
-                    viewModel.onEvent(JoininEvent.EmailChanged(it))
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.EmailChanged(it))
+                    }
                 }
             )
             Spacer(Modifier.height(20.dp))
@@ -105,7 +111,11 @@ fun JoininView(
             InputTextField(
                 text = formState.password,
                 placeholder = "비밀번호",
-                onValueChange = { viewModel.onEvent(JoininEvent.PasswordChanged(it)) }
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.PasswordChanged(it))
+                    }
+                }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -117,7 +127,11 @@ fun JoininView(
             InputTextField(
                 text = formState.repeatedPassword,
                 placeholder = "비밀번호 확인",
-                onValueChange = { viewModel.onEvent(JoininEvent.RepeatedPasswordChanged(it)) }
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.RepeatedPasswordChanged(it))
+                    }
+                }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -126,12 +140,16 @@ fun JoininView(
             Spacer(Modifier.height(5.dp))
             ExplainText("다른 유저와 겹치지 않는 닉네임을 입력해주세요 (2~15자)")
             Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(20.dp))
             InputTextField(
                 text = formState.nickname,
-                placeholder = "닉네임 (2~15자)",
-                onValueChange = { viewModel.onEvent(JoininEvent.NicknameChanged(it)) }
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.NicknameChanged(it))
+                    }
+                },
+                placeholder = "닉네임 (2~15자)"
             )
-            Spacer(Modifier.height(20.dp))
 
             // Set phone check
             TitleText("본인인증")
@@ -142,7 +160,11 @@ fun JoininView(
                 InputTextField(
                     text = formState.phoneNumber,
                     placeholder = "닉네임 (2~15자)",
-                    onValueChange = { viewModel.onEvent(JoininEvent.PhoneChanged(it)) },
+                    onValueChange = {
+                        scope.launch {
+                            viewModel.onEvent(JoininEvent.PhoneChanged(it))
+                        }
+                    },
                 )
                 TextInsideButton(
                     text = "인증번호 받기",
@@ -153,7 +175,11 @@ fun JoininView(
             InputTextField(
                 text = formState.validNumber,
                 placeholder = "인증번호 입력 (3분 이내)",
-                onValueChange = { viewModel.onEvent(JoininEvent.ValidNChanged(it)) },
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.ValidNChanged(it))
+                    }
+                },
             )
             Spacer(Modifier.height(20.dp))
 
@@ -165,7 +191,11 @@ fun JoininView(
             InputTextField(
                 text = formState.address,
                 placeholder = "주소 검색",
-                onValueChange = { viewModel.onEvent(JoininEvent.AddressChanged(it)) },
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.AddressChanged(it))
+                    }
+                },
             )
             Spacer(Modifier.height(5.dp))
             ExplainText("상세주소")
@@ -173,7 +203,11 @@ fun JoininView(
             InputTextField(
                 text = formState.detailedAddress,
                 placeholder = "상세 주소를 입력해주세요",
-                onValueChange = { viewModel.onEvent(JoininEvent.DetailedAChanged(it)) },
+                onValueChange = {
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.DetailedAChanged(it))
+                    }
+                },
             )
             Spacer(Modifier.height(20.dp))
 
@@ -185,7 +219,11 @@ fun JoininView(
                         InputTextField(
                             text = formState.birthday,
                             placeholder = "YYMMDD",
-                            onValueChange = { viewModel.onEvent(JoininEvent.BirthChanged(it)) },
+                            onValueChange = {
+                                scope.launch {
+                                    viewModel.onEvent(JoininEvent.BirthChanged(it))
+                                }
+                            },
                         )
                     }
                     Column() {
@@ -194,7 +232,7 @@ fun JoininView(
                         Row() {
                             SelectedToggle(
                                 text = "남성",
-                                onClick = {  },
+                                onClick = { },
                             )
                             Spacer(Modifier.width(10.dp))
                             UnSelectedToggle(
@@ -219,8 +257,12 @@ fun JoininView(
             Row()
             {
                 ToggleButton(
-                    isChecked = formState.terms,
-                    onClick = { viewModel.onEvent(JoininEvent.TermsClicked) }
+                    onClick = {
+                        scope.launch {
+                            viewModel.onEvent(JoininEvent.TermsClicked)
+                        }
+                    },
+                    isChecked = formState.terms
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
@@ -234,7 +276,7 @@ fun JoininView(
                 Text(
                     text = "(필수)",
                     color = MainColor,
-                    modifier = Modifier.padding(top=4.dp),
+                    modifier = Modifier.padding(top = 4.dp),
                     fontFamily = fontRoboto,
                     fontWeight = FontWeight.Medium,
                     fontSize = 10.sp
@@ -251,7 +293,7 @@ fun JoininView(
             )
             Spacer(Modifier.height(48.dp))
 
-            Row(Modifier.padding(start=51.dp)){
+            Row(Modifier.padding(start = 51.dp)) {
                 TransparentButton(
                     text = "정보 더 입력하고 자세한 추천 받기 >",
                     textColor = MainColor,
@@ -265,7 +307,9 @@ fun JoininView(
             MainButton(
                 text = "회원가입하기",
                 onClick = {
-                    viewModel.onEvent(JoininEvent.Joinin)
+                    scope.launch {
+                        viewModel.onEvent(JoininEvent.Joinin)
+                    }
                 }
             )
         }

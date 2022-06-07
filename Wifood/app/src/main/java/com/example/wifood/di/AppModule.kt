@@ -28,8 +28,11 @@ object AppModule {
             validateEmail = ValidateEmail(repository),
             validatePassword = ValidatePassword(repository),
             validateRepeatedPassword = ValidateRepeatedPassword(repository),
+            validateNickname = ValidateNickname(repository),
+            validateBirthday = ValidateBirthday(),
             validateTerms = ValidateTerms(repository),
             GetUser = GetUser(repository),
+            InsertUser = InsertUser(repository),
             DeletePlace = DeletePlace(repository),
             GetPlaceImageUris = GetPlaceImageUris(repository),
             DeleteGroup = DeleteGroup(repository)

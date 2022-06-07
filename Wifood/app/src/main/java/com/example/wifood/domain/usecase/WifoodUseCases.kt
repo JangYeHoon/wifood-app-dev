@@ -4,8 +4,11 @@ data class WifoodUseCases(
     val validateEmail: ValidateEmail,
     val validatePassword: ValidatePassword,
     val validateRepeatedPassword: ValidateRepeatedPassword,
+    val validateNickname: ValidateNickname,
+    val validateBirthday: ValidateBirthday,
     val validateTerms: ValidateTerms,
     val GetUser: GetUser,
+    val InsertUser: InsertUser,
     val DeletePlace: DeletePlace,
     val GetPlaceImageUris: GetPlaceImageUris,
     val DeleteGroup: DeleteGroup
