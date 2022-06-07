@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
+import timber.log.Timber
 import javax.inject.Inject
 
 class WifoodApiImpl @Inject constructor(
@@ -48,10 +49,10 @@ class WifoodApiImpl @Inject constructor(
 
     override fun deleteGroup(groupId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
-        Log.d("Firebase", "delete group : groupId-$groupId")
+        Timber.i("delete group : groupId-$groupId")
         db.child("kmh@naver.com/$groupId").removeValue()
-            .addOnSuccessListener { Log.d("Firebase", "Success group delete") }
-            .addOnFailureListener { Log.d("Firebase", "Fail group delete : $it") }
+            .addOnSuccessListener { Timber.i("Success group delete") }
+            .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
 
     override fun getPlaceList(): LiveData<MutableList<Place>> {
@@ -88,10 +89,7 @@ class WifoodApiImpl @Inject constructor(
                             uris.add(url.result)
                             imageUrisForObserve.value = uris
                         }
-                        Log.d(
-                            "Firebase",
-                            "get image url list from Firebase Storage : ${imageUrisForObserve.value.toString()}"
-                        )
+                        Timber.i("get image url list from Firebase Storage : " + imageUrisForObserve.value.toString())
                     }
                 }
             }
@@ -100,14 +98,14 @@ class WifoodApiImpl @Inject constructor(
 
     override fun deletePlace(groupId: Int, placeId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
-        Log.d("Firebase", "delete place : groupId-$groupId, placeId-$placeId")
+        Timber.i("delete place : groupId-$groupId, placeId-$placeId")
         db.child("kmh@naver.com/$groupId/$placeId").removeValue()
-            .addOnSuccessListener { Log.d("Firebase", "Success place delete") }
-            .addOnFailureListener { Log.d("Firebase", "Fail place delete : $it") }
+            .addOnSuccessListener { Timber.i("Success place delete") }
+            .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Log.d("TEST", "API Launched")
+        Timber.d("API Launched")
         val user = MutableLiveData<User>()
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -132,7 +130,7 @@ class WifoodApiImpl @Inject constructor(
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("TEST", "Firebase cancelled")
+                Timber.e("Firebase cancelled")
             }
         })
         return user

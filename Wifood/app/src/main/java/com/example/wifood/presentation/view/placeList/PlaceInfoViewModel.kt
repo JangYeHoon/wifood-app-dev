@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 // @HiltViewModel : 의존성 주입을 위한 어노테이션 선언
@@ -33,19 +34,13 @@ class PlaceInfoViewModel @Inject constructor(
             state = state.copy(groupName = groupName)
         }
 
-        Log.d(
-            "PlaceInfoViewModel",
-            "get place info from PlaceList : " + state.place.toString() + ", " + state.groupName
-        )
+        Timber.i("get place info from PlaceList : " + state.place.toString() + ", " + state.groupName)
 
         // Firebase storage에서 해당 place에 저장된 이미지 리스트 받아와서 저장
         state.place?.let {
             useCases.GetPlaceImageUris(0, 0).observeForever { uris ->
                 state = state.copy(placeImageUris = uris)
-                Log.d(
-                    "PlaceInfoViewModel",
-                    "get image uri list from firebase : " + state.placeImageUris.toString()
-                )
+                Timber.i("get image uri list from firebase : " + state.placeImageUris.toString())
             }
         }
     }

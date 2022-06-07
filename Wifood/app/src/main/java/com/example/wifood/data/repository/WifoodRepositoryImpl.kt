@@ -9,6 +9,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
 import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
 
 class WifoodRepositoryImpl(
     private val dao: WifoodDao,
@@ -31,7 +32,7 @@ class WifoodRepositoryImpl(
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Log.d("TEST", "Repository Launched")
+        Timber.d("Repository Launched")
         return api.getUser(id)
     }
 

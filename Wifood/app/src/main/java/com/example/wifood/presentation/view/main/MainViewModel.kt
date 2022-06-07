@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,7 +69,7 @@ class MainViewModel @Inject constructor(
                 }
             }
             state = state.copy(places = placeList)
-            Log.d("MainViewModel", "get user from firebase : ${state.user.toString()}")
+            Timber.i("get user from firebase : " + state.user.toString())
         }
     }
 }
