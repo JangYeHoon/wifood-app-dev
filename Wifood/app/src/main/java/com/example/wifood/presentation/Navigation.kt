@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
-import com.example.wifood.presentation.view.login.JoinView
+import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
@@ -23,7 +23,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Route.Main.route
+        startDestination = Route.Login.route
     ) {
         composable(Route.Main.route) {
             MainView(navController)
@@ -41,7 +41,7 @@ fun Navigation() {
             PlaceInfoComposeView()
         }
         composable(Route.Joinin.route) {
-            JoinView(navController)
+            JoininView(navController)
         }
         composable(Route.EditPlace.route) {
             EditPlaceComposeView(navController)

@@ -15,7 +15,6 @@ class GetUser @Inject constructor(
     private val repository: WifoodRepository
 ) {
     operator fun invoke(id: String): LiveData<User> {
-        Log.d("TEST", "GetUser launched")
         val userId = id.replace('.', '_')
         val user = MutableLiveData<User>()
         repository.getUser(userId).observeForever {

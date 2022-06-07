@@ -21,12 +21,12 @@ import com.example.wifood.view.ui.theme.RoundedTextFieldUnFocusColor
 
 @Composable
 fun InputTextField(
-    text:String = "",
-    placeholder:String= "아이디",
-    onValueChange:(String)->Unit = {},
-    height:Int = 50,
-    isPassword:Boolean = false,
-){
+    text: String = "",
+    placeholder: String = "아이디",
+    onValueChange: (String) -> Unit = {},
+    height: Int = 50,
+    isPassword: Boolean = false,
+) {
     TextField(
         value = text,
         onValueChange = onValueChange,
@@ -37,7 +37,9 @@ fun InputTextField(
             )
         },
         singleLine = true,
-        modifier = Modifier.fillMaxWidth().height(height.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = Gray01Color,
             backgroundColor = Color.White,

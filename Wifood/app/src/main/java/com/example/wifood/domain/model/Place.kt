@@ -1,8 +1,11 @@
 package com.example.wifood.domain.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Place(
     val placeId: Int,
     val groupId: Int,
@@ -19,4 +22,4 @@ data class Place(
     var longitude: Double,
     var address: String,
     val menuList: List<MenuGrade>
-)
+) : Parcelable

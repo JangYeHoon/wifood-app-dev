@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.login
+package com.example.wifood.presentation.view.login.join
 
 import android.content.Intent
 import android.os.Bundle
@@ -26,35 +26,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.component.navigationBackButton
 import com.example.wifood.presentation.view.login.component.*
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.DividerColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
-
-fun JoinView(navController: NavController) {
-
-}
+import kotlinx.coroutines.flow.collectLatest
 
 //@Preview(showBackground = true)
 @Composable
-fun JoininContent() {
+fun JoininView(
+    navController: NavController,
+    viewModel: JoininViewModel = hiltViewModel()
+) {
+    val formState = viewModel.formState
     val scrollState = rememberScrollState()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
-    var is_agreement:Boolean = false
+
+    LaunchedEffect(key1 = true) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    navController.navigateUp()
+                }
+                is ValidationEvent.Error -> {
+
+                }
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             YOGOTopAppBar(
-                text="회원가입",
-                onBackButtonClicked={/*TODO*/}
+                text = "회원가입",
+                onBackButtonClicked = {
+                    navController.popBackStack()
+                }
             )
         }
     ) {
@@ -70,9 +89,11 @@ fun JoininContent() {
             //ExplainText("영어와 숫자를 포함한 8자리 이상으로 입력해주세요")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.email,
                 placeholder = "아이디",
-                onValueChange = {/*TODO*/ }
+                onValueChange = {
+                    viewModel.onEvent(JoininEvent.EmailChanged(it))
+                }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -82,9 +103,9 @@ fun JoininContent() {
             ExplainText("영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.password,
                 placeholder = "비밀번호",
-                onValueChange = {/*TODO*/ }
+                onValueChange = { viewModel.onEvent(JoininEvent.PasswordChanged(it)) }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -94,9 +115,9 @@ fun JoininContent() {
             //ExplainText("")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.repeatedPassword,
                 placeholder = "비밀번호 확인",
-                onValueChange = {/*TODO*/ }
+                onValueChange = { viewModel.onEvent(JoininEvent.RepeatedPasswordChanged(it)) }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -106,9 +127,9 @@ fun JoininContent() {
             ExplainText("다른 유저와 겹치지 않는 닉네임을 입력해주세요 (2~15자)")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.nickname,
                 placeholder = "닉네임 (2~15자)",
-                onValueChange = {/*TODO*/ }
+                onValueChange = { viewModel.onEvent(JoininEvent.NicknameChanged(it)) }
             )
             Spacer(Modifier.height(20.dp))
 
@@ -119,9 +140,9 @@ fun JoininContent() {
             Spacer(Modifier.height(5.dp))
             Box(modifier = Modifier.width(312.dp)) {
                 InputTextField(
-                    text = "",/*TODO*/
+                    text = formState.phoneNumber,
                     placeholder = "닉네임 (2~15자)",
-                    onValueChange = {/*TODO*/ },
+                    onValueChange = { viewModel.onEvent(JoininEvent.PhoneChanged(it)) },
                 )
                 TextInsideButton(
                     text = "인증번호 받기",
@@ -130,9 +151,9 @@ fun JoininContent() {
                 )
             }
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.validNumber,
                 placeholder = "인증번호 입력 (3분 이내)",
-                onValueChange = {/*TODO*/ },
+                onValueChange = { viewModel.onEvent(JoininEvent.ValidNChanged(it)) },
             )
             Spacer(Modifier.height(20.dp))
 
@@ -142,17 +163,17 @@ fun JoininContent() {
             //ExplainText("")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.address,
                 placeholder = "주소 검색",
-                onValueChange = {/*TODO*/ },
+                onValueChange = { viewModel.onEvent(JoininEvent.AddressChanged(it)) },
             )
             Spacer(Modifier.height(5.dp))
             ExplainText("상세주소")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = "",/*TODO*/
+                text = formState.detailedAddress,
                 placeholder = "상세 주소를 입력해주세요",
-                onValueChange = {/*TODO*/ },
+                onValueChange = { viewModel.onEvent(JoininEvent.DetailedAChanged(it)) },
             )
             Spacer(Modifier.height(20.dp))
 
@@ -162,9 +183,9 @@ fun JoininContent() {
                         TitleText("생년월일")
                         Spacer(Modifier.height(5.dp))
                         InputTextField(
-                            text = "",/*TODO*/
+                            text = formState.birthday,
                             placeholder = "YYMMDD",
-                            onValueChange = {/*TODO*/ },
+                            onValueChange = { viewModel.onEvent(JoininEvent.BirthChanged(it)) },
                         )
                     }
                     Column() {
@@ -173,7 +194,7 @@ fun JoininContent() {
                         Row() {
                             SelectedToggle(
                                 text = "남성",
-                                onClick = {/*TODO*/ },
+                                onClick = {  },
                             )
                             Spacer(Modifier.width(10.dp))
                             UnSelectedToggle(
@@ -198,8 +219,8 @@ fun JoininContent() {
             Row()
             {
                 ToggleButton(
-                    isChecked = false,
-                    onClick = {/*TODO*/ }
+                    isChecked = formState.terms,
+                    onClick = { viewModel.onEvent(JoininEvent.TermsClicked) }
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
@@ -243,7 +264,9 @@ fun JoininContent() {
             Spacer(Modifier.height(17.dp))
             MainButton(
                 text = "회원가입하기",
-                onClick = {/*TODO*/ }
+                onClick = {
+                    viewModel.onEvent(JoininEvent.Joinin)
+                }
             )
         }
     }

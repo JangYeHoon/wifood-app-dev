@@ -32,7 +32,7 @@ fun RoundedTextField(
     onValueChange: (String) -> Unit,
     ){
     OutlinedTextField(
-        value = "",
+        value = text,
         onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth()
