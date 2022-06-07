@@ -2,20 +2,14 @@ package com.example.wifood.presentation.view.main
 
 import android.util.Log
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
-import com.example.wifood.presentation.view.login.LoginFormEvent
-import com.example.wifood.presentation.view.login.LoginFormState
-import com.example.wifood.util.Resource
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +22,9 @@ class MainViewModel @Inject constructor(
 
     var state by mutableStateOf(MainState())
 
+    private val _camera = MutableSharedFlow<LatLng>()
+    val camera = _camera.asSharedFlow()
+
     fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.ItemClicked -> {
@@ -38,6 +35,14 @@ class MainViewModel @Inject constructor(
             }
             is MainEvent.DeleteGroupEvent -> {
                 useCases.DeleteGroup(event.groupId)
+            }
+            is MainEvent.LocationChanged -> {
+                state = state.copy(currentLocation = event.location)
+            }
+            is MainEvent.CameraMove -> {
+                viewModelScope.launch {
+                    _camera.emit(event.latLng)
+                }
             }
         }
     }

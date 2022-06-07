@@ -70,7 +70,7 @@ fun MapView(
     val focusRequester = remember { FocusRequester() }
     var selectedMenu by remember { mutableStateOf(0) }
     val camera = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(-34.toDouble(), 151.toDouble()), 1f)
+        position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 1f)
     }
     val context = LocalContext.current
     val builder = LatLngBounds.Builder()
@@ -87,6 +87,12 @@ fun MapView(
         }
     }
 
+    LaunchedEffect(key1 = camera) {
+        viewModel.camera.collectLatest { latlng ->
+            camera.position = CameraPosition.fromLatLngZoom(latlng, 16f)
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         GoogleMap(
             modifier = Modifier.matchParentSize(),
@@ -100,6 +106,12 @@ fun MapView(
                     title = place.name,
                     visible = state.selectedGroupId == 0 || place.groupId == state.selectedGroupId,
                     snippet = place.review
+                )
+            }
+            state.currentLocation?.let {
+                Marker(
+                    position = LatLng(it.latitude, it.longitude),
+                    visible = true
                 )
             }
         }

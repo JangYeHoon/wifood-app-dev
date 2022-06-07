@@ -49,6 +49,7 @@ import com.example.wifood.presentation.view.placeList.PlaceListComposeView
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPermissionsApi
@@ -66,7 +67,6 @@ fun MainView(
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     var locationPermissionGranted = false
-    val permissionState = rememberPermissionState(android.Manifest.permission.ACCESS_FINE_LOCATION)
     var lastKnownLocation: Location? = null
 
     fun checkPermission(permission: String) {
@@ -78,6 +78,23 @@ fun MainView(
     }
 
     LaunchedEffect(key1 = true) {
+        // Modified later
+        /*
+           Take permission through popup message
+        */
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (locationPermissionGranted) {
+            val locationResult = fusedLocationProviderClient.lastLocation
+            locationResult.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result != null) {
+                        viewModel.onEvent(MainEvent.LocationChanged(task.result))
+                    }
+                }
+            }
+        } else {
+            viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
+        }
         viewModel.init()
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
@@ -116,20 +133,15 @@ fun MainView(
                     if (isMapView) {
                         FloatingActionButton(
                             onClick = {
-                                checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                                if (locationPermissionGranted) {
-                                    val locationResult = fusedLocationProviderClient.lastLocation
-                                    locationResult.addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            lastKnownLocation = task.result
-                                            if (lastKnownLocation != null) {
-                                                viewModel.onUiEvent(UiEvent.ShowSnackBar("${lastKnownLocation!!.latitude}"))
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
-                                }
+                                viewModel.onEvent(
+                                    MainEvent.CameraMove(
+                                        LatLng(
+                                            state.currentLocation!!.latitude,
+                                            state.currentLocation.longitude
+                                        )
+                                    )
+                                )
+                                viewModel.onUiEvent(UiEvent.ShowSnackBar(state.currentLocation!!.latitude.toString()))
                             },
                             backgroundColor = Color.White,
                             contentColor = Main
