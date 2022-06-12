@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
+import com.example.wifood.presentation.view.login.MobileAuthenticationView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
@@ -39,6 +40,9 @@ fun Navigation() {
         }
         composable(Route.PlaceInfo.route) {
             PlaceInfoComposeView()
+        }
+        composable(Route.MobileAuthentication.route){
+            MobileAuthenticationView(navController = (navController))
         }
         composable(Route.Joinin.route) {
             JoininView(navController)

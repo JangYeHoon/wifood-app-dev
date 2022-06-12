@@ -142,38 +142,6 @@ fun JoininView(
             )
             Spacer(Modifier.height(20.dp))
 
-            // Set phone check
-            TitleText("본인인증")
-            Spacer(Modifier.height(5.dp))
-            //ExplainText("")
-            Spacer(Modifier.height(5.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
-                InputTextField(
-                    text = formState.phoneNumber,
-                    placeholder = "휴대폰 번호('-' 제외)",
-                    onValueChange = {
-                        scope.launch {
-                            viewModel.onEvent(JoininEvent.PhoneChanged(it))
-                        }
-                    },
-                )
-                TextInsideButton(
-                    text = "인증번호 받기",
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    onClick = {},
-                )
-            }
-            InputTextField(
-                text = formState.validNumber,
-                placeholder = "인증번호 입력 (3분 이내)",
-                onValueChange = {
-                    scope.launch {
-                        viewModel.onEvent(JoininEvent.ValidNChanged(it))
-                    }
-                },
-            )
-            Spacer(Modifier.height(20.dp))
-
             // Set address
             TitleText("주소")
             Spacer(Modifier.height(5.dp))
@@ -187,7 +155,7 @@ fun JoininView(
                 },
             )
             Spacer(Modifier.height(20.dp))
-            Box(modifier = Modifier.width(312.dp)) {
+            Box(modifier = Modifier.width(312.dp).height(300.dp)) {
                 Row(modifier = Modifier.wrapContentSize()) {
                     Column(modifier = Modifier.wrapContentWidth()) {
                         TitleText("생년월일")

@@ -132,7 +132,7 @@ fun LoginView(
                     textColor = Gray01Color,
                     onClick = {
                         formState.clear()
-                        navController.navigate(Route.Joinin.route)
+                        navController.navigate(Route.MobileAuthentication.route)
                     }
                 )
             }
