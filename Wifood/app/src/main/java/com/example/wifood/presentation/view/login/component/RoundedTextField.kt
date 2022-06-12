@@ -1,9 +1,6 @@
 package com.example.wifood.presentation.view.login.component
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -36,12 +33,13 @@ fun RoundedTextField(
         onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth()
-            .height(height.dp)
+            .wrapContentHeight()
+            //.height(height.dp)
         ,
         maxLines = 1,
         placeholder = {
             Text(
-                text = text,
+                text = placeholder,
                 color = EnableColor,
                 fontSize = 14.sp,
                 fontFamily = mainFont,
@@ -52,7 +50,7 @@ fun RoundedTextField(
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = RoundedTextFieldTextColor,
             backgroundColor = Color.White,
-            cursorColor = Color.Transparent,
+            cursorColor = MainColor,
             focusedBorderColor = RoundedTextFieldFocusColor,
             unfocusedBorderColor = RoundedTextFieldUnFocusColor
         ),

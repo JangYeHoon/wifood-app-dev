@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -22,8 +23,6 @@ import com.example.wifood.view.ui.theme.InsideButtonTextColor
 fun TextInsideButton(
     text:String = "인증번호 받기",
     modifier:Modifier,
-    width:Int = 85,
-    height:Int = 30,
     onClick:() -> Unit = {}
 ){
     TextButton(
@@ -33,8 +32,7 @@ fun TextInsideButton(
             backgroundColor = Gray09Color
         ),
         modifier = modifier
-            .width(width.dp)
-            .height(height.dp)
+            .wrapContentSize()
     )
     {
         Text(

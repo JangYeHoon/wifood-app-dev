@@ -79,7 +79,9 @@ fun LoginView(
         scaffoldState = scaffoldState
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = sidePaddingValue.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -122,14 +124,12 @@ fun LoginView(
                 TransparentButton(
                     text = "아이디/비밀번호찾기",
                     textColor = Gray03Color,
-                    width = 150,
                     onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(5.dp))
                 TransparentButton(
                     text = "회원가입",
                     textColor = Gray01Color,
-                    width = 80,
                     onClick = {
                         formState.clear()
                         navController.navigate(Route.Joinin.route)
@@ -140,7 +140,7 @@ fun LoginView(
             Divider(
                 color = DividerColor,
                 modifier = Modifier
-                    .width(280.dp)
+                    .fillMaxWidth()
                     .height(1.dp)
             )
             Spacer(Modifier.height(30.dp))

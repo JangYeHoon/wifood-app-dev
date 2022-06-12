@@ -63,8 +63,6 @@ fun WorkThroughView2() {
                 text = "SKIP",
                 textColor = MainColor,
                 textSize = 16,
-                width = 70,
-                height = 40,
                 onClick = {},
                 textDecoration = TextDecoration.Underline
             )
