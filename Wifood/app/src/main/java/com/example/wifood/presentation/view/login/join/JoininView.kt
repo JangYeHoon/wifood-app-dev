@@ -37,10 +37,7 @@ import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.DividerColor
-import com.example.wifood.view.ui.theme.Gray01Color
-import com.example.wifood.view.ui.theme.Gray03Color
-import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -83,14 +80,14 @@ fun JoininView(
     ) {
         Column(
             Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = sidePaddingValue.dp)
                 .verticalScroll(scrollState)
         ) {
             Spacer(Modifier.height(31.dp))
             // set id
             TitleText("아이디")
             Spacer(Modifier.height(5.dp))
-            //ExplainText("영어와 숫자를 포함한 8자리 이상으로 입력해주세요")
+            ExplainText("영문, 숫자를 포함한 아이디를 입력해주세요")
             Spacer(Modifier.height(5.dp))
             InputTextField(
                 text = formState.email,
@@ -117,13 +114,7 @@ fun JoininView(
                     }
                 }
             )
-            Spacer(Modifier.height(20.dp))
-
             // Set password check
-            TitleText("비밀번호 확인")
-            Spacer(Modifier.height(5.dp))
-            //ExplainText("")
-            Spacer(Modifier.height(5.dp))
             InputTextField(
                 text = formState.repeatedPassword,
                 placeholder = "비밀번호 확인",
@@ -140,7 +131,6 @@ fun JoininView(
             Spacer(Modifier.height(5.dp))
             ExplainText("다른 유저와 겹치지 않는 닉네임을 입력해주세요 (2~15자)")
             Spacer(Modifier.height(5.dp))
-            Spacer(Modifier.height(20.dp))
             InputTextField(
                 text = formState.nickname,
                 onValueChange = {
@@ -150,43 +140,10 @@ fun JoininView(
                 },
                 placeholder = "닉네임 (2~15자)"
             )
-
-            // Set phone check
-            TitleText("본인인증")
-            Spacer(Modifier.height(5.dp))
-            //ExplainText("")
-            Spacer(Modifier.height(5.dp))
-            Box(modifier = Modifier.width(312.dp)) {
-                InputTextField(
-                    text = formState.phoneNumber,
-                    placeholder = "닉네임 (2~15자)",
-                    onValueChange = {
-                        scope.launch {
-                            viewModel.onEvent(JoininEvent.PhoneChanged(it))
-                        }
-                    },
-                )
-                TextInsideButton(
-                    text = "인증번호 받기",
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    onClick = {},
-                )
-            }
-            InputTextField(
-                text = formState.validNumber,
-                placeholder = "인증번호 입력 (3분 이내)",
-                onValueChange = {
-                    scope.launch {
-                        viewModel.onEvent(JoininEvent.ValidNChanged(it))
-                    }
-                },
-            )
             Spacer(Modifier.height(20.dp))
 
             // Set address
             TitleText("주소")
-            Spacer(Modifier.height(5.dp))
-            //ExplainText("")
             Spacer(Modifier.height(5.dp))
             InputTextField(
                 text = formState.address,
@@ -197,23 +154,10 @@ fun JoininView(
                     }
                 },
             )
-            Spacer(Modifier.height(5.dp))
-            ExplainText("상세주소")
-            Spacer(Modifier.height(5.dp))
-            InputTextField(
-                text = formState.detailedAddress,
-                placeholder = "상세 주소를 입력해주세요",
-                onValueChange = {
-                    scope.launch {
-                        viewModel.onEvent(JoininEvent.DetailedAChanged(it))
-                    }
-                },
-            )
             Spacer(Modifier.height(20.dp))
-
-            Box(modifier = Modifier.width(312.dp)) {
-                Row() {
-                    Column() {
+            Box(modifier = Modifier.width(312.dp).height(300.dp)) {
+                Row(modifier = Modifier.wrapContentSize()) {
+                    Column(modifier = Modifier.wrapContentWidth()) {
                         TitleText("생년월일")
                         Spacer(Modifier.height(5.dp))
                         InputTextField(
@@ -226,7 +170,7 @@ fun JoininView(
                             },
                         )
                     }
-                    Column() {
+                    Column(modifier = Modifier.wrapContentWidth()) {
                         TitleText("성별")
                         Spacer(Modifier.height(10.dp))
                         Row() {
@@ -244,13 +188,13 @@ fun JoininView(
                     }
                 }
             }
-
-            Divider(
+            Spacer(Modifier.height(28.dp))
+            /*Divider(
                 color = DividerColor,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(2.dp),
-            )
+                    .height(6.dp),
+            )*/
             Spacer(Modifier.height(30.dp))
             TitleText("약관동의")
             Spacer(Modifier.height(16.dp))
@@ -298,8 +242,6 @@ fun JoininView(
                     text = "정보 더 입력하고 자세한 추천 받기 >",
                     textColor = MainColor,
                     textSize = 12,
-                    width = 220,
-                    height = 32,
                     onClick = {/*TODO*/ }
                 )
             }
@@ -312,6 +254,7 @@ fun JoininView(
                     }
                 }
             )
+            Spacer(Modifier.height(50.dp))
         }
     }
 }

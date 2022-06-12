@@ -17,4 +17,9 @@ sealed class Route(val route: String) {
     object EditPlace : Route("editplaceview")
     object Search : Route("searchplaceview")
     object EditProfile : Route("editprofileview")
+    object MobileAuthentication : Route("mobileauthenticationview")
+    object Splash : Route("splashview")
+    object WorkThrough1 : Route("workthroughview1")
+    object WorkThrough2 : Route("workthroughview2")
+    object WorkThrough3 : Route("workthroughview3")
 }
