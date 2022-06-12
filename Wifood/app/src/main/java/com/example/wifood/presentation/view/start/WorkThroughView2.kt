@@ -17,6 +17,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.login.component.TransparentButton
 import com.example.wifood.ui.theme.fontTmoney
@@ -24,7 +25,9 @@ import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
 
 @Composable
-fun WorkThroughView2() {
+fun WorkThroughView2(
+    navController : NavController
+) {
     Scaffold(
     ) {
         Column(

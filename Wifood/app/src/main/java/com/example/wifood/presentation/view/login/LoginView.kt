@@ -3,8 +3,10 @@ package com.example.wifood.presentation.view.login
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,9 +59,7 @@ fun LoginView(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
-
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
+    val scrollState = rememberScrollState() // for horizontal mode screen
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collectLatest { event ->
@@ -81,9 +81,10 @@ fun LoginView(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = sidePaddingValue.dp),
+                .padding(horizontal = sidePaddingValue.dp)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             LogoImage(
                 width = 86,

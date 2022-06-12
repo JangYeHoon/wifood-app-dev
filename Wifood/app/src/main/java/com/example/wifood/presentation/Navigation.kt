@@ -14,6 +14,10 @@ import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
+import com.example.wifood.presentation.view.start.SplashView
+import com.example.wifood.presentation.view.start.WorkThroughView1
+import com.example.wifood.presentation.view.start.WorkThroughView2
+import com.example.wifood.presentation.view.start.WorkThroughView3
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @ExperimentalPermissionsApi
@@ -40,6 +44,18 @@ fun Navigation() {
         }
         composable(Route.PlaceInfo.route) {
             PlaceInfoComposeView()
+        }
+        composable(Route.Splash.route){
+            SplashView( navController = (navController))
+        }
+        composable(Route.WorkThrough1.route){
+            WorkThroughView1( navController = (navController))
+        }
+        composable(Route.WorkThrough1.route){
+            WorkThroughView2( navController = (navController))
+        }
+        composable(Route.WorkThrough1.route){
+            WorkThroughView3( navController = (navController))
         }
         composable(Route.MobileAuthentication.route){
             MobileAuthenticationView(navController = (navController))

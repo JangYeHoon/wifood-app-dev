@@ -17,19 +17,25 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.TransparentButton
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @Composable
-fun WorkThroughView3() {
+fun WorkThroughView3(
+    navController : NavController
+) {
     Scaffold(
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = sidePaddingValue.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
