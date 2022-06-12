@@ -14,6 +14,7 @@ import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
+import com.example.wifood.presentation.view.placeList.group.GroupAddView
 import com.example.wifood.presentation.view.start.SplashView
 import com.example.wifood.presentation.view.start.WorkThroughView1
 import com.example.wifood.presentation.view.start.WorkThroughView2
@@ -71,6 +72,9 @@ fun Navigation() {
         }
         composable(Route.EditProfile.route) {
             EditProfileComposeView(navController)
+        }
+        composable(Route.GroupAdd.route) {
+            GroupAddView(navController)
         }
     }
 }

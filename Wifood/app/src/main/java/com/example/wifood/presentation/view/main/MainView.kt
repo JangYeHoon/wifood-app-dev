@@ -117,7 +117,7 @@ fun MainView(
                         MapTopAppBar(navController)
                     }
                     NavItem.List.id -> {
-                        ListTopAppBar()
+                        ListTopAppBar(navController)
                     }
                     NavItem.MyPage.id -> {
                         MyPageTAB()

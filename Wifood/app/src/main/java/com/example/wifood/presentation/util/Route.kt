@@ -22,4 +22,5 @@ sealed class Route(val route: String) {
     object WorkThrough1 : Route("workthroughview1")
     object WorkThrough2 : Route("workthroughview2")
     object WorkThrough3 : Route("workthroughview3")
+    object GroupAdd : Route("groupaddview")
 }
