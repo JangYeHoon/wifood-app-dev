@@ -7,7 +7,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.usecase.WifoodUseCases
+import com.example.wifood.presentation.util.ValidationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +21,8 @@ class GroupViewModel @Inject constructor(
 ) : ViewModel() {
     var formState by mutableStateOf(GroupFormState())
     var state by mutableStateOf(GroupState())
+    private val validateEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
         savedStateHandle.get<Group>("group")?.let { group ->
@@ -25,7 +31,7 @@ class GroupViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: GroupFormEvent) {
+    suspend fun onEvent(event: GroupFormEvent) {
         when (event) {
             is GroupFormEvent.NameChange -> {
                 formState = formState.copy(name = event.name)
@@ -34,8 +40,27 @@ class GroupViewModel @Inject constructor(
                 formState = formState.copy(description = event.description)
             }
             is GroupFormEvent.SaveBtnClick -> {
-                TODO()
+                if (formCheck())
+                    insertGroup()
             }
         }
+    }
+
+    private fun formCheck(): Boolean {
+        val nameValidateResult = useCases.validateGroupName(formState.name)
+        if (!nameValidateResult.successful) {
+            formState = formState.copy(nameError = nameValidateResult.errorMessage)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun insertGroup() {
+        // TODO "group id 설정 및 pin color random 설정
+        val group =
+            Group(88, "kmh@naver.com", formState.name, formState.description, 1, emptyList())
+        Timber.i("group insert to firebase")
+        useCases.InsertGroup(group)
+        validateEventChannel.send(ValidationEvent.Success)
     }
 }

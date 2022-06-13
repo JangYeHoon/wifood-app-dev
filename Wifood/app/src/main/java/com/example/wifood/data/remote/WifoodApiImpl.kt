@@ -55,6 +55,13 @@ class WifoodApiImpl @Inject constructor(
             .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
 
+    override fun insertGroup(group: Group) {
+        db.child(group.userId.replace('.', '_')).child("Group").child(group.groupId.toString())
+            .setValue(group)
+            .addOnSuccessListener { Timber.i("Success group insert") }
+            .addOnFailureListener { Timber.e("Fail group insert : $it") }
+    }
+
     override fun getPlaceList(): LiveData<MutableList<Place>> {
         val placeList = MutableLiveData<MutableList<Place>>()
         db.child("Place").addValueEventListener(object : ValueEventListener {
