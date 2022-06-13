@@ -41,7 +41,6 @@ import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-//@Preview(showBackground = true)
 @Composable
 fun JoininView(
     navController: NavController,
@@ -155,36 +154,41 @@ fun JoininView(
                 },
             )
             Spacer(Modifier.height(20.dp))
-            Box(modifier = Modifier.width(312.dp).height(300.dp)) {
-                Row(modifier = Modifier.wrapContentSize()) {
-                    Column(modifier = Modifier.wrapContentWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier.fillMaxWidth(0.6f)
+                ){
+                    Column(){
                         TitleText("생년월일")
                         Spacer(Modifier.height(5.dp))
                         InputTextField(
-                            text = formState.birthday,
+                            text = "",
                             placeholder = "YYMMDD",
                             onValueChange = {
-                                scope.launch {
-                                    viewModel.onEvent(JoininEvent.BirthChanged(it))
-                                }
                             },
                         )
                     }
-                    Column(modifier = Modifier.wrapContentWidth()) {
+                }
+                Spacer(Modifier.width(10.dp))
+                Box(Modifier.fillMaxWidth(1f)){
+                    Column() {
                         TitleText("성별")
                         Spacer(Modifier.height(10.dp))
                         Row() {
-                            SelectedToggle(
+                            YOGORadioButton(
                                 text = "남성",
-                                onClick = { },
+                                onClick = {},
+                                selected = true
                             )
                             Spacer(Modifier.width(10.dp))
-                            UnSelectedToggle(
+                            YOGORadioButton(
                                 text = "여성",
-                                onClick = {/*TODO*/ },
+                                onClick = {},
+                                selected = false
                             )
+                            Spacer(Modifier.width(10.dp))
                         }
-                        Spacer(Modifier.width(37.dp))
+                        Spacer(Modifier.height(10.dp))
                     }
                 }
             }
@@ -255,6 +259,49 @@ fun JoininView(
                 }
             )
             Spacer(Modifier.height(50.dp))
+        }
+    }
+}
+
+@Composable
+fun test(){
+    var isGenderMale:Boolean = false
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier.fillMaxWidth(0.65f)
+        ){
+            Column(){
+                TitleText("생년월일")
+                Spacer(Modifier.height(5.dp))
+                InputTextField(
+                    text = "",
+                    placeholder = "YYMMDD",
+                    onValueChange = {
+                    },
+                )
+            }
+        }
+        Spacer(Modifier.width(10.dp))
+        Box(Modifier.fillMaxWidth(1f)){
+            Column() {
+                TitleText("성별")
+                Spacer(Modifier.height(10.dp))
+                Row() {
+                    YOGORadioButton(
+                        text = "남성",
+                        onClick = {},
+                        selected = true
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    YOGORadioButton(
+                        text = "여성",
+                        onClick = {},
+                        selected = false
+                    )
+                    Spacer(Modifier.width(10.dp))
+                }
+                Spacer(Modifier.height(20.dp))
+            }
         }
     }
 }

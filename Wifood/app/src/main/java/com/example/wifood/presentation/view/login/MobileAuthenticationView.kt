@@ -3,9 +3,10 @@ package com.example.wifood.presentation.view.login
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
@@ -26,6 +27,10 @@ fun MobileAuthenticationView(
 ) {
 
     val scaffoldState = rememberScaffoldState()
+    var AuthNum:String = ""
+    var AuthInputNum by remember { mutableStateOf("") }
+    var AuthPass:Boolean = true
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -77,7 +82,7 @@ fun MobileAuthenticationView(
             MainButton(
                 text = "본인인증",
                 onClick = { navController.navigate(Route.Joinin.route) },
-                activate = false
+                activate = AuthPass
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

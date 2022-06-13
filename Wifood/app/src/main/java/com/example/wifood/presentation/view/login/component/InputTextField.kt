@@ -30,6 +30,8 @@ fun InputTextField(
     onValueChange: (String) -> Unit = {},
     height: Int = 50,
     isPassword: Boolean = false,
+    maxLine:Int = 1,
+    resetIconOffset:Int = 10,
 ) {
     TextField(
         value = text,
@@ -56,7 +58,7 @@ fun InputTextField(
                 ImageVector.vectorResource(id = R.drawable.ic_reset_text_button),
                 contentDescription = "clear text",
                 modifier = Modifier
-                    .offset(x = 10.dp)
+                    .offset(x = resetIconOffset.dp)
                     .clickable {
                         onValueChange("")
                     }
@@ -64,6 +66,7 @@ fun InputTextField(
                 tint = Color.Unspecified
             )
         },
+        maxLines = maxLine,
         visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None
     )
 }
