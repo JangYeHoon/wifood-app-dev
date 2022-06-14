@@ -10,6 +10,8 @@ interface WifoodRepository {
 
     fun deleteGroup(groupId: Int)
 
+    fun insertGroup(group: Group)
+
     fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>>
 
     fun deletePlace(groupId: Int, placeId: Int)

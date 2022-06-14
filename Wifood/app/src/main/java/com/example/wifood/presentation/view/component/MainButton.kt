@@ -14,20 +14,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 
 @Composable
 fun MainButton(
-    text:String,
-    onClick:() -> Unit
-){
+    text: String,
+    onClick: () -> Unit = {},
+    activate: Boolean = true
+) {
     TextButton(
         shape = RoundedCornerShape(23.dp),
         onClick = onClick,
+        enabled = activate,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MainColor
+            backgroundColor = if (activate) MainColor else EnableColor
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .height(46.dp)
     )
     {

@@ -2,6 +2,8 @@ package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -21,8 +23,6 @@ fun TransparentButton(
     text:String,
     textColor:Color,
     textSize:Int = 12,
-    width:Int,
-    height:Int = 30,
     onClick:()->Unit,
     textDecoration:TextDecoration? = null,
     customModifier:Modifier?=null,
@@ -34,8 +34,7 @@ fun TransparentButton(
             backgroundColor = Color.Transparent
         ),
         modifier = Modifier
-            .width(width.dp)
-            .height(height.dp)
+            .wrapContentSize()
     )
     {
         Text(

@@ -23,6 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -31,6 +33,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
 
+@ExperimentalCoilApi
 @Composable
 fun PlaceInfoComposeView(
     viewModel: PlaceInfoViewModel = hiltViewModel()
@@ -43,7 +46,12 @@ fun PlaceInfoComposeView(
             contentAlignment = Alignment.TopCenter
         ) {
             Image(
-                painterResource(id = R.drawable.plcae_image),
+                painter = rememberImagePainter(
+                    data = if (viewModel.state.placeImageUris.isNotEmpty())
+                        viewModel.state.placeImageUris[0]
+                    else
+                        R.drawable.plcae_image
+                ),
                 contentDescription = "",
                 Modifier
                     .fillMaxWidth()

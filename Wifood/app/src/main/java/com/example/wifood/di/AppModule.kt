@@ -31,11 +31,13 @@ object AppModule {
             validateNickname = ValidateNickname(repository),
             validateBirthday = ValidateBirthday(),
             validateTerms = ValidateTerms(repository),
+            validateGroupName = ValidateGroupName(repository),
             GetUser = GetUser(repository),
             InsertUser = InsertUser(repository),
             DeletePlace = DeletePlace(repository),
             GetPlaceImageUris = GetPlaceImageUris(repository),
-            DeleteGroup = DeleteGroup(repository)
+            DeleteGroup = DeleteGroup(repository),
+            InsertGroup = InsertGroup(repository)
         )
     }
 

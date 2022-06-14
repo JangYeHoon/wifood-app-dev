@@ -10,7 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.wifood.ui.theme.mainFont
 
 @Composable
 
@@ -24,7 +27,13 @@ fun YOGOTopAppBar(
                 modifier = Modifier.fillMaxWidth(),
                 Alignment.Center
             ) {
-                Text(text = text)
+                Text(
+                    text = text,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
             }
         },
         navigationIcon = {

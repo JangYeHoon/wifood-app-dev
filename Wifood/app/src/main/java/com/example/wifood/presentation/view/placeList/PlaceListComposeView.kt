@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
+import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -39,11 +41,7 @@ fun PlaceListComposeView(
     val scope = rememberCoroutineScope()
     val state = viewModel.state
 
-    var visible by remember {
-        mutableStateOf(false)
-    }
-
-    var initallyVisible by remember {
+    val initallyVisible by remember {
         mutableStateOf(false)
     }
     val enterFadeIn = remember {
@@ -89,7 +87,7 @@ fun PlaceListComposeView(
                         Row() {
                             Text(text = group.name)
                             IconButton(onClick = {
-                                visible = !visible
+                                viewModel.onEvent(MainEvent.GroupClicked(group.groupId))
                             }) {
                                 Icon(Icons.Filled.ArrowDropDown, "menu")
                             }
@@ -105,22 +103,23 @@ fun PlaceListComposeView(
                             }
                         }
                         Spacer(modifier = Modifier.width(250.dp))
-//                        IconButton(onClick = {}) {
-//                            Icon(Icons.Filled.Menu, "menu")
-//                            Spacer(modifier = Modifier.height(5.dp))
-//                            Text(text = "회사 근처 맛집")
-//                        }
                         AnimatedVisibility(
-                            visible = visible,
+                            visible = group.groupId == state.selectedGroupId,
                             initiallyVisible = initallyVisible,
                             enter = enterExpand + enterFadeIn,
                             exit = exitCollapse + exitFadeOut
                         ) {
-                            IconButton(onClick = {
-                                navController.navigate(Route.PlaceInfo.route)
-                            }) {
-                                Icon(Icons.Filled.ArrowForward, "place")
-                            }
+                            state.places.filter { it.groupId == group.groupId }
+                                .forEach { place ->
+                                    Column() {
+                                        Text(text = place.name)
+                                        IconButton(onClick = {
+                                            navController.navigate(Route.PlaceInfo.route)
+                                        }) {
+                                            Icon(Icons.Filled.ArrowForward, "place")
+                                        }
+                                    }
+                                }
                         }
                     }
                 }

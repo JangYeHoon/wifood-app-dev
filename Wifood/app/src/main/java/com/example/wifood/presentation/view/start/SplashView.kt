@@ -11,13 +11,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.login.component.LogoImage
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.*
 
 @Composable
-fun SplashView(){
+fun SplashView(
+    navController : NavController
+){
     Scaffold(
     ){
         Column(

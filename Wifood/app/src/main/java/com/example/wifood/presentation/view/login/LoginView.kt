@@ -3,8 +3,10 @@ package com.example.wifood.presentation.view.login
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,9 +59,7 @@ fun LoginView(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
-
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
+    val scrollState = rememberScrollState() // for horizontal mode screen
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collectLatest { event ->
@@ -79,9 +79,12 @@ fun LoginView(
         scaffoldState = scaffoldState
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = sidePaddingValue.dp)
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Image(painter = painterResource(id = R.drawable.ic_frame), contentDescription = "")
             LogoImage(
@@ -123,17 +126,15 @@ fun LoginView(
                 TransparentButton(
                     text = "아이디/비밀번호찾기",
                     textColor = Gray03Color,
-                    width = 150,
                     onClick = {/*TODO*/}
                 )
                 Spacer(Modifier.width(5.dp))
                 TransparentButton(
                     text = "회원가입",
                     textColor = Gray01Color,
-                    width = 80,
                     onClick = {
                         formState.clear()
-                        navController.navigate(Route.Joinin.route)
+                        navController.navigate(Route.MobileAuthentication.route)
                     }
                 )
             }
@@ -141,7 +142,7 @@ fun LoginView(
             Divider(
                 color = DividerColor,
                 modifier = Modifier
-                    .width(280.dp)
+                    .fillMaxWidth()
                     .height(1.dp)
             )
             Spacer(Modifier.height(30.dp))

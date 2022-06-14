@@ -9,6 +9,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
 import kotlinx.coroutines.coroutineScope
+import timber.log.Timber
 
 class WifoodRepositoryImpl(
     private val dao: WifoodDao,
@@ -22,6 +23,10 @@ class WifoodRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override fun insertGroup(group: Group) {
+        api.insertGroup(group)
+    }
+
     override fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
         return api.getPlaceImageUris(groupId, placeId)
     }
@@ -31,7 +36,7 @@ class WifoodRepositoryImpl(
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Log.d("TEST", "Repository Launched")
+        Timber.d("Repository Launched")
         return api.getUser(id)
     }
 
