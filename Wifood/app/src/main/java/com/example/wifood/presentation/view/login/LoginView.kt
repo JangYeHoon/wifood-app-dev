@@ -83,6 +83,7 @@ fun LoginView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Image(painter = painterResource(id = R.drawable.ic_frame), contentDescription = "")
             LogoImage(
                 width = 86,
                 height = 28
