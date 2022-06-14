@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.login.join
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -157,8 +158,8 @@ fun JoininView(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     Modifier.fillMaxWidth(0.6f)
-                ){
-                    Column(){
+                ) {
+                    Column() {
                         TitleText("생년월일")
                         Spacer(Modifier.height(5.dp))
                         InputTextField(
@@ -170,7 +171,7 @@ fun JoininView(
                     }
                 }
                 Spacer(Modifier.width(10.dp))
-                Box(Modifier.fillMaxWidth(1f)){
+                Box(Modifier.fillMaxWidth(1f)) {
                     Column() {
                         TitleText("성별")
                         Spacer(Modifier.height(10.dp))
@@ -241,7 +242,9 @@ fun JoininView(
             )
             Spacer(Modifier.height(48.dp))
 
-            Row(Modifier.padding(start = 51.dp)) {
+            Row(
+                Modifier.align(Alignment.CenterHorizontally)
+            ) {
                 TransparentButton(
                     text = "정보 더 입력하고 자세한 추천 받기 >",
                     textColor = MainColor,
@@ -264,13 +267,13 @@ fun JoininView(
 }
 
 @Composable
-fun test(){
-    var isGenderMale:Boolean = false
+fun test() {
+    var isGenderMale: Boolean = false
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             Modifier.fillMaxWidth(0.65f)
-        ){
-            Column(){
+        ) {
+            Column() {
                 TitleText("생년월일")
                 Spacer(Modifier.height(5.dp))
                 InputTextField(
@@ -282,7 +285,7 @@ fun test(){
             }
         }
         Spacer(Modifier.width(10.dp))
-        Box(Modifier.fillMaxWidth(1f)){
+        Box(Modifier.fillMaxWidth(1f)) {
             Column() {
                 TitleText("성별")
                 Spacer(Modifier.height(10.dp))
