@@ -27,6 +27,10 @@ class WifoodRepositoryImpl(
         api.insertGroup(group)
     }
 
+    override fun updateGroup(group: Group) {
+        api.updateGroup(group)
+    }
+
     override fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {
         return api.getPlaceImageUris(groupId, placeId)
     }

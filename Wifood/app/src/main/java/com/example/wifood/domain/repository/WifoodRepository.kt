@@ -12,6 +12,8 @@ interface WifoodRepository {
 
     fun insertGroup(group: Group)
 
+    fun updateGroup(group: Group)
+
     fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>>
 
     fun deletePlace(groupId: Int, placeId: Int)

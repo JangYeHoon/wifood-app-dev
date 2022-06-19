@@ -26,8 +26,10 @@ class GroupViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Group>("group")?.let { group ->
-            formState = formState.copy(name = group.name, description = group.description)
-            state = state.copy(group = group)
+            if (group.name.isNotEmpty()) {
+                formState = formState.copy(name = group.name, description = group.description)
+                state = state.copy(group = group)
+            }
         }
     }
 
@@ -56,11 +58,17 @@ class GroupViewModel @Inject constructor(
     }
 
     private suspend fun insertGroup() {
-        // TODO "group id 설정 및 pin color random 설정
-        val group =
-            Group(88, "kmh@naver.com", formState.name, formState.description, 1, emptyList())
+        if (state.group != null) {
+            state.group!!.name = formState.name
+            state.group!!.description = formState.description
+            useCases.UpdateGroup(state.group!!)
+        } else {
+            // TODO "group id 설정 및 pin color random 설정
+            val group =
+                Group(88, "kmh@naver.com", formState.name, formState.description, 1, emptyList())
+            useCases.InsertGroup(group)
+        }
         Timber.i("group insert to firebase")
-        useCases.InsertGroup(group)
         validateEventChannel.send(ValidationEvent.Success)
     }
 }

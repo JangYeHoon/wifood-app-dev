@@ -94,6 +94,7 @@ fun PlaceListComposeView(
                             Spacer(modifier = Modifier.width(250.dp))
                             IconButton(
                                 onClick = {
+                                    viewModel.onEvent(MainEvent.GroupSheetClicked(group))
                                     scope.launch {
                                         modalBottomSheetState.show()
                                     }

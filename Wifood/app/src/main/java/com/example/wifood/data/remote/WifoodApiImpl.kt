@@ -62,6 +62,16 @@ class WifoodApiImpl @Inject constructor(
             .addOnFailureListener { Timber.e("Fail group insert : $it") }
     }
 
+    override fun updateGroup(group: Group) {
+        val groupPath =
+            db.child(group.userId.replace('.', '_')).child("Group").child(group.groupId.toString())
+        groupPath.child("groupId").setValue(group.groupId)
+        groupPath.child("name").setValue(group.name)
+        groupPath.child("description").setValue(group.description)
+        groupPath.child("color").setValue(group.color)
+        Timber.i("Firebase group update : $group")
+    }
+
     override fun getPlaceList(): LiveData<MutableList<Place>> {
         val placeList = MutableLiveData<MutableList<Place>>()
         db.child("Place").addValueEventListener(object : ValueEventListener {

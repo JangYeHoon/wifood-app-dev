@@ -3,10 +3,14 @@ package com.example.wifood.presentation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.wifood.domain.model.Group
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
 import com.example.wifood.presentation.view.login.MobileAuthenticationView
@@ -46,19 +50,19 @@ fun Navigation() {
         composable(Route.PlaceInfo.route) {
             PlaceInfoComposeView()
         }
-        composable(Route.Splash.route){
-            SplashView( navController = (navController))
+        composable(Route.Splash.route) {
+            SplashView(navController = (navController))
         }
-        composable(Route.WorkThrough1.route){
-            WorkThroughView1( navController = (navController))
+        composable(Route.WorkThrough1.route) {
+            WorkThroughView1(navController = (navController))
         }
-        composable(Route.WorkThrough1.route){
-            WorkThroughView2( navController = (navController))
+        composable(Route.WorkThrough1.route) {
+            WorkThroughView2(navController = (navController))
         }
-        composable(Route.WorkThrough1.route){
-            WorkThroughView3( navController = (navController))
+        composable(Route.WorkThrough1.route) {
+            WorkThroughView3(navController = (navController))
         }
-        composable(Route.MobileAuthentication.route){
+        composable(Route.MobileAuthentication.route) {
             MobileAuthenticationView(navController = (navController))
         }
         composable(Route.Joinin.route) {
@@ -73,7 +77,10 @@ fun Navigation() {
         composable(Route.EditProfile.route) {
             EditProfileComposeView(navController)
         }
-        composable(Route.GroupAdd.route) {
+        composable(
+            route = "${Route.GroupAdd.route}/{group}",
+            arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
+        ) {
             GroupAddView(navController)
         }
     }
