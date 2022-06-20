@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -42,6 +43,7 @@ import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @Composable
 fun JoininView(
     navController: NavController,
@@ -49,10 +51,9 @@ fun JoininView(
 ) {
     val formState = viewModel.formState
     val scrollState = rememberScrollState()
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.validationEvents.collectLatest { event ->
@@ -277,8 +278,11 @@ fun JoininView(
                     text = "정보 더 입력하고 자세한 추천 받기 >",
                     textColor = MainColor,
                     textSize = 12,
-                    onClick = {/*TODO*/ }
+                    onClick = { showDialog.value = true }
                 )
+                if (showDialog.value){
+                    GetUserFavorView()
+                }
             }
             Spacer(Modifier.height(17.dp))
             MainButton(

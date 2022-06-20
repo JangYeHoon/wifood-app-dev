@@ -14,6 +14,7 @@ import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
 import com.example.wifood.presentation.view.login.MobileAuthenticationView
+import com.example.wifood.presentation.view.login.join.GetUserFavorView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
@@ -66,7 +67,7 @@ fun Navigation() {
             MobileAuthenticationView(navController = (navController))
         }
         composable(Route.Joinin.route) {
-            JoininView(navController)
+            JoininView(navController = navController)
         }
         composable(Route.EditPlace.route) {
             EditPlaceComposeView(navController)
