@@ -98,6 +98,10 @@ fun JoininView(
                     }
                 }
             )
+            ErrorText(
+                text = "**이미 사용중인 아이디입니다",
+                visibility = true,
+            )
             Spacer(Modifier.height(20.dp))
 
             // Set password
@@ -114,6 +118,10 @@ fun JoininView(
                     }
                 }
             )
+            ErrorText(
+                text = "**올바른 비밀번호를 설정해주세요",
+                visibility = true,
+            )
             // Set password check
             InputTextField(
                 text = formState.repeatedPassword,
@@ -123,6 +131,10 @@ fun JoininView(
                         viewModel.onEvent(JoininEvent.RepeatedPasswordChanged(it))
                     }
                 }
+            )
+            ErrorText(
+                text = "**비밀번호가 일치하지 않습니다.",
+                visibility = true,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -140,6 +152,10 @@ fun JoininView(
                 },
                 placeholder = "닉네임 (2~15자)"
             )
+            ErrorText(
+                text = "**이미 사용중인 닉네임입니다",
+                visibility = true,
+            )
             Spacer(Modifier.height(20.dp))
 
             // Set address
@@ -153,6 +169,10 @@ fun JoininView(
                         viewModel.onEvent(JoininEvent.AddressChanged(it))
                     }
                 },
+            )
+            ErrorText(
+                text = "**주소를 입력해주세요",
+                visibility = true,
             )
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -193,6 +213,10 @@ fun JoininView(
                     }
                 }
             }
+            ErrorText(
+                text = "**생년월일을 올바르게 입력해주세요",
+                visibility = true,
+            )
             Spacer(Modifier.height(28.dp))
             /*Divider(
                 color = DividerColor,
@@ -239,6 +263,10 @@ fun JoininView(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 10.sp
+            )
+            ErrorText(
+                text = "   **개인정보를 동의해주세요",
+                visibility = true,
             )
             Spacer(Modifier.height(48.dp))
 
