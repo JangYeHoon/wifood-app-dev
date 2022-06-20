@@ -169,6 +169,7 @@ fun LoginView(
                     onClick = {/*TODO*/}
                 )
             }
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }
