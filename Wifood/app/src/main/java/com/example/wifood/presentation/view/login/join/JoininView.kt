@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
@@ -42,6 +43,7 @@ import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @Composable
 fun JoininView(
     navController: NavController,
@@ -49,10 +51,9 @@ fun JoininView(
 ) {
     val formState = viewModel.formState
     val scrollState = rememberScrollState()
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.validationEvents.collectLatest { event ->
@@ -98,6 +99,10 @@ fun JoininView(
                     }
                 }
             )
+            ErrorText(
+                text = "**이미 사용중인 아이디입니다",
+                visibility = true,
+            )
             Spacer(Modifier.height(20.dp))
 
             // Set password
@@ -114,6 +119,10 @@ fun JoininView(
                     }
                 }
             )
+            ErrorText(
+                text = "**올바른 비밀번호를 설정해주세요",
+                visibility = true,
+            )
             // Set password check
             InputTextField(
                 text = formState.repeatedPassword,
@@ -123,6 +132,10 @@ fun JoininView(
                         viewModel.onEvent(JoininEvent.RepeatedPasswordChanged(it))
                     }
                 }
+            )
+            ErrorText(
+                text = "**비밀번호가 일치하지 않습니다.",
+                visibility = true,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -140,6 +153,10 @@ fun JoininView(
                 },
                 placeholder = "닉네임 (2~15자)"
             )
+            ErrorText(
+                text = "**이미 사용중인 닉네임입니다",
+                visibility = true,
+            )
             Spacer(Modifier.height(20.dp))
 
             // Set address
@@ -153,6 +170,10 @@ fun JoininView(
                         viewModel.onEvent(JoininEvent.AddressChanged(it))
                     }
                 },
+            )
+            ErrorText(
+                text = "**주소를 입력해주세요",
+                visibility = true,
             )
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -193,6 +214,10 @@ fun JoininView(
                     }
                 }
             }
+            ErrorText(
+                text = "**생년월일을 올바르게 입력해주세요",
+                visibility = true,
+            )
             Spacer(Modifier.height(28.dp))
             /*Divider(
                 color = DividerColor,
@@ -240,6 +265,10 @@ fun JoininView(
                 fontWeight = FontWeight.Normal,
                 fontSize = 10.sp
             )
+            ErrorText(
+                text = "   **개인정보를 동의해주세요",
+                visibility = true,
+            )
             Spacer(Modifier.height(48.dp))
 
             Row(
@@ -249,8 +278,11 @@ fun JoininView(
                     text = "정보 더 입력하고 자세한 추천 받기 >",
                     textColor = MainColor,
                     textSize = 12,
-                    onClick = {/*TODO*/ }
+                    onClick = { showDialog.value = true }
                 )
+                if (showDialog.value){
+                    GetUserFavorView()
+                }
             }
             Spacer(Modifier.height(17.dp))
             MainButton(

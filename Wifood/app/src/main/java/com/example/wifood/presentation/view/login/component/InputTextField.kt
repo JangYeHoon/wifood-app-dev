@@ -98,9 +98,8 @@ fun InputTextField(
     resetIconOffset:Int = 10,
 ){
     var text = text
-    val focusRequester = remember { FocusRequester() }
 
-    Column(Modifier.focusRequester(focusRequester)){
+    Column(){
         Spacer(Modifier.height(10.dp))
         Box(
             Modifier.fillMaxWidth()
@@ -162,8 +161,5 @@ fun InputTextField(
             color = if (!text.isEmpty()) MainColor else EnableColor
         )
         Spacer(Modifier.height(5.dp))
-    }
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
     }
 }

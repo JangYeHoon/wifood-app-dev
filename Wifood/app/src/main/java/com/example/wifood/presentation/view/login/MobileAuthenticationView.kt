@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
+import com.example.wifood.presentation.view.login.component.ErrorText
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.TextInsideButton
 import com.example.wifood.presentation.view.login.component.TitleText
@@ -66,10 +67,18 @@ fun MobileAuthenticationView(
                     onClick = {},
                 )
             }
+            ErrorText(
+                text = "올바른 핸드폰 번호를 입력해주세요",
+                visibility = true,
+            )
             InputTextField(
                 text = "",
                 placeholder = "인증번호 입력 (3분 이내)",
                 onValueChange = {},
+            )
+            ErrorText(
+                text = "인증번호와 일치하지 않습니다. 다시 시도해주세요",
+                visibility = true,
             )
             Spacer(Modifier.height(20.dp))
 

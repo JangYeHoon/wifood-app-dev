@@ -37,10 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.login.component.LogoImage
-import com.example.wifood.presentation.view.login.component.RoundedTextField
-import com.example.wifood.presentation.view.login.component.SnsIconButton
-import com.example.wifood.presentation.view.login.component.TransparentButton
+import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontPretendard
 import com.example.wifood.ui.theme.*
@@ -100,6 +97,10 @@ fun LoginView(
                     }
                 }
             )
+            ErrorText(
+                text = "아이디가 존재하지 않습니다",
+                visibility = true,
+            )
             Spacer(Modifier.height(5.dp))
             RoundedTextField(
                 text = formState.password,
@@ -110,6 +111,10 @@ fun LoginView(
                         viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
                     }
                 }
+            )
+            ErrorText(
+                text = "비밀번호가 일치하지 않습니다",
+                visibility = true,
             )
             Spacer(Modifier.height(10.dp))
             MainButton(
@@ -169,6 +174,7 @@ fun LoginView(
                     onClick = {/*TODO*/}
                 )
             }
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }
