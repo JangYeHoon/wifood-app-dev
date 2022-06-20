@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
@@ -36,8 +39,11 @@ import kotlinx.coroutines.flow.collectLatest
 @ExperimentalCoilApi
 @Composable
 fun PlaceInfoComposeView(
+    navController: NavController,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -47,8 +53,8 @@ fun PlaceInfoComposeView(
         ) {
             Image(
                 painter = rememberImagePainter(
-                    data = if (viewModel.state.placeImageUris.isNotEmpty())
-                        viewModel.state.placeImageUris[0]
+                    data = if (state.placeImageUris.isNotEmpty())
+                        state.placeImageUris[0]
                     else
                         R.drawable.plcae_image
                 ),
@@ -103,14 +109,14 @@ fun PlaceInfoComposeView(
                             )
                     ) {
                         Text(
-                            text = "#맛집 테마",
+                            text = state.group!!.description,
                             fontSize = 10.sp
                         )
 
                         Spacer(Modifier.height(4.dp))
 
                         Text(
-                            text = "맛집 이름",
+                            text = state.place!!.name,
                             fontSize = 15.sp
                         )
 
@@ -120,7 +126,7 @@ fun PlaceInfoComposeView(
                             // TODO: items(메뉴) 리스트로 변경
                             item {
                                 Text(
-                                    text = "하와이안 피자",
+                                    text = state.place.menu,
                                     fontSize = 12.sp,
                                     color = Color.Gray
                                 )
@@ -131,29 +137,32 @@ fun PlaceInfoComposeView(
 
                         Row {
                             Text(
-                                text = "맛",
+                                text = "평점",
                                 fontSize = 12.sp
                             )
                             Text(
-                                text = "4.2",
+                                text = state.place.score.toString(),
                                 fontSize = 16.sp
                             )
-                            Text(
-                                text = "청결",
-                                fontSize = 12.sp
-                            )
-                            Text(
-                                text = "4.2",
-                                fontSize = 16.sp
-                            )
-                            Text(
-                                text = "친절",
-                                fontSize = 12.sp
-                            )
-                            Text(
-                                text = "4.2",
-                                fontSize = 16.sp
-                            )
+                            // TODO "함수로 빼서 받을까"
+                            if (state.place.kindChk) {
+                                Text(
+                                    text = "#친절",
+                                    fontSize = 12.sp
+                                )
+                            }
+                            if (state.place.cleanChk) {
+                                Text(
+                                    text = "#청결",
+                                    fontSize = 12.sp
+                                )
+                            }
+                            if (state.place.tasteChk) {
+                                Text(
+                                    text = "#맛",
+                                    fontSize = 12.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -164,20 +173,28 @@ fun PlaceInfoComposeView(
                         contentDescription = ""
                     )
 
-                    Text(text = "서울시 용산구 효창동 522-2", fontSize = 13.sp)
+                    Text(text = state.place!!.address, fontSize = 13.sp)
                 }
 
                 GoogleMap(
                     modifier = Modifier
-                        .size(250.dp, 55.dp),
+                        .size(300.dp, 300.dp),
                     cameraPositionState = rememberCameraPositionState {
                         position =
-                            CameraPosition.fromLatLngZoom(LatLng(37.56253812, 126.9856316), 15f)
+                            CameraPosition.fromLatLngZoom(
+                                LatLng(
+                                    state.place!!.latitude,
+                                    state.place.longitude
+                                ), 15f
+                            )
                     }
                 ) {
                     Marker(
-                        position = LatLng(37.56253812, 126.9856316),
-                        title = "명동교자 본점"
+                        position = LatLng(
+                            state.place!!.latitude,
+                            state.place.longitude
+                        ),
+                        title = state.place.name
                     )
                 }
 
@@ -190,14 +207,13 @@ fun PlaceInfoComposeView(
 
                 Text(text = "메뉴", fontSize = 15.sp)
 
-                LazyColumn {
-                    // TODO: items(메뉴평가) 리스트로 변경
-                    item {
+                state.place!!.menuList.forEach {
+                    Column() {
                         Row {
-                            Text(text = "알리오 올리오", fontSize = 12.sp)
-                            Text(text = "18,000원", fontSize = 12.sp)
+                            Text(text = it.name, fontSize = 12.sp)
+                            Text(text = it.price.toString(), fontSize = 12.sp)
                         }
-                        Text(text = "비린내", fontSize = 12.sp)
+                        Text(text = it.memo, fontSize = 12.sp)
                     }
                 }
 
@@ -209,7 +225,7 @@ fun PlaceInfoComposeView(
                 )
 
                 Text(text = "메모", fontSize = 15.sp)
-                Text(text = "골목에 있어서 차 못들어감 참고하기", fontSize = 12.sp)
+                Text(text = state.place.review, fontSize = 12.sp)
             }
         }
     }

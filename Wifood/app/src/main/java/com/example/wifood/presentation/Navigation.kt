@@ -8,7 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.*
@@ -24,7 +26,10 @@ import com.example.wifood.presentation.view.start.WorkThroughView1
 import com.example.wifood.presentation.view.start.WorkThroughView2
 import com.example.wifood.presentation.view.start.WorkThroughView3
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalCoilApi
+@ExperimentalSerializationApi
 @ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -47,8 +52,14 @@ fun Navigation() {
         composable(Route.MyPage.route) {
             MyPageComposeView(navController)
         }
-        composable(Route.PlaceInfo.route) {
-            PlaceInfoComposeView()
+        composable(
+            route = "${Route.PlaceInfo.route}/{place}/{group}",
+            arguments = listOf(
+                navArgument("place") { type = createParcelableNavType<Place>() },
+                navArgument("group") { type = createParcelableNavType<Group>() },
+            )
+        ) {
+            PlaceInfoComposeView(navController)
         }
         composable(Route.Splash.route) {
             SplashView(navController = (navController))
