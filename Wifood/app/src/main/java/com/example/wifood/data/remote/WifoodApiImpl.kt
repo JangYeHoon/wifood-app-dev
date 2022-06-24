@@ -116,7 +116,7 @@ class WifoodApiImpl @Inject constructor(
     override fun deletePlace(groupId: Int, placeId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete place : groupId-$groupId, placeId-$placeId")
-        db.child("kmh@naver.com/$groupId/$placeId").removeValue()
+        db.child("kmh@naver_com/Group/$groupId/Place/$placeId").removeValue()
             .addOnSuccessListener { Timber.i("Success place delete") }
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
