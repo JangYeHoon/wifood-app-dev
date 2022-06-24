@@ -20,7 +20,7 @@ class WifoodRepositoryImpl(
     }
 
     override fun deleteGroup(groupId: Int) {
-        TODO("Not yet implemented")
+        return api.deleteGroup(groupId)
     }
 
     override fun insertGroup(group: Group) {

@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.domain.model.Group
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.main.MainEvent
+import com.example.wifood.presentation.view.main.MainViewModel
 import com.google.gson.Gson
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -27,7 +30,8 @@ import timber.log.Timber
 @Composable
 fun BottomSheetContent(
     group: Group?,
-    navController: NavController
+    navController: NavController,
+    viewModel: MainViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     Column {
@@ -62,6 +66,7 @@ fun BottomSheetContent(
                 title,
                 Toast.LENGTH_SHORT
             ).show()
+            viewModel.onEvent(MainEvent.DeleteGroupEvent(group!!.groupId))
         }
         Spacer(modifier = Modifier.height(8.dp))
         BottomSheetListItem(

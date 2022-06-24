@@ -50,7 +50,7 @@ class WifoodApiImpl @Inject constructor(
     override fun deleteGroup(groupId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete group : groupId-$groupId")
-        db.child("kmh@naver.com/$groupId").removeValue()
+        db.child("kmh@naver_com/Group/$groupId").removeValue()
             .addOnSuccessListener { Timber.i("Success group delete") }
             .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
