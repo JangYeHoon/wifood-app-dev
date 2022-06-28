@@ -1,5 +1,8 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -24,29 +27,50 @@ import com.example.wifood.presentation.view.placeList.component.ListSelectionBut
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
 
-@Preview(showBackground = true)
 @Composable
-fun PlaceInfoWriteView() {
+fun PlaceInfoWriteView(
+    navController: NavController,
+    viewModel: PlaceInfoWriteViewModel = hiltViewModel()
+) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     val scrollState = rememberScrollState()
     val visitState = remember { mutableStateOf(false) }
+    val formState = viewModel.formState
     val initialRating = 1f
     var rating: Float by remember { mutableStateOf(initialRating) }
+
+    val context = LocalContext.current
+    val intent =
+        Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, viewModel.field)
+            .setCountry("KR")
+            .build(context)
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val searchResult = Autocomplete.getPlaceFromIntent(it.data)
+                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
+            }
+        }
 
     Scaffold(
         topBar = {
@@ -73,8 +97,8 @@ fun PlaceInfoWriteView() {
                     modifier = Modifier.height(1.dp)
                 )
                 ListSelectionButtonWithIcon(
-                    buttonText = "맛집 선택",
-                    onClick = {/*TODO*/ }
+                    buttonText = formState.placeName,
+                    onClick = { launcher.launch(intent) }
                 )
                 Divider(
                     color = DividerColor2,

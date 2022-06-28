@@ -122,6 +122,8 @@ dependencies {
     // Compose GoogleMap
     implementation "com.google.maps.android:maps-compose:1.0.0"
     implementation "com.google.android.gms:play-services-maps:18.0.2"
+    implementation "com.google.android.gms:play-services-location:19.0.1"
+    implementation "com.google.android.libraries.places:places:2.6.0"
 
     // Compose Rating Bar OpenSource
     implementation 'io.github.a914-gowtham:compose-ratingbar:1.2.3'

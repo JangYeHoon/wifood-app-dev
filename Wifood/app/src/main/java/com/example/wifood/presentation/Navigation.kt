@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,11 +16,12 @@ import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.*
 import com.example.wifood.presentation.view.login.LoginView
 import com.example.wifood.presentation.view.login.MobileAuthenticationView
-import com.example.wifood.presentation.view.login.join.GetUserFavorView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
+import com.example.wifood.presentation.view.map.SearchPlaceComposeView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
+import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
 import com.example.wifood.presentation.view.start.SplashView
 import com.example.wifood.presentation.view.start.WorkThroughView1
@@ -83,7 +83,7 @@ fun Navigation() {
             JoininView(navController = navController)
         }
         composable(Route.EditPlace.route) {
-            EditPlaceComposeView(navController)
+            PlaceInfoWriteView(navController)
         }
         composable(Route.Search.route) {
             SearchPlaceComposeView(navController)

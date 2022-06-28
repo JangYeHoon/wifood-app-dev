@@ -44,6 +44,7 @@ fun BottomSheetContent(
                 title,
                 Toast.LENGTH_SHORT
             ).show()
+            navController.navigate(Route.EditPlace.route)
         }
         BottomSheetListItem(
             icon = Icons.Default.Edit,
