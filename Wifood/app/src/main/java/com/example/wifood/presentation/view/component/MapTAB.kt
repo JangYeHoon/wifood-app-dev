@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.view.ui.theme.Main
@@ -24,7 +25,10 @@ fun MapTopAppBar(
     TopAppBar(
         title = {
             TextField(
-                value = "",
+                /*
+                For sharedPreference test
+                */
+                value = WifoodApp.pref.getString("user_id", "No user data"),
                 onValueChange = {
                     navController.navigate(Route.Search.route)
                 },

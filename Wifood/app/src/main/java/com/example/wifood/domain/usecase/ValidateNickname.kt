@@ -10,6 +10,9 @@ class ValidateNickname @Inject constructor(
 ) {
 
     operator fun invoke(nickname: String): ValidationResult {
+        // empty check
+        // 중복 체크
+        // 특수문자 X
         if (nickname.length < 2 || nickname.length > 15) {
             return ValidationResult(
                 successful = false,
