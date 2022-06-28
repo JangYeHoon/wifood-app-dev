@@ -6,7 +6,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.User
 
 interface WifoodRepository {
-    fun getGroupList(user: User): LiveData<MutableList<Group>>
+    fun getGroups(): LiveData<MutableList<Group>>
 
     fun deleteGroup(groupId: Int)
 

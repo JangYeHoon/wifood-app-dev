@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.data.remote.dto.TasteDto
@@ -25,9 +26,9 @@ import javax.inject.Inject
 class WifoodApiImpl @Inject constructor(
     private val db: DatabaseReference
 ) : WifoodApi {
-    override fun getGroupList(user: User): LiveData<MutableList<Group>> {
+    override fun getGroups(): LiveData<MutableList<Group>> {
         val groupList = MutableLiveData<MutableList<Group>>()
-        val id = user.userId.replace('.', '_')
+        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: MutableList<Group> = mutableListOf()

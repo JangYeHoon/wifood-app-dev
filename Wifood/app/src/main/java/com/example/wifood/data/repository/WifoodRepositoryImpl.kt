@@ -15,8 +15,8 @@ class WifoodRepositoryImpl(
     private val dao: WifoodDao,
     private val api: WifoodApi
 ) : WifoodRepository {
-    override fun getGroupList(user: User): LiveData<MutableList<Group>> {
-        return api.getGroupList(user)
+    override fun getGroups(): LiveData<MutableList<Group>> {
+        return api.getGroups()
     }
 
     override fun deleteGroup(groupId: Int) {

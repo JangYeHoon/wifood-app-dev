@@ -38,7 +38,8 @@ object AppModule {
             GetPlaceImageUris = GetPlaceImageUris(repository),
             DeleteGroup = DeleteGroup(repository),
             InsertGroup = InsertGroup(repository),
-            UpdateGroup = UpdateGroup(repository)
+            UpdateGroup = UpdateGroup(repository),
+            GetGroups = GetGroups(repository)
         )
     }
 

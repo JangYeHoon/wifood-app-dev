@@ -9,7 +9,7 @@ import com.example.wifood.domain.model.User
 
 interface WifoodApi {
 
-    fun getGroupList(user: User): LiveData<MutableList<Group>>
+    fun getGroups(): LiveData<MutableList<Group>>
 
     fun deleteGroup(groupId: Int)
 

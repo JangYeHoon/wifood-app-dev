@@ -11,6 +11,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,12 +29,18 @@ class PlaceInfoWriteViewModel @Inject constructor(
         savedStateHandle.get<com.example.wifood.domain.model.Place>("place")?.let { place ->
             state = state.copy(place = place)
         }
+
+        useCases.GetGroups().observeForever {
+            formState = formState.copy(groups = it)
+            Timber.i("get groups from firebase $it")
+        }
     }
 
     fun onEvent(event: PlaceInfoWriteFormEvent) {
         when (event) {
             is PlaceInfoWriteFormEvent.GroupSelected -> {
-                TODO()
+                formState = formState.copy(groupName = event.group.name)
+                state = state.copy(groupId = event.group.groupId)
             }
             is PlaceInfoWriteFormEvent.PlaceSelected -> {
                 updatePlaceFromSearchGoogleAPI(event.searchPlace)

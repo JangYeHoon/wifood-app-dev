@@ -19,7 +19,6 @@ import com.example.wifood.presentation.view.login.MobileAuthenticationView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.map.SearchPlaceComposeView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
