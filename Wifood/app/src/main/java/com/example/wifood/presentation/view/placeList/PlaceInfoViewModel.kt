@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,17 +25,15 @@ class PlaceInfoViewModel @Inject constructor(
     var state by mutableStateOf(PlaceInfoState())
 
     init {
-        // PlaceList에서 받은 place 정보
         savedStateHandle.get<Place>("place")?.let { place ->
             state = state.copy(place = place)
         }
 
-        // PlaceList에서 받은 groupNmae 정보
-        savedStateHandle.get<String>("groupName")?.let { groupName ->
-            state = state.copy(groupName = groupName)
+        savedStateHandle.get<Group>("group")?.let { group ->
+            state = state.copy(group = group)
         }
 
-        Timber.i("get place info from PlaceList : " + state.place.toString() + ", " + state.groupName)
+        Timber.i("get place info from PlaceList : " + state.place.toString() + ", " + state.group)
 
         // Firebase storage에서 해당 place에 저장된 이미지 리스트 받아와서 저장
 //        state.place?.let {

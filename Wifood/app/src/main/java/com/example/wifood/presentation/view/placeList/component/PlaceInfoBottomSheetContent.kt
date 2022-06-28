@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.component
+package com.example.wifood.presentation.view.placeList.component
 
 import android.net.Uri
 import android.widget.Toast
@@ -14,30 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.example.wifood.R
-import com.example.wifood.domain.model.Group
-import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.main.MainEvent
-import com.example.wifood.presentation.view.main.MainViewModel
-import com.google.gson.Gson
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import timber.log.Timber
+import com.example.wifood.domain.model.Place
+import com.example.wifood.presentation.view.component.BottomSheetListItem
+import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
+import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
 
 @Composable
-fun BottomSheetContent(
-    group: Group?,
+fun PlaceInfoBottomSheetContent(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     Column {
         BottomSheetListItem(
             icon = Icons.Default.AddCircle,
-            title = "맛집 추가"
+            title = "맛집 수정"
         ) { title ->
             Toast.makeText(
                 context,
@@ -47,26 +39,15 @@ fun BottomSheetContent(
         }
         BottomSheetListItem(
             icon = Icons.Default.Edit,
-            title = "맛집 그룹 수정"
+            title = "맛집 삭제"
         ) { title ->
             Toast.makeText(
                 context,
                 title,
                 Toast.LENGTH_SHORT
             ).show()
-            val groupJson = Uri.encode(Gson().toJson(group))
-            navController.navigate("${Route.GroupAdd.route}/${groupJson}")
-        }
-        BottomSheetListItem(
-            icon = Icons.Default.Delete,
-            title = "맛집 그룹 삭제"
-        ) { title ->
-            Toast.makeText(
-                context,
-                title,
-                Toast.LENGTH_SHORT
-            ).show()
-            viewModel.onEvent(MainEvent.DeleteGroupEvent(group!!.groupId))
+            viewModel.onEvent(PlaceInfoEvent.PlaceDeleteEvent)
+            navController.popBackStack()
         }
         Spacer(modifier = Modifier.height(8.dp))
         BottomSheetListItem(

@@ -15,6 +15,7 @@ data class MainState(
     val places: List<Place> = emptyList(),
     val menus: List<MenuGrade> = emptyList(),
     val selected: String = NavItem.Map.id,
+    val selectedGroupSheet: Group? = null,
     val isLoading: Boolean = false,
     val properties: MapProperties = MapProperties(),
     val selectedGroupId: Int = 0,

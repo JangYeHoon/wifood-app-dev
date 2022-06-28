@@ -20,11 +20,15 @@ class WifoodRepositoryImpl(
     }
 
     override fun deleteGroup(groupId: Int) {
-        TODO("Not yet implemented")
+        return api.deleteGroup(groupId)
     }
 
     override fun insertGroup(group: Group) {
         api.insertGroup(group)
+    }
+
+    override fun updateGroup(group: Group) {
+        api.updateGroup(group)
     }
 
     override fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>> {

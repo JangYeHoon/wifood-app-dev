@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -28,6 +29,7 @@ import com.example.wifood.presentation.view.component.AnimateVisibility
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -94,6 +96,7 @@ fun PlaceListComposeView(
                             Spacer(modifier = Modifier.width(250.dp))
                             IconButton(
                                 onClick = {
+                                    viewModel.onEvent(MainEvent.GroupSheetClicked(group))
                                     scope.launch {
                                         modalBottomSheetState.show()
                                     }
@@ -114,7 +117,9 @@ fun PlaceListComposeView(
                                     Column() {
                                         Text(text = place.name)
                                         IconButton(onClick = {
-                                            navController.navigate(Route.PlaceInfo.route)
+                                            val placeJson = Uri.encode(Gson().toJson(place))
+                                            val groupJson = Uri.encode(Gson().toJson(group))
+                                            navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
                                         }) {
                                             Icon(Icons.Filled.ArrowForward, "place")
                                         }

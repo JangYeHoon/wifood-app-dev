@@ -7,6 +7,8 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply plugin: "kotlinx-serialization"
+
 android {
     compileSdk 32
 
@@ -153,4 +155,8 @@ dependencies {
 
     // Rating bar
     //implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.3'
+
+    // kotlin serialization
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // or "kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1" // JVM dependency
 }

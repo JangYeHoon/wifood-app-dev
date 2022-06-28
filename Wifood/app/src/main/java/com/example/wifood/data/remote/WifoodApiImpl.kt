@@ -50,7 +50,7 @@ class WifoodApiImpl @Inject constructor(
     override fun deleteGroup(groupId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete group : groupId-$groupId")
-        db.child("kmh@naver.com/$groupId").removeValue()
+        db.child("kmh@naver_com/Group/$groupId").removeValue()
             .addOnSuccessListener { Timber.i("Success group delete") }
             .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
@@ -60,6 +60,16 @@ class WifoodApiImpl @Inject constructor(
             .setValue(group)
             .addOnSuccessListener { Timber.i("Success group insert") }
             .addOnFailureListener { Timber.e("Fail group insert : $it") }
+    }
+
+    override fun updateGroup(group: Group) {
+        val groupPath =
+            db.child(group.userId.replace('.', '_')).child("Group").child(group.groupId.toString())
+        groupPath.child("groupId").setValue(group.groupId)
+        groupPath.child("name").setValue(group.name)
+        groupPath.child("description").setValue(group.description)
+        groupPath.child("color").setValue(group.color)
+        Timber.i("Firebase group update : $group")
     }
 
     override fun getPlaceList(): LiveData<MutableList<Place>> {
@@ -106,7 +116,7 @@ class WifoodApiImpl @Inject constructor(
     override fun deletePlace(groupId: Int, placeId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete place : groupId-$groupId, placeId-$placeId")
-        db.child("kmh@naver.com/$groupId/$placeId").removeValue()
+        db.child("kmh@naver_com/Group/$groupId/Place/$placeId").removeValue()
             .addOnSuccessListener { Timber.i("Success place delete") }
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }

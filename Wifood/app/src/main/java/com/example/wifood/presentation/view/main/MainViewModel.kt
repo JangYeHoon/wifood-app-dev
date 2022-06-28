@@ -34,6 +34,9 @@ class MainViewModel @Inject constructor(
             is MainEvent.GroupClicked -> {
                 state = state.copy(selectedGroupId = event.selectedGroupId)
             }
+            is MainEvent.GroupSheetClicked -> {
+                state = state.copy(selectedGroupSheet = event.selectedGroup)
+            }
             is MainEvent.DeleteGroupEvent -> {
                 useCases.DeleteGroup(event.groupId)
             }

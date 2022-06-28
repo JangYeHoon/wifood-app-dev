@@ -32,6 +32,7 @@ import androidx.core.content.PermissionChecker.checkPermission
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.wifood.presentation.util.*
@@ -51,6 +52,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @ExperimentalPermissionsApi
 @ExperimentalAnimationApi
@@ -103,7 +105,7 @@ fun MainView(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            BottomSheetContent()
+            BottomSheetContent(state.selectedGroupSheet, navController)
         },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
