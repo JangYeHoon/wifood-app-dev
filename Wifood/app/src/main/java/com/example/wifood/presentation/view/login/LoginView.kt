@@ -36,6 +36,7 @@ import com.example.wifood.ui.theme.robotoFamily
 import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
@@ -122,6 +123,7 @@ fun LoginView(
                 text = "로그인",
                 onClick = {
                     scope.launch {
+                        WifoodApp.pref.setString("user_id", viewModel.formState.email)
                         viewModel.onEvent(LoginFormEvent.Login)
                     }
                 }
