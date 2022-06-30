@@ -1,5 +1,6 @@
 package com.example.wifood.data.remote
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class WifoodApiImpl @Inject constructor(
@@ -114,6 +116,14 @@ class WifoodApiImpl @Inject constructor(
         return imageUrisForObserve
     }
 
+    override fun insertPlace(place: Place) {
+        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
+        db.child(id).child("Group").child(place.groupId.toString()).child("Place")
+            .child(place.placeId.toString()).setValue(place)
+            .addOnSuccessListener { Timber.i("Success place insert") }
+            .addOnFailureListener { Timber.e("Fail place insert : $it") }
+    }
+
     override fun deletePlace(groupId: Int, placeId: Int) {
         // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete place : groupId-$groupId, placeId-$placeId")
@@ -161,5 +171,17 @@ class WifoodApiImpl @Inject constructor(
     override fun insertUser(user: User) {
         db.push().setValue(user)
         // 씨발 왜 안들어가  ㅡㅡ
+    }
+
+    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>) {
+        val storage = FirebaseStorage.getInstance().reference
+        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
+
+        images.forEachIndexed { index, bitmap ->
+            val byteArray = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray)
+            val image = byteArray.toByteArray()
+            storage.child("$id/$groupId/$placeId/").child("$index").putBytes(image)
+        }
     }
 }

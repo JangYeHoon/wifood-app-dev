@@ -19,4 +19,6 @@ sealed class PlaceInfoWriteFormEvent {
     data class MenuPriceChange(val menuPrice: String) : PlaceInfoWriteFormEvent()
     data class MenuMemoChange(val menuMemo: String) : PlaceInfoWriteFormEvent()
     data class PlaceImagesAdd(val image: Bitmap) : PlaceInfoWriteFormEvent()
+    object MenuGradeAddBtnClick : PlaceInfoWriteFormEvent()
+    object PlaceAddBtnClick : PlaceInfoWriteFormEvent()
 }

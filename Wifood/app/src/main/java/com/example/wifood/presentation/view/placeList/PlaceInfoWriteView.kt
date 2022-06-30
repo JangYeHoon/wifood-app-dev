@@ -15,6 +15,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -47,6 +48,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.domain.model.MenuGrade
+import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.SnsIconButton
@@ -58,6 +62,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -73,6 +78,7 @@ fun PlaceInfoWriteView(
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
     val intent =
@@ -83,7 +89,9 @@ fun PlaceInfoWriteView(
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val searchResult = Autocomplete.getPlaceFromIntent(it.data)
-                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
+                }
             }
         }
     val takePhotoFromCameraLauncher = // 카메라로 사진 찍어서 가져오기
@@ -109,10 +117,31 @@ fun PlaceInfoWriteView(
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(uri.parseBitmap(context)))
+                    scope.launch {
+                        viewModel.onEvent(
+                            PlaceInfoWriteFormEvent.PlaceImagesAdd(
+                                uri.parseBitmap(
+                                    context
+                                )
+                            )
+                        )
+                    }
                 }
             }
         }
+
+    LaunchedEffect(key1 = context) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    navController.navigate(Route.Main.route)
+                }
+                is ValidationEvent.Error -> {
+                    scaffoldState.snackbarHostState.showSnackbar(event.message)
+                }
+            }
+        }
+    }
 
     ModalBottomSheetLayout(
         sheetContent = { PlaceWriteGroupsBottomSheetContent() },
@@ -358,7 +387,9 @@ fun PlaceInfoWriteView(
                                 Image(
                                     bitmap = image.asImageBitmap(),
                                     contentDescription = "show place image bitmap",
-                                    modifier = Modifier.width(60.dp).height(60.dp)
+                                    modifier = Modifier
+                                        .width(60.dp)
+                                        .height(60.dp)
                                 )
                             }
                         }
@@ -398,7 +429,11 @@ fun PlaceInfoWriteView(
                         SnsIconButton(
                             resourceId = R.drawable.ic_add_menu_eval_button,
                             size = 17,
-                            onClick = {/*TODO*/ }
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.MenuGradeAddBtnClick)
+                                }
+                            }
                         )
                     }
                     Spacer(Modifier.height(19.dp))
@@ -432,6 +467,29 @@ fun PlaceInfoWriteView(
                             }
                         }
                     )
+                    formState.menuGrades.forEach { menuGrade ->
+                        Text(
+                            text = menuGrade.name,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                        Text(
+                            text = menuGrade.price.toString(),
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                        Text(
+                            text = menuGrade.memo,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                    }
                     Spacer(Modifier.height(70.dp))
                     Box(
                         modifier = Modifier
@@ -441,7 +499,11 @@ fun PlaceInfoWriteView(
 
                     MainButton(
                         text = "맛집 등록하기",
-                        onClick = {/*TODO*/ }
+                        onClick = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
+                            }
+                        }
                     )
                     Spacer(Modifier.height(50.dp))
                 }

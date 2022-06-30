@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 data class Place(
-    val placeId: Int,
-    val groupId: Int,
+    var placeId: Int,
+    var groupId: Int,
     var name: String,
     var menu: String,
     var visited: Boolean,
@@ -23,6 +23,6 @@ data class Place(
     var latitude: Double,
     var longitude: Double,
     var address: String,
-    val menuList: List<MenuGrade>,
-    val vibeChk: Boolean
+    var menuList: List<MenuGrade>,
+    var vibeChk: Boolean
 ) : Parcelable

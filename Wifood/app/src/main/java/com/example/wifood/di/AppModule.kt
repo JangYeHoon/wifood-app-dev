@@ -39,7 +39,9 @@ object AppModule {
             DeleteGroup = DeleteGroup(repository),
             InsertGroup = InsertGroup(repository),
             UpdateGroup = UpdateGroup(repository),
-            GetGroups = GetGroups(repository)
+            GetGroups = GetGroups(repository),
+            InsertPlace = InsertPlace(repository),
+            InsertPlaceImages = InsertPlaceImages(repository)
         )
     }
 

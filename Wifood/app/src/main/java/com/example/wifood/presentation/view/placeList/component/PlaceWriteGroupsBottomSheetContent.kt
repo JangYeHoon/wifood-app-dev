@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import com.example.wifood.presentation.view.component.BottomSheetListItem
 import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlaceWriteGroupsBottomSheetContent(
@@ -26,6 +28,7 @@ fun PlaceWriteGroupsBottomSheetContent(
 ) {
     val formState = viewModel.formState
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     Column {
         LazyColumn {
             items(formState.groups) { group ->
@@ -33,7 +36,9 @@ fun PlaceWriteGroupsBottomSheetContent(
                     icon = Icons.Default.AddCircle,
                     title = group.name,
                     onItemClick = {
-                        viewModel.onEvent(PlaceInfoWriteFormEvent.GroupSelected(group))
+                        scope.launch {
+                            viewModel.onEvent(PlaceInfoWriteFormEvent.GroupSelected(group))
+                        }
                     }
                 )
             }

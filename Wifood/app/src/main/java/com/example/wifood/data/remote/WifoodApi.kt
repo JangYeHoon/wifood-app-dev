@@ -1,5 +1,6 @@
 package com.example.wifood.data.remote
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.example.wifood.data.remote.dto.GroupDto
@@ -23,9 +24,13 @@ interface WifoodApi {
 
     fun deletePlace(groupId: Int, placeId: Int)
 
+    fun insertPlace(place: Place)
+
     fun getUser(id: String): LiveData<User>
 
     fun checkNickname(nickname: String): Boolean
 
     fun insertUser(user: User)
+
+    fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>)
 }

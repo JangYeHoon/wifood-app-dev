@@ -5,6 +5,5 @@ import com.example.wifood.domain.model.Place
 data class PlaceInfoWriteState(
     val place: Place? = null,
     val groupId: Int = 0,
-    val isLoading: Boolean = false,
     val error: String = ""
 )

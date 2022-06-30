@@ -15,5 +15,7 @@ data class WifoodUseCases(
     val DeleteGroup: DeleteGroup,
     val InsertGroup: InsertGroup,
     val UpdateGroup: UpdateGroup,
-    val GetGroups: GetGroups
+    val GetGroups: GetGroups,
+    val InsertPlace: InsertPlace,
+    val InsertPlaceImages: InsertPlaceImages
 )
