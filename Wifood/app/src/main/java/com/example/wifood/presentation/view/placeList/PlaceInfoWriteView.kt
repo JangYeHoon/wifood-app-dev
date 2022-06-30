@@ -55,7 +55,6 @@ fun PlaceInfoWriteView(
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-    val visitState = remember { mutableStateOf(false) }
     val formState = viewModel.formState
     val initialRating = 1f
     var rating: Float by remember { mutableStateOf(initialRating) }
@@ -117,8 +116,13 @@ fun PlaceInfoWriteView(
                         modifier = Modifier.height(1.dp)
                     )
                     InputTextField(
+                        text = formState.menu,
                         placeholder = " 메뉴",
-                        onValueChange = {/*TODO*/ },
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuChange(it))
+                            }
+                        },
                         height = 50
                     )
                     Divider(
@@ -133,8 +137,12 @@ fun PlaceInfoWriteView(
                         TitleText(text = "방문 여부")
                         Spacer(Modifier.width(14.dp))
                         Switch(
-                            checked = visitState.value,
-                            onCheckedChange = {/*TODO*/ },
+                            checked = formState.visited,
+                            onCheckedChange = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.VisitedCheck(it))
+                                }
+                            },
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = MainColor
                             )
@@ -156,7 +164,7 @@ fun PlaceInfoWriteView(
                     TitleText("어떤 점이 만족스러웠나요?")
                     Spacer(Modifier.height(15.dp))
                     RatingBar(
-                        value = rating,
+                        value = formState.score,
                         config = RatingBarConfig()
                             .style(RatingBarStyle.HighLighted)
                             .hideInactiveStars(false)
@@ -164,8 +172,16 @@ fun PlaceInfoWriteView(
                             .numStars(5)
                             .size(27.dp)
                             .padding(9.dp),
-                        onValueChange = {/*TODO*/ },
-                        onRatingChanged = {/*TODO*/ }
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(it))
+                            }
+                        },
+                        onRatingChanged = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(it))
+                            }
+                        }
                     )
                     Spacer(Modifier.height(15.dp))
                     Row()
@@ -174,7 +190,11 @@ fun PlaceInfoWriteView(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             OutlinedButton(
-                                onClick = {},
+                                onClick = {
+                                    scope.launch {
+                                        viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!formState.tasteChk))
+                                    }
+                                },
                                 shape = CircleShape,
                                 border = BorderStroke(1.dp, Color.Yellow),
                                 modifier = Modifier.size(56.dp)
@@ -195,7 +215,11 @@ fun PlaceInfoWriteView(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             OutlinedButton(
-                                onClick = {},
+                                onClick = {
+                                    scope.launch {
+                                        viewModel.onEvent(PlaceInfoWriteFormEvent.CleanCheck(!formState.cleanChk))
+                                    }
+                                },
                                 shape = CircleShape,
                                 border = BorderStroke(1.dp, Color.Yellow),
                                 modifier = Modifier.size(56.dp)
@@ -216,7 +240,11 @@ fun PlaceInfoWriteView(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             OutlinedButton(
-                                onClick = {},
+                                onClick = {
+                                    scope.launch {
+                                        viewModel.onEvent(PlaceInfoWriteFormEvent.KindCheck(!formState.kindChk))
+                                    }
+                                },
                                 shape = CircleShape,
                                 border = BorderStroke(1.dp, EnableColor),
                                 modifier = Modifier.size(56.dp)
@@ -237,7 +265,11 @@ fun PlaceInfoWriteView(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             OutlinedButton(
-                                onClick = {},
+                                onClick = {
+                                    scope.launch {
+                                        viewModel.onEvent(PlaceInfoWriteFormEvent.VibeCheck(!formState.vibeChk))
+                                    }
+                                },
                                 shape = CircleShape,
                                 border = BorderStroke(1.dp, Color.Yellow),
                                 modifier = Modifier.size(56.dp)
@@ -280,8 +312,12 @@ fun PlaceInfoWriteView(
                     }
                     Spacer(Modifier.height(10.dp))
                     OutlinedTextField(
-                        value = ""/*TODO*/,
-                        onValueChange = {/*TODO*/ },
+                        value = formState.review,
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.ReviewChange(it))
+                            }
+                        },
                         placeholder = {
                             Text(
                                 text = "맛집 리뷰",
@@ -314,19 +350,34 @@ fun PlaceInfoWriteView(
                     }
                     Spacer(Modifier.height(19.dp))
                     InputTextField(
+                        text = formState.menuName,
                         placeholder = "메뉴명",
                         height = 50,
-                        onValueChange = {/*TODO*/ }
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
+                            }
+                        }
                     )
                     InputTextField(
+                        text = formState.menuPrice,
                         placeholder = "가격",
                         height = 50,
-                        onValueChange = {/*TODO*/ }
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
+                            }
+                        }
                     )
                     InputTextField(
+                        text = formState.menuMemo,
                         placeholder = "메모",
                         height = 50,
-                        onValueChange = {/*TODO*/ }
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
+                            }
+                        }
                     )
                     Spacer(Modifier.height(70.dp))
                     Box(

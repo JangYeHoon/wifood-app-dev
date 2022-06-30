@@ -23,5 +23,6 @@ data class Place(
     var latitude: Double,
     var longitude: Double,
     var address: String,
-    val menuList: List<MenuGrade>
+    val menuList: List<MenuGrade>,
+    val vibeChk: Boolean
 ) : Parcelable
