@@ -1,11 +1,22 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +37,7 @@ import com.example.wifood.presentation.view.placeList.component.ListSelectionBut
 import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithoutIcon
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -72,6 +84,33 @@ fun PlaceInfoWriteView(
             if (it.resultCode == Activity.RESULT_OK) {
                 val searchResult = Autocomplete.getPlaceFromIntent(it.data)
                 viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
+            }
+        }
+    val takePhotoFromCameraLauncher = // 카메라로 사진 찍어서 가져오기
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { takenPhoto ->
+            if (takenPhoto != null) {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(takenPhoto))
+                }
+            }
+        }
+
+    val takePhotoFromAlbumIntent =
+        Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+            type = "image/*"
+            action = Intent.ACTION_GET_CONTENT
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
+            )
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+        }
+    val takePhotoFromAlbumLauncher = // 갤러리에서 사진 가져오기
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(uri.parseBitmap(context)))
+                }
             }
         }
 
@@ -297,18 +336,32 @@ fun PlaceInfoWriteView(
                         .padding(horizontal = 24.dp)
                         .padding(top = 15.dp)
                 ) {
-                    IconButton(
-                        onClick = {/*TODO*/ },
-                        modifier = Modifier
-                            .width(60.dp)
-                            .height(60.dp)
-                    ) {
-                        Icon(
-                            ImageVector.vectorResource(id = R.drawable.ic_place_info_photo_default),
-                            contentDescription = "",
-                            modifier = Modifier.fillMaxSize(),
-                            tint = Color.Unspecified
-                        )
+                    Row {
+                        IconButton(
+                            onClick = {
+                                takePhotoFromCameraLauncher.launch()
+//                                takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
+                            },
+                            modifier = Modifier
+                                .width(60.dp)
+                                .height(60.dp)
+                        ) {
+                            Icon(
+                                ImageVector.vectorResource(id = R.drawable.ic_place_info_photo_default),
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxSize(),
+                                tint = Color.Unspecified
+                            )
+                        }
+                        LazyRow {
+                            items(formState.placeImages) { image ->
+                                Image(
+                                    bitmap = image.asImageBitmap(),
+                                    contentDescription = "show place image bitmap",
+                                    modifier = Modifier.width(60.dp).height(60.dp)
+                                )
+                            }
+                        }
                     }
                     Spacer(Modifier.height(10.dp))
                     OutlinedTextField(
@@ -394,6 +447,19 @@ fun PlaceInfoWriteView(
                 }
 
             }
+        }
+    }
+}
+
+@Suppress("DEPRECATION", "NewApi")
+private fun Uri.parseBitmap(context: Context): Bitmap {
+    return when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) { // 28
+        true -> {
+            val source = ImageDecoder.createSource(context.contentResolver, this)
+            ImageDecoder.decodeBitmap(source)
+        }
+        else -> {
+            MediaStore.Images.Media.getBitmap(context.contentResolver, this)
         }
     }
 }

@@ -80,6 +80,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
             is PlaceInfoWriteFormEvent.MenuMemoChange -> {
                 formState = formState.copy(menuMemo = event.menuMemo)
             }
+            is PlaceInfoWriteFormEvent.PlaceImagesAdd -> {
+                formState.placeImages.add(event.image)
+            }
         }
     }
 

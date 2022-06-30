@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.graphics.Bitmap
 import com.example.wifood.domain.model.Group
 
 data class PlaceInfoWriteFormState(
@@ -16,5 +17,6 @@ data class PlaceInfoWriteFormState(
     val review: String = "",
     val menuName: String = "",
     val menuPrice: String = "",
-    val menuMemo: String = ""
+    val menuMemo: String = "",
+    val placeImages: ArrayList<Bitmap> = ArrayList(0)
 )
