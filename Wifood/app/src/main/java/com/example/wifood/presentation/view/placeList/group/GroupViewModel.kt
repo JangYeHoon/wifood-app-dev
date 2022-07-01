@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
+import java.util.concurrent.ThreadLocalRandom
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,12 +65,22 @@ class GroupViewModel @Inject constructor(
             state.group!!.description = formState.description
             useCases.UpdateGroup(state.group!!)
         } else {
-            // TODO "group id 설정 및 pin color random 설정
-            val group =
-                Group(88, "kmh@naver.com", formState.name, formState.description, 1, emptyList())
-            useCases.InsertGroup(group)
+            useCases.InsertGroup(createGroupEntity())
         }
         Timber.i("group insert to firebase")
         validateEventChannel.send(ValidationEvent.Success)
+    }
+
+    private fun createGroupEntity(): Group {
+        val groupId = WifoodApp.pref.getInt("group_max_id", -1) + 1
+        val userId = WifoodApp.pref.getString("user_id", "No user data")
+        return Group(
+            groupId,
+            userId,
+            formState.name,
+            formState.description,
+            ThreadLocalRandom.current().nextInt(1, 11),
+            emptyList()
+        )
     }
 }

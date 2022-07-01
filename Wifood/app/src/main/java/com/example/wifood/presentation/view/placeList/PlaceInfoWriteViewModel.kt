@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.User
@@ -44,7 +45,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
             state = state.copy(place = place)
         } else {
             state = state.copy(place = PlaceDto().toPlace())
-            state.place!!.placeId = 10
+            state.place!!.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
         }
 
         useCases.GetGroups().observeForever {

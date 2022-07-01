@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.google.android.gms.maps.model.LatLng
@@ -60,7 +61,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun init() {
-        useCases.GetUser("kmh@naver.com").observeForever {
+        val userId = WifoodApp.pref.getString("user_id", "No user data")
+        useCases.GetUser(userId).observeForever { it ->
             state = state.copy(
                 user = it,
                 groups = it.groupList
@@ -73,6 +75,13 @@ class MainViewModel @Inject constructor(
             }
             state = state.copy(places = placeList)
             Timber.i("get user from firebase : " + state.user.toString())
+
+            val groupMaxId =
+                state.groups.maxWithOrNull(compareBy { group -> group.groupId })!!.groupId
+            val placeMaxId =
+                state.places.maxWithOrNull(compareBy { place -> place.placeId })!!.placeId
+            WifoodApp.pref.setInt("group_max_id", groupMaxId)
+            WifoodApp.pref.setInt("place_max_id", placeMaxId)
         }
     }
 }
