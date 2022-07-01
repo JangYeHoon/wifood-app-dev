@@ -28,9 +28,10 @@ import javax.inject.Inject
 class WifoodApiImpl @Inject constructor(
     private val db: DatabaseReference
 ) : WifoodApi {
+    val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
+
     override fun getGroups(): LiveData<MutableList<Group>> {
         val groupList = MutableLiveData<MutableList<Group>>()
-        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: MutableList<Group> = mutableListOf()
@@ -59,7 +60,7 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertGroup(group: Group) {
-        db.child(group.userId.replace('.', '_')).child("Group").child(group.groupId.toString())
+        db.child(id).child("Group").child(group.groupId.toString())
             .setValue(group)
             .addOnSuccessListener { Timber.i("Success group insert") }
             .addOnFailureListener { Timber.e("Fail group insert : $it") }
@@ -67,7 +68,7 @@ class WifoodApiImpl @Inject constructor(
 
     override fun updateGroup(group: Group) {
         val groupPath =
-            db.child(group.userId.replace('.', '_')).child("Group").child(group.groupId.toString())
+            db.child(id).child("Group").child(group.groupId.toString())
         groupPath.child("groupId").setValue(group.groupId)
         groupPath.child("name").setValue(group.name)
         groupPath.child("description").setValue(group.description)
@@ -100,7 +101,7 @@ class WifoodApiImpl @Inject constructor(
         // TODO "싱글톤에 지정해서 storage를 인자로 받도록 변경 필요"
         val storage = FirebaseStorage.getInstance().reference
         val imageUrisForObserve = MutableLiveData<MutableList<Uri>>()
-        storage.child("19/").listAll()
+        storage.child("$id/$groupId/$placeId/").listAll()
             .addOnSuccessListener {
                 val uris: MutableList<Uri> = mutableListOf()
                 for (item in it.items) {
@@ -117,7 +118,6 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertPlace(place: Place) {
-        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
         db.child(id).child("Group").child(place.groupId.toString()).child("Place")
             .child(place.placeId.toString()).setValue(place)
             .addOnSuccessListener { Timber.i("Success place insert") }
@@ -175,7 +175,6 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>) {
         val storage = FirebaseStorage.getInstance().reference
-        val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
 
         images.forEachIndexed { index, bitmap ->
             val byteArray = ByteArrayOutputStream()

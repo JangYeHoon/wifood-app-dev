@@ -36,15 +36,11 @@ class PlaceInfoViewModel @Inject constructor(
         Timber.i("get place info from PlaceList : " + state.place.toString() + ", " + state.group)
 
         // Firebase storage에서 해당 place에 저장된 이미지 리스트 받아와서 저장
-//        state.place?.let {
-//            useCases.GetPlaceImageUris(0, 0).observeForever { uris ->
-//                state = state.copy(placeImageUris = uris)
-//                Timber.i("get image uri list from firebase : " + state.placeImageUris.toString())
-//            }
-//        }
-        useCases.GetPlaceImageUris(0, 0).observeForever { uris ->
-            state = state.copy(placeImageUris = uris)
-            Timber.i("get image uri list from firebase : " + state.placeImageUris.toString())
+        state.place?.let {
+            useCases.GetPlaceImageUris(it.groupId, it.placeId).observeForever { uris ->
+                state = state.copy(placeImageUris = uris)
+                Timber.i("get image uri list from firebase : " + state.placeImageUris.toString())
+            }
         }
     }
 
