@@ -122,109 +122,21 @@ fun UserFavorRadioGroup() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        YOGORadioGroup2(titleText = "매운맛")
+        YOGORadioGroup(titleText = "매운맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup2(titleText = "단맛")
+        YOGORadioGroup(titleText = "단맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup2(titleText = "짠맛")
+        YOGORadioGroup(titleText = "짠맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup2(titleText = "신맛")
+        YOGORadioGroup(titleText = "신맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup2(titleText = "쓴맛")
+        YOGORadioGroup(titleText = "쓴맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
     }
 }
 
-/*
 @Composable
 fun YOGORadioGroup(
-    titleText: String
-) {
-    //semibold 13
-    Column() {
-        Text(
-            text = titleText,
-            fontFamily = mainFont,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            color = Color.Black
-        )
-        Row(
-            //verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "매우 싫음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "싫음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "보통",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "좋음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "매우 좋음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-        }
-    }
-}
-*/
-@Composable
-fun YOGORadioGroup2(
     titleText: String = "테스트"
 ) {
     var selectedArray = remember { mutableStateListOf<Int>(1, 0, 0, 0, 0) }
@@ -384,15 +296,14 @@ fun FavorComponent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var drawableId = favorUnClickedId
         IconButton(
             onClick = {
-                isClicked != isClicked
+                isClicked.value = !isClicked.value
             },
             modifier = Modifier.size(56.dp)
         ){
             Icon(
-                ImageVector.vectorResource(id = if (isClicked.value) favorUnClickedId else favorUnClickedId ),
+                ImageVector.vectorResource(id = if (isClicked.value) favorClickedId else favorUnClickedId ),
                 contentDescription = "",
                 modifier = Modifier.fillMaxSize(),
                 tint = Color.Unspecified
