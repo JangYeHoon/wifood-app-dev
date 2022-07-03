@@ -86,7 +86,6 @@ fun InputTextField2(
     )
 }
 
-@Preview(showBackground = true)
 @Composable
 fun InputTextField(
     text:String = "",

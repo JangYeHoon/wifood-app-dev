@@ -100,8 +100,8 @@ fun JoininView(
                 }
             )
             ErrorText(
-                text = "**이미 사용중인 아이디입니다",
-                visibility = true,
+                text = "** 이미 사용중인 아이디입니다",
+                visibility = false,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -120,8 +120,8 @@ fun JoininView(
                 }
             )
             ErrorText(
-                text = "**올바른 비밀번호를 설정해주세요",
-                visibility = true,
+                text = "** 올바른 비밀번호를 설정해주세요",
+                visibility = false,
             )
             // Set password check
             InputTextField(
@@ -134,8 +134,8 @@ fun JoininView(
                 }
             )
             ErrorText(
-                text = "**비밀번호가 일치하지 않습니다.",
-                visibility = true,
+                text = "** 비밀번호가 일치하지 않습니다.",
+                visibility = false,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -154,8 +154,8 @@ fun JoininView(
                 placeholder = "닉네임 (2~15자)"
             )
             ErrorText(
-                text = "**이미 사용중인 닉네임입니다",
-                visibility = true,
+                text = "** 이미 사용중인 닉네임입니다",
+                visibility = false,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -172,8 +172,8 @@ fun JoininView(
                 },
             )
             ErrorText(
-                text = "**주소를 입력해주세요",
-                visibility = true,
+                text = "** 주소를 입력해주세요",
+                visibility = false,
             )
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -215,8 +215,8 @@ fun JoininView(
                 }
             }
             ErrorText(
-                text = "**생년월일을 올바르게 입력해주세요",
-                visibility = true,
+                text = "** 생년월일을 올바르게 입력해주세요",
+                visibility = false,
             )
             Spacer(Modifier.height(28.dp))
             /*Divider(
@@ -266,8 +266,8 @@ fun JoininView(
                 fontSize = 10.sp
             )
             ErrorText(
-                text = "   **개인정보를 동의해주세요",
-                visibility = true,
+                text = "   ** 개인정보를 동의해주세요",
+                visibility = false,
             )
             Spacer(Modifier.height(48.dp))
 
@@ -281,7 +281,7 @@ fun JoininView(
                     onClick = { showDialog.value = true }
                 )
                 if (showDialog.value){
-                    GetUserFavorView()
+                    GetUserFavorView(showDialog)
                 }
             }
             Spacer(Modifier.height(17.dp))
