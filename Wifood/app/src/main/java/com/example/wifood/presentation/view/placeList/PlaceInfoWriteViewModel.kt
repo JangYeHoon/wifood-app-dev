@@ -1,6 +1,8 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.content.Context
+import android.net.Uri
+import android.os.Environment
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,7 +25,11 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @HiltViewModel
 class PlaceInfoWriteViewModel @Inject constructor(
@@ -41,15 +47,35 @@ class PlaceInfoWriteViewModel @Inject constructor(
         Places.initialize(applicationContext, "AIzaSyB_HZJANQB8zVtH33wHb2OI-FbeDhPYRtA")
 
         val place = savedStateHandle.get<com.example.wifood.domain.model.Place>("place")
-        if (place != null) {
+        if (place!!.name.isNotEmpty()) {
             state = state.copy(place = place)
+            formState = formState.copy(
+                menuGrades = state.place!!.menuList as ArrayList<MenuGrade>,
+                menu = state.place!!.menu,
+                cleanChk = state.place!!.cleanChk,
+                kindChk = state.place!!.kindChk,
+                tasteChk = state.place!!.tasteChk,
+                vibeChk = state.place!!.vibeChk,
+                review = state.place!!.review,
+                score = state.place!!.score,
+                visited = state.place!!.visited,
+                placeName = state.place!!.name
+            )
+            useCases.GetPlaceImageUris(place.groupId, place.placeId).observeForever { uris ->
+                formState = formState.copy(placeImages = uris as ArrayList<Uri>)
+                Timber.i("get image uri list from firebase : " + formState.placeImages.toString())
+            }
         } else {
-            state = state.copy(place = PlaceDto().toPlace())
+            state = state.copy(place = place)
             state.place!!.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
         }
 
         useCases.GetGroups().observeForever {
             formState = formState.copy(groups = it)
+            for (group in it) {
+                if (state.place!!.groupId == group.groupId)
+                    formState = formState.copy(groupName = group.name)
+            }
             Timber.i("get groups from firebase $it")
         }
     }
@@ -98,6 +124,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
             }
             is PlaceInfoWriteFormEvent.PlaceImagesAdd -> {
                 formState.placeImages.add(event.image)
+            }
+            is PlaceInfoWriteFormEvent.ImageNameChange -> {
+                formState = formState.copy(currentPhotoPath = event.imageName)
             }
             is PlaceInfoWriteFormEvent.MenuGradeAddBtnClick -> {
                 if (formState.menuName.isNotEmpty())

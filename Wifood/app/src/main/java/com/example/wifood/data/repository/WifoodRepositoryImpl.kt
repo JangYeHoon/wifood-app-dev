@@ -58,7 +58,7 @@ class WifoodRepositoryImpl(
         api.insertUser(user)
     }
 
-    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>) {
+    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>) {
         api.insertPlaceImages(groupId, placeId, images)
     }
 }

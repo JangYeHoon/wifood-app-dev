@@ -28,5 +28,5 @@ interface WifoodRepository {
 
     fun insertUser(user: User)
 
-    fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>)
+    fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>)
 }

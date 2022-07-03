@@ -16,12 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.domain.model.Place
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.BottomSheetListItem
 import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
+import com.google.gson.Gson
 
 @Composable
 fun PlaceInfoBottomSheetContent(
+    place: Place?,
     navController: NavController,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
@@ -36,6 +39,8 @@ fun PlaceInfoBottomSheetContent(
                 title,
                 Toast.LENGTH_SHORT
             ).show()
+            val placeJson = Uri.encode(Gson().toJson(place))
+            navController.navigate("${Route.EditPlace.route}/${placeJson}")
         }
         BottomSheetListItem(
             icon = Icons.Default.Edit,

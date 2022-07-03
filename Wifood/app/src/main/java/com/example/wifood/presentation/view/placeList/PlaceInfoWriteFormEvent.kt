@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.google.android.libraries.places.api.model.Place
 
@@ -18,7 +19,8 @@ sealed class PlaceInfoWriteFormEvent {
     data class MenuNameChange(val menuName: String) : PlaceInfoWriteFormEvent()
     data class MenuPriceChange(val menuPrice: String) : PlaceInfoWriteFormEvent()
     data class MenuMemoChange(val menuMemo: String) : PlaceInfoWriteFormEvent()
-    data class PlaceImagesAdd(val image: Bitmap) : PlaceInfoWriteFormEvent()
+    data class PlaceImagesAdd(val image: Uri) : PlaceInfoWriteFormEvent()
+    data class ImageNameChange(val imageName: String) : PlaceInfoWriteFormEvent()
     object MenuGradeAddBtnClick : PlaceInfoWriteFormEvent()
     object PlaceAddBtnClick : PlaceInfoWriteFormEvent()
 }

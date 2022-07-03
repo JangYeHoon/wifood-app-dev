@@ -18,7 +18,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
@@ -44,7 +46,8 @@ fun BottomSheetContent(
                 title,
                 Toast.LENGTH_SHORT
             ).show()
-            navController.navigate(Route.EditPlace.route)
+            val placeJson = Uri.encode(Gson().toJson(PlaceDto(groupId = group!!.groupId).toPlace()))
+            navController.navigate("${Route.EditPlace.route}/${placeJson}")
         }
         BottomSheetListItem(
             icon = Icons.Default.Edit,
