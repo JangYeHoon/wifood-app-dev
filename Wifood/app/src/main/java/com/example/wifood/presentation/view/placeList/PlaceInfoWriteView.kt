@@ -88,7 +88,7 @@ fun PlaceInfoWriteView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
-
+    var menuExplainTextLength = "0/500"
     val context = LocalContext.current
     val intent =
         Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, viewModel.field)
@@ -410,33 +410,46 @@ fun PlaceInfoWriteView(
                         }
                     }
                     Spacer(Modifier.height(10.dp))
-                    OutlinedTextField(
-                        value = formState.review,
-                        onValueChange = {
-                            scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.ReviewChange(it))
-                            }
-                        },
-                        placeholder = {
-                            Text(
-                                text = "맛집 리뷰",
-                                style = TextStyle(
-                                    color = Color(0xFFC4C4C4)
+                    Box(
+
+                    ) {
+                        OutlinedTextField(
+                            value = formState.review,
+                            onValueChange = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.ReviewChange(it))
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "맛집 리뷰",
+                                    style = TextStyle(
+                                        color = Color(0xFFC4C4C4)
+                                    )
                                 )
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(108.dp),
+                            maxLines = 7,
+                            shape = RoundedCornerShape(5.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = MainColor,
+                                unfocusedBorderColor = Color(0xFFF1F1F1),
+                                cursorColor = Color.Transparent,
+                                textColor = Gray01Color,
                             )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(108.dp),
-                        maxLines = 7,
-                        shape = RoundedCornerShape(5.dp),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = MainColor,
-                            unfocusedBorderColor = Color(0xFFF1F1F1),
-                            cursorColor = Color.Transparent,
-                            textColor = Gray01Color,
                         )
-                    )
+                        Text(
+                            text = menuExplainTextLength,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            modifier = Modifier.align(Alignment.BottomEnd),
+                            color = Color(0xFFC4C4C4)
+                        )
+                    }
+
                     Spacer(Modifier.height(38.dp))
                     Row() {
                         TitleText("메뉴평가")
