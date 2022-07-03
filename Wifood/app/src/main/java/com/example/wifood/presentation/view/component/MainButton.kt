@@ -32,7 +32,7 @@ fun MainButton(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(46.dp)
+            .height(55.dp)
     )
     {
         Text(

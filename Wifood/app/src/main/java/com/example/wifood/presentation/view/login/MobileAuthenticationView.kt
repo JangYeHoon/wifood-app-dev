@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MobileAuthenticationView(
     navController: NavController,
+    from:String = "findIdAndPwd"
 ) {
 
     val scaffoldState = rememberScaffoldState()
@@ -69,7 +70,7 @@ fun MobileAuthenticationView(
             }
             ErrorText(
                 text = "올바른 핸드폰 번호를 입력해주세요",
-                visibility = true,
+                visibility = false,
             )
             InputTextField(
                 text = "",
@@ -78,7 +79,7 @@ fun MobileAuthenticationView(
             )
             ErrorText(
                 text = "인증번호와 일치하지 않습니다. 다시 시도해주세요",
-                visibility = true,
+                visibility = false,
             )
             Spacer(Modifier.height(20.dp))
 
@@ -90,7 +91,12 @@ fun MobileAuthenticationView(
 
             MainButton(
                 text = "본인인증",
-                onClick = { navController.navigate(Route.Joinin.route) },
+                onClick = {
+                    if (from.equals("Joinin"))
+                        navController.navigate(Route.Joinin.route)
+                    else if (from.equals("findIdAndPwd"))
+                        navController.navigate(Route.Joinin.route)
+                },
                 activate = AuthPass
             )
             Spacer(Modifier.height(buttonBottomValue.dp))

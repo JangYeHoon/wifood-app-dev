@@ -45,7 +45,6 @@ import com.example.wifood.ui.theme.*
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.launch
 
-//@Preview(showBackground=true)
 @Composable
 fun LoginView(
     navController: NavController,
@@ -76,6 +75,8 @@ fun LoginView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
+        LoginErrorText("로그인 에러",false)
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -84,7 +85,6 @@ fun LoginView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Image(painter = painterResource(id = R.drawable.ic_frame), contentDescription = "")
             LogoImage(
                 width = 86,
                 height = 28
@@ -99,10 +99,6 @@ fun LoginView(
                     }
                 }
             )
-            ErrorText(
-                text = "아이디가 존재하지 않습니다",
-                visibility = true,
-            )
             Spacer(Modifier.height(5.dp))
             RoundedTextField(
                 text = formState.password,
@@ -114,10 +110,6 @@ fun LoginView(
                     }
                 }
             )
-            ErrorText(
-                text = "비밀번호가 일치하지 않습니다",
-                visibility = true,
-            )
             Spacer(Modifier.height(10.dp))
             MainButton(
                 text = "로그인",
@@ -128,14 +120,17 @@ fun LoginView(
                     }
                 }
             )
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(5.dp))
             Row() {
                 TransparentButton(
                     text = "아이디/비밀번호찾기",
                     textColor = Gray03Color,
-                    onClick = {/*TODO*/}
+                    onClick = {
+                        formState.clear()
+                        navController.navigate(Route.MobileAuthentication.route)
+                    }
                 )
-                Spacer(Modifier.width(5.dp))
+                Spacer(Modifier.width(10.dp))
                 TransparentButton(
                     text = "회원가입",
                     textColor = Gray01Color,
@@ -145,7 +140,7 @@ fun LoginView(
                     }
                 )
             }
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(49.dp))
             Divider(
                 color = DividerColor,
                 modifier = Modifier

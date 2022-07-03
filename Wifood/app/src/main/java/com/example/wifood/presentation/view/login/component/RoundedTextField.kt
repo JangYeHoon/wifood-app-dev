@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -10,7 +11,9 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -28,6 +31,8 @@ fun RoundedTextField(
     height:Int = 50,
     onValueChange: (String) -> Unit,
     ){
+    val focus = LocalFocusManager.current
+
     OutlinedTextField(
         value = text,
         onValueChange = onValueChange,
@@ -55,6 +60,11 @@ fun RoundedTextField(
             unfocusedBorderColor = RoundedTextFieldUnFocusColor
         ),
         singleLine = true,
-        visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None
+        visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None,
+        keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done,
+            keyboardType = if(isPassword) KeyboardType.Password else KeyboardType.Text
+        ),
     )
 }

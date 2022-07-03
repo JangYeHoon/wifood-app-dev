@@ -5,19 +5,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -28,15 +31,19 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.ui.theme.fontRoboto
+import com.example.wifood.view.ui.theme.DividerColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
 
 @ExperimentalComposeUiApi
 @Composable
 fun GetUserFavorView(
+    showDialog:MutableState<Boolean>
 ) {
     Dialog(
-        onDismissRequest = {},
+        onDismissRequest = {
+            showDialog.value = false
+        },
         properties = DialogProperties(
             usePlatformDefaultWidth = false
         ),
@@ -46,25 +53,31 @@ fun GetUserFavorView(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(top = 85.dp),
-            shape = RoundedCornerShape(30.dp),
+            shape = RoundedCornerShape(
+                topStart = 30.dp,
+                topEnd = 30.dp
+            ),
             color = Color(0xFFFFFFFF)
-        ){
-            GetUserFavorContent()
+        ) {
+            GetUserFavorContent(showDialog)
         }
     }
 }
 
+//@Preview(showBackground = true)
 @Composable
-fun GetUserFavorContent(){
+fun GetUserFavorContent(
+    showDialog:MutableState<Boolean>
+) {
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .padding(horizontal = 35.dp)
-            .padding(top = 85.dp)
             .fillMaxWidth()
             .verticalScroll(scrollState)
-    ){
+    ) {
+        Spacer(Modifier.height(85.dp))
         Text(
             text = "조금만 더\n알려주세요!",
             fontFamily = mainFont,
@@ -89,23 +102,26 @@ fun GetUserFavorContent(){
             fontSize = 13.sp,
             color = Color.Black
         )
-        Spacer(Modifier.height(5.dp))
+        Spacer(Modifier.height(16.dp))
         UserFavorButtonGroup()
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(59.dp))
         MainButton(
             text = "등록하기",
-            onClick = {}
+            onClick = {
+                // TODO("put infos")
+                showDialog.value = false
+            }
         )
         Spacer(Modifier.height(buttonBottomValue.dp))
     }
 }
 
 @Composable
-fun UserFavorRadioGroup(){
+fun UserFavorRadioGroup() {
     val favorSpacerValue = 25
     Column(
         modifier = Modifier.fillMaxWidth()
-    ){
+    ) {
         YOGORadioGroup(titleText = "매운맛")
         Spacer(Modifier.height(favorSpacerValue.dp))
         YOGORadioGroup(titleText = "단맛")
@@ -121,10 +137,11 @@ fun UserFavorRadioGroup(){
 
 @Composable
 fun YOGORadioGroup(
-    titleText:String
-){
+    titleText: String = "테스트"
+) {
+    var selectedArray = remember { mutableStateListOf<Int>(1, 0, 0, 0, 0) }
     //semibold 13
-    Column(){
+    Column() {
         Text(
             text = titleText,
             fontFamily = mainFont,
@@ -132,91 +149,96 @@ fun YOGORadioGroup(
             fontSize = 13.sp,
             color = Color.Black
         )
+        Spacer(Modifier.height(14.dp))
+        Box() {
+            Divider(
+                color = Color(0xFFE0E0E0),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .align(Alignment.Center)
+            )
+            Row(
+                //verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                YOGORadioButton(selectedArray, 0)
+                YOGORadioButton(selectedArray, 1)
+                YOGORadioButton(selectedArray, 2)
+                YOGORadioButton(selectedArray, 3)
+                YOGORadioButton(selectedArray, 4)
+            }
+        }
+        Spacer(Modifier.height(7.dp))
         Row(
             //verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "매우 싫음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "싫음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "보통",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "좋음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                YOGORadioButton(false)
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    text = "매우 좋음",
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = fontRoboto,
-                    fontSize = 10.sp,
-                    color = Gray01Color
-                )
-            }
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 3.dp)
+
+        ) {
+            Text(
+                text = "싫음",
+                fontWeight = FontWeight.Normal,
+                fontFamily = fontRoboto,
+                fontSize = 10.sp,
+                color = Gray01Color
+            )
+            Text(
+                text = "조금 싫음",
+                fontWeight = FontWeight.Normal,
+                fontFamily = fontRoboto,
+                fontSize = 10.sp,
+                color = Gray01Color
+            )
+            Text(
+                text = "보통",
+                fontWeight = FontWeight.Normal,
+                fontFamily = fontRoboto,
+                fontSize = 10.sp,
+                color = Gray01Color
+            )
+            Text(
+                text = "조금 좋음",
+                fontWeight = FontWeight.Normal,
+                fontFamily = fontRoboto,
+                fontSize = 10.sp,
+                color = Gray01Color
+            )
+            Text(
+                text = "좋음",
+                fontWeight = FontWeight.Normal,
+                fontFamily = fontRoboto,
+                fontSize = 10.sp,
+                color = Gray01Color
+            )
         }
+
     }
 }
 
 @Composable
 fun YOGORadioButton(
-    buttonClicked:Boolean = false
-){
+    selectedArray: MutableList<Int>,
+    selectedValue: Int = 0
+) {
     IconButton(
-        onClick = {},
+        onClick = {
+            for (i: Int in 0..4) {
+                if (i == selectedValue) {
+                    selectedArray[i] = 1
+                    continue
+                }
+                selectedArray[i] = 0
+            }
+        },
         modifier = Modifier
-            .wrapContentSize()
-    ){
+            .size(24.dp)
+    ) {
         Icon(
-            ImageVector.vectorResource(id = if (buttonClicked) R.drawable.ic_selected_radiobutton else R.drawable.ic_unselected_radiobutton),
+            ImageVector.vectorResource(id = if (selectedArray[selectedValue] == 1) R.drawable.ic_selected_radiobutton else R.drawable.ic_unselected_radiobutton),
             contentDescription = "",
             modifier = Modifier.wrapContentSize(),
             tint = Color.Unspecified
@@ -225,14 +247,75 @@ fun YOGORadioButton(
 }
 
 @Composable
-fun UserFavorButtonGroup(){
+fun UserFavorButtonGroup() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     )
     {
-        Column(){
+        var cucumberClicked = remember{ mutableStateOf(false)}
+        var corianderClicked = remember{ mutableStateOf(false)}
+        var mintChokoClicked = remember{ mutableStateOf(false)}
+        var eggplantClicked = remember{ mutableStateOf(false)}
 
+        FavorComponent(
+            favorText = "오이",
+            favorUnClickedId = R.drawable.ic_favor_cucumber,
+            favorClickedId = R.drawable.ic_favor_cucumber_clicked,
+            isClicked = cucumberClicked
+        )
+        FavorComponent(
+            favorText = "고수",
+            favorUnClickedId = R.drawable.ic_favor_coriander,
+            favorClickedId = R.drawable.ic_favor_coriander_clicked,
+            isClicked = corianderClicked
+        )
+        FavorComponent(
+            favorText = "민트초코",
+            favorUnClickedId = R.drawable.ic_favor_mint,
+            favorClickedId = R.drawable.ic_favor_mint_clicked,
+            isClicked = mintChokoClicked
+        )
+        FavorComponent(
+            favorText = "가지",
+            favorUnClickedId = R.drawable.ic_favor_eggplant,
+            favorClickedId = R.drawable.ic_favor_eggplant_clicked,
+            isClicked = eggplantClicked
+        )
+
+    }
+}
+
+@Composable
+fun FavorComponent(
+    favorText:String = "오이",
+    favorUnClickedId:Int = R.drawable.ic_favor_cucumber,
+    favorClickedId:Int = R.drawable.ic_favor_cucumber_clicked,
+    isClicked:MutableState<Boolean>
+){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        IconButton(
+            onClick = {
+                isClicked.value = !isClicked.value
+            },
+            modifier = Modifier.size(56.dp)
+        ){
+            Icon(
+                ImageVector.vectorResource(id = if (isClicked.value) favorClickedId else favorUnClickedId ),
+                contentDescription = "",
+                modifier = Modifier.fillMaxSize(),
+                tint = Color.Unspecified
+            )
         }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = favorText,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp,
+            color = Gray01Color
+        )
     }
 }
