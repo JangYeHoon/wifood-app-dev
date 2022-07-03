@@ -53,7 +53,7 @@ fun GetUserFavorView(
         }
     }
 }
-
+@Preview(showBackground = true)
 @Composable
 fun GetUserFavorContent(){
     val scrollState = rememberScrollState()

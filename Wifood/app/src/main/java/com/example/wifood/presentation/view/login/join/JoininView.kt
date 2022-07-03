@@ -299,7 +299,7 @@ fun JoininView(
 }
 
 @Composable
-fun test() {
+fun BirthAndGender() {
     var isGenderMale: Boolean = false
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
