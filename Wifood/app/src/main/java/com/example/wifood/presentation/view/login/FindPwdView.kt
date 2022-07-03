@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,21 +17,21 @@ import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @Composable
-fun FindPwdView(){
-}
-
-@Preview(showBackground = true)
-@Composable
-fun test(){
+fun FindPwdView(
+    navController : NavController
+){
+    val scaffoldState = rememberScaffoldState()
     var AuthPass = false
     var password by remember { mutableStateOf("") }
     var passwordCheck by remember { mutableStateOf("") }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             YOGOTopAppBar(
                 text = "비밀번호 변경",
                 onBackButtonClicked = {
+                    navController.popBackStack()
                 }
             )
         }

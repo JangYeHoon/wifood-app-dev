@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.component.FindIdPwdButton
 import com.example.wifood.presentation.view.login.join.GetUserFavorContent
 import com.example.wifood.ui.theme.mainFont
@@ -24,6 +26,7 @@ import com.example.wifood.view.ui.theme.Gray01Color
 @ExperimentalComposeUiApi
 @Composable
 fun FindUserIDDialog(
+    navController: NavController,
     showDialog:MutableState<Boolean>,
     userId:String = "hyjung@yogo.com"
 ){
@@ -35,13 +38,13 @@ fun FindUserIDDialog(
             usePlatformDefaultWidth = false
         ),
     ) {
-        FindUserIDDialogContent(userId)
+        FindUserIDDialogContent(navController,userId)
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun FindUserIDDialogContent(
+    navController: NavController,
     userId:String = "hyjung@yogo.com"
 ){
     Surface(
@@ -79,12 +82,16 @@ fun FindUserIDDialogContent(
             ){
                 FindIdPwdButton(
                     text = "비밀번호 변경",
-                    onClick = {},
+                    onClick = {
+                        navController.navigate(Route.FindPwd.route)
+                    },
                     inverse = true
                 )
                 FindIdPwdButton(
                     text = "로그인 하기",
-                    onClick = {}
+                    onClick = {
+                        navController.navigate(Route.Login.route)
+                    }
                 )
             }
             Spacer(Modifier.height(18.dp))

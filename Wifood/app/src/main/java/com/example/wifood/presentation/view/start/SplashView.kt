@@ -42,7 +42,7 @@ fun SplashView(
             )
             Spacer(Modifier.height(45.dp))
             Image(
-                painter = painterResource(R.drawable.splash_image),
+                painter = painterResource(R.drawable.ic_splash_icon),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
                     .width(216.dp)

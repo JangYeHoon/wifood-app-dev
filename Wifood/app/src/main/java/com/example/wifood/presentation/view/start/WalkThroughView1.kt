@@ -54,7 +54,7 @@ fun WorkThroughView1(
             )
             Spacer(Modifier.height(56.dp))
             Image(
-                painter = painterResource(R.drawable.walk_through_1_cat),
+                painter = painterResource(R.drawable.ic_walk_through_screen1),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
                     .width(200.dp)

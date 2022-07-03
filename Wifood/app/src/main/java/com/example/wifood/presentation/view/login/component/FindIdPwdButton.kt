@@ -17,7 +17,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 
-@Preview(showBackground = true)
 @Composable
 fun FindIdPwdButton(
     text: String = "로그인",
