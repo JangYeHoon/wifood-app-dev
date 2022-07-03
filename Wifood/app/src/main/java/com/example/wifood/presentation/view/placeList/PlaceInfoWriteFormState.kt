@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.MenuGrade
 
@@ -19,7 +20,8 @@ data class PlaceInfoWriteFormState(
     val menuName: String = "",
     val menuPrice: String = "",
     val menuMemo: String = "",
-    val placeImages: ArrayList<Bitmap> = ArrayList(0),
+    val placeImages: ArrayList<Uri> = ArrayList(0),
     val menuGrades: ArrayList<MenuGrade> = ArrayList(0),
+    val currentPhotoPath: String = "",
     val isLoading: Boolean = false
 )

@@ -52,9 +52,8 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun deleteGroup(groupId: Int) {
-        // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete group : groupId-$groupId")
-        db.child("kmh@naver_com/Group/$groupId").removeValue()
+        db.child("$id/Group/$groupId").removeValue()
             .addOnSuccessListener { Timber.i("Success group delete") }
             .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
@@ -125,9 +124,8 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun deletePlace(groupId: Int, placeId: Int) {
-        // TODO "userId를 따로 저장해서 해당 userId를 이용하도록 변경"
         Timber.i("delete place : groupId-$groupId, placeId-$placeId")
-        db.child("kmh@naver_com/Group/$groupId/Place/$placeId").removeValue()
+        db.child("$id/Group/$groupId/Place/$placeId").removeValue()
             .addOnSuccessListener { Timber.i("Success place delete") }
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
@@ -173,14 +171,11 @@ class WifoodApiImpl @Inject constructor(
         // 씨발 왜 안들어가  ㅡㅡ
     }
 
-    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Bitmap>) {
+    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>) {
         val storage = FirebaseStorage.getInstance().reference
 
-        images.forEachIndexed { index, bitmap ->
-            val byteArray = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArray)
-            val image = byteArray.toByteArray()
-            storage.child("$id/$groupId/$placeId/").child("$index").putBytes(image)
+        images.forEachIndexed { index, uri ->
+            storage.child("$id/$groupId/$placeId/").child("$index").putFile(uri)
         }
     }
 }

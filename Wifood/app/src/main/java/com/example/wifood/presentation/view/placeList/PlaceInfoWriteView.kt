@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,8 +46,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.presentation.util.Route
@@ -64,7 +68,12 @@ import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun PlaceInfoWriteView(
@@ -95,10 +104,11 @@ fun PlaceInfoWriteView(
             }
         }
     val takePhotoFromCameraLauncher = // 카메라로 사진 찍어서 가져오기
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { takenPhoto ->
-            if (takenPhoto != null) {
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
                 scope.launch {
-                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(takenPhoto))
+                    val file = File(formState.currentPhotoPath)
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(Uri.fromFile(file)))
                 }
             }
         }
@@ -119,11 +129,7 @@ fun PlaceInfoWriteView(
                 result.data?.data?.let { uri ->
                     scope.launch {
                         viewModel.onEvent(
-                            PlaceInfoWriteFormEvent.PlaceImagesAdd(
-                                uri.parseBitmap(
-                                    context
-                                )
-                            )
+                            PlaceInfoWriteFormEvent.PlaceImagesAdd(uri)
                         )
                     }
                 }
@@ -368,7 +374,14 @@ fun PlaceInfoWriteView(
                     Row {
                         IconButton(
                             onClick = {
-                                takePhotoFromCameraLauncher.launch()
+                                scope.launch {
+                                    takePhotoFromCameraLauncher.launch(
+                                        getPictureIntent(
+                                            context,
+                                            viewModel
+                                        )
+                                    )
+                                }
 //                                takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
                             },
                             modifier = Modifier
@@ -385,7 +398,9 @@ fun PlaceInfoWriteView(
                         LazyRow {
                             items(formState.placeImages) { image ->
                                 Image(
-                                    bitmap = image.asImageBitmap(),
+                                    painter = rememberImagePainter(
+                                        data = image
+                                    ),
                                     contentDescription = "show place image bitmap",
                                     modifier = Modifier
                                         .width(60.dp)
@@ -513,15 +528,25 @@ fun PlaceInfoWriteView(
     }
 }
 
-@Suppress("DEPRECATION", "NewApi")
-private fun Uri.parseBitmap(context: Context): Bitmap {
-    return when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) { // 28
-        true -> {
-            val source = ImageDecoder.createSource(context.contentResolver, this)
-            ImageDecoder.decodeBitmap(source)
-        }
-        else -> {
-            MediaStore.Images.Media.getBitmap(context.contentResolver, this)
-        }
+suspend fun getPictureIntent(context: Context, viewModel: PlaceInfoWriteViewModel): Intent {
+    val fullSizeCaptureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    val photoFile: File = File.createTempFile(
+        "JPEG_${timeStamp}_", /* prefix */
+        ".jpg", /* suffix */
+        storageDir /* directory */
+    ).apply {
+        viewModel.onEvent(PlaceInfoWriteFormEvent.ImageNameChange(absolutePath))
     }
+    photoFile.also {
+        val photoUri =
+            FileProvider.getUriForFile(
+                context,
+                "com.example.wifood.fileprovider",
+                it
+            )
+        fullSizeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+    }
+    return fullSizeCaptureIntent
 }

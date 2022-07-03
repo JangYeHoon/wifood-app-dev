@@ -81,7 +81,12 @@ fun Navigation() {
         composable(Route.Joinin.route) {
             JoininView(navController = navController)
         }
-        composable(Route.EditPlace.route) {
+        composable(
+            route = "${Route.EditPlace.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
             PlaceInfoWriteView(navController)
         }
         composable(Route.Search.route) {

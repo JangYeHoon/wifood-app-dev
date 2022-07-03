@@ -53,7 +53,7 @@ fun PlaceInfoComposeView(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
     ModalBottomSheetLayout(
-        sheetContent = { PlaceInfoBottomSheetContent(navController) },
+        sheetContent = { PlaceInfoBottomSheetContent(state.place, navController) },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color(0xFF222222)
