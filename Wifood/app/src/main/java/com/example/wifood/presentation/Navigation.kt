@@ -14,6 +14,7 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.*
+import com.example.wifood.presentation.view.login.FindPwdView
 import com.example.wifood.presentation.view.login.LoginView
 import com.example.wifood.presentation.view.login.MobileAuthenticationView
 import com.example.wifood.presentation.view.login.join.JoininView
@@ -100,6 +101,9 @@ fun Navigation() {
             arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
         ) {
             GroupAddView(navController)
+        }
+        composable(Route.FindPwd.route){
+            FindPwdView(navController)
         }
     }
 }
