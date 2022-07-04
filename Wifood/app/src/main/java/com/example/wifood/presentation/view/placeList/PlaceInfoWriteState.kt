@@ -1,9 +1,9 @@
 package com.example.wifood.presentation.view.placeList
 
+import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.Place
 
 data class PlaceInfoWriteState(
-    val place: Place? = null,
-    val groupId: Int = 0,
+    val place: Place = PlaceDto().toPlace(),
     val error: String = ""
 )

@@ -83,18 +83,17 @@ fun PlaceInfoWriteView(
     val scrollState = rememberScrollState()
     val formState = viewModel.formState
     val initialRating = 1f
-    var rating: Float by remember { mutableStateOf(initialRating) }
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
-    val intent =
+    val googleSearchPlaceIntent =
         Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, viewModel.field)
             .setCountry("KR")
             .build(context)
-    val launcher =
+    val googleSearchPlaceLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val searchResult = Autocomplete.getPlaceFromIntent(it.data)
@@ -183,7 +182,7 @@ fun PlaceInfoWriteView(
                     )
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
-                        onClick = { launcher.launch(intent) }
+                        onClick = { googleSearchPlaceLauncher.launch(googleSearchPlaceIntent) }
                     )
                     Divider(
                         color = DividerColor2,
@@ -376,10 +375,7 @@ fun PlaceInfoWriteView(
                             onClick = {
                                 scope.launch {
                                     takePhotoFromCameraLauncher.launch(
-                                        getPictureIntent(
-                                            context,
-                                            viewModel
-                                        )
+                                        getPictureIntent(context, viewModel)
                                     )
                                 }
 //                                takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
