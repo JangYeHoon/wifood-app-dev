@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.MenuGrade
+import com.google.android.gms.maps.model.LatLng
 
 data class PlaceInfoWriteFormState(
     val groups: List<Group> = emptyList(),
@@ -23,5 +24,8 @@ data class PlaceInfoWriteFormState(
     val placeImages: ArrayList<Uri> = ArrayList(0),
     val menuGrades: ArrayList<MenuGrade> = ArrayList(0),
     val currentPhotoPath: String = "",
+    val placeEditChk: Boolean = false,
+    val latLng: LatLng = LatLng(0.0, 0.0),
+    val address: String = "",
     val isLoading: Boolean = false
 )

@@ -8,9 +8,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.wifood.WifoodApp
+import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +40,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
         val place = savedStateHandle.get<com.example.wifood.domain.model.Place>("place")
         if (place!!.name.isNotEmpty()) {
+            formState = formState.copy(placeEditChk = true)
             state = state.copy(place = place)
             setFormInputValueToPlaceEntity(state.place)
             useCases.GetPlaceImageUris(place.groupId, place.placeId).observeForever { uris ->
@@ -45,14 +48,15 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 Timber.i("get image uri list from firebase : " + formState.placeImages.toString())
             }
         } else {
-            state = state.copy(place = place)
-            state.place.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
+            val maxPlaceId = WifoodApp.pref.getInt("place_max_id", -1) + 1
+            state = state.copy(place = PlaceDto(placeId = maxPlaceId).toPlace())
         }
 
         useCases.GetGroups().observeForever {
             formState = formState.copy(groups = it)
             it.find { group -> group.groupId == state.place.groupId }?.let { findGroup ->
                 formState = formState.copy(groupName = findGroup.name)
+                state = state.copy(group = findGroup)
             }
             Timber.i("get groups from firebase $it")
         }
@@ -69,7 +73,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
             review = place.review,
             score = place.score,
             visited = place.visited,
-            placeName = place.name
+            placeName = place.name,
+            latLng = LatLng(place.latitude, place.longitude),
+            address = place.address,
         )
     }
 
@@ -77,7 +83,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
         when (event) {
             is PlaceInfoWriteFormEvent.GroupSelected -> {
                 formState = formState.copy(groupName = event.group.name)
-                state.place.groupId = event.group.groupId
+                state = state.copy(group = event.group)
             }
             is PlaceInfoWriteFormEvent.PlaceSelected -> {
                 updatePlaceFromSearchGoogleAPI(event.searchPlace)
@@ -136,15 +142,11 @@ class PlaceInfoWriteViewModel @Inject constructor(
     }
 
     private fun updatePlaceFromSearchGoogleAPI(searchPlace: Place) {
-        formState = formState.copy(placeName = searchPlace.name)
-        setPlaceEntityToSearchPlace(searchPlace)
-    }
-
-    private fun setPlaceEntityToSearchPlace(searchPlace: Place) {
-        state.place.name = searchPlace.name
-        state.place.latitude = searchPlace.latLng.latitude
-        state.place.longitude = searchPlace.latLng.longitude
-        state.place.address = searchPlace.address
+        formState = formState.copy(
+            placeName = searchPlace.name,
+            latLng = searchPlace.latLng,
+            address = searchPlace.address
+        )
     }
 
     private fun addMenuGradeAndSetMenuGradeInputEmpty() {
@@ -166,15 +168,26 @@ class PlaceInfoWriteViewModel @Inject constructor(
     }
 
     private fun setPlaceEntityToFormInput() {
-        state.place.menuList = formState.menuGrades
-        state.place.menu = formState.menu
-        state.place.cleanChk = formState.cleanChk
-        state.place.kindChk = formState.kindChk
-        state.place.tasteChk = formState.tasteChk
-        state.place.vibeChk = formState.vibeChk
-        state.place.review = formState.review
-        state.place.score = formState.score
-        state.place.visited = formState.visited
+        state = state.copy(
+            place = com.example.wifood.domain.model.Place(
+                placeId = state.place.placeId,
+                name = formState.placeName,
+                groupId = state.group!!.groupId,
+                menu = formState.menu,
+                visited = formState.visited,
+                score = formState.score,
+                tasteChk = formState.tasteChk,
+                cleanChk = formState.cleanChk,
+                kindChk = formState.kindChk,
+                vibeChk = formState.vibeChk,
+                review = formState.review,
+                menuList = formState.menuGrades,
+                latitude = formState.latLng.latitude,
+                longitude = formState.latLng.longitude,
+                address = formState.address,
+                imageNameList = emptyList()
+            )
+        )
     }
 
     private fun insertPlace() {

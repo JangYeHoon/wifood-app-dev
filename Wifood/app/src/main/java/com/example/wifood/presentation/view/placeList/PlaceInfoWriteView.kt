@@ -52,6 +52,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
@@ -63,6 +64,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.gson.Gson
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
@@ -139,7 +141,12 @@ fun PlaceInfoWriteView(
         viewModel.validationEvents.collectLatest { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    navController.navigate(Route.Main.route)
+                    if (formState.placeEditChk) {
+                        val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
+                        val groupJson = Uri.encode(Gson().toJson(viewModel.state.group))
+                        navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
+                    } else
+                        navController.navigate(Route.Main.route)
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
