@@ -7,17 +7,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
+import com.example.wifood.util.Resource
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
 import javax.inject.Inject
@@ -79,6 +84,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
         )
     }
 
+    @DelicateCoroutinesApi
     suspend fun onEvent(event: PlaceInfoWriteFormEvent) {
         when (event) {
             is PlaceInfoWriteFormEvent.GroupSelected -> {
@@ -135,7 +141,8 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 if (formCheck()) {
                     setPlaceEntityToFormInput()
                     insertPlace()
-                    insertImages()
+                    if (formState.placeImages.isNotEmpty())
+                        insertImages()
                 }
             }
         }
@@ -195,13 +202,23 @@ class PlaceInfoWriteViewModel @Inject constructor(
         useCases.InsertPlace(state.place)
     }
 
+    @DelicateCoroutinesApi
     private suspend fun insertImages() {
         useCases.InsertPlaceImages(
             state.place.groupId,
             state.place.placeId,
             formState.placeImages
-        )
-
-        validateEventChannel.send(ValidationEvent.Success)
+        ).addOnSuccessListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                withContext(Dispatchers.Main) {
+                    validateEventChannel.send(ValidationEvent.Success)
+                }
+            }
+        }.addOnProgressListener {
+            Timber.i("image upload progress")
+            formState = formState.copy(
+                isLoading = true
+            )
+        }
     }
 }
