@@ -197,20 +197,6 @@ fun PlaceInfoWriteView(
                         color = DividerColor2,
                         modifier = Modifier.height(1.dp)
                     )
-                    InputTextField(
-                        text = formState.menu,
-                        placeholder = " 메뉴",
-                        onValueChange = {
-                            scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuChange(it))
-                            }
-                        },
-                        height = 50
-                    )
-                    Divider(
-                        color = DividerColor2,
-                        modifier = Modifier.height(1.dp)
-                    )
                     Spacer(Modifier.height(10.dp))
                     Row(
                         verticalAlignment = Alignment.CenterVertically

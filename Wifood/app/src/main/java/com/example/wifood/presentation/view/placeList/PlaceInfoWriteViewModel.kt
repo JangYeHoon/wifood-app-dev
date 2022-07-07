@@ -77,7 +77,6 @@ class PlaceInfoWriteViewModel @Inject constructor(
     private fun setFormInputValueToPlaceEntity(place: com.example.wifood.domain.model.Place) {
         formState = formState.copy(
             menuGrades = place.menuList as ArrayList<MenuGrade>,
-            menu = place.menu,
             cleanChk = place.cleanChk,
             kindChk = place.kindChk,
             tasteChk = place.tasteChk,
@@ -100,9 +99,6 @@ class PlaceInfoWriteViewModel @Inject constructor(
             }
             is PlaceInfoWriteFormEvent.PlaceSelected -> {
                 updatePlaceFromSearchGoogleAPI(event.searchPlace)
-            }
-            is PlaceInfoWriteFormEvent.MenuChange -> {
-                formState = formState.copy(menu = event.menu)
             }
             is PlaceInfoWriteFormEvent.VisitedCheck -> {
                 formState = formState.copy(visited = event.visited)
@@ -187,9 +183,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 placeId = state.place.placeId,
                 name = formState.placeName,
                 groupId = state.group!!.groupId,
-                menu = formState.menu,
                 visited = formState.visited,
                 score = formState.score,
+                menu = getMenuStringFromMenuGradeListName(),
                 tasteChk = formState.tasteChk,
                 cleanChk = formState.cleanChk,
                 kindChk = formState.kindChk,
@@ -204,6 +200,18 @@ class PlaceInfoWriteViewModel @Inject constructor(
         )
     }
 
+    private fun getMenuStringFromMenuGradeListName(): String {
+        var menu = ""
+        formState.menuGrades.forEachIndexed { index, menuGrade ->
+            menu +=
+                if (index != formState.menuGrades.lastIndex)
+                    menuGrade.name + ", "
+                else
+                    menuGrade.name
+        }
+        return menu
+    }
+
     private fun insertPlace() {
         Timber.i("insert place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
@@ -211,22 +219,25 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     @DelicateCoroutinesApi
     private suspend fun insertImages() {
-        useCases.InsertPlaceImages(
-            state.place.groupId,
-            state.place.placeId,
-            formState.placeImages
-        ).addOnSuccessListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.Main) {
-                    validateEventChannel.send(ValidationEvent.Success)
+        if (formState.placeImages.isNotEmpty()) {
+            useCases.InsertPlaceImages(
+                state.place.groupId,
+                state.place.placeId,
+                formState.placeImages
+            ).addOnSuccessListener {
+                GlobalScope.launch(Dispatchers.IO) {
+                    withContext(Dispatchers.Main) {
+                        validateEventChannel.send(ValidationEvent.Success)
+                    }
                 }
+            }.addOnProgressListener {
+                Timber.i("image upload progress")
+                formState = formState.copy(
+                    isLoading = true
+                )
             }
-        }.addOnProgressListener {
-            Timber.i("image upload progress")
-            formState = formState.copy(
-                isLoading = true
-            )
-        }
+        } else
+            validateEventChannel.send(ValidationEvent.Success)
     }
 
     fun getPictureIntent(context: Context): Intent {
