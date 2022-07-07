@@ -89,7 +89,7 @@ fun PlaceListComposeView(
                         Row() {
                             Text(text = group.name)
                             IconButton(onClick = {
-                                viewModel.onEvent(MainEvent.GroupClicked(group.groupId))
+                                viewModel.onEvent(MainEvent.GroupClicked(if (state.selectedGroupId != group.groupId) group.groupId else 0))
                             }) {
                                 Icon(Icons.Filled.ArrowDropDown, "menu")
                             }
@@ -112,19 +112,21 @@ fun PlaceListComposeView(
                             enter = enterExpand + enterFadeIn,
                             exit = exitCollapse + exitFadeOut
                         ) {
-                            state.places.filter { it.groupId == group.groupId }
-                                .forEach { place ->
-                                    Column() {
-                                        Text(text = place.name)
-                                        IconButton(onClick = {
-                                            val placeJson = Uri.encode(Gson().toJson(place))
-                                            val groupJson = Uri.encode(Gson().toJson(group))
-                                            navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                                        }) {
-                                            Icon(Icons.Filled.ArrowForward, "place")
+                            Column {
+                                state.places.filter { it.groupId == group.groupId }
+                                    .forEach { place ->
+                                        Row() {
+                                            Text(text = place.name)
+                                            IconButton(onClick = {
+                                                val placeJson = Uri.encode(Gson().toJson(place))
+                                                val groupJson = Uri.encode(Gson().toJson(group))
+                                                navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
+                                            }) {
+                                                Icon(Icons.Filled.ArrowForward, "place")
+                                            }
                                         }
                                     }
-                                }
+                            }
                         }
                     }
                 }
