@@ -68,6 +68,7 @@ import com.google.gson.Gson
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import com.gowtham.ratingbar.RatingBarStyle
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -75,6 +76,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+@DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
@@ -382,7 +384,7 @@ fun PlaceInfoWriteView(
                             onClick = {
                                 scope.launch {
                                     takePhotoFromCameraLauncher.launch(
-                                        getPictureIntent(context, viewModel)
+                                        viewModel.getPictureIntent(context)
                                     )
                                 }
 //                                takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
@@ -542,27 +544,4 @@ fun PlaceInfoWriteView(
             }
         }
     }
-}
-
-suspend fun getPictureIntent(context: Context, viewModel: PlaceInfoWriteViewModel): Intent {
-    val fullSizeCaptureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val photoFile: File = File.createTempFile(
-        "JPEG_${timeStamp}_", /* prefix */
-        ".jpg", /* suffix */
-        storageDir /* directory */
-    ).apply {
-        viewModel.onEvent(PlaceInfoWriteFormEvent.ImageNameChange(absolutePath))
-    }
-    photoFile.also {
-        val photoUri =
-            FileProvider.getUriForFile(
-                context,
-                "com.example.wifood.fileprovider",
-                it
-            )
-        fullSizeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-    }
-    return fullSizeCaptureIntent
 }

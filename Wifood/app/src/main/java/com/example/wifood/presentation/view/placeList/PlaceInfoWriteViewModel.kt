@@ -1,10 +1,14 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +29,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -220,5 +227,28 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 isLoading = true
             )
         }
+    }
+
+    fun getPictureIntent(context: Context): Intent {
+        val fullSizeCaptureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val photoFile: File = File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            formState = formState.copy(currentPhotoPath = absolutePath)
+        }
+        photoFile.also {
+            val photoUri =
+                FileProvider.getUriForFile(
+                    context,
+                    "com.example.wifood.fileprovider",
+                    it
+                )
+            fullSizeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        }
+        return fullSizeCaptureIntent
     }
 }
