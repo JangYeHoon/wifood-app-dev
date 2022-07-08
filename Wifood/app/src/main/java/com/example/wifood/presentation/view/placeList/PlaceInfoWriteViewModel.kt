@@ -61,7 +61,12 @@ class PlaceInfoWriteViewModel @Inject constructor(
             }
         } else {
             val maxPlaceId = WifoodApp.pref.getInt("place_max_id", -1) + 1
-            state = state.copy(place = PlaceDto(placeId = maxPlaceId).toPlace())
+            state = state.copy(
+                place = PlaceDto(
+                    placeId = maxPlaceId,
+                    groupId = place.groupId
+                ).toPlace()
+            )
         }
 
         useCases.GetGroups().observeForever {
