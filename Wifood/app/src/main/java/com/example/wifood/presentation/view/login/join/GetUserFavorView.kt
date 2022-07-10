@@ -63,10 +63,10 @@ fun GetUserFavorView(
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun GetUserFavorContent(
-    showDialog:MutableState<Boolean>
+    showDialog:MutableState<Boolean> = mutableStateOf(false)
 ) {
     val scrollState = rememberScrollState()
 

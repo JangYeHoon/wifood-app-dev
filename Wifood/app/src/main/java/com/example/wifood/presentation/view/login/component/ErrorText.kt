@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.wifood.ui.theme.fontRoboto
+import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.ErrorColor
 
 @Composable
@@ -17,7 +17,7 @@ fun ErrorText(
     Text(
         text = text,
         color = if (visibility) ErrorColor else Color.Transparent,
-        fontFamily = fontRoboto,
+        fontFamily = mainFont,
         fontWeight = FontWeight.Medium,
         fontSize = 10.sp,
     )

@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray09Color
 import com.example.wifood.view.ui.theme.InsideButtonTextColor
@@ -39,7 +38,7 @@ fun TextInsideButton(
             text = text,
             color = InsideButtonTextColor,
             fontSize = 10.sp,
-            fontFamily = fontRoboto,
+            fontFamily = mainFont,
             fontWeight = FontWeight.Normal
         )
     }
