@@ -1,13 +1,10 @@
 package com.example.wifood.presentation.view.login.join
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -345,8 +342,8 @@ fun FavorComponent(
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable(
-                        indication = null,
-                        interactionSource = interactionSource
+                        //indication = null,
+                        //interactionSource = interactionSource
                     ){
                         isClicked.value = !isClicked.value
                     },
