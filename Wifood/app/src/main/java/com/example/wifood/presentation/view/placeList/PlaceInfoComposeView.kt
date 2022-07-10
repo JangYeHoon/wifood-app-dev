@@ -41,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.ui.theme.mainFont
@@ -95,7 +96,6 @@ fun PlaceInfoMenus(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun PlaceInfoMainContent(
     placeInfoGroupName: String = "맛집그룹",
@@ -192,204 +192,6 @@ fun PlaceInfoMainContent(
     }
 }
 
-@ExperimentalCoilApi
-@Preview(showBackground = true)
-@Composable
-fun test() {
-    val scrollState = rememberScrollState()
-    val menu1: String = "하와이안 피자"
-    val menu1_price = 16000
-    val menu1_memo = "작지만 맛있다."
-    val menu2: String = "화이트리구 파스타"
-    val menu2_price = 5000
-    val menu2_memo = "살짝 맵다"
-    val menu3: String = "채끝 등심 스테이크"
-    val menu3_price = 4000
-    val menu3_memo = "너무 퍽퍽함"
-    val memoText = "골목에 차 있어서 못들어감. 참고하기"
-    val placeInfoScore = 1.5f
-    val isKind = true
-    val isDelicious = true
-    val isMood = true
-    val placeInfoGroupName = "맛집그룹"
-    val placeInfoName = "맛집이름"
-    val placeInfoLocationName = "서울시 용산구 효창동 522-2 1F"
-    Scaffold(
-    ) {
-        Column(
-            Modifier
-                .verticalScroll(scrollState)
-        ) {
-            Image(
-                painterResource(R.drawable.plcae_image),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(230.dp)
-            )
-
-            // show google map
-            Column(
-                modifier = Modifier
-                    .padding(top = 120.dp)
-                    .padding(horizontal = 35.dp)
-                    .padding(bottom = 25.dp)
-            ) {
-                Row() {
-                    Icon(
-                        ImageVector.vectorResource(id = R.drawable.ic_location_icon),
-                        contentDescription = "",
-                        modifier = Modifier.wrapContentSize(),
-                        tint = Color.Unspecified
-                    )
-                    Spacer(Modifier.width(5.dp))
-                    Text(
-                        text = placeInfoLocationName,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 13.sp,
-                        color = Gray01Color
-                    )
-                }
-                Spacer(Modifier.height(10.dp))
-                Image(
-                    painterResource(R.drawable.plcae_image),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                )
-                /*
-                GoogleMap(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(81.dp),
-                    cameraPositionState = rememberCameraPositionState {
-                        position =
-                            CameraPosition.fromLatLngZoom(
-                                LatLng(
-                                    37.5788, 126.9949
-                                ), 15f
-                            )
-                    }
-                ) {
-                    Marker(
-                        position = LatLng(
-                            37.5788,
-                            126.9949
-                        ),
-                        title = "경복궁"
-                    )
-                }*/
-            }
-            Divider(
-                modifier = Modifier.height(1.dp),
-                color = Color(0xFFE7E7E7)
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 35.dp)
-                    .padding(top = 29.dp)
-            ) {
-                Text(
-                    text = "메뉴",
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    color = Color.Black
-                )
-                Spacer(Modifier.height(5.dp))
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Spacer(Modifier.height(10.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = menu1,
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp,
-                            color = PlaceInfoMenuTextColor
-                        )
-                        Text(
-                            text = menu1_price.toString() + "원",
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp,
-                            color = PlaceInfoMenuTextColor
-                        )
-                    }
-                    Spacer(Modifier.height(5.dp))
-                    Text(
-                        text = menu1_memo,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp,
-                        color = Gray01Color
-                    )
-                    Spacer(Modifier.height(10.dp))
-                }
-            }
-            Spacer(Modifier.height(20.dp))
-            Divider(
-                modifier = Modifier.height(1.dp),
-                color = PlaceInfoDividerColor
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 25.dp)
-                    .padding(horizontal = 35.dp)
-            ) {
-                Text(
-                    text = "메모",
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    color = Color.Black
-                )
-                Spacer(Modifier.height(15.dp))
-                Text(
-                    text = memoText,
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = Gray01Color
-                )
-                Spacer(Modifier.height(buttonBottomValue.dp))
-            }
-        }
-
-        Column(
-            Modifier
-                .padding(horizontal = 14.dp)
-                .padding(top = 188.dp)
-                .fillMaxWidth()
-        ) {
-            PlaceInfoMainContent(
-                placeInfoGroupName = placeInfoGroupName,
-                placeInfoName = placeInfoName,
-                placeInfoMenuListText = buildAnnotatedString {
-                    append("$menu1, ")
-                    append("$menu2, ")
-                    append("$menu3, ")
-                },
-                placeInfoScore = placeInfoScore,
-                isKind = isKind,
-                isDelicious = isDelicious,
-                isMood = isMood
-            )
-        }
-    }
-}
-
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
@@ -479,7 +281,7 @@ fun PlaceInfoComposeView(
                     }
                 }
                 Divider(
-                    modifier = Modifier.height(1.dp),
+                    modifier = Modifier.height(2.dp),
                     color = Color(0xFFE7E7E7)
                 )
                 Column(
@@ -508,7 +310,7 @@ fun PlaceInfoComposeView(
                 }
                 Spacer(Modifier.height(20.dp))
                 Divider(
-                    modifier = Modifier.height(1.dp),
+                    modifier = Modifier.height(2.dp),
                     color = PlaceInfoDividerColor
                 )
                 Column(
@@ -560,34 +362,35 @@ fun PlaceInfoComposeView(
                 )
             }
 
-            Row(
-                modifier = Modifier.padding(14.dp)
-            ) {
-                IconButton(
-                    modifier = Modifier
-                        .background(Color.White, CircleShape),
-                    onClick = {
-                        /*TODO*/
-                    }
-                ) {
-                    Icon(Icons.Default.ArrowBack, "")
-                }
-
-                Spacer(Modifier.size(275.dp))
-
-                IconButton(
-                    modifier = Modifier
-                        .background(Color.White, CircleShape),
-                    onClick = {
-                        scope.launch {
-                            modalBottomSheetState.show()
+            // put up buttons
+            Box(
+                Modifier
+                    .padding(top = 15.dp)
+                    .padding(horizontal = 15.dp)
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    SnsIconButton(
+                        resourceId = R.drawable.ic_place_info_back_button,
+                        size = 40,
+                        onClick = {
+                            // TODO("back button press event")
                         }
-                    }
-                ) {
-                    Icon(Icons.Default.Menu, "")
+                    )
+                    SnsIconButton(
+                        resourceId = R.drawable.bg_wh,
+                        size = 40,
+                        onClick = {
+                            scope.launch {
+                                modalBottomSheetState.show()
+                            }
+                        }
+                    )
+
                 }
             }
-
         }
     }
 }

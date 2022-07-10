@@ -172,12 +172,12 @@ fun LoginView(
                     onClick = {/*TODO*/}
                 )
             }
-            MainButton(
+            /*MainButton(
                 text = "UI Testing",
                 onClick = {
 
                 }
-            )
+            )*/
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
