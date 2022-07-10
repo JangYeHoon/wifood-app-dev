@@ -1,6 +1,9 @@
 package com.example.wifood.presentation.view.login.join
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -63,7 +66,6 @@ fun GetUserFavorView(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun GetUserFavorContent(
     showDialog:MutableState<Boolean> = mutableStateOf(false)
@@ -76,7 +78,23 @@ fun GetUserFavorContent(
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        Spacer(Modifier.height(85.dp))
+        Spacer(Modifier.height(27.dp))
+        IconButton(
+            onClick = {
+                showDialog.value = false
+            },
+            modifier = Modifier
+                .size(25.dp)
+                .align(Alignment.End)
+        ) {
+            Icon(
+                ImageVector.vectorResource(id = R.drawable.ic_closing_button),
+                contentDescription = "",
+                modifier = Modifier.wrapContentSize(),
+                tint = Color.Unspecified
+            )
+        }
+        Spacer(Modifier.height(36.dp))
         Text(
             text = "조금만 더\n알려주세요!",
             fontFamily = mainFont,
@@ -219,33 +237,6 @@ fun YOGORadioGroup(
 }
 
 @Composable
-fun YOGORadioButton(
-    selectedArray: MutableList<Int>,
-    selectedValue: Int = 0
-) {
-    IconButton(
-        onClick = {
-            for (i: Int in 0..4) {
-                if (i == selectedValue) {
-                    selectedArray[i] = 1
-                    continue
-                }
-                selectedArray[i] = 0
-            }
-        },
-        modifier = Modifier
-            .size(24.dp)
-    ) {
-        Icon(
-            ImageVector.vectorResource(id = if (selectedArray[selectedValue] == 1) R.drawable.ic_selected_radiobutton else R.drawable.ic_unselected_radiobutton),
-            contentDescription = "",
-            modifier = Modifier.wrapContentSize(),
-            tint = Color.Unspecified
-        )
-    }
-}
-
-@Composable
 fun UserFavorButtonGroup() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -286,25 +277,79 @@ fun UserFavorButtonGroup() {
 }
 
 @Composable
+fun YOGORadioButton(
+    selectedArray: MutableList<Int>,
+    selectedValue: Int = 0
+) {
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+    IconButton(
+        onClick = {
+            /*for (i: Int in 0..4) {
+                if (i == selectedValue) {
+                    selectedArray[i] = 1
+                    continue
+                }
+                selectedArray[i] = 0
+            }*/
+        },
+        modifier = Modifier
+            .size(24.dp)
+    ) {
+        Icon(
+            ImageVector.vectorResource(id = if (selectedArray[selectedValue] == 1) R.drawable.ic_selected_radiobutton else R.drawable.ic_unselected_radiobutton),
+            contentDescription = "",
+            modifier = Modifier
+                .wrapContentSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ){
+                    for (i: Int in 0..4) {
+                        if (i == selectedValue) {
+                            selectedArray[i] = 1
+                            continue
+                        }
+                        selectedArray[i] = 0
+                    }
+                },
+            tint = Color.Unspecified
+        )
+    }
+}
+
+@Composable
 fun FavorComponent(
     favorText:String = "오이",
     favorUnClickedId:Int = R.drawable.ic_favor_cucumber,
     favorClickedId:Int = R.drawable.ic_favor_cucumber_clicked,
     isClicked:MutableState<Boolean>
 ){
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
             onClick = {
-                isClicked.value = !isClicked.value
+                //isClicked.value = !isClicked.value
             },
-            modifier = Modifier.size(56.dp)
+            modifier = Modifier
+                .size(56.dp)
         ){
             Icon(
                 ImageVector.vectorResource(id = if (isClicked.value) favorClickedId else favorUnClickedId ),
                 contentDescription = "",
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = interactionSource
+                    ){
+                        isClicked.value = !isClicked.value
+                    },
                 tint = Color.Unspecified
             )
         }
