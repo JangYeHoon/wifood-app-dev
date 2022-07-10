@@ -96,11 +96,7 @@ fun InputTextField(
     maxLine:Int = 1,
     resetIconOffset:Int = 10,
 ){
-    val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
     var text = text
 
     Column(){
@@ -123,7 +119,7 @@ fun InputTextField(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .align(Alignment.CenterStart)
-                    .focusRequester(focusRequester),
+                    ,
                 visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None,
                 cursorBrush = if (text.isEmpty()) SolidColor(Color.Transparent) else SolidColor(MainColor),
                 decorationBox = { innerTextField ->
@@ -163,7 +159,7 @@ fun InputTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp),
-            color = if (focusRequester.captureFocus()) MainColor else EnableColor
+            color = if (text.length > 0)MainColor else EnableColor
         )
         Spacer(Modifier.height(5.dp))
     }

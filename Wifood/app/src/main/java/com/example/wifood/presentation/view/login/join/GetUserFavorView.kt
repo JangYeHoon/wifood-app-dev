@@ -30,7 +30,6 @@ import androidx.navigation.NavController
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.view.ui.theme.DividerColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
@@ -182,35 +181,35 @@ fun YOGORadioGroup(
             Text(
                 text = "싫음",
                 fontWeight = FontWeight.Normal,
-                fontFamily = fontRoboto,
+                fontFamily = mainFont,
                 fontSize = 10.sp,
                 color = Gray01Color
             )
             Text(
                 text = "조금 싫음",
                 fontWeight = FontWeight.Normal,
-                fontFamily = fontRoboto,
+                fontFamily = mainFont,
                 fontSize = 10.sp,
                 color = Gray01Color
             )
             Text(
                 text = "보통",
                 fontWeight = FontWeight.Normal,
-                fontFamily = fontRoboto,
+                fontFamily = mainFont,
                 fontSize = 10.sp,
                 color = Gray01Color
             )
             Text(
                 text = "조금 좋음",
                 fontWeight = FontWeight.Normal,
-                fontFamily = fontRoboto,
+                fontFamily = mainFont,
                 fontSize = 10.sp,
                 color = Gray01Color
             )
             Text(
                 text = "좋음",
                 fontWeight = FontWeight.Normal,
-                fontFamily = fontRoboto,
+                fontFamily = mainFont,
                 fontSize = 10.sp,
                 color = Gray01Color
             )
