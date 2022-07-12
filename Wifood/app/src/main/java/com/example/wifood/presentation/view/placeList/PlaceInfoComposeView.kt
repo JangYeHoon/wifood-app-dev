@@ -348,7 +348,7 @@ fun PlaceInfoComposeView(
                     placeInfoGroupName = state.group!!.description,
                     placeInfoName = state.place!!.name,
                     placeInfoMenuListText = buildAnnotatedString {
-                        append("${state.place.menu}, ")
+                        append(state.place.menu)
                     },
                     placeInfoScore = state.place.score,
                     isKind = state.place.kindChk,
