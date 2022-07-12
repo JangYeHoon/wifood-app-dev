@@ -344,16 +344,11 @@ fun PlaceInfoComposeView(
                     .padding(top = 188.dp)
                     .fillMaxWidth()
             ) {
-                val menu1: String = "에훈이"
-                val menu2: String = "너가"
-                val menu3: String = "넣어라"
                 PlaceInfoMainContent(
                     placeInfoGroupName = state.group!!.description,
                     placeInfoName = state.place!!.name,
                     placeInfoMenuListText = buildAnnotatedString {
-                        append("$menu1, ")
-                        append("$menu2, ")
-                        append("$menu3, ")
+                        append("${state.place.menu}, ")
                     },
                     placeInfoScore = state.place.score,
                     isKind = state.place.kindChk,
