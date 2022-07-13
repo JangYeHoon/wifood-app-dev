@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -35,6 +36,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.findActivity
@@ -51,6 +53,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
@@ -151,7 +154,10 @@ fun MainView(
                             Icon(Icons.Filled.CenterFocusStrong, contentDescription = null)
                         }
                         FloatingActionButton(
-                            onClick = { navController.navigate(Route.EditPlace.route) },
+                            onClick = {
+                                val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                                navController.navigate("${Route.EditPlace.route}/${placeJson}")
+                            },
                             backgroundColor = Main,
                             contentColor = Color.White,
                             modifier = Modifier.size(75.dp)
