@@ -12,10 +12,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.view.ui.theme.WifoodTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
