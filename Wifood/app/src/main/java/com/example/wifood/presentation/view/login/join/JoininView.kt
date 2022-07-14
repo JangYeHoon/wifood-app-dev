@@ -37,7 +37,6 @@ import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.component.navigationBackButton
 import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
-import com.example.wifood.ui.theme.fontRoboto
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
@@ -251,7 +250,7 @@ fun JoininView(
                     text = "(필수)",
                     color = MainColor,
                     modifier = Modifier.padding(top = 4.dp),
-                    fontFamily = fontRoboto,
+                    fontFamily = mainFont,
                     fontWeight = FontWeight.Medium,
                     fontSize = 10.sp
                 )

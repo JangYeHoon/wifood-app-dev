@@ -75,7 +75,7 @@ fun LoginView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        LoginErrorText("로그인 에러",false)
+        LoginErrorText("로그인 에러",true)
 
         Column(
             modifier = Modifier
@@ -173,6 +173,12 @@ fun LoginView(
                     onClick = {/*TODO*/}
                 )
             }
+            /*MainButton(
+                text = "UI Testing",
+                onClick = {
+
+                }
+            )*/
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }

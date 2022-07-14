@@ -19,6 +19,7 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 @Composable
 fun FindPwdView(
     navController : NavController
+
 ){
     val scaffoldState = rememberScaffoldState()
     var AuthPass = false

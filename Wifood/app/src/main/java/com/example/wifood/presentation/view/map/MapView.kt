@@ -149,7 +149,6 @@ fun MapView(
                 },
                 shape = RoundedCornerShape(15.dp),
                 border = BorderStroke(1.dp, Main),
-                interactionSource = interactionSource,
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = if (selectedMenu == 0) Main else Color.White
                 )
@@ -189,7 +188,6 @@ fun MapView(
                 },
                 shape = RoundedCornerShape(15.dp),
                 border = BorderStroke(1.dp, Main),
-                interactionSource = interactionSource,
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = if (selectedMenu == group.groupId) Main else Color.White
                 )

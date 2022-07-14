@@ -31,6 +31,7 @@ fun MobileAuthenticationView(
     val scaffoldState = rememberScaffoldState()
     var AuthNum:String = ""
     var AuthInputNum by remember { mutableStateOf("") }
+    var AuthCheckNum by remember { mutableStateOf("")}
     var AuthPass:Boolean = true
 
     Scaffold(
@@ -58,9 +59,12 @@ fun MobileAuthenticationView(
             Spacer(Modifier.height(5.dp))
             Box(modifier = Modifier.fillMaxWidth()) {
                 InputTextField(
-                    text = "",
+                    text = AuthInputNum,
                     placeholder = "휴대폰 번호('-' 제외)",
-                    onValueChange = {},
+                    onValueChange = {
+                        AuthInputNum = it
+                    },
+                    resetIconOffset = 40,
                 )
                 TextInsideButton(
                     text = "인증번호 받기",
@@ -73,9 +77,11 @@ fun MobileAuthenticationView(
                 visibility = false,
             )
             InputTextField(
-                text = "",
+                text = AuthCheckNum,
                 placeholder = "인증번호 입력 (3분 이내)",
-                onValueChange = {},
+                onValueChange = {
+                    AuthCheckNum = it
+                },
             )
             ErrorText(
                 text = "인증번호와 일치하지 않습니다. 다시 시도해주세요",

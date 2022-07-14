@@ -49,7 +49,7 @@ fun LoginErrorText(
             )
             {
                 Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_error_text_triangle),
+                    ImageVector.vectorResource(id = R.drawable.ic_error_text_icon),
                     contentDescription = "",
                     modifier = Modifier.wrapContentSize(),
                     tint = Color.Unspecified

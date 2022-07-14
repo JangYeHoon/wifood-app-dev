@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -171,11 +172,16 @@ class WifoodApiImpl @Inject constructor(
         // 씨발 왜 안들어가  ㅡㅡ
     }
 
-    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>) {
+    override fun insertPlaceImages(
+        groupId: Int,
+        placeId: Int,
+        images: ArrayList<Uri>
+    ): UploadTask {
         val storage = FirebaseStorage.getInstance().reference
-
+        var uploadTask: UploadTask? = null
         images.forEachIndexed { index, uri ->
-            storage.child("$id/$groupId/$placeId/").child("$index").putFile(uri)
+            uploadTask = storage.child("$id/$groupId/$placeId/").child("$index").putFile(uri)
         }
+        return uploadTask!!
     }
 }

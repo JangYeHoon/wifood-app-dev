@@ -8,7 +8,6 @@ import com.google.android.libraries.places.api.model.Place
 sealed class PlaceInfoWriteFormEvent {
     data class GroupSelected(val group: Group) : PlaceInfoWriteFormEvent()
     data class PlaceSelected(val searchPlace: Place) : PlaceInfoWriteFormEvent()
-    data class MenuChange(val menu: String) : PlaceInfoWriteFormEvent()
     data class VisitedCheck(val visited: Boolean) : PlaceInfoWriteFormEvent()
     data class ScoreChange(val score: Float) : PlaceInfoWriteFormEvent()
     data class TasteCheck(val tasteChk: Boolean) : PlaceInfoWriteFormEvent()

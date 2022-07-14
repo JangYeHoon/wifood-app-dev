@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
+import com.google.firebase.storage.UploadTask
 
 interface WifoodRepository {
     fun getGroups(): LiveData<MutableList<Group>>
@@ -28,5 +29,5 @@ interface WifoodRepository {
 
     fun insertUser(user: User)
 
-    fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>)
+    fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>): UploadTask
 }

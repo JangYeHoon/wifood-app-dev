@@ -10,7 +10,6 @@ data class PlaceInfoWriteFormState(
     val groups: List<Group> = emptyList(),
     val groupName: String = "그룹 선택",
     val placeName: String = "맛집 선택",
-    val menu: String = "",
     val visited: Boolean = false,
     val score: Float = 0.0f,
     val tasteChk: Boolean = false,

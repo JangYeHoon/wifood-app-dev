@@ -14,14 +14,6 @@ val fontPretendard = FontFamily(
     Font(R.font.pthin, FontWeight.Thin, FontStyle.Normal),
 )
 
-val fontRoboto = FontFamily(
-    Font(R.font.rbold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.rmedium, FontWeight.Medium, FontStyle.Normal),
-    Font(R.font.rregular, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.rlight, FontWeight.Light, FontStyle.Normal),
-    Font(R.font.rthin, FontWeight.Thin, FontStyle.Normal),
-)
-
 val fontTmoney = FontFamily(
     Font(R.font.tmoney_bold, FontWeight.Bold,FontStyle.Normal),
     Font(R.font.tmoney_normal, FontWeight.Normal,FontStyle.Normal)

@@ -128,7 +128,7 @@ fun test(
                     .fillMaxHeight()
             )
             MainButton(
-                text = "확인"
+                text = "시작하기"
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
 

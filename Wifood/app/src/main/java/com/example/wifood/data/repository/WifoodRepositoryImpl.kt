@@ -10,6 +10,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
@@ -58,7 +59,11 @@ class WifoodRepositoryImpl(
         api.insertUser(user)
     }
 
-    override fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>) {
-        api.insertPlaceImages(groupId, placeId, images)
+    override fun insertPlaceImages(
+        groupId: Int,
+        placeId: Int,
+        images: ArrayList<Uri>
+    ): UploadTask {
+        return api.insertPlaceImages(groupId, placeId, images)
     }
 }
