@@ -1,8 +1,7 @@
-package com.example.wifood.presentation.view.start
+package com.example.wifood.presentation.view.splash.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,40 +11,33 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.wifood.R
-import com.example.wifood.presentation.view.login.component.TransparentButton
+import com.example.wifood.presentation.view.splash.Page
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
 
 @Composable
-fun WorkThroughView2(
-    navController : NavController
-) {
-    Scaffold(
+fun PageUI(page: Page) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text= buildAnnotatedString {
-                    append("나만의 맛집을 ")
+                text = buildAnnotatedString {
+                    append(page.title)
                     withStyle(
                         style = SpanStyle(
                             MainColor
                         ),
-                    ){
-                        append("기록")
+                    ) {
+                        append(page.edge)
                     }
-                    append("하고\n한 줄 설명")
+                    append(page.description)
                 },
                 fontFamily = fontTmoney,
                 fontWeight = FontWeight.Normal,
@@ -55,20 +47,13 @@ fun WorkThroughView2(
             )
             Spacer(Modifier.height(56.dp))
             Image(
-                painter = painterResource(R.drawable.walk_through_1_cat),
+                painter = painterResource(page.image),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
                     .width(200.dp)
                     .height(272.dp)
             )
             Spacer(Modifier.height(49.dp))
-            TransparentButton(
-                text = "SKIP",
-                textColor = MainColor,
-                textSize = 16,
-                onClick = {},
-                textDecoration = TextDecoration.Underline
-            )
         }
     }
 }

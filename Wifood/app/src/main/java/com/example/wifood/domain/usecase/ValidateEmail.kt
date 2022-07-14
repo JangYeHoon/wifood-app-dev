@@ -13,13 +13,13 @@ class ValidateEmail @Inject constructor(
         if (email.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The email can't be blank"
+                errorMessage = "아이디(이메일)를 입력해주세요."
             )
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "That's not a vaild email"
+                errorMessage = "아이디(이메일)가 올바른 형식이 아닙니다."
             )
         }
         return ValidationResult(

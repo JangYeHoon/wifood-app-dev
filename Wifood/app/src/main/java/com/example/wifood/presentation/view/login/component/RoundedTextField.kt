@@ -9,7 +9,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -19,19 +21,28 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.wifood.presentation.view.login.LoginFormEvent
+import com.example.wifood.presentation.view.login.LoginViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.example.wifood.view.ui.theme.Enable
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 @Composable
 fun RoundedTextField(
+    viewModel: LoginViewModel = hiltViewModel(),
     text: String,
-    placeholder:String,
+    placeholder: String,
     isPassword: Boolean = false,
-    height:Int = 50,
+    height: Int = 50,
     onValueChange: (String) -> Unit,
-    ){
+    imeAction: ImeAction? = ImeAction.Next,
+    isError: Boolean = false
+) {
     val focus = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
 
     OutlinedTextField(
         value = text,
@@ -61,10 +72,21 @@ fun RoundedTextField(
         ),
         singleLine = true,
         visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None,
-        keyboardActions = KeyboardActions(onDone = { focus.clearFocus() }),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done,
-            keyboardType = if(isPassword) KeyboardType.Password else KeyboardType.Text
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focus.moveFocus(FocusDirection.Down)
+            },
+            onDone = {
+                focus.clearFocus()
+                scope.launch {
+                    viewModel.onEvent(LoginFormEvent.Login)
+                }
+            }
         ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = imeAction ?: ImeAction.Next,
+            keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text
+        ),
+        isError = isError
     )
 }
