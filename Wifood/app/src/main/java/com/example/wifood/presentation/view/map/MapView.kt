@@ -13,6 +13,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -55,6 +57,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun MapView(
@@ -66,6 +69,7 @@ fun MapView(
     val interactions = remember { mutableStateListOf<Interaction>() }
     val scope = rememberCoroutineScope()
     val state = viewModel.state
+    val listState = rememberLazyListState()
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
     var selectedMenu by remember { mutableStateOf(0) }
@@ -117,6 +121,7 @@ fun MapView(
         }
     }
     LazyRow(
+        state = listState,
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White.copy(alpha = 0.8f))
@@ -160,7 +165,7 @@ fun MapView(
                 )
             }
         }
-        items(state.groups) { group ->
+        itemsIndexed(state.groups) { i, group ->
             TextButton(
                 modifier = Modifier
                     .padding(5.dp)
@@ -178,6 +183,9 @@ fun MapView(
                 onClick = {
                     selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
                     viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
+                    scope.launch {
+                        listState.animateScrollToItem(i)
+                    }
                 },
                 shape = RoundedCornerShape(15.dp),
                 border = BorderStroke(1.dp, Main),

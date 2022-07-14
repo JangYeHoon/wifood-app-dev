@@ -35,6 +35,7 @@ import com.example.wifood.presentation.view.component.StandardTextField
 import com.example.wifood.ui.theme.robotoFamily
 import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.view.component.MainButton
@@ -50,7 +51,6 @@ fun LoginView(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-
     val state = viewModel.state
     val formState = viewModel.formState
     val context = LocalContext.current
@@ -97,7 +97,7 @@ fun LoginView(
                     scope.launch {
                         viewModel.onEvent(LoginFormEvent.EmailChanged(it))
                     }
-                }
+                },
             )
             Spacer(Modifier.height(5.dp))
             RoundedTextField(
@@ -108,7 +108,8 @@ fun LoginView(
                     scope.launch {
                         viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
                     }
-                }
+                },
+                imeAction = ImeAction.Done
             )
             Spacer(Modifier.height(10.dp))
             MainButton(
