@@ -13,7 +13,7 @@ class ValidatePassword @Inject constructor(
         if (password.length < 8) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The password needs to consist of at least 8 characters"
+                errorMessage = "비밀번호는 최소 8자리 이상 입력해주세요."
             )
         }
         val containsLettersAndDigits =
@@ -21,7 +21,7 @@ class ValidatePassword @Inject constructor(
         if (!containsLettersAndDigits) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "The password needs to contain at least one letter and digit"
+                errorMessage = "비밀번호는 최소 한 자리 이상의 숫자 혹은 영어를 입력해주세요."
             )
         }
         return ValidationResult(

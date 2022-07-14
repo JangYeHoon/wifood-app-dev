@@ -37,6 +37,7 @@ class LoginViewModel @Inject constructor(
                 formState = formState.copy(password = event.password)
             }
             is LoginFormEvent.Login -> {
+                formState.errorReset()
                 val result = viewModelScope.async {
                     formCheck()
                 }

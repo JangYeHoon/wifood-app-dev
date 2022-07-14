@@ -34,11 +34,12 @@ import kotlinx.coroutines.launch
 fun RoundedTextField(
     viewModel: LoginViewModel = hiltViewModel(),
     text: String,
-    placeholder:String,
+    placeholder: String,
     isPassword: Boolean = false,
-    height:Int = 50,
+    height: Int = 50,
     onValueChange: (String) -> Unit,
-    imeAction: ImeAction? = ImeAction.Next
+    imeAction: ImeAction? = ImeAction.Next,
+    isError: Boolean = false
 ) {
     val focus = LocalFocusManager.current
     val scope = rememberCoroutineScope()
@@ -86,5 +87,6 @@ fun RoundedTextField(
             imeAction = imeAction ?: ImeAction.Next,
             keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text
         ),
+        isError = isError
     )
 }

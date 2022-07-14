@@ -23,13 +23,12 @@ import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
-import com.example.wifood.presentation.view.start.SplashView
-import com.example.wifood.presentation.view.start.WorkThroughView1
-import com.example.wifood.presentation.view.start.WorkThroughView2
-import com.example.wifood.presentation.view.start.WorkThroughView3
+import com.example.wifood.presentation.view.splash.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalSerializationApi
 @ExperimentalPermissionsApi
@@ -41,7 +40,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Route.Login.route
+        startDestination = Route.Splash.route
     ) {
         composable(Route.Main.route) {
             MainView(navController)
@@ -67,14 +66,8 @@ fun Navigation() {
         composable(Route.Splash.route) {
             SplashView(navController = (navController))
         }
-        composable(Route.WorkThrough1.route) {
-            WorkThroughView1(navController = (navController))
-        }
-        composable(Route.WorkThrough1.route) {
-            WorkThroughView2(navController = (navController))
-        }
-        composable(Route.WorkThrough1.route) {
-            WorkThroughView3(navController = (navController))
+        composable(Route.Onboarding.route) {
+            OnboardingView(navController = (navController))
         }
         composable(Route.MobileAuthentication.route) {
             MobileAuthenticationView(navController = (navController))
