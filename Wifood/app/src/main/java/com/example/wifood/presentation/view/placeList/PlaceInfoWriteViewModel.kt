@@ -153,6 +153,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
                         insertImages()
                 }
             }
+            is PlaceInfoWriteFormEvent.CurrentLocationChange -> {
+                formState = formState.copy(currentLocation = event.location)
+            }
         }
     }
 

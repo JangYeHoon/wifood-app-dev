@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -54,14 +55,18 @@ import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.domain.model.MenuGrade
-import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.util.ValidationEvent
+import com.example.wifood.presentation.util.*
+import com.example.wifood.presentation.util.checkPermission
+import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.gson.Gson
@@ -93,10 +98,9 @@ fun PlaceInfoWriteView(
     val scaffoldState = rememberScaffoldState()
     var menuExplainTextLength = "0/500"
     val context = LocalContext.current
-    val googleSearchPlaceIntent =
-        Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, viewModel.field)
-            .setCountry("KR")
-            .build(context)
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    var locationPermissionGranted = false
+
     val googleSearchPlaceLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -139,6 +143,15 @@ fun PlaceInfoWriteView(
             }
         }
 
+
+    fun checkPermission(permission: String) {
+        if (context.checkPermission(permission)) {
+            locationPermissionGranted = true
+        } else {
+            context.findActivity().shouldShowRationale(permission)
+        }
+    }
+
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collectLatest { event ->
             when (event) {
@@ -152,6 +165,23 @@ fun PlaceInfoWriteView(
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (locationPermissionGranted) {
+            val locationResult = fusedLocationProviderClient.lastLocation
+            locationResult.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result != null) {
+                        scope.launch {
+                            viewModel.onEvent(PlaceInfoWriteFormEvent.CurrentLocationChange(task.result))
+                            Timber.i(task.result.toString())
+                        }
+                    }
                 }
             }
         }
@@ -191,7 +221,31 @@ fun PlaceInfoWriteView(
                     )
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
-                        onClick = { googleSearchPlaceLauncher.launch(googleSearchPlaceIntent) }
+                        onClick = {
+                            val bounds =
+                                viewModel.formState.currentLocation?.let {
+                                    RectangularBounds.newInstance(
+                                        LatLng(
+                                            it.latitude,
+                                            it.longitude
+                                        ),
+                                        LatLng(
+                                            it.latitude,
+                                            it.longitude
+                                        )
+                                    )
+                                }
+
+                            val googleSearchPlaceIntent =
+                                Autocomplete.IntentBuilder(
+                                    AutocompleteActivityMode.OVERLAY,
+                                    viewModel.field
+                                )
+                                    .setLocationBias(bounds)
+                                    .setCountry("KR")
+                                    .build(context)
+                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+                        }
                     )
                     Divider(
                         color = DividerColor2,

@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.graphics.Bitmap
+import android.location.Location
 import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.MenuGrade
@@ -26,5 +27,6 @@ data class PlaceInfoWriteFormState(
     val placeEditChk: Boolean = false,
     val latLng: LatLng = LatLng(0.0, 0.0),
     val address: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val currentLocation: Location? = null
 )
