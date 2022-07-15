@@ -46,6 +46,7 @@ fun MapTopAppBar(
                 val searchResult = Autocomplete.getPlaceFromIntent(it.data)
                 scope.launch {
                     viewModel.onEvent(MainEvent.SearchClicked(searchResult))
+                    viewModel.onEvent(MainEvent.CameraMove(searchResult.latLng))
                 }
             }
         }
@@ -64,7 +65,9 @@ fun MapTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(Route.Search.route)
+                    viewModel.state.searchResultLatLng?.let {
+                        viewModel.onEvent(MainEvent.CameraMove(it))
+                    }
                 }
             ) {
                 Icon(

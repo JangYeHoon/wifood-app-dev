@@ -118,6 +118,13 @@ fun MapView(
                     visible = true
                 )
             }
+            state.searchResultLatLng?.let {
+                Marker(
+                    position = LatLng(it.latitude, it.longitude),
+                    visible = true,
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
+                )
+            }
         }
     }
     LazyRow(
