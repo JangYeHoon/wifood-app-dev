@@ -1,5 +1,12 @@
 package com.example.wifood.presentation.view.login
 
+import android.app.Activity
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
+import com.example.wifood.domain.model.User
+import com.example.wifood.presentation.MainActivity
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.component.*
@@ -29,10 +38,30 @@ import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontPretendard
 import com.example.wifood.util.Constants
 import com.example.wifood.util.Constants.INVALID
+import com.example.wifood.util.Constants.NAVER_CLIENT_NAME
+import com.example.wifood.util.Constants.NAVER_CLIENT_SECRET
 import com.example.wifood.util.Constants.VALID
+import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApi
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import com.google.android.gms.common.api.ApiException
+import timber.log.Timber
 
 @Composable
 fun LoginView(
@@ -48,6 +77,17 @@ fun LoginView(
     val autoLogin = remember {
         WifoodApp.pref.getString("auto_login", INVALID)
     }
+    val startForResult =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                if (result.data != null) {
+                    val task: Task<GoogleSignInAccount> =
+                        GoogleSignIn.getSignedInAccountFromIntent(intent)
+                    handleSignInResult(task)
+                }
+            }
+        }
 
     LaunchedEffect(key1 = autoLogin) {
         when (autoLogin) {
@@ -163,23 +203,134 @@ fun LoginView(
                 fontWeight = FontWeight.Normal
             )
             Spacer(Modifier.height(18.dp))
+            // Debuging from here
             Row() {
+                var name: String
+                var email: String
+                var gender: String
+                var phone: String
                 SnsIconButton(
                     resourceId = R.drawable.ic_naver_login_icon,
-                    onClick = {/*TODO*/ }
+                    onClick = {
+                        val oAuthLoginCallback = object : OAuthLoginCallback {
+                            override fun onError(errorCode: Int, message: String) {
+                                val naverAccessToken = NaverIdLoginSDK.getAccessToken()
+                                Log.e("NAVER", "naverAccessToken : $naverAccessToken")
+                            }
+
+                            override fun onFailure(httpStatus: Int, message: String) {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onSuccess() {
+                                NidOAuthLogin().callProfileApi(object :
+                                    NidProfileCallback<NidProfileResponse> {
+                                    override fun onSuccess(result: NidProfileResponse) {
+                                        name = result.profile?.name.toString()
+                                        email = result.profile?.email.toString()
+                                        gender = result.profile?.gender.toString()
+                                        phone = result.profile?.mobile.toString()
+                                        Log.e("NAVER", "name : $name")
+                                        Log.e("NAVER", "email : $email")
+                                        Log.e("NAVER", "gender : $gender")
+                                        Log.e("NAVER", "phone : $phone")
+                                    }
+
+                                    override fun onError(errorCode: Int, message: String) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                    override fun onFailure(httpStatus: Int, message: String) {
+                                        TODO("Not yet implemented")
+                                    }
+                                }
+                                )
+                            }
+                        }
+                        NaverIdLoginSDK.initialize(
+                            context,
+                            Constants.NAVER_CLIENT_ID,
+                            NAVER_CLIENT_SECRET,
+                            NAVER_CLIENT_NAME
+                        )
+                        NaverIdLoginSDK.authenticate(context, oAuthLoginCallback)
+                    }
                 )
                 Spacer(Modifier.width(20.dp))
                 SnsIconButton(
                     resourceId = R.drawable.ic_kakao_login_icon,
-                    onClick = {/*TODO*/ }
+                    onClick = {
+                        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+                            if (error != null) {
+                                Log.e("KAKAO", "카카오계정으로 로그인 실패", error)
+                            } else if (token != null) {
+                                Log.i("KAKAO", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                            }
+                        }
+
+                        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
+                            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
+                                if (error != null) {
+                                    Log.e("KAKAO", "카카오톡으로 로그인 실패", error)
+
+                                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                                        return@loginWithKakaoTalk
+                                    }
+
+                                    UserApiClient.instance.loginWithKakaoAccount(
+                                        context,
+                                        callback = callback
+                                    )
+                                } else if (token != null) {
+                                    Log.i("KAKAO", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                                }
+                            }
+                        } else {
+                            UserApiClient.instance.loginWithKakaoAccount(
+                                context,
+                                callback = callback
+                            )
+                        }
+                    }
                 )
                 Spacer(Modifier.width(20.dp))
                 SnsIconButton(
                     resourceId = R.drawable.ic_google_login_icon,
-                    onClick = {/*TODO*/ }
+                    onClick = {
+                        val googleSignInClient = getGoogleLoginAuth(context)
+                        startForResult.launch(googleSignInClient.signInIntent)
+                    }
                 )
             }
+            // to here
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
+}
+
+private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+    try {
+        val account = completedTask.getResult(ApiException::class.java)
+
+        // Signed in successfully, show authenticated UI.
+        if (account != null) {
+            val personName: String = account.displayName!!
+            val personEmail: String = account.email!!
+            Timber.i(personName + personEmail)
+        }
+    } catch (e: ApiException) {
+        // The ApiException status code indicates the detailed failure reason.
+        // Please refer to the GoogleSignInStatusCodes class reference for more information.
+        Log.w("GOOGLE", "signInResult:failed code=" + e.statusCode)
+    }
+}
+
+private fun getGoogleLoginAuth(context: Context): GoogleSignInClient {
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestEmail()
+        .requestIdToken(Constants.GOOGLE_ID)
+        .requestId()
+        .requestProfile()
+        .build()
+    return GoogleSignIn.getClient(context.getActivity(), gso)
 }
