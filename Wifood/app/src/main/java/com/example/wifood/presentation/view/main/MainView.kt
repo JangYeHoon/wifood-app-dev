@@ -146,7 +146,6 @@ fun MainView(
                                         )
                                     )
                                 )
-                                viewModel.onUiEvent(UiEvent.ShowSnackBar(state.currentLocation!!.latitude.toString()))
                             },
                             backgroundColor = Color.White,
                             contentColor = Main
