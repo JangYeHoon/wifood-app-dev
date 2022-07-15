@@ -19,5 +19,12 @@ data class MainState(
     val isLoading: Boolean = false,
     val properties: MapProperties = MapProperties(),
     val selectedGroupId: Int = 0,
-    val currentLocation: Location? = null
+    val currentLocation: Location? = null,
+    val field: List<com.google.android.libraries.places.api.model.Place.Field> = listOf(
+        com.google.android.libraries.places.api.model.Place.Field.NAME,
+        com.google.android.libraries.places.api.model.Place.Field.LAT_LNG,
+        com.google.android.libraries.places.api.model.Place.Field.ADDRESS
+    ),
+    val searchResultName: String = "",
+    val searchResultLatLng: LatLng? = null
 )

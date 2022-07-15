@@ -1,6 +1,6 @@
 package com.example.wifood.presentation.view.main
 
-import android.util.Log
+import android.content.Context
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,9 @@ import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val useCases: WifoodUseCases
+    private val useCases: WifoodUseCases,
+    @ApplicationContext applicationContext: Context,
 ) : ViewModel() {
     private val _toast = MutableSharedFlow<String>()
     val toast = _toast.asSharedFlow()
@@ -26,6 +29,10 @@ class MainViewModel @Inject constructor(
 
     private val _camera = MutableSharedFlow<LatLng>()
     val camera = _camera.asSharedFlow()
+
+    init {
+        Places.initialize(applicationContext, "AIzaSyB_HZJANQB8zVtH33wHb2OI-FbeDhPYRtA")
+    }
 
     fun onEvent(event: MainEvent) {
         when (event) {
@@ -49,7 +56,17 @@ class MainViewModel @Inject constructor(
                     _camera.emit(event.latLng)
                 }
             }
+            is MainEvent.SearchClicked -> {
+                updateSearchResultFromGoogleAPI(event.searchPlaceResult)
+            }
         }
+    }
+
+    private fun updateSearchResultFromGoogleAPI(searchPlace: com.google.android.libraries.places.api.model.Place) {
+        state = state.copy(
+            searchResultName = searchPlace.name,
+            searchResultLatLng = searchPlace.latLng
+        )
     }
 
     fun onUiEvent(event: UiEvent) {
