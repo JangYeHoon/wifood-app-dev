@@ -100,7 +100,7 @@ fun PlaceInfoMenus(
 fun PlaceInfoMainContent(
     placeInfoGroupName: String = "맛집그룹",
     placeInfoName: String = "맛집이름",
-    placeInfoMenuListText: AnnotatedString = buildAnnotatedString { append("하와이안 피자") },
+    placeInfoMenuListText: String,
     placeInfoScore: Float = 1.5f,
     isKind: Boolean = true,
     isDelicious: Boolean = true,
@@ -347,9 +347,7 @@ fun PlaceInfoView(
                 PlaceInfoMainContent(
                     placeInfoGroupName = state.group!!.description,
                     placeInfoName = state.place!!.name,
-                    placeInfoMenuListText = buildAnnotatedString {
-                        append(state.place.menu)
-                    },
+                    placeInfoMenuListText = state.place.menu,
                     placeInfoScore = state.place.score,
                     isKind = state.place.kindChk,
                     isDelicious = state.place.tasteChk,
