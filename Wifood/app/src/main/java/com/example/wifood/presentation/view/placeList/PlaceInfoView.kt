@@ -195,7 +195,7 @@ fun PlaceInfoMainContent(
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
-fun PlaceInfoComposeView(
+fun PlaceInfoView(
     navController: NavController,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {

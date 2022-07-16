@@ -20,7 +20,7 @@ import com.example.wifood.presentation.view.login.MobileAuthenticationView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.placeList.PlaceInfoComposeView
+import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
 import com.example.wifood.presentation.view.splash.*
@@ -61,7 +61,7 @@ fun Navigation() {
                 navArgument("group") { type = createParcelableNavType<Group>() },
             )
         ) {
-            PlaceInfoComposeView(navController)
+            PlaceInfoView(navController)
         }
         composable(Route.Splash.route) {
             SplashView(navController = (navController))
