@@ -59,11 +59,11 @@ fun JoininCompleteView(
             )
             Spacer(Modifier.height(56.dp))
             Image(
-                painter = painterResource(com.example.wifood.R.drawable.walk_through_1_cat),
-                contentDescription = "Splash View Image",
+                painter = painterResource(com.example.wifood.R.drawable.ic_joinin_complete_cat),
+                contentDescription = "joinin complete cate image",
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(272.dp)
+                    .width(253.dp)
+                    .height(294.dp)
             )
             Spacer(Modifier.height(50.dp))
             Box(
@@ -75,63 +75,6 @@ fun JoininCompleteView(
                 text = "확인"
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
-
-        }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun test(
-    userNicname :String = "닉네임"
-){
-
-    Scaffold(
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = sidePaddingValue.dp)
-                .padding(top = 100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text= buildAnnotatedString {
-                    append("반갑습니다, ")
-                    withStyle(
-                        style = SpanStyle(
-                            MainColor
-                        ),
-                    ){
-                        append(userNicname)
-                    }
-                    append("님\n회원가입이 완료되었습니다.")
-                },
-                fontFamily = fontTmoney,
-                fontWeight = FontWeight.Normal,
-                fontSize = 24.sp,
-                textAlign = TextAlign.Left,
-                color = Gray03Color
-            )
-            Spacer(Modifier.height(56.dp))
-            Image(
-                painter = painterResource(com.example.wifood.R.drawable.walk_through_1_cat),
-                contentDescription = "Splash View Image",
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(272.dp)
-            )
-            Spacer(Modifier.height(50.dp))
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-            )
-            MainButton(
-                text = "시작하기"
-            )
-            Spacer(Modifier.height(buttonBottomValue.dp))
-
         }
     }
 }

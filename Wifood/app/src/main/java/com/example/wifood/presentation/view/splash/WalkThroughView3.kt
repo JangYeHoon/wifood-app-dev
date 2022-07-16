@@ -21,6 +21,7 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @Composable
@@ -67,6 +68,7 @@ fun WorkThroughView3(
                 text="시작하기",
                 onClick = {/*TODO*/}
             )
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }

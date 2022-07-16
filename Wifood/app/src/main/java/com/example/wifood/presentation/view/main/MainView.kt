@@ -142,7 +142,7 @@ fun MainView(
                                     MainEvent.CameraMove(
                                         LatLng(
                                             state.currentLocation!!.latitude,
-                                            state.currentLocation.longitude
+                                            state.currentLocation!!.longitude
                                         )
                                     )
                                 )

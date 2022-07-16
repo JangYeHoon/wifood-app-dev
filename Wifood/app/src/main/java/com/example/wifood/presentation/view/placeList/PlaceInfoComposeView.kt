@@ -375,7 +375,7 @@ fun PlaceInfoComposeView(
                         }
                     )
                     SnsIconButton(
-                        resourceId = R.drawable.bg_wh,
+                        resourceId = R.drawable.ic_place_info_option_button,
                         size = 40,
                         onClick = {
                             scope.launch {

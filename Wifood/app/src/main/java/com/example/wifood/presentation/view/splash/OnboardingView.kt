@@ -2,9 +2,7 @@ package com.example.wifood.presentation.view.splash
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
@@ -20,6 +18,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.splash.component.PageUI
 import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -43,7 +42,7 @@ fun OnboardingView(
             "나만의 맛집을 ",
             "기록",
             "하고\n기록하자 냥!",
-            R.drawable.walk_through_1_cat
+            R.drawable.ic_walk_through_screen2
         ),
         Page(
             "내 취향의 맛집을 ",
@@ -88,5 +87,6 @@ fun OnboardingView(
                 Text(text = "시작하기")
             }
         }
+        Spacer(Modifier.height(buttonBottomValue.dp))
     }
 }
