@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component_box.SingleIconWithText
 import com.example.wifood.view.ui.theme.DividerColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
@@ -245,28 +246,28 @@ fun UserFavorButtonGroup() {
         var mintChokoClicked = remember{ mutableStateOf(false)}
         var eggplantClicked = remember{ mutableStateOf(false)}
 
-        FavorComponent(
-            favorText = "오이",
-            favorUnClickedId = R.drawable.ic_favor_cucumber,
-            favorClickedId = R.drawable.ic_favor_cucumber_clicked,
+        SingleIconWithText(
+            text = "오이",
+            UnClickedSourceId = R.drawable.ic_favor_cucumber,
+            ClickedSourceId = R.drawable.ic_favor_cucumber_clicked,
             isClicked = cucumberClicked
         )
-        FavorComponent(
-            favorText = "고수",
-            favorUnClickedId = R.drawable.ic_favor_coriander,
-            favorClickedId = R.drawable.ic_favor_coriander_clicked,
+        SingleIconWithText(
+            text = "고수",
+            UnClickedSourceId = R.drawable.ic_favor_coriander,
+            ClickedSourceId = R.drawable.ic_favor_coriander_clicked,
             isClicked = corianderClicked
         )
-        FavorComponent(
-            favorText = "민트초코",
-            favorUnClickedId = R.drawable.ic_favor_mint,
-            favorClickedId = R.drawable.ic_favor_mint_clicked,
+        SingleIconWithText(
+            text = "민트초코",
+            UnClickedSourceId = R.drawable.ic_favor_mint,
+            ClickedSourceId = R.drawable.ic_favor_mint_clicked,
             isClicked = mintChokoClicked
         )
-        FavorComponent(
-            favorText = "가지",
-            favorUnClickedId = R.drawable.ic_favor_eggplant,
-            favorClickedId = R.drawable.ic_favor_eggplant_clicked,
+        SingleIconWithText(
+            text = "가지",
+            UnClickedSourceId = R.drawable.ic_favor_eggplant,
+            ClickedSourceId = R.drawable.ic_favor_eggplant_clicked,
             isClicked = eggplantClicked
         )
 
@@ -276,7 +277,8 @@ fun UserFavorButtonGroup() {
 @Composable
 fun YOGORadioButton(
     selectedArray: MutableList<Int>,
-    selectedValue: Int = 0
+    selectedValue: Int = 0,
+    radioButtonSize:Int = 24
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -292,7 +294,7 @@ fun YOGORadioButton(
             }*/
         },
         modifier = Modifier
-            .size(24.dp)
+            .size(radioButtonSize.dp)
     ) {
         Icon(
             ImageVector.vectorResource(id = if (selectedArray[selectedValue] == 1) R.drawable.ic_selected_radiobutton else R.drawable.ic_unselected_radiobutton),
@@ -312,51 +314,6 @@ fun YOGORadioButton(
                     }
                 },
             tint = Color.Unspecified
-        )
-    }
-}
-
-@Composable
-fun FavorComponent(
-    favorText:String = "오이",
-    favorUnClickedId:Int = R.drawable.ic_favor_cucumber,
-    favorClickedId:Int = R.drawable.ic_favor_cucumber_clicked,
-    isClicked:MutableState<Boolean>
-){
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        IconButton(
-            onClick = {
-                //isClicked.value = !isClicked.value
-            },
-            modifier = Modifier
-                .size(56.dp)
-        ){
-            Icon(
-                ImageVector.vectorResource(id = if (isClicked.value) favorClickedId else favorUnClickedId ),
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        //indication = null,
-                        //interactionSource = interactionSource
-                    ){
-                        isClicked.value = !isClicked.value
-                    },
-                tint = Color.Unspecified
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Text(
-            text = favorText,
-            fontFamily = mainFont,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 12.sp,
-            color = Gray01Color
         )
     }
 }
