@@ -47,7 +47,7 @@ class WifoodRepositoryImpl(
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Timber.d("Repository Launched")
+        Log.e("씨발", "Repository launch")
         return api.getUser(id)
     }
 

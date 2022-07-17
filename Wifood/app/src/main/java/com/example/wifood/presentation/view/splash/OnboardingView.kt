@@ -15,6 +15,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.splash.component.PageUI
 import com.example.wifood.view.ui.theme.MainColor

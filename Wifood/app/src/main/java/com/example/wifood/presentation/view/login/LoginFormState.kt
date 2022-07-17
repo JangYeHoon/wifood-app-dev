@@ -6,9 +6,9 @@ import com.example.wifood.domain.model.User
 
 data class LoginFormState(
     var email: String = "",
-    var emailError: String = "",
+    var emailError: String? = null,
     var password: String = "",
-    var passwordError: String = ""
+    var passwordError: String? = null
 ) {
     fun clear() {
         email = ""
@@ -16,7 +16,7 @@ data class LoginFormState(
     }
 
     fun errorReset() {
-        emailError = ""
-        passwordError = ""
+        emailError = null
+        passwordError = null
     }
 }

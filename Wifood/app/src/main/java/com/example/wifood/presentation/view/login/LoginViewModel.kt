@@ -9,11 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,18 +41,37 @@ class LoginViewModel @Inject constructor(
             }
             is LoginFormEvent.Login -> {
                 formState.errorReset()
-                val result = viewModelScope.async {
-                    formCheck()
+                if (formCheck()) {
+                    getUser()
                 }
                 try {
-                    if (result.await()) {
-                        loginData()
-                    }
+                    loginData()
                 } catch (e: Exception) {
-                    validateEventChannel.send(ValidationEvent.Error("로그인 정보를 불러오는 중입니다...(다시 로그인)"))
+
                 }
             }
         }
+    }
+
+    private fun getUser() {
+        Log.e("씨발", "Viewmodel launch")
+        useCases.GetUser(formState.email.replace('.', '_')).observeForever {
+            state = state.copy(
+                user = it,
+                groups = it.groupList
+            )
+            Log.e("씨발", "State user: ${state.user}")
+            val placeList = mutableListOf<Place>()
+            state.groups.forEach { group ->
+                group.placeList.forEach { place ->
+                    placeList.add(place)
+                }
+            }
+            state = state.copy(
+                places = placeList
+            )
+        }
+        Log.e("씨발", "Viewmodel finish")
     }
 
     private fun formCheck(): Boolean {
@@ -68,24 +90,6 @@ class LoginViewModel @Inject constructor(
             )
             return false
         }
-
-        useCases.GetUser(formState.email.replace('.', '_')).observeForever {
-            state = state.copy(
-                user = it,
-                groups = it.groupList,
-                isLoading = true
-            )
-            val placeList = mutableListOf<Place>()
-            state.groups.forEach { group ->
-                group.placeList.forEach { place ->
-                    placeList.add(place)
-                }
-            }
-            state = state.copy(
-                places = placeList,
-                isLoading = false
-            )
-        }
         return true
     }
 
@@ -94,7 +98,7 @@ class LoginViewModel @Inject constructor(
         if (valid) {
             validateEventChannel.send(ValidationEvent.Success)
         } else {
-            validateEventChannel.send(ValidationEvent.Error("비밀번호가 일치하지 않습니다."))
+            formState = formState.copy(passwordError = "비밀번호가 일치하지 않습니다.")
         }
     }
 }

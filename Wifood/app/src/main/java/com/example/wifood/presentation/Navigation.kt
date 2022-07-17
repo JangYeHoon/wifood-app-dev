@@ -4,6 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -73,8 +75,37 @@ fun Navigation() {
         composable(Route.MobileAuthentication.route) {
             MobileAuthenticationView(navController = (navController))
         }
-        composable(Route.Joinin.route) {
-            JoininView(navController = navController)
+        composable(
+            route = "${Route.Joinin.route}?email={email}&gender={gender}&phone={phone}&nickname={nickname}&birthday={birthday}",
+            arguments = listOf(
+                navArgument("email") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("gender") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("phone") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("nickname") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                },
+                navArgument("birthday") {
+                    nullable = true
+                    defaultValue = null
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            JoininView(navController, it)
         }
         composable(
             route = "${Route.EditPlace.route}/{place}",
@@ -96,13 +127,13 @@ fun Navigation() {
         ) {
             GroupAddView(navController)
         }
-        composable(Route.FindPwd.route){
+        composable(Route.FindPwd.route) {
             FindPwdView(navController)
         }
-        composable(Route.EditMyInfo.route){
+        composable(Route.EditMyInfo.route) {
             EditMyInfoComposeView(navController)
         }
-        composable(Route.AppInfo.route){
+        composable(Route.AppInfo.route) {
             AppInfoView(navController)
         }
     }

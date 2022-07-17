@@ -3,17 +3,13 @@ package com.example.wifood.presentation.view.login
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -29,10 +25,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
-import com.example.wifood.domain.model.User
-import com.example.wifood.presentation.MainActivity
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontPretendard
@@ -51,7 +46,6 @@ import com.google.android.gms.tasks.Task
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -61,7 +55,6 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.google.android.gms.common.api.ApiException
-import timber.log.Timber
 
 @Composable
 fun LoginView(
@@ -84,7 +77,10 @@ fun LoginView(
                 if (result.data != null) {
                     val task: Task<GoogleSignInAccount> =
                         GoogleSignIn.getSignedInAccountFromIntent(intent)
-                    handleSignInResult(task)
+                    val email = handleSignInResult(task)
+                    if (!email.isNullOrBlank()) {
+                        navController.navigate("${Route.Joinin.route}?email=$email")
+                    }
                 }
             }
         }
@@ -116,11 +112,14 @@ fun LoginView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        if (formState.emailError.isNotBlank()) {
-            LoginErrorText(formState.emailError, true)
-        } else if (formState.passwordError.isNotBlank()) {
-            LoginErrorText(formState.passwordError, true)
+        if (state.isLoading) {
+            ProgressIndicator()
         }
+
+        LoginErrorText(
+            formState.emailError ?: formState.passwordError ?: "Invalid",
+            !(formState.emailError.isNullOrBlank() && formState.passwordError.isNullOrBlank())
+        )
 
         Column(
             modifier = Modifier
@@ -143,7 +142,7 @@ fun LoginView(
                         viewModel.onEvent(LoginFormEvent.EmailChanged(it))
                     }
                 },
-                isError = formState.emailError.isNotBlank()
+                isError = !formState.emailError.isNullOrBlank()
             )
             Spacer(Modifier.height(5.dp))
             RoundedTextField(
@@ -156,7 +155,7 @@ fun LoginView(
                     }
                 },
                 imeAction = ImeAction.Done,
-                isError = formState.passwordError.isNotBlank()
+                isError = !formState.passwordError.isNullOrBlank()
             )
             Spacer(Modifier.height(10.dp))
             MainButton(
@@ -226,14 +225,12 @@ fun LoginView(
                                 NidOAuthLogin().callProfileApi(object :
                                     NidProfileCallback<NidProfileResponse> {
                                     override fun onSuccess(result: NidProfileResponse) {
-                                        name = result.profile?.name.toString()
                                         email = result.profile?.email.toString()
                                         gender = result.profile?.gender.toString()
                                         phone = result.profile?.mobile.toString()
-                                        Log.e("NAVER", "name : $name")
-                                        Log.e("NAVER", "email : $email")
-                                        Log.e("NAVER", "gender : $gender")
-                                        Log.e("NAVER", "phone : $phone")
+                                        navController.navigate(
+                                            "${Route.Joinin.route}?email=$email&gender=$gender&phone=$phone"
+                                        )
                                     }
 
                                     override fun onError(errorCode: Int, message: String) {
@@ -264,33 +261,13 @@ fun LoginView(
                             if (error != null) {
                                 Log.e("KAKAO", "카카오계정으로 로그인 실패", error)
                             } else if (token != null) {
-                                Log.i("KAKAO", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                                getKakaoInfo(UserApiClient.instance, navController)
                             }
                         }
-
-                        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-                            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
-                                if (error != null) {
-                                    Log.e("KAKAO", "카카오톡으로 로그인 실패", error)
-
-                                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                                        return@loginWithKakaoTalk
-                                    }
-
-                                    UserApiClient.instance.loginWithKakaoAccount(
-                                        context,
-                                        callback = callback
-                                    )
-                                } else if (token != null) {
-                                    Log.i("KAKAO", "카카오톡으로 로그인 성공 ${token.accessToken}")
-                                }
-                            }
-                        } else {
-                            UserApiClient.instance.loginWithKakaoAccount(
-                                context,
-                                callback = callback
-                            )
-                        }
+                        UserApiClient.instance.loginWithKakaoAccount(
+                            context,
+                            callback = callback
+                        )
                     }
                 )
                 Spacer(Modifier.width(20.dp))
@@ -308,20 +285,44 @@ fun LoginView(
     }
 }
 
-private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+private fun getKakaoInfo(
+    userApiClient: UserApiClient,
+    navController: NavController
+) {
+    userApiClient.me { user, error ->
+        if (error != null) {
+            Log.e("KAKAO", "사용자 정보 요청 실패", error)
+        } else if (user != null) {
+            val nickname = user.kakaoAccount?.profile?.nickname!!
+            val email = user.kakaoAccount?.email!!
+            //infoList["birthday"] = user.kakaoAccount?.birthday!!
+            //infoList["gender"] = user.kakaoAccount?.gender!!.toString()
+            navController.navigate(
+                "${Route.Joinin.route}?" +
+                        "email=${email}" +
+//                        "&gender=${gender}" +
+//                        "&birthday=${birthday}" +
+                        "&nickname=${nickname}"
+            )
+        }
+    }
+}
+
+private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>): String? {
     try {
         val account = completedTask.getResult(ApiException::class.java)
 
         // Signed in successfully, show authenticated UI.
         if (account != null) {
-            val personName: String = account.displayName!!
-            val personEmail: String = account.email!!
-            Timber.i(personName + personEmail)
+            return account.email!!
         }
+
+        return null
     } catch (e: ApiException) {
         // The ApiException status code indicates the detailed failure reason.
         // Please refer to the GoogleSignInStatusCodes class reference for more information.
         Log.w("GOOGLE", "signInResult:failed code=" + e.statusCode)
+        return null
     }
 }
 

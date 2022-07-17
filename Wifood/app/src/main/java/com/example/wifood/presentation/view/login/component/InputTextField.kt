@@ -29,63 +29,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 @Composable
-fun InputTextField2(
-    text: String = "",
-    placeholder: String = "아이디",
-    onValueChange: (String) -> Unit = {},
-    height: Int = 50,
-    isPassword: Boolean = false,
-    maxLine: Int = 1,
-    resetIconOffset: Int = 10,
-) {
-    TextField(
-        value = text,
-        onValueChange = onValueChange,
-        placeholder = {
-            Text(
-                text = placeholder,
-                color = EnableColor,
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp
-            )
-        },
-        singleLine = true,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Gray01Color,
-            backgroundColor = Color.White,
-            cursorColor = MainColor,
-            focusedBorderColor = RoundedTextFieldFocusColor,
-            unfocusedBorderColor = RoundedTextFieldUnFocusColor
-        ),
-        trailingIcon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_reset_text_button),
-                contentDescription = "clear text",
-                modifier = Modifier
-                    .offset(x = resetIconOffset.dp)
-                    .clickable {
-                        onValueChange("")
-                    }
-                    .wrapContentSize(),
-                tint = Color.Unspecified
-            )
-        },
-        maxLines = maxLine,
-        visualTransformation = if (isPassword) PasswordVisualTransformation('*') else VisualTransformation.None,
-        textStyle = TextStyle(
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
-            color = Gray01Color
-        )
-    )
-}
-
-@Composable
 fun InputTextField(
     text: String = "",
     placeholder: String = "아이디",
@@ -94,6 +37,7 @@ fun InputTextField(
     isPassword: Boolean = false,
     maxLine: Int = 1,
     resetIconOffset: Int = 10,
+    enabled: Boolean = true
 ) {
 
     var textFieldText = text
@@ -146,6 +90,7 @@ fun InputTextField(
                         innerTextField()
                     }
                 },
+                enabled = enabled
             )
             if (text.isNotEmpty()) {
                 IconButton(

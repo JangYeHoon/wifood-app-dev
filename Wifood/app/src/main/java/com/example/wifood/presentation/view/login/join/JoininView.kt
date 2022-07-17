@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
@@ -46,6 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun JoininView(
     navController: NavController,
+    navBackStackEntry: NavBackStackEntry,
     viewModel: JoininViewModel = hiltViewModel()
 ) {
     val formState = viewModel.formState
@@ -53,8 +56,15 @@ fun JoininView(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val showDialog = remember { mutableStateOf(false) }
+    val email = navBackStackEntry.arguments?.getString("email")
+    val gender = navBackStackEntry.arguments?.getString("gender")
+    val phone = navBackStackEntry.arguments?.getString("phone")
+    val nickname = navBackStackEntry.arguments?.getString("nickname")
 
     LaunchedEffect(key1 = true) {
+        if (!nickname.isNullOrBlank()) {
+            viewModel.onEvent(JoininEvent.NicknameChanged(nickname))
+        }
         viewModel.validationEvents.collectLatest { event ->
             when (event) {
                 is ValidationEvent.Success -> {
@@ -90,13 +100,14 @@ fun JoininView(
             ExplainText("영문, 숫자를 포함한 아이디를 입력해주세요")
             Spacer(Modifier.height(5.dp))
             InputTextField(
-                text = formState.email,
+                text = if (email.isNullOrBlank()) formState.email else email,
                 placeholder = "아이디",
                 onValueChange = {
                     scope.launch {
                         viewModel.onEvent(JoininEvent.EmailChanged(it))
                     }
-                }
+                },
+                enabled = email.isNullOrBlank()
             )
             ErrorText(
                 text = "** 이미 사용중인 아이디입니다",
@@ -186,7 +197,7 @@ fun JoininView(
                             text = "",
                             placeholder = "YYMMDD",
                             onValueChange = {
-                            },
+                            }
                         )
                     }
                 }
@@ -197,7 +208,7 @@ fun JoininView(
                         Spacer(Modifier.height(10.dp))
                         Row() {
                             YOGORadioButton(
-                                text = "남성",
+                                text = gender.toString(),
                                 onClick = {},
                                 selected = true
                             )
