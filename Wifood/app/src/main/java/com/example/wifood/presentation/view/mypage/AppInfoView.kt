@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.mypage
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
@@ -40,13 +41,12 @@ fun AppInfoView(
     ){
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .verticalScroll(scrollState)
         ){
             CommonTextButtonSB(
                 text = buildAnnotatedString {
                     append("버젼 정보")
-                    Spacer(Modifier.weight(1f))
+                    Spacer(Modifier.fillMaxWidth())
                     withStyle(
                         style = SpanStyle(
                             MainColor

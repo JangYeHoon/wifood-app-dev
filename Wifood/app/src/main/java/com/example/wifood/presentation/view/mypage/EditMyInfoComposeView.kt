@@ -40,7 +40,6 @@ fun EditMyInfoComposeView(
     ){
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .verticalScroll(scrollState)
         ){
             CommonTextButton(

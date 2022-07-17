@@ -107,7 +107,8 @@ fun MyPageComposeView(
                     text = "로그아웃",
                     withButton = false,
                     onClick = {
-                        // TODO
+                        // TODO("should add log out logic")
+                        navController.navigate(Route.Login.route)
                     }
                 )
             }
