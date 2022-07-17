@@ -80,8 +80,8 @@ fun JoininView(
     ) {
         Column(
             Modifier
-                .padding(horizontal = sidePaddingValue.dp)
                 .verticalScroll(scrollState)
+                .padding(horizontal = sidePaddingValue.dp)
         ) {
             Spacer(Modifier.height(31.dp))
             // set id

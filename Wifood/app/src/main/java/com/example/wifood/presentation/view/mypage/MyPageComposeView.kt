@@ -1,9 +1,14 @@
 package com.example.wifood.presentation.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -11,87 +16,99 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.ThickDivider
+import com.example.wifood.presentation.view.component.YOGOTopAppBar
+import com.example.wifood.presentation.view.component_box.ProfileBoxImageVector
+import com.example.wifood.presentation.view.login.component.ExplainText
+import com.example.wifood.presentation.view.login.component.TitleText
+import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 
 @Composable
 fun MyPageComposeView(
     navController: NavController
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Box(
+    // UI variables
+    val scaffoldState = rememberScaffoldState()
+    val scrollState = rememberScrollState()
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            YOGOTopAppBar(
+                text = "설정",
+                onBackButtonClicked = {
+                    navController.popBackStack()
+                }
+            )
+        },
+    ){
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(95.dp)
-                .padding(24.dp, 20.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
-            ) {
-                Image(
-                    painterResource(id = R.drawable.profile),
-                    contentDescription = "",
-                    Modifier.size(60.dp),
-                    contentScale = ContentScale.FillBounds
-                )
-
-                Column {
-                    Text(text = "닉네임")
-                    Text(text = "UserName@wifood.com")
-                }
-            }
-
-            IconButton(
-                onClick = { navController.navigate(Route.EditProfile.route) },
+                .verticalScroll(scrollState)
+                .fillMaxSize()
+        ){
+            Column(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .size(20.dp, 25.dp)
-            ) {
-                Icon(
-                    Icons.Filled.ArrowForward,
-                    contentDescription = ""
-                )
-            }
-        }
-
-        Divider(color = Color.Gray, modifier = Modifier.height(1.dp))
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(listOf("내 정보 수정", "앱정보", "로그아웃")) {
-                // TODO: settings, mypage view에서 동일하게 쓰임, 공통부분 함수로 빼기
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(45.dp)
-                        .padding(24.dp, 0.dp)
-                ) {
-                    Text(text = it, modifier = Modifier.align(Alignment.CenterStart))
-                    if (it != "로그아웃") {
-                        IconButton(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .size(20.dp, 25.dp)
-                        ) {
-                            Icon(
-                                Icons.Filled.ArrowForward,
-                                contentDescription = ""
-                            )
-                        }
+                    .clickable {
+                        navController.navigate(Route.EditProfile.route)
                     }
+                    .padding(horizontal = 24.dp)
+                    .padding(vertical = 20.dp)
+            ){
+                Row(
+                ){
+                    ProfileBoxImageVector(
+                        userNickname = "닉네임",
+                        userId = "nickname@naver.com",
+                        userProfileImage = R.drawable.ic_splash_icon
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Icon(
+                        ImageVector.vectorResource(R.drawable.ic_right_arrow),
+                        contentDescription = "back button",
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.CenterVertically),
+                        tint = Color.Unspecified
+                    )
                 }
+            }
+            ThickDivider(thickness = 4)
+            Column(
+            ){
+                CommonTextButton(
+                    text = "내 정보 수정",
+                    withButton = true,
+                    onClick = {
+                        // TODO
+                    }
+                )
+                CommonTextButton(
+                    text = "앱 정보",
+                    withButton = true,
+                    onClick = {
+                        // TODO
+                    }
+                )
+                CommonTextButton(
+                    text = "로그아웃",
+                    withButton = false,
+                    onClick = {
+                        // TODO
+                    }
+                )
             }
         }
     }

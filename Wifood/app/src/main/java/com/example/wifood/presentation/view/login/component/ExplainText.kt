@@ -10,11 +10,12 @@ import com.example.wifood.view.ui.theme.ExplainTextColor
 
 @Composable
 fun ExplainText(
-    text:String
+    text:String = "",
+    color:Color = ExplainTextColor
 ){
     Text(
         text=text,
-        color = ExplainTextColor,
+        color = color,
         fontSize = 12.sp,
         fontFamily = mainFont,
         fontWeight = FontWeight.Normal

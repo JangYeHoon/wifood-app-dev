@@ -10,11 +10,12 @@ import com.example.wifood.view.ui.theme.TitleTextColor
 
 @Composable
 fun TitleText(
-    text:String
+    text:String="",
+    color:Color = TitleTextColor
 ){
     Text(
         text=text,
-        color = TitleTextColor,
+        color = color,
         fontSize = 15.sp,
         fontFamily = mainFont,
         fontWeight = FontWeight.Bold,

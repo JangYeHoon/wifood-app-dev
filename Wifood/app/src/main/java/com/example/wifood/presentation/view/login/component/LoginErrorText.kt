@@ -33,8 +33,8 @@ fun LoginErrorText(
     if (visibility) {
         Column(
             modifier = Modifier
+                .padding(horizontal = sidePaddingValue.dp)
                 .padding(top = 26.dp)
-                .padding(start = sidePaddingValue.dp)
         ){
             TextButton(
                 shape = RoundedCornerShape(16.dp),

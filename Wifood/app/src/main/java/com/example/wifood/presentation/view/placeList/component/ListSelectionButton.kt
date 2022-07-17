@@ -21,7 +21,6 @@ import com.example.wifood.R
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
-@Preview(showBackground = true)
 @Composable
 fun ListSelectionButtonWithIcon(
     buttonText: String = "그룹 선택",
