@@ -13,15 +13,15 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.presentation.view.mypage.component.CommonTextButtonSB
 import com.example.wifood.view.ui.theme.MainColor
 
-@Preview(showBackground = true)
 @Composable
 fun AppInfoView(
-
+    navController: NavController
 ){
     // UI variables
     val scaffoldState = rememberScaffoldState()
@@ -33,7 +33,7 @@ fun AppInfoView(
             YOGOTopAppBar(
                 text = "앱 정보",
                 onBackButtonClicked = {
-                    //navController.popBackStack()
+                    navController.popBackStack()
                 }
             )
         }

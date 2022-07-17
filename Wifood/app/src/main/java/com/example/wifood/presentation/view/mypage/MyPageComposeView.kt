@@ -92,6 +92,7 @@ fun MyPageComposeView(
                     text = "내 정보 수정",
                     withButton = true,
                     onClick = {
+                        navController.navigate(Route.EditMyInfo.route)
                         // TODO
                     }
                 )
@@ -99,7 +100,7 @@ fun MyPageComposeView(
                     text = "앱 정보",
                     withButton = true,
                     onClick = {
-                        // TODO
+                        navController.navigate(Route.AppInfo.route)
                     }
                 )
                 CommonTextButton(

@@ -23,4 +23,6 @@ sealed class Route(val route: String) {
     object GroupAdd : Route("groupaddview")
     object GetUserFavor : Route("getuserfavorview")
     object FindPwd : Route("findpwdview")
+    object EditMyInfo : Route("editmyinfocomposeview")
+    object AppInfo : Route("appinfoview")
 }

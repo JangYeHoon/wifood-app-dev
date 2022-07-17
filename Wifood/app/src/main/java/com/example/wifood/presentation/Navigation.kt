@@ -20,6 +20,7 @@ import com.example.wifood.presentation.view.login.MobileAuthenticationView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
+import com.example.wifood.presentation.view.mypage.AppInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
@@ -97,6 +98,12 @@ fun Navigation() {
         }
         composable(Route.FindPwd.route){
             FindPwdView(navController)
+        }
+        composable(Route.EditMyInfo.route){
+            EditMyInfoComposeView(navController)
+        }
+        composable(Route.AppInfo.route){
+            AppInfoView(navController)
         }
     }
 }
