@@ -79,7 +79,7 @@ class MainViewModel @Inject constructor(
 
     fun init() {
         val userId = WifoodApp.pref.getString("user_id", "No user data")
-        useCases.GetUser(userId).observeForever { it ->
+        useCases.GetUserAllData(userId).observeForever { it ->
             state = state.copy(
                 user = it,
                 groups = it.groupList

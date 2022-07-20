@@ -11,11 +11,9 @@ import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,7 +29,8 @@ class LoginViewModel @Inject constructor(
     private val validateEventChannel = Channel<ValidationEvent>()
     val validationEvents = validateEventChannel.receiveAsFlow()
 
-    suspend fun onEvent(event: LoginFormEvent) {
+    @DelicateCoroutinesApi
+    fun onEvent(event: LoginFormEvent) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
@@ -42,36 +41,27 @@ class LoginViewModel @Inject constructor(
             is LoginFormEvent.Login -> {
                 formState.errorReset()
                 if (formCheck()) {
-                    getUser()
-                }
-                try {
-                    loginData()
-                } catch (e: Exception) {
-
+                    getUserAndLogin()
                 }
             }
         }
     }
 
-    private fun getUser() {
-        Log.e("씨발", "Viewmodel launch")
-        useCases.GetUser(formState.email.replace('.', '_')).observeForever {
-            state = state.copy(
-                user = it,
-                groups = it.groupList
-            )
-            Log.e("씨발", "State user: ${state.user}")
-            val placeList = mutableListOf<Place>()
-            state.groups.forEach { group ->
-                group.placeList.forEach { place ->
-                    placeList.add(place)
+    @DelicateCoroutinesApi
+    private fun getUserAndLogin() {
+        useCases.GetUserInfo(formState.email.replace('.', '_')).observeForever {
+            state = state.copy(user = it)
+
+            try {
+                GlobalScope.launch(Dispatchers.IO) {
+                    withContext(Dispatchers.Main) {
+                        loginData()
+                    }
                 }
+            } catch (e: Exception) {
+
             }
-            state = state.copy(
-                places = placeList
-            )
         }
-        Log.e("씨발", "Viewmodel finish")
     }
 
     private fun formCheck(): Boolean {

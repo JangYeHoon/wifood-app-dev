@@ -10,6 +10,8 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
@@ -46,9 +48,12 @@ class WifoodRepositoryImpl(
         api.insertPlace(place)
     }
 
-    override fun getUser(id: String): LiveData<User> {
-        Log.e("씨발", "Repository launch")
-        return api.getUser(id)
+    override fun getUserAllData(id: String): LiveData<User> {
+        return api.getUserAllData(id)
+    }
+
+    override fun getUserInfo(id: String): LiveData<User> {
+        return api.getUserInfo(id)
     }
 
     override fun checkNickname(nickname: String): Boolean {

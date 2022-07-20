@@ -11,17 +11,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetUser @Inject constructor(
+class GetUserAllData @Inject constructor(
     private val repository: WifoodRepository
 ) {
     operator fun invoke(id: String): LiveData<User> {
-        Log.e("씨발", "Usecase launch")
         val userId = id.replace('.', '_')
         val user = MutableLiveData<User>()
-        repository.getUser(userId).observeForever {
+        repository.getUserAllData(userId).observeForever {
             user.value = it
         }
-        Log.e("씨발", "Usecase get user: ${user.toString()}")
         return user
     }
 }

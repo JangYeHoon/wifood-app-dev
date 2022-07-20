@@ -10,7 +10,6 @@ import com.example.wifood.domain.repository.WifoodRepository
 import com.example.wifood.domain.usecase.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.StorageReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +31,7 @@ object AppModule {
             validateBirthday = ValidateBirthday(),
             validateTerms = ValidateTerms(repository),
             validateGroupName = ValidateGroupName(repository),
-            GetUser = GetUser(repository),
+            GetUserAllData = GetUserAllData(repository),
             InsertUser = InsertUser(repository),
             DeletePlace = DeletePlace(repository),
             GetPlaceImageUris = GetPlaceImageUris(repository),
@@ -41,7 +40,8 @@ object AppModule {
             UpdateGroup = UpdateGroup(repository),
             GetGroups = GetGroups(repository),
             InsertPlace = InsertPlace(repository),
-            InsertPlaceImages = InsertPlaceImages(repository)
+            InsertPlaceImages = InsertPlaceImages(repository),
+            GetUserInfo = GetUserInfo(repository)
         )
     }
 
