@@ -2,25 +2,16 @@ package com.example.wifood.presentation.view.placeList
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,50 +19,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithIcon
-import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithoutIcon
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.Role.Companion.Button
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
-import com.example.wifood.data.remote.dto.GroupDto
-import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ThickDivider
-import com.example.wifood.presentation.view.component.YOGOSwitch
 import com.example.wifood.presentation.view.component_box.RatingWithText
 import com.example.wifood.presentation.view.component_box.SingleIconWithText
 import com.example.wifood.presentation.view.component_box.SwitchWithText
 import com.example.wifood.presentation.view.login.component.InputTextField
-import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
-import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -94,10 +68,6 @@ fun PlaceInfoWriteView(
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-    var favorClicked = remember{ mutableStateOf(false)}
-    var cleanClicked = remember{ mutableStateOf(false)}
-    var kindClicked = remember{ mutableStateOf(false)}
-    var moodClicked = remember{ mutableStateOf(false)}
     var selectedArray = remember { mutableStateListOf<Int>(1, 0, 0, 0, 0) }
     val interactionSource = remember {
         MutableInteractionSource()
@@ -280,7 +250,7 @@ fun PlaceInfoWriteView(
                         .padding(top = 25.dp)
                         .padding(bottom = 25.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     RatingWithText(
                         text = "어떤 점이 만족스러웠나요?",
                         selectedArray
@@ -289,30 +259,50 @@ fun PlaceInfoWriteView(
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
-                    ){
+                    ) {
                         SingleIconWithText(
                             text = "맛",
                             UnClickedSourceId = R.drawable.ic_place_info_taste_unclicked,
                             ClickedSourceId = R.drawable.ic_place_info_taste_clicked,
-                            isClicked = favorClicked
+                            isClicked = formState.tasteChk,
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!formState.tasteChk))
+                                }
+                            }
                         )
                         SingleIconWithText(
                             text = "위생",
                             UnClickedSourceId = R.drawable.ic_place_info_clean_unclicked,
                             ClickedSourceId = R.drawable.ic_place_info_clean_clicked,
-                            isClicked = cleanClicked
+                            isClicked = formState.cleanChk,
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.CleanCheck(!formState.cleanChk))
+                                }
+                            }
                         )
                         SingleIconWithText(
                             text = "친절",
                             UnClickedSourceId = R.drawable.ic_place_info_kind_unclicked,
                             ClickedSourceId = R.drawable.ic_place_info_kind_clicked,
-                            isClicked = kindClicked
+                            isClicked = formState.kindChk,
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.KindCheck(!formState.kindChk))
+                                }
+                            }
                         )
                         SingleIconWithText(
                             text = "분위기",
                             UnClickedSourceId = R.drawable.ic_place_info_mood_unclicked,
                             ClickedSourceId = R.drawable.ic_place_info_mood_clicked,
-                            isClicked = moodClicked
+                            isClicked = formState.vibeChk,
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.VibeCheck(!formState.vibeChk))
+                                }
+                            }
                         )
                     }
                 }
@@ -321,7 +311,7 @@ fun PlaceInfoWriteView(
                     modifier = Modifier
                         .padding(vertical = 25.dp)
                         .padding(horizontal = 24.dp)
-                ){
+                ) {
                     Row {
                         IconButton(
                             onClick = {
@@ -383,7 +373,7 @@ fun PlaceInfoWriteView(
                     modifier = Modifier
                         .padding(top = 18.dp)
                         .padding(horizontal = 32.dp)
-                ){
+                ) {
                     Row() {
                         TitleText("메뉴평가")
                         Spacer(Modifier.weight(1f))
@@ -393,7 +383,7 @@ fun PlaceInfoWriteView(
                             },
                             modifier = Modifier
                                 .size(17.dp)
-                        ){
+                        ) {
                             Icon(
                                 ImageVector.vectorResource(id = R.drawable.ic_add_menu_eval_button),
                                 contentDescription = "",
@@ -402,7 +392,7 @@ fun PlaceInfoWriteView(
                                     .clickable(
                                         indication = null,
                                         interactionSource = interactionSource
-                                    ){
+                                    ) {
                                         scope.launch {
                                             viewModel.onEvent(PlaceInfoWriteFormEvent.MenuGradeAddBtnClick)
                                         }

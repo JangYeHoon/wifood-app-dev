@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.component_box
 
+import android.util.MutableBoolean
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -24,11 +25,48 @@ import com.example.wifood.view.ui.theme.Gray01Color
 
 @Composable
 fun SingleIconWithText(
-    text:String = "오이",
-    UnClickedSourceId:Int = R.drawable.ic_favor_cucumber,
-    ClickedSourceId:Int = R.drawable.ic_favor_cucumber_clicked,
-    isClicked: MutableState<Boolean>
-){
+    text: String = "오이",
+    UnClickedSourceId: Int = R.drawable.ic_favor_cucumber,
+    ClickedSourceId: Int = R.drawable.ic_favor_cucumber_clicked,
+    isClicked: Boolean,
+    onClick: () -> Unit = {}
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier
+                .size(56.dp)
+        ) {
+            Icon(
+                ImageVector.vectorResource(id = if (isClicked) ClickedSourceId else UnClickedSourceId),
+                contentDescription = "",
+                modifier = Modifier
+                    .fillMaxSize(),
+                tint = Color.Unspecified
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = text,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp,
+            color = Gray01Color
+        )
+    }
+}
+
+
+// TODO GetUserFavorView 수정 후 삭제
+@Composable
+fun SingleIconWithText(
+    text: String = "오이",
+    UnClickedSourceId: Int = R.drawable.ic_favor_cucumber,
+    ClickedSourceId: Int = R.drawable.ic_favor_cucumber_clicked,
+    isClicked: MutableState<Boolean>,
+) {
     val interactionSource = remember {
         MutableInteractionSource()
     }
@@ -36,21 +74,19 @@ fun SingleIconWithText(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
-            onClick = {
-                //isClicked.value = !isClicked.value
-            },
+            onClick = { },
             modifier = Modifier
                 .size(56.dp)
-        ){
+        ) {
             Icon(
-                ImageVector.vectorResource(id = if (isClicked.value) ClickedSourceId else UnClickedSourceId ),
+                ImageVector.vectorResource(id = if (isClicked.value) ClickedSourceId else UnClickedSourceId),
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable(
                         indication = null,
                         interactionSource = interactionSource
-                    ){
+                    ) {
                         isClicked.value = !isClicked.value
                     },
                 tint = Color.Unspecified
