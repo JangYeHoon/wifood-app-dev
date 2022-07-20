@@ -238,6 +238,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                         validateEventChannel.send(ValidationEvent.Success)
                     }
                 }
+                formState = formState.copy(isLoading = false)
             }.addOnProgressListener {
                 Timber.i("image upload progress")
                 formState = formState.copy(
