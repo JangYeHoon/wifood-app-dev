@@ -16,12 +16,12 @@ import com.example.wifood.presentation.view.login.component.TitleText
 
 @Composable
 fun RatingWithText(
-    text:String = "어떤 점이 가장 좋았나요?",
-    selectedArray: MutableList<Int>,
-){
+    text: String = "어떤 점이 가장 좋았나요?",
+    selectedArray: List<Int>,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         TitleText(text = text)
         Spacer(Modifier.height(5.dp))
         YOGORatingStar(selectedArray)

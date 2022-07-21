@@ -253,7 +253,7 @@ fun PlaceInfoWriteView(
                 ) {
                     RatingWithText(
                         text = "어떤 점이 만족스러웠나요?",
-                        selectedArray
+                        formState.starScore
                     )
                     Spacer(Modifier.height(20.dp))
                     Row(
