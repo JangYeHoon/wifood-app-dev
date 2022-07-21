@@ -80,7 +80,6 @@ fun PlaceInfoWriteView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
-    var menuExplainTextLength = "0/500"
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     var locationPermissionGranted = false
@@ -360,7 +359,7 @@ fun PlaceInfoWriteView(
                     PlaceReviewInputText(
                         text = formState.review,
                         placeholder = "맛집 리뷰",
-                        lengthText = menuExplainTextLength,
+                        lengthText = formState.reviewTextLength,
                         onValueChange = {
                             scope.launch {
                                 viewModel.onEvent(PlaceInfoWriteFormEvent.ReviewChange(it))

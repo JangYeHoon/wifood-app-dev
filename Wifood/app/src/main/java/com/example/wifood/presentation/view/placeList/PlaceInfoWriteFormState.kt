@@ -29,5 +29,6 @@ data class PlaceInfoWriteFormState(
     val latLng: LatLng = LatLng(0.0, 0.0),
     val address: String = "",
     val isLoading: Boolean = false,
-    val currentLocation: Location? = null
+    val currentLocation: Location? = null,
+    val reviewTextLength: String = "0/200"
 )

@@ -92,6 +92,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
             placeName = place.name,
             latLng = LatLng(place.latitude, place.longitude),
             address = place.address,
+            reviewTextLength = place.review.length.toString() + "/200"
         )
     }
 
@@ -124,7 +125,12 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState = formState.copy(vibeChk = event.vibeChk)
             }
             is PlaceInfoWriteFormEvent.ReviewChange -> {
-                formState = formState.copy(review = event.review)
+                if (event.review.length <= 200) {
+                    formState = formState.copy(
+                        review = event.review,
+                        reviewTextLength = event.review.length.toString() + "/200"
+                    )
+                }
             }
             is PlaceInfoWriteFormEvent.MenuNameChange -> {
                 formState = formState.copy(menuName = event.menuName)
