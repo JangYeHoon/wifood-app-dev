@@ -31,6 +31,7 @@ import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
@@ -249,7 +250,8 @@ fun PlaceInfoView(
                                         state.place.longitude
                                     ), 15f
                                 )
-                        }
+                        },
+                        uiSettings = MapUiSettings(zoomControlsEnabled = false)
                     ) {
                         Marker(
                             position = LatLng(
