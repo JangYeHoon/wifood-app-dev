@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
@@ -46,6 +47,7 @@ import com.example.wifood.presentation.view.component_box.SwitchWithText
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
+import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -431,6 +433,29 @@ fun PlaceInfoWriteView(
                             }
                         }
                     )
+                    formState.menuGrades.forEach { menuGrade ->
+                        Text(
+                            text = menuGrade.name,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                        Text(
+                            text = menuGrade.price.toString(),
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                        Text(
+                            text = menuGrade.memo,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                    }
                     Spacer(Modifier.height(70.dp))
                     Box(
                         modifier = Modifier
