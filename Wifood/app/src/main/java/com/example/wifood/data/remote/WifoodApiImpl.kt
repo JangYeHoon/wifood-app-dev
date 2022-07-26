@@ -132,26 +132,21 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Log.e("씨발", "Api launch")
         val user = MutableLiveData<User>()
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val userDto = snapshot.getValue(UserDto::class.java)
-                    Log.e("씨발", "userDto: $userDto")
                     userDto!!.groupList =
                         snapshot.child("Group").children.map {
                             it.getValue(GroupDto::class.java)!!
                         }
-                    Log.e("씨발", "groupList: ${userDto!!.groupList}")
                     userDto.taste = snapshot.child("Taste").getValue(TasteDto::class.java)
-                    Log.e("씨발", "taste: ${userDto.taste}}")
                     for (group in userDto.groupList) {
                         group.placeList =
                             snapshot.child("Group/${group.groupId}/Place").children.map {
                                 it.getValue(PlaceDto::class.java)!!
                             }
-                        Log.e("씨발", "placeList: ${group.placeList}")
                     }
                     user.postValue(
                         userDto.toUser()
@@ -164,7 +159,6 @@ class WifoodApiImpl @Inject constructor(
             }
         })
 
-        Log.e("씨발", "user: ${user.toString()}")
         return user
     }
 

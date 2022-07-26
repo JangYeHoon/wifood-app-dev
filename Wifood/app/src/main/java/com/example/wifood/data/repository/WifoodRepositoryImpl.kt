@@ -47,7 +47,6 @@ class WifoodRepositoryImpl(
     }
 
     override fun getUser(id: String): LiveData<User> {
-        Log.e("씨발", "Repository launch")
         return api.getUser(id)
     }
 

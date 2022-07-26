@@ -44,23 +44,16 @@ class LoginViewModel @Inject constructor(
                 if (formCheck()) {
                     getUser()
                 }
-                try {
-                    loginData()
-                } catch (e: Exception) {
-
-                }
             }
         }
     }
 
     private fun getUser() {
-        Log.e("씨발", "Viewmodel launch")
         useCases.GetUser(formState.email.replace('.', '_')).observeForever {
             state = state.copy(
                 user = it,
                 groups = it.groupList
             )
-            Log.e("씨발", "State user: ${state.user}")
             val placeList = mutableListOf<Place>()
             state.groups.forEach { group ->
                 group.placeList.forEach { place ->
@@ -71,7 +64,6 @@ class LoginViewModel @Inject constructor(
                 places = placeList
             )
         }
-        Log.e("씨발", "Viewmodel finish")
     }
 
     private fun formCheck(): Boolean {

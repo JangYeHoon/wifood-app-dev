@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.NonNull
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -55,6 +56,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 
 @Composable
 fun LoginView(
@@ -112,9 +114,6 @@ fun LoginView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        if (state.isLoading) {
-            ProgressIndicator()
-        }
 
         LoginErrorText(
             formState.emailError ?: formState.passwordError ?: "Invalid",
@@ -167,7 +166,7 @@ fun LoginView(
                 }
             )
             Spacer(Modifier.height(5.dp))
-            Row() {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 TransparentButton(
                     text = "아이디/비밀번호찾기",
                     textColor = Gray03Color,
@@ -231,6 +230,29 @@ fun LoginView(
                                         navController.navigate(
                                             "${Route.Joinin.route}?email=$email&gender=$gender&phone=$phone"
                                         )
+                                        NidOAuthLogin().callDeleteTokenApi(
+                                            context,
+                                            object : OAuthLoginCallback {
+                                                override fun onSuccess() {
+                                                    //서버에서 토큰 삭제에 성공한 상태입니다.
+                                                }
+
+                                                override fun onFailure(
+                                                    httpStatus: Int,
+                                                    message: String
+                                                ) {
+                                                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                                                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                                                }
+
+                                                override fun onError(
+                                                    errorCode: Int,
+                                                    message: String
+                                                ) {
+                                                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                                                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                                                }
+                                            })
                                     }
 
                                     override fun onError(errorCode: Int, message: String) {
@@ -304,6 +326,7 @@ private fun getKakaoInfo(
 //                        "&birthday=${birthday}" +
                         "&nickname=${nickname}"
             )
+            userApiClient.unlink {}
         }
     }
 }
