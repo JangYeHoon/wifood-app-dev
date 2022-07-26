@@ -9,7 +9,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -62,7 +62,7 @@ fun CameraAndAlbumBottomSheetContent(
         }
     Column {
         BottomSheetListItem(
-            icon = Icons.Default.Delete,
+            icon = Icons.Default.PhotoCamera,
             title = "카메라"
         ) {
             scope.launch {
@@ -72,7 +72,7 @@ fun CameraAndAlbumBottomSheetContent(
             }
         }
         BottomSheetListItem(
-            icon = Icons.Default.Delete,
+            icon = Icons.Default.PhotoAlbum,
             title = "앨범"
         ) {
             takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
