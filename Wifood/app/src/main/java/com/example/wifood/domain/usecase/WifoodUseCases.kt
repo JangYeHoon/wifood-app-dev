@@ -8,7 +8,7 @@ data class WifoodUseCases(
     val validateBirthday: ValidateBirthday,
     val validateTerms: ValidateTerms,
     val validateGroupName: ValidateGroupName,
-    val GetUser: GetUser,
+    val GetUserAllData: GetUserAllData,
     val InsertUser: InsertUser,
     val DeletePlace: DeletePlace,
     val GetPlaceImageUris: GetPlaceImageUris,
@@ -17,5 +17,6 @@ data class WifoodUseCases(
     val UpdateGroup: UpdateGroup,
     val GetGroups: GetGroups,
     val InsertPlace: InsertPlace,
-    val InsertPlaceImages: InsertPlaceImages
+    val InsertPlaceImages: InsertPlaceImages,
+    val GetUserInfo: GetUserInfo
 )

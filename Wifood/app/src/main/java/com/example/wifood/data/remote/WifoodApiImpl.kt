@@ -14,6 +14,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -131,7 +132,7 @@ class WifoodApiImpl @Inject constructor(
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
 
-    override fun getUser(id: String): LiveData<User> {
+    override fun getUserAllData(id: String): LiveData<User> {
         val user = MutableLiveData<User>()
         db.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -159,6 +160,17 @@ class WifoodApiImpl @Inject constructor(
             }
         })
 
+        return user
+    }
+
+    override fun getUserInfo(id: String): LiveData<User> {
+        val user = MutableLiveData<User>()
+        db.child(id).get().addOnSuccessListener {
+            if (it.exists()) {
+                val userDto = it.getValue(UserDto::class.java)
+                user.postValue(userDto?.toUser())
+            }
+        }
         return user
     }
 

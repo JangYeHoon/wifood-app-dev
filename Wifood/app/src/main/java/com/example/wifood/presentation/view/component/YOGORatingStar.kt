@@ -13,11 +13,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wifood.R
+import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
+import com.example.wifood.presentation.view.placeList.PlaceInfoWriteViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun YOGORatingStar(
-    selectedArray: MutableList<Int>,
+    selectedArray: List<Int>,
     spaceBetweenStar: Int = 10
 ) {
     Row(
@@ -37,13 +41,15 @@ fun YOGORatingStar(
 
 @Composable
 fun RatingStarIcon(
-    selectedArray: MutableList<Int>,
+    selectedArray: List<Int>,
     selectedValue: Int = 0,
-    starSize: Int = 27
+    starSize: Int = 27,
+    viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
     }
+    val scope = rememberCoroutineScope()
 
     IconButton(
         onClick = {},
@@ -59,11 +65,8 @@ fun RatingStarIcon(
                     indication = null,
                     interactionSource = interactionSource
                 ) {
-                    for (i: Int in 0..4) {
-                        if (i <= selectedValue)
-                            selectedArray[i] = 1
-                        else
-                            selectedArray[i] = 0
+                    scope.launch {
+                        viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(selectedValue))
                     }
                 },
             tint = Color.Unspecified

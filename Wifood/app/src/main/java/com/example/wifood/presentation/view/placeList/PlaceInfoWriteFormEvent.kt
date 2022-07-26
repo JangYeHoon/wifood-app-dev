@@ -10,7 +10,7 @@ sealed class PlaceInfoWriteFormEvent {
     data class GroupSelected(val group: Group) : PlaceInfoWriteFormEvent()
     data class PlaceSelected(val searchPlace: Place) : PlaceInfoWriteFormEvent()
     data class VisitedCheck(val visited: Boolean) : PlaceInfoWriteFormEvent()
-    data class ScoreChange(val score: Float) : PlaceInfoWriteFormEvent()
+    data class ScoreChange(val selectedStarIdx: Int) : PlaceInfoWriteFormEvent()
     data class TasteCheck(val tasteChk: Boolean) : PlaceInfoWriteFormEvent()
     data class CleanCheck(val cleanChk: Boolean) : PlaceInfoWriteFormEvent()
     data class KindCheck(val kindChk: Boolean) : PlaceInfoWriteFormEvent()

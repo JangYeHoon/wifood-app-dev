@@ -25,7 +25,7 @@ data class UserDto(
             birthday = birthday,
             gender = gender,
             groupList = groupList.map { it.toGroup() },
-            taste = taste!!.toTaste()
+            taste = taste?.toTaste()
         )
     }
 }

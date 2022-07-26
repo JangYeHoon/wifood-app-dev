@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.UploadTask
 
 interface WifoodRepository {
@@ -23,7 +25,9 @@ interface WifoodRepository {
 
     fun insertPlace(place: Place)
 
-    fun getUser(id: String): LiveData<User>
+    fun getUserAllData(id: String): LiveData<User>
+
+    fun getUserInfo(id: String): LiveData<User>
 
     fun checkNickname(nickname: String): Boolean
 

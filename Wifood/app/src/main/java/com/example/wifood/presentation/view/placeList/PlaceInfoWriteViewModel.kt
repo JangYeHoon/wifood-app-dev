@@ -92,6 +92,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
             placeName = place.name,
             latLng = LatLng(place.latitude, place.longitude),
             address = place.address,
+            reviewTextLength = place.review.length.toString() + "/200"
         )
     }
 
@@ -109,7 +110,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState = formState.copy(visited = event.visited)
             }
             is PlaceInfoWriteFormEvent.ScoreChange -> {
-                formState = formState.copy(score = event.score)
+                setStarEnableToSelectedIdx(event.selectedStarIdx)
             }
             is PlaceInfoWriteFormEvent.TasteCheck -> {
                 formState = formState.copy(tasteChk = event.tasteChk)
@@ -124,7 +125,12 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState = formState.copy(vibeChk = event.vibeChk)
             }
             is PlaceInfoWriteFormEvent.ReviewChange -> {
-                formState = formState.copy(review = event.review)
+                if (event.review.length <= 200) {
+                    formState = formState.copy(
+                        review = event.review,
+                        reviewTextLength = event.review.length.toString() + "/200"
+                    )
+                }
             }
             is PlaceInfoWriteFormEvent.MenuNameChange -> {
                 formState = formState.copy(menuName = event.menuName)
@@ -148,15 +154,26 @@ class PlaceInfoWriteViewModel @Inject constructor(
             is PlaceInfoWriteFormEvent.PlaceAddBtnClick -> {
                 if (formCheck()) {
                     setPlaceEntityToFormInput()
-                    insertPlace()
-                    if (formState.placeImages.isNotEmpty())
-                        insertImages()
+                    insertPlaceAndImage()
                 }
             }
             is PlaceInfoWriteFormEvent.CurrentLocationChange -> {
                 formState = formState.copy(currentLocation = event.location)
             }
         }
+    }
+
+    private fun setStarEnableToSelectedIdx(selectedIdx: Int) {
+        val star = mutableListOf(0, 0, 0, 0, 0)
+        var score = 0.0f
+        for (i: Int in 0..4) {
+            if (i <= selectedIdx) {
+                star[i] = 1
+                score += 1
+            } else
+                star[i] = 0
+        }
+        formState = formState.copy(starScore = star, score = score)
     }
 
     private fun updatePlaceFromSearchGoogleAPI(searchPlace: Place) {
@@ -220,9 +237,14 @@ class PlaceInfoWriteViewModel @Inject constructor(
         return menu
     }
 
-    private fun insertPlace() {
+    @DelicateCoroutinesApi
+    private suspend fun insertPlaceAndImage() {
         Timber.i("insert place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
+        if (formState.placeImages.isNotEmpty())
+            insertImages()
+        else
+            validateEventChannel.send(ValidationEvent.Success)
     }
 
     @DelicateCoroutinesApi
@@ -238,6 +260,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                         validateEventChannel.send(ValidationEvent.Success)
                     }
                 }
+                formState = formState.copy(isLoading = false)
             }.addOnProgressListener {
                 Timber.i("image upload progress")
                 formState = formState.copy(

@@ -3,12 +3,15 @@ package com.example.wifood.presentation.view.placeList
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +34,7 @@ import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
@@ -249,7 +253,8 @@ fun PlaceInfoView(
                                         state.place.longitude
                                     ), 15f
                                 )
-                        }
+                        },
+                        uiSettings = MapUiSettings(zoomControlsEnabled = false)
                     ) {
                         Marker(
                             position = LatLng(
@@ -264,6 +269,30 @@ fun PlaceInfoView(
                     modifier = Modifier.height(2.dp),
                     color = Color(0xFFE7E7E7)
                 )
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 35.dp)
+                ) {
+                    items(state.placeImageUris) { image ->
+                        IconButton(
+                            onClick = {},
+                            modifier = Modifier
+                                .width(60.dp)
+                                .height(60.dp)
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(
+                                    data = image
+                                ),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(5.dp)),
+                                contentScale = ContentScale.Crop,
+                            )
+                        }
+                        Spacer(Modifier.width(6.dp))
+                    }
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

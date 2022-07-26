@@ -13,6 +13,7 @@ data class PlaceInfoWriteFormState(
     val placeName: String = "맛집 선택",
     val visited: Boolean = false,
     val score: Float = 0.0f,
+    val starScore: List<Int> = listOf(0, 0, 0, 0, 0),
     val tasteChk: Boolean = false,
     val cleanChk: Boolean = false,
     val kindChk: Boolean = false,
@@ -28,5 +29,6 @@ data class PlaceInfoWriteFormState(
     val latLng: LatLng = LatLng(0.0, 0.0),
     val address: String = "",
     val isLoading: Boolean = false,
-    val currentLocation: Location? = null
+    val currentLocation: Location? = null,
+    val reviewTextLength: String = "0/200"
 )
