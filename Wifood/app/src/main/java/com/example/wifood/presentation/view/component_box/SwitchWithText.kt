@@ -14,20 +14,20 @@ import com.example.wifood.presentation.view.login.component.TitleText
 
 @Composable
 fun SwitchWithText(
-    text:String = "방문 여부",
-    spaceBetweenSwitch:Int = 14,
-    checked:Boolean = false,
-    onCheckedChange:((Boolean) -> Unit)? = null,
-    switchModifier:Modifier = Modifier
+    text: String = "방문 여부",
+    spaceBetweenSwitch: Int = 14,
+    checked: Boolean = false,
+    onCheckedChange: ((Boolean) -> Unit)? = null,
+    switchModifier: Modifier = Modifier
 
-){
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TitleText(text = text)
         Spacer(Modifier.width(spaceBetweenSwitch.dp))
         YOGOSwitch(
-            checked = false,
+            checked = checked,
             onCheckedChange = onCheckedChange,
             modifier = switchModifier
         )
