@@ -1,25 +1,34 @@
 package com.example.wifood.presentation.view.component
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.R
 
+@Preview(showBackground = true)
 @Composable
-
 fun YOGOTopAppBar(
-    text:String,
-    onBackButtonClicked:() -> Unit
+    text:String = "내 맛집",
+    leftButtonOn:Boolean = true,
+    leftButtonClicked:() -> Unit = {},
+    leftButtonSource:Int = R.drawable.ic_back_arrow,
+    rightButtonOn:Boolean = false,
+    rightButtonSource:Int = R.drawable.ic_plus_button_wide,
+    rightButtonClicked:() -> Unit = {}
+
 ){
     TopAppBar(
         title = {
@@ -37,13 +46,39 @@ fun YOGOTopAppBar(
             }
         },
         navigationIcon = {
-            navigationBackButton(
-                onClick = onBackButtonClicked
-            )
+            if (leftButtonOn){
+
+
+                IconButton(
+                    onClick = leftButtonClicked,
+                    modifier = Modifier.wrapContentSize()
+                )
+                {
+                    Icon(
+                        ImageVector.vectorResource(id = leftButtonSource),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
         },
         backgroundColor = Color.White,
         actions = {
-            Spacer(modifier = Modifier.width(70.dp))
+            if (rightButtonOn){
+                IconButton(
+                    onClick = rightButtonClicked,
+                    modifier = Modifier.wrapContentSize()
+                )
+                {
+                    Icon(
+                        ImageVector.vectorResource(id = rightButtonSource),
+                        contentDescription = "right button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
         }
     )
 }

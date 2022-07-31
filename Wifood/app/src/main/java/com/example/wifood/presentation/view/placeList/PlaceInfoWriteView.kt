@@ -2,9 +2,7 @@ package com.example.wifood.presentation.view.placeList
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -60,7 +58,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
 
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
@@ -154,7 +151,7 @@ fun PlaceInfoWriteView(
             topBar = {
                 YOGOTopAppBar(
                     text = "맛집 등록",
-                    onBackButtonClicked = {/*TODO*/ }
+                    leftButtonClicked = {/*TODO*/ }
                 )
             }
         ) {

@@ -1,7 +1,6 @@
 package com.example.wifood.presentation.view.placeList.group
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -52,7 +51,7 @@ fun GroupAddView(
         topBar = {
             YOGOTopAppBar(
                 text = "맛집 그룹 등록",
-                onBackButtonClicked = {/*TODO*/ }
+                leftButtonClicked = {/*TODO*/ }
             )
         }
     ) {

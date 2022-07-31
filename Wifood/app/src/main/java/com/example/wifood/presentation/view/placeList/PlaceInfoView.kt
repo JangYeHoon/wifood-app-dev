@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -199,8 +200,6 @@ fun PlaceInfoView(
         Scaffold(
         ) {
             Column(
-                Modifier
-                    .verticalScroll(scrollState)
             ) {
                 Image(
                     painter = rememberImagePainter(
@@ -269,81 +268,89 @@ fun PlaceInfoView(
                     modifier = Modifier.height(2.dp),
                     color = Color(0xFFE7E7E7)
                 )
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 35.dp)
-                ) {
-                    items(state.placeImageUris) { image ->
-                        IconButton(
-                            onClick = {},
-                            modifier = Modifier
-                                .width(60.dp)
-                                .height(60.dp)
-                        ) {
-                            Image(
-                                painter = rememberImagePainter(
-                                    data = image
-                                ),
-                                contentDescription = "",
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(scrollState)
+                        .padding(top = 20.dp)
+                ){
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 35.dp)
+                    ) {
+                        items(state.placeImageUris) { image ->
+                            IconButton(
+                                onClick = {},
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(RoundedCornerShape(5.dp)),
-                                contentScale = ContentScale.Crop,
+                                    .width(60.dp)
+                                    .height(60.dp)
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(
+                                        data = image
+                                    ),
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(RoundedCornerShape(5.dp)),
+                                    contentScale = ContentScale.Crop,
+                                )
+                            }
+                            Spacer(Modifier.width(6.dp))
+                        }
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 35.dp)
+                            .padding(top = 29.dp)
+                    ) {
+                        Text(
+                            text = "메뉴",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = Color.Black
+                        )
+                        Spacer(Modifier.height(5.dp))
+                        state.place!!.menuList.forEach {
+                            PlaceInfoMenus(
+                                menuName = it.name,
+                                menuPrice = it.price,
+                                menuMemo = it.memo
                             )
                         }
-                        Spacer(Modifier.width(6.dp))
+
+
                     }
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 35.dp)
-                        .padding(top = 29.dp)
-                ) {
-                    Text(
-                        text = "메뉴",
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        color = Color.Black
+                    Spacer(Modifier.height(20.dp))
+                    Divider(
+                        modifier = Modifier.height(2.dp),
+                        color = PlaceInfoDividerColor
                     )
-                    Spacer(Modifier.height(5.dp))
-                    state.place!!.menuList.forEach {
-                        PlaceInfoMenus(
-                            menuName = it.name,
-                            menuPrice = it.price,
-                            menuMemo = it.memo
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 25.dp)
+                            .padding(horizontal = 35.dp)
+                    ) {
+                        Text(
+                            text = "메모",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = Color.Black
                         )
+                        Spacer(Modifier.height(15.dp))
+                        Text(
+                            text = state.place!!.review,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                        Spacer(Modifier.height(buttonBottomValue.dp))
                     }
-
-
-                }
-                Spacer(Modifier.height(20.dp))
-                Divider(
-                    modifier = Modifier.height(2.dp),
-                    color = PlaceInfoDividerColor
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 25.dp)
-                        .padding(horizontal = 35.dp)
-                ) {
-                    Text(
-                        text = "메모",
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        color = Color.Black
-                    )
-                    Spacer(Modifier.height(15.dp))
-                    Text(
-                        text = state.place!!.review,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp,
-                        color = Gray01Color
-                    )
-                    Spacer(Modifier.height(buttonBottomValue.dp))
                 }
             }
 
@@ -352,6 +359,7 @@ fun PlaceInfoView(
                     .padding(horizontal = 14.dp)
                     .padding(top = 188.dp)
                     .fillMaxWidth()
+                    .shadow(elevation = 5.dp)
             ) {
                 PlaceInfoMainContent(
                     placeInfoGroupName = state.group!!.description,
@@ -379,6 +387,7 @@ fun PlaceInfoView(
                         size = 40,
                         onClick = {
                             // TODO("back button press event")
+                            navController.popBackStack()
                         }
                     )
                     SnsIconButton(
