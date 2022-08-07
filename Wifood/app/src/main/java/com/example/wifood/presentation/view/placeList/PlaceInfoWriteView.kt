@@ -177,29 +177,30 @@ fun PlaceInfoWriteView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
                         onClick = {
-                            val bounds =
-                                viewModel.formState.currentLocation?.let {
-                                    RectangularBounds.newInstance(
-                                        LatLng(
-                                            it.latitude,
-                                            it.longitude
-                                        ),
-                                        LatLng(
-                                            it.latitude,
-                                            it.longitude
-                                        )
-                                    )
-                                }
-
-                            val googleSearchPlaceIntent =
-                                Autocomplete.IntentBuilder(
-                                    AutocompleteActivityMode.OVERLAY,
-                                    viewModel.field
-                                )
-                                    .setLocationBias(bounds)
-                                    .setCountry("KR")
-                                    .build(context)
-                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+//                            val bounds =
+//                                viewModel.formState.currentLocation?.let {
+//                                    RectangularBounds.newInstance(
+//                                        LatLng(
+//                                            it.latitude,
+//                                            it.longitude
+//                                        ),
+//                                        LatLng(
+//                                            it.latitude,
+//                                            it.longitude
+//                                        )
+//                                    )
+//                                }
+//
+//                            val googleSearchPlaceIntent =
+//                                Autocomplete.IntentBuilder(
+//                                    AutocompleteActivityMode.OVERLAY,
+//                                    viewModel.field
+//                                )
+//                                    .setLocationBias(bounds)
+//                                    .setCountry("KR")
+//                                    .build(context)
+//                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+                            navController.navigate(Route.Search.route)
                         }
                     )
                     SwitchWithText(

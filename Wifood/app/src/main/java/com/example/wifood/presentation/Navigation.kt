@@ -4,7 +4,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +25,7 @@ import com.example.wifood.presentation.view.mypage.AppInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupAddView
+import com.example.wifood.presentation.view.placeList.search.SearchPlaceComposeView
 import com.example.wifood.presentation.view.splash.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -116,7 +116,8 @@ fun Navigation() {
             PlaceInfoWriteView(navController)
         }
         composable(Route.Search.route) {
-            SearchPlaceComposeView(navController)
+//            SearchPlaceComposeView(navController)
+            SearchPlaceComposeView()
         }
         composable(Route.EditProfile.route) {
             EditProfileComposeView(navController)

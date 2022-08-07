@@ -41,7 +41,8 @@ object AppModule {
             GetGroups = GetGroups(repository),
             InsertPlace = InsertPlace(repository),
             InsertPlaceImages = InsertPlaceImages(repository),
-            GetUserInfo = GetUserInfo(repository)
+            GetUserInfo = GetUserInfo(repository),
+            GetTMapSearchPlaceResult = GetTMapSearchPlaceResult(repository)
         )
     }
 

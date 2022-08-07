@@ -1,8 +1,10 @@
 package com.example.wifood.domain.repository
 
 import android.graphics.Bitmap
+import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import com.example.wifood.data.remote.dto.TMapSearch
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
@@ -34,4 +36,9 @@ interface WifoodRepository {
     fun insertUser(user: User)
 
     fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>): UploadTask
+
+    fun getTMapSearchPlaceResult(
+        keyword: String,
+        currentLocation: Location
+    ): LiveData<MutableList<TMapSearch>>
 }
