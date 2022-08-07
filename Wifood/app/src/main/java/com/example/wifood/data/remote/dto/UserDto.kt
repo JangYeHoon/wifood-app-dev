@@ -1,14 +1,12 @@
 package com.example.wifood.data.remote.dto
 
-import com.example.wifood.domain.model.Group
-import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 
 data class UserDto(
     val userId: String = "",
     val pwd: String = "",
     val nickname: String = "",
-    val phoneNumber: Int = -1,
+    val phoneNumber: String = "",
     val address: String = "",
     val birthday: String = "",
     val gender: Int = -1,
