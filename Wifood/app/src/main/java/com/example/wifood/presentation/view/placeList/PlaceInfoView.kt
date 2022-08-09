@@ -362,7 +362,7 @@ fun PlaceInfoView(
                     .shadow(elevation = 5.dp)
             ) {
                 PlaceInfoMainContent(
-                    placeInfoGroupName = state.group!!.description,
+                    placeInfoGroupName = state.group!!.name,
                     placeInfoName = state.place!!.name,
                     placeInfoMenuListText = state.place.menu,
                     placeInfoScore = state.place.score,

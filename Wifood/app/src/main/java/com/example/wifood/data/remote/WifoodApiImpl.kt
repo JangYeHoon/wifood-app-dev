@@ -118,6 +118,18 @@ class WifoodApiImpl @Inject constructor(
         return imageUrisForObserve
     }
 
+    override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
+        val storage = FirebaseStorage.getInstance().reference
+        val imageUriForObserve = MutableLiveData<Uri>()
+        storage.child("$id/$groupId/$placeId/0").downloadUrl.addOnCompleteListener { url ->
+            if (url.isSuccessful) {
+                imageUriForObserve.value = url.result
+                Timber.i("get image url list from Firebase Storage : " + imageUriForObserve.value.toString())
+            }
+        }
+        return imageUriForObserve
+    }
+
     override fun insertPlace(place: Place) {
         db.child(id).child("Group").child(place.groupId.toString()).child("Place")
             .child(place.placeId.toString()).setValue(place)

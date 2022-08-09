@@ -18,7 +18,8 @@ data class PlaceDto(
     var latitude: Double = 0.0,
     var longitude: Double = 0.0,
     var address: String = "",
-    val menuList: List<MenuGradeDto> = arrayListOf()
+    val menuList: List<MenuGradeDto> = arrayListOf(),
+    val bizName: String = ""
 ) {
     fun toPlace(): Place {
         return Place(
@@ -37,7 +38,8 @@ data class PlaceDto(
             latitude = latitude,
             longitude = longitude,
             address = address,
-            menuList = menuList.map { it.toMenuGrade() }
+            menuList = menuList.map { it.toMenuGrade() },
+            bizName = bizName
         )
     }
 }

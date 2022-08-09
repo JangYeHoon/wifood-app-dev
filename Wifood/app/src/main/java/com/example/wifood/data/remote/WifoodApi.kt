@@ -27,6 +27,8 @@ interface WifoodApi {
 
     fun getPlaceImageUris(groupId: Int, placeId: Int): LiveData<MutableList<Uri>>
 
+    fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri>
+
     fun deletePlace(groupId: Int, placeId: Int)
 
     fun insertPlace(place: Place)

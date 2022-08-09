@@ -19,5 +19,6 @@ data class WifoodUseCases(
     val InsertPlace: InsertPlace,
     val InsertPlaceImages: InsertPlaceImages,
     val GetUserInfo: GetUserInfo,
-    val GetTMapSearchPlaceResult: GetTMapSearchPlaceResult
+    val GetTMapSearchPlaceResult: GetTMapSearchPlaceResult,
+    val GetPlaceImageUri: GetPlaceImageUri
 )

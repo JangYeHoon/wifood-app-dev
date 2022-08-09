@@ -1,32 +1,18 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
@@ -47,9 +35,6 @@ import com.example.wifood.R
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.view.main.MainState
-import com.example.wifood.view.ui.theme.Enable
-import com.example.wifood.view.ui.theme.EnableColor
-import com.example.wifood.view.ui.theme.Gray03Color
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -88,7 +73,7 @@ fun PlaceListComposeView(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFFF5F6F7))
-                .verticalScroll(scrollState,true)
+                .verticalScroll(scrollState, true)
         ) {
             Column(
                 modifier = Modifier
@@ -107,7 +92,7 @@ fun PlaceListComposeView(
                                 modalBottomSheetState.show()
                             }
                         },
-                        explainText = "디저트 카페",
+                        explainText = group.description,
                         targetState = state,
                         targetGroup = group,
                         navController = navController
@@ -119,6 +104,7 @@ fun PlaceListComposeView(
     }
 }
 
+@ExperimentalCoilApi
 @ExperimentalAnimationApi
 @Composable
 fun PlaceInfoCard(
@@ -207,21 +193,27 @@ fun PlaceInfoCard(
             ) {
                 Column() {
                     Spacer(Modifier.height(8.dp))
-                    val placeListItems = targetState!!.places.filter { it.groupId == targetGroup!!.groupId }
+                    val placeListItems =
+                        targetState!!.places.filter { it.groupId == targetGroup!!.groupId }
                     val placeListItemLength = placeListItems.size
                     var placeListCount = 0
                     targetState!!.places.filter { it.groupId == targetGroup!!.groupId }
                         .forEach { place ->
                             PlaceListItem(
                                 itemTitle = place.name,
-                                itemExplain = "강남 카페",
-                                itemIcon = R.drawable.place_list_item_default,
-                                itemClicked = {
-                                    val placeJson = Uri.encode(Gson().toJson(place))
-                                    val groupJson = Uri.encode(Gson().toJson(targetGroup))
-                                    navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                                }
-                            )
+                                itemExplain = place.bizName,
+                                itemIcon = rememberImagePainter(
+                                    data =
+                                    if (targetState.placeImages.contains(place.placeId))
+                                        targetState.placeImages[place.placeId]
+                                    else
+                                        R.drawable.place_list_item_default
+                                )
+                            ) {
+                                val placeJson = Uri.encode(Gson().toJson(place))
+                                val groupJson = Uri.encode(Gson().toJson(targetGroup))
+                                navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
+                            }
                             if (placeListCount != (placeListItemLength - 1)) // dont append space at last
                                 Spacer(Modifier.height(18.dp))
                             placeListCount += 1
@@ -244,12 +236,13 @@ fun PlaceInfoCard(
     }
 }
 
+@ExperimentalCoilApi
 @Preview(showBackground = true)
 @Composable
 fun PlaceListItem(
     itemTitle: String = "회사 근처 카페",
     itemExplain: String = "강남 카페",
-    itemIcon: Int = R.drawable.place_list_item_default,
+    itemIcon: ImagePainter = rememberImagePainter(data = R.drawable.place_list_item_default),
     itemClicked: () -> Unit = {}
 ) {
     val interactionSource = remember {
@@ -265,9 +258,7 @@ fun PlaceListItem(
     ) {
         Image(
             // profile image
-            painter = painterResource(
-                id = itemIcon
-            ),
+            painter = itemIcon,
             contentDescription = "",
             modifier = Modifier
                 .size(48.dp)

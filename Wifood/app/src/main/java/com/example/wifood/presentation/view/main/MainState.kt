@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.main
 
 import android.location.Location
+import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.Place
@@ -26,5 +27,6 @@ data class MainState(
         com.google.android.libraries.places.api.model.Place.Field.ADDRESS
     ),
     val searchResultName: String = "",
-    val searchResultLatLng: LatLng? = null
+    val searchResultLatLng: LatLng? = null,
+    val placeImages: MutableMap<Int, Uri> = mutableMapOf()
 )

@@ -42,7 +42,8 @@ object AppModule {
             InsertPlace = InsertPlace(repository),
             InsertPlaceImages = InsertPlaceImages(repository),
             GetUserInfo = GetUserInfo(repository),
-            GetTMapSearchPlaceResult = GetTMapSearchPlaceResult(repository)
+            GetTMapSearchPlaceResult = GetTMapSearchPlaceResult(repository),
+            GetPlaceImageUri = GetPlaceImageUri(repository)
         )
     }
 

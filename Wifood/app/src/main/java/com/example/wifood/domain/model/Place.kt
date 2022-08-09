@@ -24,5 +24,6 @@ data class Place(
     var longitude: Double,
     var address: String,
     var menuList: List<MenuGrade>,
-    var vibeChk: Boolean
+    var vibeChk: Boolean,
+    var bizName: String
 ) : Parcelable
