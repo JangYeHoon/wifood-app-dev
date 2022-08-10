@@ -1,4 +1,4 @@
-package com.example.wifood.di
+package com.example.wifood.util
 
 import timber.log.Timber
 

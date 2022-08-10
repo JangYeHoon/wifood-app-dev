@@ -39,7 +39,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.ListTopAppBar
@@ -49,6 +48,7 @@ import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
+import com.example.wifood.util.getActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
@@ -78,7 +78,7 @@ fun MainView(
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
         } else {
-            context.findActivity().shouldShowRationale(permission)
+            context.getActivity().shouldShowRationale(permission)
         }
     }
 

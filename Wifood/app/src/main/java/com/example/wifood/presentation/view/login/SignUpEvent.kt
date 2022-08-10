@@ -1,0 +1,12 @@
+package com.example.wifood.presentation.view.login
+
+sealed class SignUpEvent() {
+    data class PhoneNumChanged(val phoneNumber: String) : SignUpEvent()
+    data class CertChanged(val certNumber: String) : SignUpEvent()
+    data class AddressChanged(val address: String) : SignUpEvent()
+    data class BirthdayChanged(val birthday: String) : SignUpEvent()
+    object GenderClicked : SignUpEvent()
+    object RequestCertNumber : SignUpEvent()
+    data class Verify(val certNumber: String) : SignUpEvent()
+    object ShowDocument : SignUpEvent()
+}

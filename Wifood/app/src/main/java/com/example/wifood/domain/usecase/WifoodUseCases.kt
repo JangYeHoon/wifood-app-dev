@@ -1,6 +1,7 @@
 package com.example.wifood.domain.usecase
 
 data class WifoodUseCases(
+    val ValidatePhone: ValidatePhone,
     val validateEmail: ValidateEmail,
     val validatePassword: ValidatePassword,
     val validateRepeatedPassword: ValidateRepeatedPassword,

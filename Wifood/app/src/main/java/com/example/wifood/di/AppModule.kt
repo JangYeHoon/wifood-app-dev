@@ -24,6 +24,7 @@ object AppModule {
     @Singleton
     fun provideUseCases(repository: WifoodRepository): WifoodUseCases {
         return WifoodUseCases(
+            ValidatePhone = ValidatePhone(),
             validateEmail = ValidateEmail(repository),
             validatePassword = ValidatePassword(repository),
             validateRepeatedPassword = ValidateRepeatedPassword(repository),

@@ -169,6 +169,8 @@ class WifoodApiImpl @Inject constructor(
             if (it.exists()) {
                 val userDto = it.getValue(UserDto::class.java)
                 user.postValue(userDto?.toUser())
+            } else {
+                user.postValue(null)
             }
         }
         return user
@@ -180,7 +182,6 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertUser(user: User) {
         db.push().setValue(user)
-        // 씨발 왜 안들어가  ㅡㅡ
     }
 
     override fun insertPlaceImages(

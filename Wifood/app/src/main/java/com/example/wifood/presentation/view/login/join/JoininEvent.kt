@@ -1,7 +1,5 @@
 package com.example.wifood.presentation.view.login.join
 
-import com.example.wifood.presentation.view.login.LoginFormEvent
-
 sealed class JoininEvent {
     data class EmailChanged(val email: String) : JoininEvent()
     data class PasswordChanged(val password: String) : JoininEvent()

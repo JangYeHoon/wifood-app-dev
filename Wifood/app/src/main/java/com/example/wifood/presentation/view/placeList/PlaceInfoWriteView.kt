@@ -38,7 +38,6 @@ import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ThickDivider
 import com.example.wifood.presentation.view.component_box.RatingWithText
@@ -48,6 +47,7 @@ import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -133,7 +133,7 @@ fun PlaceInfoWriteView(
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
         } else {
-            context.findActivity().shouldShowRationale(permission)
+            context.getActivity().shouldShowRationale(permission)
         }
     }
 

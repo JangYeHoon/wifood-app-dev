@@ -50,10 +50,11 @@ fun SplashView(
         )
         delay(Constants.SPLASH_SCREEN_DELAY)
         navController.popBackStack()
-        if (WifoodApp.pref.getString("auto_login", INVALID) == VALID) {
-            navController.navigate(Route.Login.route)
-        } else {
+        // 앱을 맨 처음 실행했을 단 한 번의 경우에만 Onboarding 실행
+        if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
             navController.navigate(Route.Onboarding.route)
+        } else {
+            navController.navigate(Route.SignUp1.route)
         }
     }
 

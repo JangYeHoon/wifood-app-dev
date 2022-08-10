@@ -9,5 +9,6 @@ data class LoginState(
     val groups: List<Group> = emptyList(),
     val places: List<Place> = emptyList(),
     val isLoading: Boolean = false,
-    val googleEmail: String? = null
+    val googleEmail: String? = null,
+    val email: String? = null
 )

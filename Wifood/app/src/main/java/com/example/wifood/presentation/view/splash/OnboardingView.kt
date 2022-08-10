@@ -78,7 +78,7 @@ fun OnboardingView(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
                 onClick = {
-                    navController.navigate(Route.Login.route)
+                    navController.navigate(Route.SignUp1.route)
                 },
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = MainColor,

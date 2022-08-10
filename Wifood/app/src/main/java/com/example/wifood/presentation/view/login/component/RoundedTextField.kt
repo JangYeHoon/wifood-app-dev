@@ -6,7 +6,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,12 +21,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.wifood.presentation.view.login.LoginFormEvent
+import com.example.wifood.presentation.view.login.LoginEvent
 import com.example.wifood.presentation.view.login.LoginViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
-import com.example.wifood.view.ui.theme.Enable
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 @Composable
@@ -79,7 +76,7 @@ fun RoundedTextField(
             onDone = {
                 focus.clearFocus()
                 scope.launch {
-                    viewModel.onEvent(LoginFormEvent.Login)
+                    viewModel.onEvent(LoginEvent.Login)
                 }
             }
         ),
