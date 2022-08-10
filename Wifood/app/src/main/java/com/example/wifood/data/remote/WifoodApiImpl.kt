@@ -11,6 +11,7 @@ import com.example.wifood.data.remote.dto.*
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
+import com.example.wifood.domain.model.TMapSearch
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -223,7 +224,7 @@ class WifoodApiImpl @Inject constructor(
                 val tempList: MutableList<TMapSearch> = mutableListOf()
                 for (searchResult in it) {
                     val bizName: String =
-                        searchResult.middleBizName.toString() + "," + searchResult.lowerBizName + "," + searchResult.detailBizName
+                        searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
                     var addressRoad = ""
                     for (address in searchResult.newAddressList)
                         addressRoad = address.fullAddressRoad

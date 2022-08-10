@@ -174,4 +174,6 @@ dependencies {
 
     // Google OAuth
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }

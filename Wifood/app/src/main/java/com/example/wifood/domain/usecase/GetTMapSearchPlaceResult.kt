@@ -3,7 +3,7 @@ package com.example.wifood.domain.usecase
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.wifood.data.remote.dto.TMapSearch
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.repository.WifoodRepository
 import javax.inject.Inject
 

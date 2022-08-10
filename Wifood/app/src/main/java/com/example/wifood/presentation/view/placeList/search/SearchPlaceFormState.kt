@@ -1,7 +1,7 @@
 package com.example.wifood.presentation.view.placeList.search
 
 import android.location.Location
-import com.example.wifood.data.remote.dto.TMapSearch
+import com.example.wifood.domain.model.TMapSearch
 
 data class SearchPlaceFormState(
     val searchKeyword: String = "",

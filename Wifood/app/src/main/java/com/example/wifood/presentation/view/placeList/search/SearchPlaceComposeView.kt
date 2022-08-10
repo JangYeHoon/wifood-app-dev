@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList.search
 
 import android.Manifest
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,16 +19,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.util.shouldShowRationale
 import com.google.android.gms.location.LocationServices
 
-@Preview
 @Composable
 fun SearchPlaceComposeView(
+    navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
-//    navController: NavController
 ) {
     val formState = viewModel.formState
     var locationPermissionGranted = false
@@ -112,6 +113,13 @@ fun SearchPlaceComposeView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 20.dp)
+                            .clickable {
+                                navController.previousBackStackEntry?.savedStateHandle?.set(
+                                    "searchResult",
+                                    it
+                                )
+                                navController.popBackStack()
+                            }
                     ) {
                         Column(
                             horizontalAlignment = Alignment.Start,

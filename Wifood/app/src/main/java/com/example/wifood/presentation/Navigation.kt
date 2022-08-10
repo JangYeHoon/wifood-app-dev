@@ -116,8 +116,7 @@ fun Navigation() {
             PlaceInfoWriteView(navController)
         }
         composable(Route.Search.route) {
-//            SearchPlaceComposeView(navController)
-            SearchPlaceComposeView()
+            SearchPlaceComposeView(navController)
         }
         composable(Route.EditProfile.route) {
             EditProfileComposeView(navController)
