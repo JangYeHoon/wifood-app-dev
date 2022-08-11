@@ -27,6 +27,7 @@ import com.skt.Tmap.TMapPoint
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
+import kotlin.concurrent.thread
 
 class WifoodApiImpl @Inject constructor(
     private val db: DatabaseReference
@@ -215,14 +216,16 @@ class WifoodApiImpl @Inject constructor(
     ): LiveData<MutableList<TMapSearch>> {
         val tmapSearchResult = MutableLiveData<MutableList<TMapSearch>>()
         val tmapData = TMapData()
-        tmapData.findAroundKeywordPOI(
-            TMapPoint(currentLocation.latitude, currentLocation.longitude),
-            keyword,
-            0,
-            50,
-            TMapData.FindAroundKeywordPOIListenerCallback {
+        thread(start = true) {
+            try {
+                val tMapItems = tmapData.findAroundKeywordPOI(
+                    TMapPoint(currentLocation.latitude, currentLocation.longitude),
+                    keyword,
+                    0,
+                    50
+                )
                 val tempList: MutableList<TMapSearch> = mutableListOf()
-                for (searchResult in it) {
+                for (searchResult in tMapItems) {
                     val bizName: String =
                         searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
                     var addressRoad = ""
@@ -240,7 +243,10 @@ class WifoodApiImpl @Inject constructor(
                     )
                     tmapSearchResult.postValue(tempList)
                 }
-            })
+            } catch (e: Exception) {
+                tmapSearchResult.postValue(arrayListOf())
+            }
+        }
         return tmapSearchResult
     }
 }
