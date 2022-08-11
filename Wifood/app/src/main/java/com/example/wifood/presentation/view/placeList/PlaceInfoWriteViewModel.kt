@@ -15,13 +15,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.util.Resource
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -42,16 +41,13 @@ class PlaceInfoWriteViewModel @Inject constructor(
     @ApplicationContext applicationContext: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val field = listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
     var state by mutableStateOf(PlaceInfoWriteState())
     var formState by mutableStateOf(PlaceInfoWriteFormState())
     private val validateEventChannel = Channel<ValidationEvent>()
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        Places.initialize(applicationContext, "AIzaSyB_HZJANQB8zVtH33wHb2OI-FbeDhPYRtA")
-
-        val place = savedStateHandle.get<com.example.wifood.domain.model.Place>("place")
+        val place = savedStateHandle.get<Place>("place")
         if (place!!.name.isNotEmpty()) {
             formState = formState.copy(placeEditChk = true)
             state = state.copy(place = place)
@@ -80,7 +76,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
         }
     }
 
-    private fun setFormInputValueToPlaceEntity(place: com.example.wifood.domain.model.Place) {
+    private fun setFormInputValueToPlaceEntity(place: Place) {
         formState = formState.copy(
             menuGrades = place.menuList as ArrayList<MenuGrade>,
             cleanChk = place.cleanChk,
@@ -208,7 +204,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     private fun setPlaceEntityToFormInput() {
         state = state.copy(
-            place = com.example.wifood.domain.model.Place(
+            place = Place(
                 placeId = state.place.placeId,
                 name = formState.placeName,
                 groupId = state.group!!.groupId,

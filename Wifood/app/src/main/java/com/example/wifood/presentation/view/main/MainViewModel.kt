@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Place
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,10 +29,6 @@ class MainViewModel @Inject constructor(
 
     private val _camera = MutableSharedFlow<LatLng>()
     val camera = _camera.asSharedFlow()
-
-    init {
-        Places.initialize(applicationContext, "AIzaSyB_HZJANQB8zVtH33wHb2OI-FbeDhPYRtA")
-    }
 
     fun onEvent(event: MainEvent) {
         when (event) {
@@ -62,10 +58,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun updateSearchResultFromGoogleAPI(searchPlace: com.google.android.libraries.places.api.model.Place) {
+    private fun updateSearchResultFromGoogleAPI(searchPlace: TMapSearch) {
         state = state.copy(
             searchResultName = searchPlace.name,
-            searchResultLatLng = searchPlace.latLng
+            searchResultLatLng = LatLng(searchPlace.latitude, searchPlace.longitude)
         )
     }
 
