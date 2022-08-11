@@ -70,36 +70,9 @@ fun MainView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val context = LocalContext.current
-    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-    var locationPermissionGranted = false
     var lastKnownLocation: Location? = null
 
-    fun checkPermission(permission: String) {
-        if (context.checkPermission(permission)) {
-            locationPermissionGranted = true
-        } else {
-            context.findActivity().shouldShowRationale(permission)
-        }
-    }
-
     LaunchedEffect(key1 = true) {
-        // Modified later
-        /*
-           Take permission through popup message
-        */
-        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-        if (locationPermissionGranted) {
-            val locationResult = fusedLocationProviderClient.lastLocation
-            locationResult.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result != null) {
-                        viewModel.onEvent(MainEvent.LocationChanged(task.result))
-                    }
-                }
-            }
-        } else {
-            viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
-        }
         viewModel.init()
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)

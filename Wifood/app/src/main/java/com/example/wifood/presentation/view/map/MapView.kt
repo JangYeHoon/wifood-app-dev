@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -42,10 +43,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.wifood.presentation.util.NavItem
-import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.*
+import com.example.wifood.presentation.util.checkPermission
+import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.main.UiEvent
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.location.LocationServices
@@ -77,7 +80,9 @@ fun MapView(
         position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 1f)
     }
     val context = LocalContext.current
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     val builder = LatLngBounds.Builder()
+    var locationPermissionGranted = false
 
     val uiSettings = remember {
         MapUiSettings(
@@ -85,7 +90,40 @@ fun MapView(
         )
     }
 
+    fun checkPermission(permission: String) {
+        if (context.checkPermission(permission)) {
+            locationPermissionGranted = true
+        } else {
+            context.findActivity().shouldShowRationale(permission)
+        }
+    }
+
     LaunchedEffect(true) {
+        // Modified later
+        /*
+           Take permission through popup message
+        */
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (locationPermissionGranted) {
+            val locationResult = fusedLocationProviderClient.lastLocation
+            locationResult.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result != null) {
+                        viewModel.onEvent(MainEvent.LocationChanged(task.result))
+                        viewModel.onEvent(
+                            MainEvent.CameraMove(
+                                LatLng(
+                                    task.result.latitude,
+                                    task.result.longitude
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        } else {
+            viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
+        }
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
         }
