@@ -24,7 +24,9 @@ import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.mypage.AppInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
-import com.example.wifood.presentation.view.placeList.group.GroupAddView
+import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
+import com.example.wifood.presentation.view.placeList.group.GroupEditView
+import com.example.wifood.presentation.view.placeList.group.GroupNameInputView
 import com.example.wifood.presentation.view.placeList.search.SearchPlaceComposeView
 import com.example.wifood.presentation.view.splash.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -122,10 +124,22 @@ fun Navigation() {
             EditProfileComposeView(navController)
         }
         composable(
-            route = "${Route.GroupAdd.route}/{group}",
+            route = "${Route.GroupNameInput.route}/{group}",
             arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
         ) {
-            GroupAddView(navController)
+            GroupNameInputView(navController)
+        }
+        composable(
+            route = "${Route.GroupDescInput.route}/{group}",
+            arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
+        ) {
+            GroupDescInputView(navController)
+        }
+        composable(
+            route = "${Route.GroupEdit.route}/{group}",
+            arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
+        ) {
+            GroupEditView(navController)
         }
         composable(Route.FindPwd.route) {
             FindPwdView(navController)

@@ -30,7 +30,7 @@ fun ListTopAppBar(
         actions = {
             IconButton(onClick = {
                 val groupJson = Uri.encode(Gson().toJson(Group()))
-                navController.navigate("${Route.GroupAdd.route}/$groupJson")
+                navController.navigate("${Route.GroupNameInput.route}/$groupJson")
             }) {
                 Icon(Icons.Filled.Menu, "menu")
             }

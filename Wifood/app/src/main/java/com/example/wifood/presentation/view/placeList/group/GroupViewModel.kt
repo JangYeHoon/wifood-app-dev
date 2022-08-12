@@ -28,10 +28,8 @@ class GroupViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Group>("group")?.let { group ->
-            if (group.name.isNotEmpty()) {
-                formState = formState.copy(name = group.name, description = group.description)
-                state = state.copy(group = group)
-            }
+            formState = formState.copy(name = group.name, description = group.description)
+            state = state.copy(group = group)
         }
     }
 
@@ -43,30 +41,17 @@ class GroupViewModel @Inject constructor(
             is GroupFormEvent.DescriptionChange -> {
                 formState = formState.copy(description = event.description)
             }
-            is GroupFormEvent.SaveBtnClick -> {
-                if (formCheck())
-                    insertGroup()
+            is GroupFormEvent.AddBtnClick -> {
+                insertGroup()
+            }
+            is GroupFormEvent.EditBtnClick -> {
+                editGroup()
             }
         }
     }
 
-    private fun formCheck(): Boolean {
-        val nameValidateResult = useCases.validateGroupName(formState.name)
-        if (!nameValidateResult.successful) {
-            formState = formState.copy(nameError = nameValidateResult.errorMessage)
-            return false
-        }
-        return true
-    }
-
     private suspend fun insertGroup() {
-        if (state.group != null) {
-            state.group!!.name = formState.name
-            state.group!!.description = formState.description
-            useCases.UpdateGroup(state.group!!)
-        } else {
-            useCases.InsertGroup(createGroupEntity())
-        }
+        useCases.InsertGroup(createGroupEntity())
         Timber.i("group insert to firebase")
         validateEventChannel.send(ValidationEvent.Success)
     }
@@ -82,5 +67,13 @@ class GroupViewModel @Inject constructor(
             ThreadLocalRandom.current().nextInt(1, 11),
             emptyList()
         )
+    }
+
+    private suspend fun editGroup() {
+        state.group!!.name = formState.name
+        state.group!!.description = formState.description
+        useCases.UpdateGroup(state.group!!)
+        Timber.i("group update to firebase")
+        validateEventChannel.send(ValidationEvent.Success)
     }
 }
