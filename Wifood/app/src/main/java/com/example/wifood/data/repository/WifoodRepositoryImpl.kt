@@ -1,11 +1,13 @@
 package com.example.wifood.data.repository
 
 import android.graphics.Bitmap
+import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.wifood.data.local.dao.WifoodDao
 import com.example.wifood.data.remote.WifoodApi
+import com.example.wifood.data.remote.dto.TMapSearch
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
@@ -70,5 +72,16 @@ class WifoodRepositoryImpl(
         images: ArrayList<Uri>
     ): UploadTask {
         return api.insertPlaceImages(groupId, placeId, images)
+    }
+
+    override fun getTMapSearchPlaceResult(
+        keyword: String,
+        currentLocation: Location
+    ): LiveData<MutableList<TMapSearch>> {
+        return api.getTMapSearchPlaceResult(keyword, currentLocation)
+    }
+
+    override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
+        return api.getPlaceImageUri(groupId, placeId)
     }
 }

@@ -20,15 +20,9 @@ import com.example.wifood.presentation.view.login.util.phoneFilter
 @Composable
 fun SignUpView2(
     navController: NavController,
-    backStackEntry: NavBackStackEntry,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel
 ) {
     val state = viewModel.state.value
-
-    LaunchedEffect(true) {
-        val phoneNumber = backStackEntry.arguments!!.getString("phoneNumber")!!
-        viewModel.onEvent(SignUpEvent.PhoneNumChanged(phoneNumber))
-    }
 
     LaunchedEffect(state.certNumber) {
         if (state.certNumber.length == 6) {

@@ -220,7 +220,8 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 latitude = formState.latLng.latitude,
                 longitude = formState.latLng.longitude,
                 address = formState.address,
-                imageNameList = emptyList()
+                imageNameList = emptyList(),
+                bizName = formState.bizName
             )
         )
     }

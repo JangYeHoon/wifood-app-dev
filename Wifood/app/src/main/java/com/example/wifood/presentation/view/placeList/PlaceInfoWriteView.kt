@@ -2,9 +2,7 @@ package com.example.wifood.presentation.view.placeList
 
 import android.Manifest
 import android.app.Activity
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -44,6 +42,7 @@ import com.example.wifood.presentation.view.component_box.RatingWithText
 import com.example.wifood.presentation.view.component_box.SingleIconWithText
 import com.example.wifood.presentation.view.component_box.SwitchWithText
 import com.example.wifood.presentation.view.login.component.InputTextField
+import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
@@ -59,7 +58,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
 
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
@@ -86,44 +84,15 @@ fun PlaceInfoWriteView(
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     var locationPermissionGranted = false
 
+    val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
+    var customSheetContent by remember { mutableStateOf(sheetContent) }
+
     val googleSearchPlaceLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val searchResult = Autocomplete.getPlaceFromIntent(it.data)
                 scope.launch {
                     viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
-                }
-            }
-        }
-    val takePhotoFromCameraLauncher = // 카메라로 사진 찍어서 가져오기
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                scope.launch {
-                    val file = File(formState.currentPhotoPath)
-                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(Uri.fromFile(file)))
-                }
-            }
-        }
-
-    val takePhotoFromAlbumIntent =
-        Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
-            type = "image/*"
-            action = Intent.ACTION_GET_CONTENT
-            putExtra(
-                Intent.EXTRA_MIME_TYPES,
-                arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
-            )
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-        }
-    val takePhotoFromAlbumLauncher = // 갤러리에서 사진 가져오기
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.data?.let { uri ->
-                    scope.launch {
-                        viewModel.onEvent(
-                            PlaceInfoWriteFormEvent.PlaceImagesAdd(uri)
-                        )
-                    }
                 }
             }
         }
@@ -173,7 +142,7 @@ fun PlaceInfoWriteView(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { PlaceWriteGroupsBottomSheetContent() },
+        sheetContent = { customSheetContent() },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color(0xFF222222)
@@ -182,7 +151,7 @@ fun PlaceInfoWriteView(
             topBar = {
                 YOGOTopAppBar(
                     text = "맛집 등록",
-                    onBackButtonClicked = {/*TODO*/ }
+                    leftButtonClicked = {/*TODO*/ }
                 )
             }
         ) {
@@ -199,6 +168,7 @@ fun PlaceInfoWriteView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.groupName,
                         onClick = {
+                            customSheetContent = { PlaceWriteGroupsBottomSheetContent() }
                             scope.launch {
                                 modalBottomSheetState.show()
                             }
@@ -207,29 +177,30 @@ fun PlaceInfoWriteView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
                         onClick = {
-                            val bounds =
-                                viewModel.formState.currentLocation?.let {
-                                    RectangularBounds.newInstance(
-                                        LatLng(
-                                            it.latitude,
-                                            it.longitude
-                                        ),
-                                        LatLng(
-                                            it.latitude,
-                                            it.longitude
-                                        )
-                                    )
-                                }
-
-                            val googleSearchPlaceIntent =
-                                Autocomplete.IntentBuilder(
-                                    AutocompleteActivityMode.OVERLAY,
-                                    viewModel.field
-                                )
-                                    .setLocationBias(bounds)
-                                    .setCountry("KR")
-                                    .build(context)
-                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+//                            val bounds =
+//                                viewModel.formState.currentLocation?.let {
+//                                    RectangularBounds.newInstance(
+//                                        LatLng(
+//                                            it.latitude,
+//                                            it.longitude
+//                                        ),
+//                                        LatLng(
+//                                            it.latitude,
+//                                            it.longitude
+//                                        )
+//                                    )
+//                                }
+//
+//                            val googleSearchPlaceIntent =
+//                                Autocomplete.IntentBuilder(
+//                                    AutocompleteActivityMode.OVERLAY,
+//                                    viewModel.field
+//                                )
+//                                    .setLocationBias(bounds)
+//                                    .setCountry("KR")
+//                                    .build(context)
+//                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+                            navController.navigate(Route.Search.route)
                         }
                     )
                     SwitchWithText(
@@ -316,12 +287,10 @@ fun PlaceInfoWriteView(
                     Row {
                         IconButton(
                             onClick = {
+                                customSheetContent = { CameraAndAlbumBottomSheetContent() }
                                 scope.launch {
-                                    takePhotoFromCameraLauncher.launch(
-                                        viewModel.getPictureIntent(context)
-                                    )
+                                    modalBottomSheetState.show()
                                 }
-//                                takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
                             },
                             modifier = Modifier
                                 .size(placeInfoMenuImageSize.dp)

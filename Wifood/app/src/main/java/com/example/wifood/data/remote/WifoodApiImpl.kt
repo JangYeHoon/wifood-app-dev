@@ -1,15 +1,13 @@
 package com.example.wifood.data.remote
 
 import android.graphics.Bitmap
+import android.location.Location
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wifood.WifoodApp
-import com.example.wifood.data.remote.dto.GroupDto
-import com.example.wifood.data.remote.dto.PlaceDto
-import com.example.wifood.data.remote.dto.TasteDto
-import com.example.wifood.data.remote.dto.UserDto
+import com.example.wifood.data.remote.dto.*
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
@@ -23,6 +21,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ListResult
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.skt.Tmap.TMapData
+import com.skt.Tmap.TMapPoint
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
@@ -118,6 +118,18 @@ class WifoodApiImpl @Inject constructor(
         return imageUrisForObserve
     }
 
+    override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
+        val storage = FirebaseStorage.getInstance().reference
+        val imageUriForObserve = MutableLiveData<Uri>()
+        storage.child("$id/$groupId/$placeId/0").downloadUrl.addOnCompleteListener { url ->
+            if (url.isSuccessful) {
+                imageUriForObserve.value = url.result
+                Timber.i("get image url list from Firebase Storage : " + imageUriForObserve.value.toString())
+            }
+        }
+        return imageUriForObserve
+    }
+
     override fun insertPlace(place: Place) {
         db.child(id).child("Group").child(place.groupId.toString()).child("Place")
             .child(place.placeId.toString()).setValue(place)
@@ -195,5 +207,40 @@ class WifoodApiImpl @Inject constructor(
             uploadTask = storage.child("$id/$groupId/$placeId/").child("$index").putFile(uri)
         }
         return uploadTask!!
+    }
+
+    override fun getTMapSearchPlaceResult(
+        keyword: String,
+        currentLocation: Location
+    ): LiveData<MutableList<TMapSearch>> {
+        val tmapSearchResult = MutableLiveData<MutableList<TMapSearch>>()
+        val tmapData = TMapData()
+        tmapData.findAroundKeywordPOI(
+            TMapPoint(currentLocation.latitude, currentLocation.longitude),
+            keyword,
+            0,
+            50,
+            TMapData.FindAroundKeywordPOIListenerCallback {
+                val tempList: MutableList<TMapSearch> = mutableListOf()
+                for (searchResult in it) {
+                    val bizName: String =
+                        searchResult.middleBizName.toString() + "," + searchResult.lowerBizName + "," + searchResult.detailBizName
+                    var addressRoad = ""
+                    for (address in searchResult.newAddressList)
+                        addressRoad = address.fullAddressRoad
+                    addressRoad += searchResult.detailAddrName.replace("null", "")
+                    tempList.add(
+                        TMapSearch(
+                            addressRoad,
+                            searchResult.poiName.toString(),
+                            searchResult.poiPoint.latitude,
+                            searchResult.poiPoint.longitude,
+                            bizName
+                        )
+                    )
+                    tmapSearchResult.postValue(tempList)
+                }
+            })
+        return tmapSearchResult
     }
 }

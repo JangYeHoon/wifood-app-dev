@@ -1,7 +1,7 @@
 package com.example.wifood.presentation.view.login
 
 data class SignUpState(
-    var phoneNumber: String = "",
+    val phoneNumber: String = "",
     val phoneNumberError: String? = null,
     val certNumber: String = "",
     val certError: String? = null,

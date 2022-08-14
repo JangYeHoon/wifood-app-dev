@@ -15,7 +15,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -100,7 +99,7 @@ class JoininViewModel @Inject constructor(
             userId = formState.email,
             pwd = formState.repeatedPassword,
             nickname = formState.nickname,
-            phoneNumber = formState.phoneNumber.toInt(),
+            phoneNumber = formState.phoneNumber,
             address = formState.address.plus(formState.detailedAddress),
             birthday = formState.birthday,
             gender = 1

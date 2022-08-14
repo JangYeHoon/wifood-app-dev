@@ -6,8 +6,6 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
@@ -17,10 +15,8 @@ import com.example.wifood.presentation.view.login.component.ErrorText
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.TextInsideButton
 import com.example.wifood.presentation.view.login.component.TitleText
-import com.example.wifood.presentation.view.login.join.JoininEvent
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
-import kotlinx.coroutines.launch
 
 @Composable
 fun MobileAuthenticationView(
@@ -39,7 +35,7 @@ fun MobileAuthenticationView(
         topBar = {
             YOGOTopAppBar(
                 text = "본인인증",
-                onBackButtonClicked = {
+                leftButtonClicked = {
                     navController.popBackStack()
                 }
             )

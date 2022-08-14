@@ -13,7 +13,7 @@ import com.example.wifood.presentation.view.login.util.phoneFilter
 @Composable
 fun SignUpView3(
     navController: NavController,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel
 ) {
     val state = viewModel.state.value
 

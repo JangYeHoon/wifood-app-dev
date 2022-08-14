@@ -5,10 +5,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.login.component.InputTextField
@@ -31,7 +29,7 @@ fun FindPwdView(
         topBar = {
             YOGOTopAppBar(
                 text = "비밀번호 변경",
-                onBackButtonClicked = {
+                leftButtonClicked = {
                     navController.popBackStack()
                 }
             )

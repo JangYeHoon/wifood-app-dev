@@ -54,7 +54,7 @@ fun SplashView(
         if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
             navController.navigate(Route.Onboarding.route)
         } else {
-            navController.navigate(Route.SignUp1.route)
+            navController.navigate(Route.SignUp.route)
         }
     }
 

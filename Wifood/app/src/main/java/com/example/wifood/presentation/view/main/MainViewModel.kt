@@ -99,6 +99,13 @@ class MainViewModel @Inject constructor(
                 state.places.maxWithOrNull(compareBy { place -> place.placeId })!!.placeId
             WifoodApp.pref.setInt("group_max_id", groupMaxId)
             WifoodApp.pref.setInt("place_max_id", placeMaxId)
+
+            state.places.forEach { place ->
+                useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->
+                    state.placeImages[place.placeId] = uri
+                    Timber.i("get image uri list from firebase : $uri")
+                }
+            }
         }
     }
 }
