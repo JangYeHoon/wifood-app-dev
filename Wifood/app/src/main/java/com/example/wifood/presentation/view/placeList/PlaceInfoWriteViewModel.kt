@@ -15,12 +15,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
+import com.example.wifood.domain.model.Place
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.util.Resource
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
@@ -41,16 +41,13 @@ class PlaceInfoWriteViewModel @Inject constructor(
     @ApplicationContext applicationContext: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val field = listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
     var state by mutableStateOf(PlaceInfoWriteState())
     var formState by mutableStateOf(PlaceInfoWriteFormState())
     private val validateEventChannel = Channel<ValidationEvent>()
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        Places.initialize(applicationContext, "AIzaSyB_HZJANQB8zVtH33wHb2OI-FbeDhPYRtA")
-
-        val place = savedStateHandle.get<com.example.wifood.domain.model.Place>("place")
+        val place = savedStateHandle.get<Place>("place")
         if (place!!.name.isNotEmpty()) {
             formState = formState.copy(placeEditChk = true)
             state = state.copy(place = place)
@@ -79,7 +76,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
         }
     }
 
-    private fun setFormInputValueToPlaceEntity(place: com.example.wifood.domain.model.Place) {
+    private fun setFormInputValueToPlaceEntity(place: Place) {
         formState = formState.copy(
             menuGrades = place.menuList as ArrayList<MenuGrade>,
             cleanChk = place.cleanChk,
@@ -90,7 +87,8 @@ class PlaceInfoWriteViewModel @Inject constructor(
             score = place.score,
             visited = place.visited,
             placeName = place.name,
-            latLng = LatLng(place.latitude, place.longitude),
+            latitude = place.latitude,
+            longitude = place.longitude,
             address = place.address,
             reviewTextLength = place.review.length.toString() + "/200"
         )
@@ -103,7 +101,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState = formState.copy(groupName = event.group.name)
                 state = state.copy(group = event.group)
             }
-            is PlaceInfoWriteFormEvent.PlaceSelected -> {
+            is PlaceInfoWriteFormEvent.SearchPlaceSelected -> {
                 updatePlaceFromSearchGoogleAPI(event.searchPlace)
             }
             is PlaceInfoWriteFormEvent.VisitedCheck -> {
@@ -176,11 +174,13 @@ class PlaceInfoWriteViewModel @Inject constructor(
         formState = formState.copy(starScore = star, score = score)
     }
 
-    private fun updatePlaceFromSearchGoogleAPI(searchPlace: Place) {
+    private fun updatePlaceFromSearchGoogleAPI(searchPlace: TMapSearch) {
         formState = formState.copy(
             placeName = searchPlace.name,
-            latLng = searchPlace.latLng,
-            address = searchPlace.address
+            latitude = searchPlace.latitude,
+            longitude = searchPlace.longitude,
+            address = searchPlace.fullAddress,
+            bizName = searchPlace.bizName
         )
     }
 
@@ -204,7 +204,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     private fun setPlaceEntityToFormInput() {
         state = state.copy(
-            place = com.example.wifood.domain.model.Place(
+            place = Place(
                 placeId = state.place.placeId,
                 name = formState.placeName,
                 groupId = state.group!!.groupId,
@@ -217,8 +217,8 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 vibeChk = formState.vibeChk,
                 review = formState.review,
                 menuList = formState.menuGrades,
-                latitude = formState.latLng.latitude,
-                longitude = formState.latLng.longitude,
+                latitude = formState.latitude,
+                longitude = formState.longitude,
                 address = formState.address,
                 imageNameList = emptyList(),
                 bizName = formState.bizName

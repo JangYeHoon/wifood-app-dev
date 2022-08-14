@@ -8,7 +8,6 @@ data class WifoodUseCases(
     val validateNickname: ValidateNickname,
     val validateBirthday: ValidateBirthday,
     val validateTerms: ValidateTerms,
-    val validateGroupName: ValidateGroupName,
     val GetUserAllData: GetUserAllData,
     val InsertUser: InsertUser,
     val DeletePlace: DeletePlace,

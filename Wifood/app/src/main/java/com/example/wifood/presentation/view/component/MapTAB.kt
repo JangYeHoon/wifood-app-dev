@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,9 +20,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.WifoodApp
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Main
@@ -40,16 +43,15 @@ fun MapTopAppBar(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val googleSearchPlaceLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val searchResult = Autocomplete.getPlaceFromIntent(it.data)
-                scope.launch {
-                    viewModel.onEvent(MainEvent.SearchClicked(searchResult))
-                    viewModel.onEvent(MainEvent.CameraMove(searchResult.latLng))
-                }
-            }
+    val searchPlaceViewResult =
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<TMapSearch>("searchResult")
+            ?.observeAsState()
+    searchPlaceViewResult?.value?.let {
+        scope.launch {
+            viewModel.onEvent(MainEvent.SearchClicked(it))
+            viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
         }
+    }
 
     TopAppBar(
         title = {
@@ -84,27 +86,7 @@ fun MapTopAppBar(
         actions = {
             Row(modifier = Modifier.width(50.dp)) {
                 IconButton(onClick = {
-                    val bounds =
-                        viewModel.state.currentLocation?.let {
-                            RectangularBounds.newInstance(
-                                LatLng(
-                                    it.latitude,
-                                    it.longitude
-                                ),
-                                LatLng(
-                                    it.latitude,
-                                    it.longitude
-                                )
-                            )
-                        }
-
-                    val googleSearchPlaceIntent =
-                        Autocomplete.IntentBuilder(
-                            AutocompleteActivityMode.OVERLAY,
-                            viewModel.state.field
-                        ).setCountry("KR").setLocationBias(bounds).build(context)
-
-                    googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
+                    navController.navigate(Route.Search.route)
                 }) {
                     Icon(
                         Icons.Filled.Search,

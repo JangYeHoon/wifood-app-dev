@@ -31,7 +31,6 @@ object AppModule {
             validateNickname = ValidateNickname(repository),
             validateBirthday = ValidateBirthday(),
             validateTerms = ValidateTerms(repository),
-            validateGroupName = ValidateGroupName(repository),
             GetUserAllData = GetUserAllData(repository),
             InsertUser = InsertUser(repository),
             DeletePlace = DeletePlace(repository),

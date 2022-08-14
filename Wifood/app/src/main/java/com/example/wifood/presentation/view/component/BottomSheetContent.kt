@@ -59,7 +59,7 @@ fun BottomSheetContent(
                 Toast.LENGTH_SHORT
             ).show()
             val groupJson = Uri.encode(Gson().toJson(group))
-            navController.navigate("${Route.GroupAdd.route}/${groupJson}")
+            navController.navigate("${Route.GroupEdit.route}/${groupJson}")
         }
         BottomSheetListItem(
             icon = Icons.Default.Delete,

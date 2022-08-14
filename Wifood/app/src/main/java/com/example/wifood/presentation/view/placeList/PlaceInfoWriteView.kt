@@ -22,6 +22,7 @@ import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithIcon
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,6 +35,7 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.view.component.MainButton
@@ -68,14 +70,12 @@ fun PlaceInfoWriteView(
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-    var selectedArray = remember { mutableStateListOf<Int>(1, 0, 0, 0, 0) }
     val interactionSource = remember {
         MutableInteractionSource()
     }
     val placeInfoMenuImageSize = 60
 
     val formState = viewModel.formState
-    val initialRating = 1f
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -87,16 +87,14 @@ fun PlaceInfoWriteView(
     val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
     var customSheetContent by remember { mutableStateOf(sheetContent) }
 
-    val googleSearchPlaceLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val searchResult = Autocomplete.getPlaceFromIntent(it.data)
-                scope.launch {
-                    viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceSelected(searchResult))
-                }
-            }
+    val searchPlaceViewResult =
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<TMapSearch>("searchResult")
+            ?.observeAsState()
+    searchPlaceViewResult?.value?.let {
+        scope.launch {
+            viewModel.onEvent(PlaceInfoWriteFormEvent.SearchPlaceSelected(it))
         }
-
+    }
 
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {
@@ -177,29 +175,6 @@ fun PlaceInfoWriteView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
                         onClick = {
-//                            val bounds =
-//                                viewModel.formState.currentLocation?.let {
-//                                    RectangularBounds.newInstance(
-//                                        LatLng(
-//                                            it.latitude,
-//                                            it.longitude
-//                                        ),
-//                                        LatLng(
-//                                            it.latitude,
-//                                            it.longitude
-//                                        )
-//                                    )
-//                                }
-//
-//                            val googleSearchPlaceIntent =
-//                                Autocomplete.IntentBuilder(
-//                                    AutocompleteActivityMode.OVERLAY,
-//                                    viewModel.field
-//                                )
-//                                    .setLocationBias(bounds)
-//                                    .setCountry("KR")
-//                                    .build(context)
-//                            googleSearchPlaceLauncher.launch(googleSearchPlaceIntent)
                             navController.navigate(Route.Search.route)
                         }
                     )

@@ -4,11 +4,12 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.net.Uri
 import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.TMapSearch
 import com.google.android.libraries.places.api.model.Place
 
 sealed class PlaceInfoWriteFormEvent {
     data class GroupSelected(val group: Group) : PlaceInfoWriteFormEvent()
-    data class PlaceSelected(val searchPlace: Place) : PlaceInfoWriteFormEvent()
+    data class SearchPlaceSelected(val searchPlace: TMapSearch) : PlaceInfoWriteFormEvent()
     data class VisitedCheck(val visited: Boolean) : PlaceInfoWriteFormEvent()
     data class ScoreChange(val selectedStarIdx: Int) : PlaceInfoWriteFormEvent()
     data class TasteCheck(val tasteChk: Boolean) : PlaceInfoWriteFormEvent()
