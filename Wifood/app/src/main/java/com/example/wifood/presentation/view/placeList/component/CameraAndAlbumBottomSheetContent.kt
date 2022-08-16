@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -15,9 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wifood.presentation.view.component.BottomSheetListItem
-import com.example.wifood.presentation.view.main.MainViewModel
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteViewModel
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 

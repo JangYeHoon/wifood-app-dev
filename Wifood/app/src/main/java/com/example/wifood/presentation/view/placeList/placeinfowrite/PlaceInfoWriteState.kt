@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList
+package com.example.wifood.presentation.view.placeList.placeinfowrite
 
 import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.data.remote.dto.PlaceDto

@@ -1,8 +1,5 @@
 package com.example.wifood.presentation.view.component
 
-import android.app.Activity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,20 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Main
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import kotlinx.coroutines.launch
 
 @Composable

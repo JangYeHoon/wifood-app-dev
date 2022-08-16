@@ -128,7 +128,7 @@ fun MainView(
                         FloatingActionButton(
                             onClick = {
                                 val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
-                                navController.navigate("${Route.EditPlace.route}/${placeJson}")
+                                navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
                             },
                             backgroundColor = Main,
                             contentColor = Color.White,

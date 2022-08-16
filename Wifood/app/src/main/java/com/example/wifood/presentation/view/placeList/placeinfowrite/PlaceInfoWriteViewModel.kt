@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList
+package com.example.wifood.presentation.view.placeList.placeinfowrite
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
@@ -19,14 +18,10 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
-import com.example.wifood.util.Resource
-import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
 import java.io.File
@@ -47,23 +42,16 @@ class PlaceInfoWriteViewModel @Inject constructor(
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        val place = savedStateHandle.get<Place>("place")
-        if (place!!.name.isNotEmpty()) {
-            formState = formState.copy(placeEditChk = true)
+        savedStateHandle.get<Place>("place")?.let { place ->
             state = state.copy(place = place)
-            setFormInputValueToPlaceEntity(state.place)
-            useCases.GetPlaceImageUris(place.groupId, place.placeId).observeForever { uris ->
-                formState = formState.copy(placeImages = uris as ArrayList<Uri>)
-                Timber.i("get image uri list from firebase : " + formState.placeImages.toString())
+            if (place.placeId != -1) {
+                setFormInputValueToPlaceEntity(state.place)
+                formState = formState.copy(placeEditChk = true)
+                useCases.GetPlaceImageUris(place.groupId, place.placeId).observeForever { uris ->
+                    formState = formState.copy(placeImages = uris as ArrayList<Uri>)
+                    Timber.i("get image uri list from firebase : " + formState.placeImages.toString())
+                }
             }
-        } else {
-            val maxPlaceId = WifoodApp.pref.getInt("place_max_id", -1) + 1
-            state = state.copy(
-                place = PlaceDto(
-                    placeId = maxPlaceId,
-                    groupId = place.groupId
-                ).toPlace()
-            )
         }
 
         useCases.GetGroups().observeForever {
@@ -100,26 +88,32 @@ class PlaceInfoWriteViewModel @Inject constructor(
             is PlaceInfoWriteFormEvent.GroupSelected -> {
                 formState = formState.copy(groupName = event.group.name)
                 state = state.copy(group = event.group)
+                state.place.groupId = event.group.groupId
             }
             is PlaceInfoWriteFormEvent.SearchPlaceSelected -> {
-                updatePlaceFromSearchGoogleAPI(event.searchPlace)
+                updatePlaceFromSearchTMapAPI(event.searchPlace)
             }
             is PlaceInfoWriteFormEvent.VisitedCheck -> {
+                state.place.visited = event.visited
                 formState = formState.copy(visited = event.visited)
             }
             is PlaceInfoWriteFormEvent.ScoreChange -> {
                 setStarEnableToSelectedIdx(event.selectedStarIdx)
             }
             is PlaceInfoWriteFormEvent.TasteCheck -> {
+                state.place.tasteChk = event.tasteChk
                 formState = formState.copy(tasteChk = event.tasteChk)
             }
             is PlaceInfoWriteFormEvent.CleanCheck -> {
+                state.place.cleanChk = event.cleanChk
                 formState = formState.copy(cleanChk = event.cleanChk)
             }
             is PlaceInfoWriteFormEvent.KindCheck -> {
+                state.place.kindChk = event.kindChk
                 formState = formState.copy(kindChk = event.kindChk)
             }
             is PlaceInfoWriteFormEvent.VibeCheck -> {
+                state.place.vibeChk = event.vibeChk
                 formState = formState.copy(vibeChk = event.vibeChk)
             }
             is PlaceInfoWriteFormEvent.ReviewChange -> {
@@ -128,6 +122,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                         review = event.review,
                         reviewTextLength = event.review.length.toString() + "/200"
                     )
+                    state.place.review = event.review
                 }
             }
             is PlaceInfoWriteFormEvent.MenuNameChange -> {
@@ -150,10 +145,14 @@ class PlaceInfoWriteViewModel @Inject constructor(
                     addMenuGradeAndSetMenuGradeInputEmpty()
             }
             is PlaceInfoWriteFormEvent.PlaceAddBtnClick -> {
-                if (formCheck()) {
-                    setPlaceEntityToFormInput()
-                    insertPlaceAndImage()
-                }
+                setPlaceEntityToInputMenu()
+                insertPlace()
+                insertImages()
+            }
+            is PlaceInfoWriteFormEvent.PlaceEditBtnClick -> {
+                setPlaceEntityToInputMenu()
+                updatePlace()
+                insertImages()
             }
             is PlaceInfoWriteFormEvent.CurrentLocationChange -> {
                 formState = formState.copy(currentLocation = event.location)
@@ -172,16 +171,15 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 star[i] = 0
         }
         formState = formState.copy(starScore = star, score = score)
+        state.place.score = score
     }
 
-    private fun updatePlaceFromSearchGoogleAPI(searchPlace: TMapSearch) {
-        formState = formState.copy(
-            placeName = searchPlace.name,
-            latitude = searchPlace.latitude,
-            longitude = searchPlace.longitude,
-            address = searchPlace.fullAddress,
-            bizName = searchPlace.bizName
-        )
+    private fun updatePlaceFromSearchTMapAPI(searchPlace: TMapSearch) {
+        state.place.name = searchPlace.name
+        state.place.latitude = searchPlace.latitude
+        state.place.longitude = searchPlace.longitude
+        state.place.address = searchPlace.fullAddress
+        state.place.bizName = searchPlace.bizName
     }
 
     private fun addMenuGradeAndSetMenuGradeInputEmpty() {
@@ -198,32 +196,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
         formState = formState.copy(menuMemo = "")
     }
 
-    private fun formCheck(): Boolean {
-        return formState.groupName != "그룹 선택" && formState.placeName != "맛집 선택"
-    }
-
-    private fun setPlaceEntityToFormInput() {
-        state = state.copy(
-            place = Place(
-                placeId = state.place.placeId,
-                name = formState.placeName,
-                groupId = state.group!!.groupId,
-                visited = formState.visited,
-                score = formState.score,
-                menu = getMenuStringFromMenuGradeListName(),
-                tasteChk = formState.tasteChk,
-                cleanChk = formState.cleanChk,
-                kindChk = formState.kindChk,
-                vibeChk = formState.vibeChk,
-                review = formState.review,
-                menuList = formState.menuGrades,
-                latitude = formState.latitude,
-                longitude = formState.longitude,
-                address = formState.address,
-                imageNameList = emptyList(),
-                bizName = formState.bizName
-            )
-        )
+    private fun setPlaceEntityToInputMenu() {
+        state.place.menu = getMenuStringFromMenuGradeListName()
+        state.place.menuList = formState.menuGrades
     }
 
     private fun getMenuStringFromMenuGradeListName(): String {
@@ -238,14 +213,15 @@ class PlaceInfoWriteViewModel @Inject constructor(
         return menu
     }
 
-    @DelicateCoroutinesApi
-    private suspend fun insertPlaceAndImage() {
+    private fun insertPlace() {
+        state.place.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
         Timber.i("insert place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
-        if (formState.placeImages.isNotEmpty())
-            insertImages()
-        else
-            validateEventChannel.send(ValidationEvent.Success)
+    }
+
+    private fun updatePlace() {
+        Timber.i("update place to firebase : ${state.place}")
+        useCases.InsertPlace(state.place)
     }
 
     @DelicateCoroutinesApi

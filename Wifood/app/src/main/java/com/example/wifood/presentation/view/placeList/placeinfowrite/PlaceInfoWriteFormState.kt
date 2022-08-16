@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList
+package com.example.wifood.presentation.view.placeList.placeinfowrite
 
 import android.graphics.Bitmap
 import android.location.Location

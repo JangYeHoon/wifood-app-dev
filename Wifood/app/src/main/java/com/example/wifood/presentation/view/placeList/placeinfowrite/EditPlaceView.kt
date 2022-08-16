@@ -1,10 +1,7 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.Manifest
-import android.app.Activity
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -48,13 +45,11 @@ import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -65,7 +60,7 @@ import timber.log.Timber
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun PlaceInfoWriteView(
+fun EditPlaceView(
     navController: NavController,
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
@@ -410,7 +405,7 @@ fun PlaceInfoWriteView(
                         text = "맛집 등록하기",
                         onClick = {
                             scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceEditBtnClick)
                             }
                         }
                     )

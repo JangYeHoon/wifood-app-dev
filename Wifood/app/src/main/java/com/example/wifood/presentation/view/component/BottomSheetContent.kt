@@ -47,7 +47,7 @@ fun BottomSheetContent(
                 Toast.LENGTH_SHORT
             ).show()
             val placeJson = Uri.encode(Gson().toJson(PlaceDto(groupId = group!!.groupId).toPlace()))
-            navController.navigate("${Route.EditPlace.route}/${placeJson}")
+            navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
         }
         BottomSheetListItem(
             icon = Icons.Default.Edit,

@@ -1,5 +1,6 @@
 package com.example.wifood.presentation
 
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -22,11 +23,15 @@ import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.mypage.AppInfoView
+import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
 import com.example.wifood.presentation.view.placeList.group.GroupEditView
 import com.example.wifood.presentation.view.placeList.group.GroupNameInputView
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputImagesAndMenuEvaluation
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReview
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
 import com.example.wifood.presentation.view.placeList.search.SearchPlaceComposeView
 import com.example.wifood.presentation.view.splash.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -115,7 +120,39 @@ fun Navigation() {
                 type = createParcelableNavType<Place>()
             })
         ) {
-            PlaceInfoWriteView(navController)
+            EditPlaceView(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputNameAndVisited.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputNameAndVisited(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputReview.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputReview(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputStarAndEvaluation.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputStarAndEvaluation(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputImagesAndMenuEvaluation.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputImagesAndMenuEvaluation(navController)
         }
         composable(Route.Search.route) {
             SearchPlaceComposeView(navController)
