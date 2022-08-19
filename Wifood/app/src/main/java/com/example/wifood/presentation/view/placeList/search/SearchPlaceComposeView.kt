@@ -110,14 +110,14 @@ fun SearchPlaceComposeView(
                     Icon(Icons.Filled.Search, contentDescription = "")
                 }
             }
-            if (formState.searchResults.isEmpty() && searchClickChkForSearchResult.value) {
-                Text(text = "등록이 안된 식당")
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(formState.searchResults) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(formState.searchResults) {
+                    if (formState.searchResults[0].name == "") {
+                        Text(text = "등록이 안된 식당")
+                    } else {
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
