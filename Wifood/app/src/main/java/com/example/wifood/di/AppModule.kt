@@ -14,6 +14,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import io.ktor.client.features.websocket.*
 import javax.inject.Singleton
 
 @Module
@@ -43,8 +49,20 @@ object AppModule {
             InsertPlaceImages = InsertPlaceImages(repository),
             GetUserInfo = GetUserInfo(repository),
             GetTMapSearchPlaceResult = GetTMapSearchPlaceResult(repository),
-            GetPlaceImageUri = GetPlaceImageUri(repository)
+            GetTMapSearchAddressResult = GetTMapSearchAddressResult(repository),
+            GetPlaceImageUri = GetPlaceImageUri(repository),
+            RequestCertNumber = RequestCertNumber(repository)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(): HttpClient {
+        return HttpClient(CIO) {
+            install(JsonFeature) {
+                serializer = GsonSerializer()
+            }
+        }
     }
 
     @Provides
@@ -55,8 +73,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApi(fb: DatabaseReference): WifoodApi {
-        return WifoodApiImpl(fb)
+    fun provideApi(fb: DatabaseReference, client: HttpClient): WifoodApi {
+        return WifoodApiImpl(fb, client)
     }
 
     @Singleton

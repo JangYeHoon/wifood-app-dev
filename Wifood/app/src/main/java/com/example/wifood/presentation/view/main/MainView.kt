@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
@@ -57,6 +58,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -72,17 +74,14 @@ fun MainView(
     val context = LocalContext.current
     var lastKnownLocation: Location? = null
 
-<<<<<<< HEAD
-    fun checkPermission(permission: String) {
-        if (context.checkPermission(permission)) {
-            locationPermissionGranted = true
-        } else {
-            context.getActivity().shouldShowRationale(permission)
-        }
-    }
+//    fun checkPermission(permission: String) {
+//        if (context.checkPermission(permission)) {
+//            locationPermissionGranted = true
+//        } else {
+//            context.getActivity().shouldShowRationale(permission)
+//        }
+//    }
 
-=======
->>>>>>> 8a96e27b7d7dbcd3665c0716a2fa99df5b4aebdd
     LaunchedEffect(key1 = true) {
         viewModel.init()
         viewModel.toast.collectLatest { message ->

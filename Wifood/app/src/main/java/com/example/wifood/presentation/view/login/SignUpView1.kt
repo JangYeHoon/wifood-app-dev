@@ -1,9 +1,11 @@
 package com.example.wifood.presentation.view.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -11,11 +13,13 @@ import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.login.util.phoneFilter
+import com.example.wifood.util.Constants.TAG
+import com.example.wifood.util.composableActivityViewModel
 
 @Composable
 fun SignUpView1(
     navController: NavController,
-    viewModel: SignUpViewModel
+    viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
     val state = viewModel.state.value
 
@@ -27,7 +31,8 @@ fun SignUpView1(
         }
 
         if (success.value) {
-            navController.navigate("${Route.SignUp2.route}/${state.phoneNumber}")
+            Log.d(TAG, "SignUpView1: ${state}")
+            navController.navigate(Route.SignUp2.route)
         }
     }
 

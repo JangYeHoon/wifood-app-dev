@@ -1,12 +1,23 @@
 package com.example.wifood.presentation.view.login
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.wifood.domain.usecase.WifoodUseCases
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ViewItem
+import com.example.wifood.util.Resource
+import com.navercorp.nid.NaverIdLoginSDK.applicationContext
+import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -15,8 +26,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val useCases: WifoodUseCases
+    private val useCases: WifoodUseCases,
+    @ApplicationContext applicationContext: Context,
 ) : ViewModel() {
+    private val tMapTapi = TMapTapi(applicationContext)
+
     /**
      * SignUp 프로세스(로직) 진행 도중 저장해야 할 필요가 있는 데이터(=상태)가 정의된 State 클래스
      * phoneNumber : 사용자의 전화번호
@@ -28,6 +42,10 @@ class SignUpViewModel @Inject constructor(
      */
     private val _state = mutableStateOf(SignUpState())
     val state: State<SignUpState> = _state
+
+    init {
+        tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+    }
 
     /**
      * SignUp 프로세스(로직) 진행 도중 사용자에 의해 발생할 수 있는 이벤트가 정의된 Event 클래스
@@ -45,6 +63,7 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState(
                     phoneNumber = event.phoneNumber
                 )
+                SignUpData.phoneNumber = event.phoneNumber
             }
             is SignUpEvent.CertChanged -> {
                 _state.value = SignUpState(
@@ -55,6 +74,7 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState(
                     address = event.address
                 )
+                SignUpData.address = event.address
             }
             is SignUpEvent.BirthdayChanged -> {
                 _state.value = SignUpState(
@@ -68,7 +88,8 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.RequestCertNumber -> {
                 /* 서버에 인증번호 요청, 서버에서 사용자 핸드폰 번호로 SMS 전송 */
-                tempRequestCertNumber()
+                Log.d("KTOR", "onEvent In")
+                tempRequestCertNumber(_state.value.phoneNumber)
             }
             is SignUpEvent.Verify -> {
                 /* 서버에 인증번호 전송, 서버에서 결과 응답하면 받아서 처리 */
@@ -76,6 +97,18 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.ShowDocument -> {
                 /* 개인정보처리방침 다운로드 받아서 화면 하나 생성해놓고, 요청 시 보여줌 */
+            }
+            is SignUpEvent.ButtonClicked -> {
+                useCases.GetTMapSearchAddressResult(
+                    _state.value.address
+                ).observeForever {
+                    _state.value = SignUpState(
+                        searchResults = it
+                    )
+                }
+            }
+            is SignUpEvent.AddressClicked -> {
+                SignUpData.address = event.address
             }
         }
     }
@@ -96,11 +129,30 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun tempRequestCertNumber() {
-
+    private fun tempRequestCertNumber(phoneNumber: String) {
+        useCases.RequestCertNumber("01074479861").onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = SignUpState(
+                        reqCertNumber = result.data,
+                        isLoading = false
+                    )
+                }
+                is Resource.Loading -> {
+                    _state.value = SignUpState(
+                        isLoading = true
+                    )
+                }
+                is Resource.Error -> {
+                    _state.value = SignUpState(
+                        isLoading = false
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun tempVerify(certNumber: String): Boolean {
-        return true
+        return certNumber == _state.value.reqCertNumber
     }
 }

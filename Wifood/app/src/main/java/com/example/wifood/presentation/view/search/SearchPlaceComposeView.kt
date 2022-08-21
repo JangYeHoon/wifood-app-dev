@@ -1,11 +1,8 @@
-package com.example.wifood.presentation.view.placeList.search
+package com.example.wifood.presentation.view.search
 
 import android.Manifest
-<<<<<<< HEAD
 import android.annotation.SuppressLint
-=======
 import androidx.compose.foundation.clickable
->>>>>>> 8a96e27b7d7dbcd3665c0716a2fa99df5b4aebdd
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,11 +27,7 @@ import com.example.wifood.presentation.util.shouldShowRationale
 import com.example.wifood.util.getActivity
 import com.google.android.gms.location.LocationServices
 
-<<<<<<< HEAD
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-=======
->>>>>>> 8a96e27b7d7dbcd3665c0716a2fa99df5b4aebdd
 @Composable
 fun SearchPlaceComposeView(
     navController: NavController,

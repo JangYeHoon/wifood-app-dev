@@ -9,4 +9,6 @@ sealed class SignUpEvent() {
     object RequestCertNumber : SignUpEvent()
     data class Verify(val certNumber: String) : SignUpEvent()
     object ShowDocument : SignUpEvent()
+    object ButtonClicked : SignUpEvent()
+    data class AddressClicked(val address: String) : SignUpEvent()
 }

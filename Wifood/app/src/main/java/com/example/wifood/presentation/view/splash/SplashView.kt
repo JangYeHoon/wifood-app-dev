@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.splash
 
+import android.annotation.SuppressLint
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Easing
@@ -28,6 +29,7 @@ import com.example.wifood.util.Constants.VALID
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.delay
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SplashView(
     navController: NavController
@@ -54,11 +56,11 @@ fun SplashView(
         if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
             navController.navigate(Route.Onboarding.route)
         } else {
-            navController.navigate(Route.SignUp.route)
+            navController.navigate(Route.SignUp1.route)
         }
     }
 
-    Scaffold() {
+    Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

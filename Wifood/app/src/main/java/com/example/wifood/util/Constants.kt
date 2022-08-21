@@ -1,6 +1,7 @@
 package com.example.wifood.util
 
 object Constants {
+    const val TAG = "TEST"
     const val SPLASH_SCREEN_DELAY = 1500L
     const val PHONE_NUMBER_PATTERN = "^\\s*(010|011|012|013|014|015|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$"
     // Are they needed value?

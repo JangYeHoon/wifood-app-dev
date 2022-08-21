@@ -45,11 +45,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.main.UiEvent
 import com.example.wifood.ui.theme.robotoFamily
+import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdate
@@ -94,7 +94,7 @@ fun MapView(
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
         } else {
-            context.findActivity().shouldShowRationale(permission)
+            context.getActivity().shouldShowRationale(permission)
         }
     }
 

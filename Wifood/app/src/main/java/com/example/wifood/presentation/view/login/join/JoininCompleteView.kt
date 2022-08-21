@@ -72,7 +72,8 @@ fun JoininCompleteView(
                     .fillMaxHeight()
             )
             MainButton(
-                text = "확인"
+                text = "확인",
+                onClick = {}
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

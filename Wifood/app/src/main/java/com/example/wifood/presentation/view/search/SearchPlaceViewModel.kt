@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList.search
+package com.example.wifood.presentation.view.search
 
 import android.content.Context
 import androidx.compose.runtime.getValue
@@ -7,10 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.wifood.domain.usecase.WifoodUseCases
-import com.skt.Tmap.TMapGpsManager
-import com.skt.Tmap.TMapPoint
 import com.skt.Tmap.TMapTapi
-import com.skt.Tmap.TMapView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

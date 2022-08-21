@@ -24,7 +24,7 @@ import com.example.wifood.view.ui.theme.MainColor
 @Composable
 fun MainButton(
     text: String,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit,
     activate: Boolean = true
 ) {
     TextButton(

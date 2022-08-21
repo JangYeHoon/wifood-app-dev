@@ -81,7 +81,18 @@ class WifoodRepositoryImpl(
         return api.getTMapSearchPlaceResult(keyword, currentLocation)
     }
 
+    override fun getTMapSearchAddressResult(
+        keyword: String
+    ): LiveData<MutableList<TMapSearch>> {
+        return api.getTMapSearchAddressResult(keyword)
+    }
+
     override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
         return api.getPlaceImageUri(groupId, placeId)
+    }
+
+    override suspend fun requestCertNumber(phoneNumber: String): String {
+        Log.d("KTOR", "Repository In")
+        return api.requestCertNumber(phoneNumber)
     }
 }

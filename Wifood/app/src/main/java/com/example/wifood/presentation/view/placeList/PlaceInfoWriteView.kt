@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -61,6 +62,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi

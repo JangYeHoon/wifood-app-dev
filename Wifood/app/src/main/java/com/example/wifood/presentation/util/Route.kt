@@ -30,6 +30,8 @@ sealed class Route(val route: String) {
     object SignUp1 : Route("signup1")
     object SignUp2 : Route("signup2")
     object SignUp3 : Route("signup3")
+    object SignUp4 : Route("signup4")
+    object SignUp5 : Route("signup5")
 
     fun withArgs(vararg args: String): String {
         return buildString {
