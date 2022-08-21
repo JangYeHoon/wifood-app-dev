@@ -68,7 +68,7 @@ fun SplashView(
                 color = MainColor,
                 fontSize = 13.sp,
                 fontFamily = fontTmoney,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.ExtraBold
             )
             Spacer(Modifier.height(10.dp))
             LogoImage(
@@ -76,15 +76,14 @@ fun SplashView(
                 height = 31,
                 scale = scale
             )
-            Spacer(Modifier.height(45.dp))
+            Spacer(Modifier.height(26.dp))
             Image(
                 painter = painterResource(R.drawable.ic_splash_icon),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
-                    .width(216.dp)
-                    .height(315.dp)
+                    .width(240.dp)
+                    .height(366.dp)
             )
-            Spacer(Modifier.height(0.dp))
         }
     }
 }
