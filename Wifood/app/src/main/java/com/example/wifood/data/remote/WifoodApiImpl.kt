@@ -251,7 +251,7 @@ class WifoodApiImpl @Inject constructor(
                     tmapSearchResult.postValue(tempList)
                 }
             } catch (e: Exception) {
-                tmapSearchResult.postValue(arrayListOf())
+                tmapSearchResult.postValue(arrayListOf(TMapSearchDto().toTMapSearch()))
             }
         }
         return tmapSearchResult
@@ -292,7 +292,6 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override suspend fun requestCertNumber(phoneNumber: String): String {
-        Log.d("KTOR", "Api In")
         val response = client.post<Response> {
             url("http://192.168.0.8:8080/sms")
             contentType(ContentType.Application.Json)

@@ -14,4 +14,5 @@ data class SignUpState(
     val isLoading: Boolean = false,
     val reqCertNumber: String? = null,
     val searchResults: List<TMapSearch> = emptyList(),
+    val agreement: Boolean = false
 )

@@ -50,6 +50,21 @@ class PlaceInfoViewModel @Inject constructor(
             is PlaceInfoEvent.PlaceDeleteEvent -> {
                 useCases.DeletePlace(state.place!!.groupId, state.place!!.placeId)
             }
+            is PlaceInfoEvent.ClickPlaceImage -> {
+                state = state.copy(popupImageIdx = event.imageIdx)
+            }
+            is PlaceInfoEvent.ClickPopupLeft -> {
+                state = if (state.popupImageIdx == 0)
+                    state.copy(popupImageIdx = state.placeImageUris.size - 1)
+                else
+                    state.copy(popupImageIdx = state.popupImageIdx - 1)
+            }
+            is PlaceInfoEvent.ClickPopupRight -> {
+                state = if (state.popupImageIdx == state.placeImageUris.size - 1)
+                    state.copy(popupImageIdx = 0)
+                else
+                    state.copy(popupImageIdx = state.popupImageIdx + 1)
+            }
         }
     }
 }

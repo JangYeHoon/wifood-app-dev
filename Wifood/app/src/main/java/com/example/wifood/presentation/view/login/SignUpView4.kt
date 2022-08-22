@@ -63,7 +63,7 @@ fun SignUpView4(
                         range = 1..31
                     )
                 }
-                MainButton(text = "다음", onClick = { navController.navigate(Route.SignUp5.route) })
+                MainButton(text = "다음", onClick = { navController.navigate(Route.SignUp3.route) })
             }
         }
     }

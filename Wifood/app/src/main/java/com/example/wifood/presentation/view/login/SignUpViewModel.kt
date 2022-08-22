@@ -15,6 +15,7 @@ import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
@@ -74,7 +75,6 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState(
                     address = event.address
                 )
-                SignUpData.address = event.address
             }
             is SignUpEvent.BirthdayChanged -> {
                 _state.value = SignUpState(
@@ -88,12 +88,11 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.RequestCertNumber -> {
                 /* 서버에 인증번호 요청, 서버에서 사용자 핸드폰 번호로 SMS 전송 */
-                Log.d("KTOR", "onEvent In")
-                tempRequestCertNumber(_state.value.phoneNumber)
+                tempRequestCertNumber(SignUpData.phoneNumber)
             }
             is SignUpEvent.Verify -> {
                 /* 서버에 인증번호 전송, 서버에서 결과 응답하면 받아서 처리 */
-                tempVerify(event.certNumber)
+                tempVerify(event.certNumber, event.timer)
             }
             is SignUpEvent.ShowDocument -> {
                 /* 개인정보처리방침 다운로드 받아서 화면 하나 생성해놓고, 요청 시 보여줌 */
@@ -109,6 +108,11 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.AddressClicked -> {
                 SignUpData.address = event.address
+            }
+            is SignUpEvent.AgreementClicked -> {
+                _state.value = SignUpState(
+                    agreement = !_state.value.agreement
+                )
             }
         }
     }
@@ -130,7 +134,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun tempRequestCertNumber(phoneNumber: String) {
-        useCases.RequestCertNumber("01074479861").onEach { result ->
+        useCases.RequestCertNumber(phoneNumber).onEach { result ->
             when (result) {
                 is Resource.Success -> {
                     _state.value = SignUpState(
@@ -142,6 +146,7 @@ class SignUpViewModel @Inject constructor(
                     _state.value = SignUpState(
                         isLoading = true
                     )
+                    delay(3000L)
                 }
                 is Resource.Error -> {
                     _state.value = SignUpState(
@@ -152,7 +157,11 @@ class SignUpViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun tempVerify(certNumber: String): Boolean {
-        return certNumber == _state.value.reqCertNumber
+    /**
+     * 1. 타이머가 0:00 이면 실패
+     * 2. 인증번호 검증
+     */
+    private fun tempVerify(certNumber: String, timer: Int): Boolean {
+        return true // certNumber == _state.value.reqCertNumber
     }
 }

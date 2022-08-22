@@ -16,7 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
@@ -24,9 +25,7 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.component.LogoImage
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.util.Constants
-import com.example.wifood.util.Constants.INVALID
-import com.example.wifood.util.Constants.VALID
-import com.example.wifood.view.ui.theme.*
+import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -56,7 +55,7 @@ fun SplashView(
         if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
             navController.navigate(Route.Onboarding.route)
         } else {
-            navController.navigate(Route.SignUp1.route)
+            navController.navigate(Route.GetPhoneNumber.route)
         }
     }
 
@@ -71,7 +70,7 @@ fun SplashView(
                 color = MainColor,
                 fontSize = 13.sp,
                 fontFamily = fontTmoney,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.ExtraBold
             )
             Spacer(Modifier.height(10.dp))
             LogoImage(
@@ -79,15 +78,14 @@ fun SplashView(
                 height = 31,
                 scale = scale
             )
-            Spacer(Modifier.height(45.dp))
+            Spacer(Modifier.height(26.dp))
             Image(
                 painter = painterResource(R.drawable.ic_splash_icon),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
-                    .width(216.dp)
-                    .height(315.dp)
+                    .width(240.dp)
+                    .height(366.dp)
             )
-            Spacer(Modifier.height(0.dp))
         }
     }
 }

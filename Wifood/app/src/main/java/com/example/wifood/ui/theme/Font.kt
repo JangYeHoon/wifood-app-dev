@@ -19,4 +19,8 @@ val fontTmoney = FontFamily(
     Font(R.font.tmoney_normal, FontWeight.Normal,FontStyle.Normal)
 )
 
+val fontMiddleSchool = FontFamily(
+    Font(R.font.middle_school_font, FontWeight.Normal, FontStyle.Normal),
+)
+
 val mainFont = fontPretendard

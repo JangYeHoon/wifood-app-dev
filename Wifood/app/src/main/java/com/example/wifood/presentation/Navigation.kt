@@ -12,19 +12,30 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.createParcelableNavType
-import com.example.wifood.presentation.view.*
+import com.example.wifood.presentation.view.EditMyInfoComposeView
+import com.example.wifood.presentation.view.EditProfileComposeView
+import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.login.*
 import com.example.wifood.presentation.view.login.join.JoininView
+import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
+import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
+import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView
+import com.example.wifood.presentation.view.login.new_compose_views.PersonalAgreementsView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.mypage.AppInfoView
+import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
 import com.example.wifood.presentation.view.placeList.group.GroupEditView
 import com.example.wifood.presentation.view.placeList.group.GroupNameInputView
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputImagesAndMenuEvaluation
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReview
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
-import com.example.wifood.presentation.view.splash.*
+import com.example.wifood.presentation.view.splash.OnboardingView
+import com.example.wifood.presentation.view.splash.SplashView
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -149,7 +160,39 @@ fun Navigation() {
                 type = createParcelableNavType<Place>()
             })
         ) {
-            PlaceInfoWriteView(navController)
+            EditPlaceView(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputNameAndVisited.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputNameAndVisited(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputReview.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputReview(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputStarAndEvaluation.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputStarAndEvaluation(navController)
+        }
+        composable(
+            route = "${Route.PlaceInputImagesAndMenuEvaluation.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            })
+        ) {
+            PlaceInputImagesAndMenuEvaluation(navController)
         }
         composable(
             route = Route.Search.route,
@@ -209,7 +252,7 @@ fun Navigation() {
             AppInfoView(navController)
         }
         composable(
-            route = Route.SignUp1.route,
+            route = Route.GetPhoneNumber.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -217,10 +260,10 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SignUpView1(navController)
+            GetPhoneNumberView(navController)
         }
         composable(
-            route = Route.SignUp2.route,
+            route = Route.GetAuthNumber.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -228,7 +271,29 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SignUpView2(navController)
+            GetPhoneAuthenticationNumberView(navController)
+        }
+        composable(
+            route = Route.Agreement.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            PersonalAgreementsView(navController)
+        }
+        composable(
+            route = Route.FindLocation.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            FindMyLocationView(navController)
         }
         composable(
             route = Route.SignUp3.route,
@@ -240,28 +305,6 @@ fun Navigation() {
             }
         ) {
             SignUpView3(navController)
-        }
-        composable(
-            route = Route.SignUp4.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            SignUpView4(navController)
-        }
-        composable(
-            route = Route.SignUp5.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            SignUpView5(navController)
         }
         composable(
             route = "${Route.GroupNameInput.route}/{group}",

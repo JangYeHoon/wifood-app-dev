@@ -6,17 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wifood.R
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteFormEvent
-import com.example.wifood.presentation.view.placeList.PlaceInfoWriteViewModel
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import kotlinx.coroutines.launch
 
 @Composable

@@ -1,15 +1,19 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.net.Uri
+import android.util.MutableInt
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -23,6 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
@@ -39,6 +45,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun PlaceInfoMenus(
@@ -188,6 +195,7 @@ fun PlaceInfoView(
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val showImagePopupChk = remember { mutableStateOf(false) }
 
     ModalBottomSheetLayout(
         sheetContent = { PlaceInfoBottomSheetContent(state.place, navController) },
@@ -272,15 +280,18 @@ fun PlaceInfoView(
                     modifier = Modifier
                         .verticalScroll(scrollState)
                         .padding(top = 20.dp)
-                ){
+                ) {
                     LazyRow(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 35.dp)
                     ) {
-                        items(state.placeImageUris) { image ->
+                        itemsIndexed(state.placeImageUris) { idx, image ->
                             IconButton(
-                                onClick = {},
+                                onClick = {
+                                    showImagePopupChk.value = true
+                                    viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
+                                },
                                 modifier = Modifier
                                     .width(60.dp)
                                     .height(60.dp)
@@ -297,6 +308,8 @@ fun PlaceInfoView(
                                 )
                             }
                             Spacer(Modifier.width(6.dp))
+                            if (showImagePopupChk.value)
+                                PlaceImagePopup(state.placeImageUris, showImagePopupChk)
                         }
                     }
                     Column(
@@ -377,11 +390,11 @@ fun PlaceInfoView(
                 Modifier
                     .padding(top = 15.dp)
                     .padding(horizontal = 15.dp)
-            ){
+            ) {
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
-                ){
+                ) {
                     SnsIconButton(
                         resourceId = R.drawable.ic_place_info_back_button,
                         size = 40,
@@ -399,7 +412,74 @@ fun PlaceInfoView(
                             }
                         }
                     )
+                }
+            }
+        }
+    }
+}
 
+@Composable
+fun PlaceImagePopup(
+    images: List<Uri>,
+    showImagePopupChk: MutableState<Boolean>,
+    viewModel: PlaceInfoViewModel = hiltViewModel()
+) {
+    Popup(
+        alignment = Alignment.Center,
+        onDismissRequest = {
+            showImagePopupChk.value = false
+        },
+        properties = PopupProperties()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(500.dp)
+        ) {
+            Image(
+                painter = rememberImagePainter(
+                    data = images[viewModel.state.popupImageIdx]
+                ),
+                contentDescription = "",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(5.dp)),
+                contentScale = ContentScale.Crop,
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(PlaceInfoEvent.ClickPopupLeft)
+                    },
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        viewModel.onEvent(PlaceInfoEvent.ClickPopupRight)
+                    },
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowForward,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxSize(),
+                        tint = Color.Unspecified
+                    )
                 }
             }
         }

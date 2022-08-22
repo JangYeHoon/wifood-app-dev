@@ -26,8 +26,6 @@ fun SignUpView3(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
-    val state = viewModel.state.value
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -37,46 +35,27 @@ fun SignUpView3(
                 text = "동네를 알려주세요.",
                 color = Color.Black
             )
-            BasicTextField(
-                value = state.address,
-                onValueChange = {
-                    viewModel.onEvent(SignUpEvent.AddressChanged(it))
-                }
-            )
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .clickable {
+                        navController.navigate(Route.FindLocation.route)
+                    }
+            ) {
+                BasicTextField(
+                    value = SignUpData.address,
+                    onValueChange = {
+                        viewModel.onEvent(SignUpEvent.AddressChanged(it))
+                    },
+                    enabled = false
+                )
+            }
             MainButton(
                 text = "다음",
                 onClick = {
                     viewModel.onEvent(SignUpEvent.ButtonClicked)
                 }
             )
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(state.searchResults) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp)
-                            .clickable {
-                                viewModel.onEvent(SignUpEvent.AddressClicked(it.fullAddress))
-
-                                navController.navigate(Route.SignUp4.route)
-                            }
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.padding(horizontal = 24.dp)
-                        ) {
-                            Row {
-                                Text(text = it.name, fontSize = 16.sp)
-                                Text(text = it.bizName)
-                            }
-                            Text(text = it.fullAddress)
-                        }
-                    }
-                }
-            }
         }
     }
 }
