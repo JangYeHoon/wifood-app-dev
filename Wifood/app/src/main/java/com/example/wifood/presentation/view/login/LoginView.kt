@@ -27,7 +27,6 @@ import com.example.wifood.R
 import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.component.*
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.fontPretendard
@@ -43,7 +42,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
-import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
@@ -53,9 +51,10 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import com.google.android.gms.common.api.ApiException
+import kotlinx.coroutines.*
 
+@DelicateCoroutinesApi
 @Composable
 fun LoginView(
     navController: NavController,
@@ -99,8 +98,11 @@ fun LoginView(
                 is ValidationEvent.Success -> {
                     WifoodApp.pref.setString("user_id", viewModel.formState.email)
                     WifoodApp.pref.setString("auto_login", VALID)
-                    formState.clear()
+                    viewModel.clearForm()
                     navController.navigate(Route.Main.route)
+                }
+                is ValidationEvent.SignUp -> {
+                    navController.navigate("${Route.Joinin.route}?email=${state.email}")
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
@@ -112,9 +114,6 @@ fun LoginView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        if (state.isLoading) {
-            ProgressIndicator()
-        }
 
         LoginErrorText(
             formState.emailError ?: formState.passwordError ?: "Invalid",
@@ -138,8 +137,8 @@ fun LoginView(
                 text = formState.email,
                 placeholder = "아이디",
                 onValueChange = {
-                    scope.launch {
-                        viewModel.onEvent(LoginFormEvent.EmailChanged(it))
+                    scope.launch(Dispatchers.Main) {
+                        viewModel.onEvent(LoginEvent.EmailChanged(it))
                     }
                 },
                 isError = !formState.emailError.isNullOrBlank()
@@ -150,8 +149,8 @@ fun LoginView(
                 placeholder = "비밀번호",
                 isPassword = true,
                 onValueChange = {
-                    scope.launch {
-                        viewModel.onEvent(LoginFormEvent.PasswordChanged(it))
+                    scope.launch(Dispatchers.Main) {
+                        viewModel.onEvent(LoginEvent.PasswordChanged(it))
                     }
                 },
                 imeAction = ImeAction.Done,
@@ -161,18 +160,19 @@ fun LoginView(
             MainButton(
                 text = "로그인",
                 onClick = {
-                    scope.launch {
-                        viewModel.onEvent(LoginFormEvent.Login)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.onEvent(LoginEvent.Login)
                     }
+
                 }
             )
             Spacer(Modifier.height(5.dp))
-            Row() {
+            Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 TransparentButton(
                     text = "아이디/비밀번호찾기",
                     textColor = Gray03Color,
                     onClick = {
-                        formState.clear()
+                        viewModel.clearForm()
                         navController.navigate(Route.MobileAuthentication.route)
                     }
                 )
@@ -181,7 +181,7 @@ fun LoginView(
                     text = "회원가입",
                     textColor = Gray01Color,
                     onClick = {
-                        formState.clear()
+                        viewModel.clearForm()
                         navController.navigate(Route.MobileAuthentication.route)
                     }
                 )
@@ -214,7 +214,6 @@ fun LoginView(
                         val oAuthLoginCallback = object : OAuthLoginCallback {
                             override fun onError(errorCode: Int, message: String) {
                                 val naverAccessToken = NaverIdLoginSDK.getAccessToken()
-                                Log.e("NAVER", "naverAccessToken : $naverAccessToken")
                             }
 
                             override fun onFailure(httpStatus: Int, message: String) {
@@ -231,6 +230,29 @@ fun LoginView(
                                         navController.navigate(
                                             "${Route.Joinin.route}?email=$email&gender=$gender&phone=$phone"
                                         )
+                                        NidOAuthLogin().callDeleteTokenApi(
+                                            context,
+                                            object : OAuthLoginCallback {
+                                                override fun onSuccess() {
+                                                    //서버에서 토큰 삭제에 성공한 상태입니다.
+                                                }
+
+                                                override fun onFailure(
+                                                    httpStatus: Int,
+                                                    message: String
+                                                ) {
+                                                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                                                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                                                }
+
+                                                override fun onError(
+                                                    errorCode: Int,
+                                                    message: String
+                                                ) {
+                                                    // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                                                    // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                                                }
+                                            })
                                     }
 
                                     override fun onError(errorCode: Int, message: String) {
@@ -257,17 +279,7 @@ fun LoginView(
                 SnsIconButton(
                     resourceId = R.drawable.ic_kakao_login_icon,
                     onClick = {
-                        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-                            if (error != null) {
-                                Log.e("KAKAO", "카카오계정으로 로그인 실패", error)
-                            } else if (token != null) {
-                                getKakaoInfo(UserApiClient.instance, navController)
-                            }
-                        }
-                        UserApiClient.instance.loginWithKakaoAccount(
-                            context,
-                            callback = callback
-                        )
+                        // Hold
                     }
                 )
                 Spacer(Modifier.width(20.dp))
@@ -281,29 +293,6 @@ fun LoginView(
             }
             // to here
             Spacer(Modifier.height(buttonBottomValue.dp))
-        }
-    }
-}
-
-private fun getKakaoInfo(
-    userApiClient: UserApiClient,
-    navController: NavController
-) {
-    userApiClient.me { user, error ->
-        if (error != null) {
-            Log.e("KAKAO", "사용자 정보 요청 실패", error)
-        } else if (user != null) {
-            val nickname = user.kakaoAccount?.profile?.nickname!!
-            val email = user.kakaoAccount?.email!!
-            //infoList["birthday"] = user.kakaoAccount?.birthday!!
-            //infoList["gender"] = user.kakaoAccount?.gender!!.toString()
-            navController.navigate(
-                "${Route.Joinin.route}?" +
-                        "email=${email}" +
-//                        "&gender=${gender}" +
-//                        "&birthday=${birthday}" +
-                        "&nickname=${nickname}"
-            )
         }
     }
 }

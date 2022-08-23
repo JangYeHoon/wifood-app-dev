@@ -23,10 +23,10 @@ import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component_box.SwitchWithText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
+import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
@@ -89,7 +89,7 @@ fun PlaceInputNameAndVisited(
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
         } else {
-            context.findActivity().shouldShowRationale(permission)
+            context.getActivity().shouldShowRationale(permission)
         }
     }
 

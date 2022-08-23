@@ -29,9 +29,9 @@ val mainButtonHeightValue = 46
 
 @Composable
 fun MainButton(
-    text: String = "버튼",
-    onClick: () -> Unit = {},
-    activate: Boolean = true,
+    text: String,
+    onClick: () -> Unit,
+    activate: Boolean = true
 ) {
 
     TextButton(

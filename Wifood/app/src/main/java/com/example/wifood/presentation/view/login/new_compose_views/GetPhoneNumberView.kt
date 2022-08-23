@@ -1,6 +1,6 @@
 package com.example.wifood.presentation.view.login.new_compose_views
 
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,22 +10,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.util.ViewItem
+import com.example.wifood.presentation.view.login.util.phoneFilter
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GetPhoneNumberView(
-
-){
+    navController: NavController,
+    viewModel: SignUpViewModel = composableActivityViewModel()
+) {
+    val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
     var phoneNumberValidation = false
-    var phoneText by remember { mutableStateOf(TextFieldValue(text = "")) }
+
+    LaunchedEffect(state.phoneNumber) {
+        val success = mutableStateOf(false)
+
+        if (state.phoneNumber.length == 11) {
+            success.value = viewModel.checkForm(ViewItem.SignUpView1)
+            phoneNumberValidation = true
+        }
+
+        if (success.value) {
+            navController.navigate(Route.GetAuthNumber.route)
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState
@@ -46,9 +66,9 @@ fun GetPhoneNumberView(
             )
             Spacer(Modifier.height(24.dp))
             TextField(
-                value = phoneText,
+                value = state.phoneNumber,
                 onValueChange = {
-                    phoneText = it
+                    viewModel.onEvent(SignUpEvent.PhoneNumChanged(it))
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -74,13 +94,16 @@ fun GetPhoneNumberView(
                     placeholderColor = EnableColor,
                     focusedIndicatorColor = MainColor,
                     unfocusedIndicatorColor = EnableColor
-                )
+                ),
+                visualTransformation = {
+                    phoneFilter(it)
+                }
             )
             Spacer(Modifier.weight(1f))
             MainButton(
                 text = "인증번호 받기",
                 onClick = {
-
+                    navController.navigate(Route.GetAuthNumber.route)
                 },
                 activate = phoneNumberValidation
             )

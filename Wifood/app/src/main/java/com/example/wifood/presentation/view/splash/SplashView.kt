@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.splash
 
+import android.annotation.SuppressLint
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Easing
@@ -15,7 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
@@ -23,11 +25,10 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.component.LogoImage
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.util.Constants
-import com.example.wifood.util.Constants.INVALID
-import com.example.wifood.util.Constants.VALID
-import com.example.wifood.view.ui.theme.*
+import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.delay
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SplashView(
     navController: NavController
@@ -50,14 +51,15 @@ fun SplashView(
         )
         delay(Constants.SPLASH_SCREEN_DELAY)
         navController.popBackStack()
-        if (WifoodApp.pref.getString("auto_login", INVALID) == VALID) {
-            navController.navigate(Route.Login.route)
-        } else {
+        // 앱을 맨 처음 실행했을 단 한 번의 경우에만 Onboarding 실행
+        if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
             navController.navigate(Route.Onboarding.route)
+        } else {
+            navController.navigate(Route.GetPhoneNumber.route)
         }
     }
 
-    Scaffold() {
+    Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

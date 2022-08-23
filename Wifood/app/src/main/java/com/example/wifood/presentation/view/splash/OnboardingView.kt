@@ -86,7 +86,7 @@ fun OnboardingView(
             MainButton(
                 text = "시작하기",
                 onClick = {
-                    navController.navigate(Route.Login.route)
+                    navController.navigate(Route.GetPhoneNumber.route)
                 }
             )
             Spacer(Modifier.height(buttonBottomValue.dp))

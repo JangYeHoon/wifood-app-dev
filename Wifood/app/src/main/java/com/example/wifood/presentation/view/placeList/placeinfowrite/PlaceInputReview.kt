@@ -1,47 +1,29 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
-import android.Manifest
 import android.net.Uri
-import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.*
-import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
-import com.example.wifood.R
-import com.example.wifood.domain.model.TMapSearch
-import com.example.wifood.presentation.util.*
-import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
+import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
+import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
-import com.example.wifood.view.ui.theme.*
-import com.google.android.gms.location.LocationServices
+import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @DelicateCoroutinesApi
 @ExperimentalCoilApi

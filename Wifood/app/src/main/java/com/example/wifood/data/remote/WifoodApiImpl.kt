@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.android.volley.toolbox.HttpResponse
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.*
 import com.example.wifood.domain.model.Group
@@ -24,13 +25,18 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.skt.Tmap.TMapData
 import com.skt.Tmap.TMapPoint
+import com.skt.Tmap.poi_item.TMapPOIItem
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
 class WifoodApiImpl @Inject constructor(
-    private val db: DatabaseReference
+    private val db: DatabaseReference,
+    private val client: HttpClient
 ) : WifoodApi {
     val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
 
@@ -183,6 +189,8 @@ class WifoodApiImpl @Inject constructor(
             if (it.exists()) {
                 val userDto = it.getValue(UserDto::class.java)
                 user.postValue(userDto?.toUser())
+            } else {
+                user.postValue(null)
             }
         }
         return user
@@ -194,7 +202,6 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertUser(user: User) {
         db.push().setValue(user)
-        // 씨발 왜 안들어가  ㅡㅡ
     }
 
     override fun insertPlaceImages(
@@ -248,5 +255,49 @@ class WifoodApiImpl @Inject constructor(
             }
         }
         return tmapSearchResult
+    }
+
+    override fun getTMapSearchAddressResult(keyword: String): LiveData<MutableList<TMapSearch>> {
+        val tmapSearchResult = MutableLiveData<MutableList<TMapSearch>>()
+        val tmapData = TMapData()
+        val tempList: MutableList<TMapSearch> = mutableListOf()
+        thread(start = true) {
+            try {
+                tmapData.findAddressPOI(
+                    keyword,
+                    50
+                ) { tMapItems ->
+                    for (searchResult in tMapItems) {
+                        searchResult.poiName
+                        val bizName: String =
+                            searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
+                        val address = searchResult.poiAddress.replace("null", "")
+                        tempList.add(
+                            TMapSearch(
+                                address,
+                                searchResult.poiName,
+                                searchResult.poiPoint.latitude,
+                                searchResult.poiPoint.longitude,
+                                bizName
+                            )
+                        )
+                        tmapSearchResult.postValue(tempList)
+                    }
+                }
+            } catch (e: Exception) {
+                tmapSearchResult.postValue(arrayListOf())
+            }
+        }
+        return tmapSearchResult
+    }
+
+    override suspend fun requestCertNumber(phoneNumber: String): String {
+        val response = client.post<Response> {
+            url("http://192.168.0.8:8080/sms")
+            contentType(ContentType.Application.Json)
+            body = Request(phoneNumber)
+        }
+
+        return response.message
     }
 }

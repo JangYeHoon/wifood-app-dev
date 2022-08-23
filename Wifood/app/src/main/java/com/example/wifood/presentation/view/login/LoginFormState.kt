@@ -9,14 +9,4 @@ data class LoginFormState(
     var emailError: String? = null,
     var password: String = "",
     var passwordError: String? = null
-) {
-    fun clear() {
-        email = ""
-        password = ""
-    }
-
-    fun errorReset() {
-        emailError = null
-        passwordError = null
-    }
-}
+)

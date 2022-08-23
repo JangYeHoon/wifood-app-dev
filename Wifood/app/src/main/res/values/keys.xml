@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kakao_native_app_key">3ccc32d53540dfea3146161c03a70984</string>
+    <!-- kakao${kakao_native_app_key} 의 구조다. -->
+    <string name="kakao_redirection_scheme">kakao3ccc32d53540dfea3146161c03a70984</string>
+
+    <string name="naver_client_id">CQFfpk7D3WC2XOGEo2mm</string>
+    <string name="naver_client_secret">eCXV6dnV_a</string>
+    <string name="naver_client_name">YOGO</string>
+
+    <string name="google_id">100379803777-09pi8v7s9t18amrud86an8g9e7el8emk.apps.googleusercontent.com</string>
+</resources>

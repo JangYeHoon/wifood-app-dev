@@ -1,6 +1,7 @@
 package com.example.wifood.domain.usecase
 
 data class WifoodUseCases(
+    val ValidatePhone: ValidatePhone,
     val validateEmail: ValidateEmail,
     val validatePassword: ValidatePassword,
     val validateRepeatedPassword: ValidateRepeatedPassword,
@@ -19,5 +20,7 @@ data class WifoodUseCases(
     val InsertPlaceImages: InsertPlaceImages,
     val GetUserInfo: GetUserInfo,
     val GetTMapSearchPlaceResult: GetTMapSearchPlaceResult,
-    val GetPlaceImageUri: GetPlaceImageUri
+    val GetTMapSearchAddressResult: GetTMapSearchAddressResult,
+    val GetPlaceImageUri: GetPlaceImageUri,
+    val RequestCertNumber: RequestCertNumber
 )

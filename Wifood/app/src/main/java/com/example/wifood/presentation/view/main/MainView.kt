@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.main
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
@@ -39,7 +40,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.util.findActivity
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.ListTopAppBar
@@ -49,6 +49,7 @@ import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
+import com.example.wifood.util.getActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.location.LocationServices
@@ -57,6 +58,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

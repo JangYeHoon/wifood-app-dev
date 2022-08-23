@@ -6,16 +6,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wifood.domain.model.Place
+import com.example.wifood.WifoodApp
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.util.ValidationEvent
-import com.example.wifood.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import timber.log.Timber
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -29,37 +29,66 @@ class LoginViewModel @Inject constructor(
     private val validateEventChannel = Channel<ValidationEvent>()
     val validationEvents = validateEventChannel.receiveAsFlow()
 
+    // ViewModel 처음 생성될 때 실행되는 코드
+    init {
+        // 앱이 한 번 이상 실행되었다는 표시
+        WifoodApp.pref.setString("Initial_Flag", "1")
+    }
+
     @DelicateCoroutinesApi
-    fun onEvent(event: LoginFormEvent) {
+    suspend fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginFormEvent.EmailChanged -> {
+            is LoginEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
             }
-            is LoginFormEvent.PasswordChanged -> {
+            is LoginEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
             }
-            is LoginFormEvent.Login -> {
-                formState.errorReset()
+            is LoginEvent.Login -> {
+                clearError()
+
                 if (formCheck()) {
-                    getUserAndLogin()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        getUserAndLogin()
+                    }
+                }
+            }
+
+            is LoginEvent.CheckUserByEmail -> {
+                // 수정 필요함. 잘못된 코드라고 생각하셈
+                useCases.GetUserInfo(event.email.replace('.', '_')).observeForever {
+                    state = state.copy(user = it)
+
+                    try {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            withContext(Dispatchers.Main) {
+                                if (state.user != null) {
+                                    validateEventChannel.send(ValidationEvent.Success)
+                                } else {
+                                    state = state.copy(email = event.email)
+                                    validateEventChannel.send(ValidationEvent.SignUp)
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                    }
                 }
             }
         }
     }
 
     @DelicateCoroutinesApi
-    private fun getUserAndLogin() {
+    private suspend fun getUserAndLogin() {
+        val handler = CoroutineExceptionHandler { _, throwable ->
+            viewModelScope.launch {
+                validateEventChannel.send(ValidationEvent.Error(throwable.localizedMessage))
+            }
+        }
         useCases.GetUserInfo(formState.email.replace('.', '_')).observeForever {
             state = state.copy(user = it)
 
-            try {
-                GlobalScope.launch(Dispatchers.IO) {
-                    withContext(Dispatchers.Main) {
-                        loginData()
-                    }
-                }
-            } catch (e: Exception) {
-
+            CoroutineScope(Dispatchers.Default).launch(handler) {
+                loginData()
             }
         }
     }
@@ -73,14 +102,11 @@ class LoginViewModel @Inject constructor(
             passwordResult
         ).any { !it.successful }
 
-        if (hasError) {
-            formState = formState.copy(
-                emailError = emailResult.errorMessage,
-                passwordError = passwordResult.errorMessage
-            )
-            return false
-        }
-        return true
+        formState = formState.copy(
+            emailError = emailResult.errorMessage,
+            passwordError = passwordResult.errorMessage
+        )
+        return !hasError
     }
 
     private suspend fun loginData() {
@@ -90,5 +116,20 @@ class LoginViewModel @Inject constructor(
         } else {
             formState = formState.copy(passwordError = "비밀번호가 일치하지 않습니다.")
         }
+    }
+
+    fun clearForm() {
+        formState = formState.copy(
+            email = "",
+            password = ""
+        )
+        clearError()
+    }
+
+    private fun clearError() {
+        formState = formState.copy(
+            emailError = null,
+            passwordError = null
+        )
     }
 }

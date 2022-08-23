@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList.search
+package com.example.wifood.presentation.view.search
 
 import android.location.Location
 import com.example.wifood.domain.model.TMapSearch

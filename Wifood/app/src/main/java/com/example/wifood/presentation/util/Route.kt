@@ -31,4 +31,18 @@ sealed class Route(val route: String) {
     object FindPwd : Route("findpwdview")
     object EditMyInfo : Route("editmyinfocomposeview")
     object AppInfo : Route("appinfoview")
+    object GetPhoneNumber : Route("getphonenumber")
+    object GetAuthNumber : Route("getauthnumber")
+    object Agreement : Route("agreement")
+    object FindLocation : Route("findlocation")
+    object SignUp3 : Route("signup3")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }
 }

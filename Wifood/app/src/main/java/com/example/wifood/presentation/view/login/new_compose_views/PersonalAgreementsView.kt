@@ -17,16 +17,22 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 
-@Preview(showBackground = true)
 @Composable
 fun PersonalAgreementsView(
-
-){
+    navController: NavController,
+    viewModel: SignUpViewModel = composableActivityViewModel()
+) {
+    val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
     var isAgreeClicked by remember { mutableStateOf(false)}
@@ -54,7 +60,7 @@ fun PersonalAgreementsView(
             ){
                 IconButton(
                     onClick = {
-                        isAgreeClicked.not()
+                        viewModel.onEvent(SignUpEvent.AgreementClicked)
                     },
                     modifier = Modifier
                         .wrapContentSize()
@@ -95,9 +101,9 @@ fun PersonalAgreementsView(
             MainButton(
                 text = "다음",
                 onClick = {
-
+                          navController.navigate(Route.SignUp3.route)
                 },
-                activate = isAgreeClicked
+                activate = state.agreement
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
