@@ -76,16 +76,6 @@ fun Navigation() {
         ) {
             MainView(navController, it)
         }
-        composable(route = Route.Login.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            LoginView(navController)
-        }
         composable(
             route = Route.Map.route,
             enterTransition = {
