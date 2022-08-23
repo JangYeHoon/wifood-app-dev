@@ -16,10 +16,7 @@ import com.example.wifood.presentation.view.EditMyInfoComposeView
 import com.example.wifood.presentation.view.EditProfileComposeView
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.login.*
-import com.example.wifood.presentation.view.login.join.GetUserFavorContent
-import com.example.wifood.presentation.view.login.join.JoininCompleteView
 import com.example.wifood.presentation.view.login.join.JoininView
-import com.example.wifood.presentation.view.login.join.TestView
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView
@@ -61,7 +58,15 @@ fun Navigation() {
         startDestination = Route.Splash.route
     ) {
         composable(
-            route = Route.Main.route,
+            route = "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+            arguments = listOf(
+                navArgument("placeLat") {
+                    defaultValue = 10000f
+                    type = NavType.FloatType
+                }, navArgument("placeLng") {
+                    defaultValue = 10000f
+                    type = NavType.FloatType
+                }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -69,8 +74,17 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            //MainView(navController)
-            TestView()
+            MainView(navController, it)
+        }
+        composable(route = Route.Login.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            LoginView(navController)
         }
         composable(
             route = Route.Map.route,
@@ -81,7 +95,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            MapView(navController)
+            MapView(navController, 10000f)
         }
         composable(
             route = Route.MyPage.route,
@@ -301,28 +315,6 @@ fun Navigation() {
             SignUpView3(navController)
         }
         composable(
-            route = Route.SignUp4.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            SignUpView4(navController)
-        }
-        composable(
-            route = Route.SignUp5.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            SignUpView5(navController)
-        }
-        composable(
             route = "${Route.GroupNameInput.route}/{group}",
             arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
         ) {
@@ -348,28 +340,6 @@ fun Navigation() {
         }
         composable(Route.AppInfo.route) {
             AppInfoView(navController)
-        }
-        composable(
-            route = Route.GetUserFavor.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            GetUserFavorContent(navController)
-        }
-        composable(
-            route = Route.Complete.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            JoininCompleteView(navController)
         }
     }
 }

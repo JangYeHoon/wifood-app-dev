@@ -34,12 +34,14 @@ import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
@@ -231,7 +233,11 @@ fun PlaceInfoView(
                         .padding(horizontal = 35.dp)
                         .padding(bottom = 25.dp)
                 ) {
-                    Row() {
+                    Row(
+                        modifier = Modifier.clickable {
+                            navController.navigate("${Route.Main.route}?placeLat=${state.place!!.latitude}&placeLng=${state.place.longitude}")
+                        }
+                    ) {
                         Icon(
                             ImageVector.vectorResource(id = R.drawable.ic_group_pin),
                             contentDescription = "",
@@ -251,7 +257,10 @@ fun PlaceInfoView(
                     GoogleMap(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(55.dp),
+                            .height(55.dp)
+                            .clickable {
+                                navController.navigate("${Route.Main.route}?placeLat=${state.place!!.latitude}&placeLng=${state.place.longitude}")
+                            },
                         cameraPositionState = rememberCameraPositionState {
                             position =
                                 CameraPosition.fromLatLngZoom(

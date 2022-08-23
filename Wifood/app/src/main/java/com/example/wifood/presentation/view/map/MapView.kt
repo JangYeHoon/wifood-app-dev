@@ -65,6 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MapView(
     navController: NavController,
+    placeLat: Float,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -110,14 +111,16 @@ fun MapView(
                 if (task.isSuccessful) {
                     if (task.result != null) {
                         viewModel.onEvent(MainEvent.LocationChanged(task.result))
-                        viewModel.onEvent(
-                            MainEvent.CameraMove(
-                                LatLng(
-                                    task.result.latitude,
-                                    task.result.longitude
+                        if (placeLat == 10000f) {
+                            viewModel.onEvent(
+                                MainEvent.CameraMove(
+                                    LatLng(
+                                        task.result.latitude,
+                                        task.result.longitude
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
                 }
             }
