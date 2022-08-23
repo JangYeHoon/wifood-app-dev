@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,19 +18,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.unit.R
 import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
+import kotlinx.coroutines.delay
 
 
 @Composable
 fun JoininCompleteView(
-    navController : NavController,
-    userNickName : String = "닉네임"
-){
+    navController: NavController
+) {
+    LaunchedEffect(true) {
+        delay(1000L)
+        navController.navigate(Route.Main.route)
+    }
+
     Scaffold(
     ) {
         Column(
@@ -41,15 +48,8 @@ fun JoininCompleteView(
         ) {
             Text(
                 text= buildAnnotatedString {
-                    append("반갑습니다, ")
-                    withStyle(
-                        style = SpanStyle(
-                            MainColor
-                        ),
-                    ){
-                        append(userNickName)
-                    }
-                    append("님\n 회원가입이 완료되었습니다.")
+                    append("반갑습니다! ")
+                    append("\n 회원가입이 완료되었습니다.")
                 },
                 fontFamily = fontTmoney,
                 fontWeight = FontWeight.Normal,

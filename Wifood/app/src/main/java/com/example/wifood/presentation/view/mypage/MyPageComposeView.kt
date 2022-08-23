@@ -93,7 +93,7 @@ fun MyPageComposeView(
                     withButton = false,
                     onClick = {
                         // TODO("should add log out logic")
-                        navController.navigate(Route.Login.route)
+
                     }
                 )
             }

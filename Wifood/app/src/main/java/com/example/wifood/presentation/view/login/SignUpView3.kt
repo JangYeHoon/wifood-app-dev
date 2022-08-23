@@ -53,7 +53,7 @@ fun SignUpView3(
             MainButton(
                 text = "다음",
                 onClick = {
-                    viewModel.onEvent(SignUpEvent.ButtonClicked)
+                    navController.navigate(Route.SignUp4.route)
                 }
             )
         }

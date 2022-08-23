@@ -10,13 +10,13 @@ class ValidatePhone {
         if (!phoneNumber.isDigitsOnly()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "${phoneNumber}"
+                errorMessage = "$phoneNumber, 숫자만 입력이 가능합니다."
             )
         }
         if (phoneNumber.length != 11) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "${phoneNumber}"
+                errorMessage = "${phoneNumber}, 핸드폰 번호 11자리를 입력해주세요."
             )
         }
         val pattern = Pattern.compile(Constants.PHONE_NUMBER_PATTERN)
@@ -24,7 +24,7 @@ class ValidatePhone {
         if (!matcher.matches()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = "${phoneNumber}"
+                errorMessage = "${phoneNumber}, 올바른 핸드폰 번호가 아닙니다."
             )
         }
         return ValidationResult(

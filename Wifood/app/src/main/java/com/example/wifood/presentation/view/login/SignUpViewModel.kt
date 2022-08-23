@@ -7,17 +7,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.util.SignUpData
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.util.Resource
 import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,6 +48,9 @@ class SignUpViewModel @Inject constructor(
      */
     private val _state = mutableStateOf(SignUpState())
     val state: State<SignUpState> = _state
+
+    private val validateEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
         tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
@@ -72,9 +80,10 @@ class SignUpViewModel @Inject constructor(
                 )
             }
             is SignUpEvent.AddressChanged -> {
-                _state.value = SignUpState(
+                _state.value = state.value.copy(
                     address = event.address
                 )
+
             }
             is SignUpEvent.BirthdayChanged -> {
                 _state.value = SignUpState(
@@ -85,6 +94,7 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState(
                     gender = !_state.value.gender
                 )
+                SignUpData.gender = if (_state.value.gender) "남성" else "여성"
             }
             is SignUpEvent.RequestCertNumber -> {
                 /* 서버에 인증번호 요청, 서버에서 사용자 핸드폰 번호로 SMS 전송 */
@@ -98,12 +108,14 @@ class SignUpViewModel @Inject constructor(
                 /* 개인정보처리방침 다운로드 받아서 화면 하나 생성해놓고, 요청 시 보여줌 */
             }
             is SignUpEvent.ButtonClicked -> {
-                useCases.GetTMapSearchAddressResult(
-                    _state.value.address
-                ).observeForever {
-                    _state.value = SignUpState(
-                        searchResults = it
-                    )
+                if (_state.value.address.isNotBlank()) {
+                    useCases.GetTMapSearchAddressResult(
+                        _state.value.address
+                    ).observeForever {
+                        _state.value = state.value.copy(
+                            searchResults = it
+                        )
+                    }
                 }
             }
             is SignUpEvent.AddressClicked -> {
@@ -114,6 +126,31 @@ class SignUpViewModel @Inject constructor(
                     agreement = !_state.value.agreement
                 )
             }
+            is SignUpEvent.FavorSelected -> {
+                val temp = _state.value.taste
+                temp.set(event.index, event.selected)
+
+                _state.value = state.value.copy(
+                    taste = temp
+                )
+            }
+            is SignUpEvent.TasteCreated -> {
+                SignUpData.taste = Taste(
+                    userId = "Test",
+                    tasteId = 1,
+                    spicy = _state.value.taste[0],
+                    salty = _state.value.taste[2],
+                    acidity = _state.value.taste[4],
+                    sour = _state.value.taste[3],
+                    sweet = _state.value.taste[1]
+                )
+            }
+        }
+    }
+
+    private fun showSnackBar(message: String) {
+        viewModelScope.launch {
+            validateEventChannel.send(ValidationEvent.Error(message))
         }
     }
 
@@ -124,9 +161,8 @@ class SignUpViewModel @Inject constructor(
 
                 val hasError = !phoneResult.successful
 
-                _state.value = SignUpState(
-                    phoneNumberError = phoneResult.errorMessage
-                )
+                if (hasError)
+                    showSnackBar(phoneResult.errorMessage!!)
 
                 return !hasError
             }
@@ -146,7 +182,6 @@ class SignUpViewModel @Inject constructor(
                     _state.value = SignUpState(
                         isLoading = true
                     )
-                    delay(3000L)
                 }
                 is Resource.Error -> {
                     _state.value = SignUpState(

@@ -57,6 +57,9 @@ fun FindMyLocationView(
                 },
                 onDeleteClicked = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(""))
+                },
+                onSearchClicked = {
+                    viewModel.onEvent(SignUpEvent.ButtonClicked)
                 }
             )
             Spacer(Modifier.height(12.dp))
@@ -64,27 +67,35 @@ fun FindMyLocationView(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(state.searchResults) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp)
-                            .clickable {
-                                viewModel.onEvent(SignUpEvent.AddressClicked(it.fullAddress))
-                                navController.navigateUp()
-                            }
+                items(state.searchResults) { item ->
+                    SearchPlaceInfoCard(
+                        item.fullAddress,
+                        item.name,
+                        state.address
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.padding(horizontal = 24.dp)
-                        ) {
-                            Row {
-                                Text(text = it.name, fontSize = 16.sp)
-                                Text(text = it.bizName)
-                            }
-                            Text(text = it.fullAddress)
-                        }
+                        viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
+                        navController.navigateUp()
                     }
+//                    Card(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 20.dp)
+//                            .clickable {
+//                                viewModel.onEvent(SignUpEvent.AddressClicked(it.fullAddress))
+//                                navController.navigateUp()
+//                            }
+//                    ) {
+//                        Column(
+//                            horizontalAlignment = Alignment.Start,
+//                            modifier = Modifier.padding(horizontal = 24.dp)
+//                        ) {
+//                            Row {
+//                                Text(text = it.name, fontSize = 16.sp)
+//                                Text(text = it.bizName)
+//                            }
+//                            Text(text = it.fullAddress)
+//                        }
+//                    }
                 }
             }
         }
@@ -97,22 +108,27 @@ private fun CustomTextField(
     address: String,
     onValueChanged: (String) -> Unit,
     onDeleteClicked: () -> Unit,
-    onSearchClicked: () -> Unit = {}
+    onSearchClicked: () -> Unit
 ) {
     TextField(
         value = address,
         onValueChange = onValueChanged,
         leadingIcon = {
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_search_icon),
-                contentDescription = "",
-                modifier = Modifier.wrapContentSize(),
-                tint = Color.Unspecified
-            )
+            IconButton(
+                onClick = onSearchClicked,
+                modifier = Modifier.wrapContentSize()
+            ) {
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_search_icon),
+                    contentDescription = "",
+                    modifier = Modifier.wrapContentSize(),
+                    tint = Color.Unspecified
+                )
+            }
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(36.dp),
+            .height(48.dp),
         shape = RoundedCornerShape(18),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color(0xFFF6F6F6),
@@ -137,16 +153,14 @@ private fun CustomTextField(
 
 @Composable
 fun SearchPlaceInfoCard(
-    doText: String,
-    siText: String,
-    dongText: String,
-    detailText: String,
+    address: String,
+    name: String,
+    search: String,
     onClick: () -> Unit
 ) {
-    val scrollState = rememberScrollState() // for horizontal mode screen
+    val fullAddress = address.split(' ')
     Column(
         modifier = Modifier
-            .verticalScroll(scrollState)
             .padding(start = 6.dp)
             .padding(vertical = 10.dp)
             .fillMaxWidth()
@@ -164,17 +178,21 @@ fun SearchPlaceInfoCard(
             Spacer(Modifier.width(8.dp))
             Text(
                 text = buildAnnotatedString {
-                    append("$doText $siText ")
-                    withStyle(
-                        style = SpanStyle(
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = MainColor
-                        ),
-                    ) {
-                        append(dongText)
+                    fullAddress.forEach {
+                        if (it == search) {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontFamily = mainFont,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                    color = MainColor
+                                ),
+                            ) {
+                                append("$it ")
+                            }
+                        } else append("$it ")
                     }
+
                 },
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Bold,
@@ -184,7 +202,7 @@ fun SearchPlaceInfoCard(
         }
         Spacer(Modifier.height(5.dp))
         Text(
-            text = detailText,
+            text = name,
             color = Gray03Color,
             fontFamily = mainFont,
             fontWeight = FontWeight.Normal,

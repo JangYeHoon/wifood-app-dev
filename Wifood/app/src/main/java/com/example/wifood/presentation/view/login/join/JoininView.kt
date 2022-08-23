@@ -270,7 +270,7 @@ fun JoininView(
                     onClick = { showDialog.value = true }
                 )
                 if (showDialog.value){
-                    GetUserFavorView(showDialog)
+
                 }
             }
             Spacer(Modifier.height(17.dp))

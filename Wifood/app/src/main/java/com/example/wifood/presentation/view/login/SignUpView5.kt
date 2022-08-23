@@ -6,7 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.login.component.YOGORadioButton
@@ -34,8 +37,26 @@ fun SignUpView5(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                YOGORadioButton(text = "남성")
-                YOGORadioButton()
+                YOGORadioButton(
+                    text = "남성",
+                    onClick = {
+                        viewModel.onEvent(SignUpEvent.GenderClicked)
+                    },
+                    selected = state.gender
+                )
+                YOGORadioButton(
+                    onClick = {
+                        viewModel.onEvent(SignUpEvent.GenderClicked)
+                    },
+                    selected = !state.gender
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                MainButton(
+                    text = "다음",
+                    onClick = {
+                        navController.navigate(Route.GetUserFavor.route)
+                    }
+                )
             }
         }
     }

@@ -20,16 +20,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.wifood.presentation.view.login.LoginEvent
-import com.example.wifood.presentation.view.login.LoginViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
 fun RoundedTextField(
-    viewModel: LoginViewModel = hiltViewModel(),
     text: String,
     placeholder: String,
     isPassword: Boolean = false,
@@ -76,7 +72,7 @@ fun RoundedTextField(
             onDone = {
                 focus.clearFocus()
                 scope.launch {
-                    viewModel.onEvent(LoginEvent.Login)
+
                 }
             }
         ),

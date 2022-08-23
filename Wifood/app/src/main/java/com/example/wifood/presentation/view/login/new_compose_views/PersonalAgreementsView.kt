@@ -81,13 +81,19 @@ fun PersonalAgreementsView(
 
                         }
                 ){
-                    Text(
-                        text = "이용약관 동의(필수)",
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 18.sp,
-                        color = Gray01Color
-                    )
+                    TextButton(
+                        onClick = {
+                            viewModel.onEvent(SignUpEvent.AgreementClicked)
+                        }
+                    ) {
+                        Text(
+                            text = "이용약관 동의(필수)",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 18.sp,
+                            color = Gray01Color
+                        )
+                    }
                     Spacer(Modifier.weight(1f))
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_right_arrow_boxed),

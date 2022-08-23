@@ -10,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
@@ -37,6 +39,7 @@ fun GetPhoneAuthenticationNumberView(
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
     val focusManager = LocalFocusManager.current
+    val focusRequester = FocusRequester()
 
     var timer by remember { mutableStateOf(150) }
 
@@ -99,7 +102,8 @@ fun GetPhoneAuthenticationNumberView(
             )
             Spacer(Modifier.height(56.dp))
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 GetSingleAuthNumber(first) {

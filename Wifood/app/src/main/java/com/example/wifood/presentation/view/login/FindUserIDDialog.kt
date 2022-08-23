@@ -90,7 +90,7 @@ fun FindUserIDDialogContent(
                 FindIdPwdButton(
                     text = "로그인 하기",
                     onClick = {
-                        navController.navigate(Route.Login.route)
+
                     }
                 )
             }
