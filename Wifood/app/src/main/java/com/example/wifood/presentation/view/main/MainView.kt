@@ -63,6 +63,7 @@ import timber.log.Timber
 @Composable
 fun MainView(
     navController: NavController,
+    navBackStackEntry: NavBackStackEntry,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.state
@@ -71,6 +72,12 @@ fun MainView(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val context = LocalContext.current
     var lastKnownLocation: Location? = null
+
+    val placeLng = navBackStackEntry.arguments?.getFloat("placeLng")!!
+    val placeLat = navBackStackEntry.arguments?.getFloat("placeLat")!!
+    if (placeLng != 10000f) {
+        viewModel.onEvent(MainEvent.CameraMove(LatLng(placeLat.toDouble(), placeLng.toDouble())))
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.init()
@@ -195,7 +202,7 @@ fun MainView(
         ) {
             when (state.selected) {
                 NavItem.Map.id -> {
-                    MapView(navController)
+                    MapView(navController, placeLat)
                 }
                 NavItem.List.id -> {
                     PlaceListComposeView(modalBottomSheetState, navController)

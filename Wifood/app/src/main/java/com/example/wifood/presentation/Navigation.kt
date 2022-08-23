@@ -52,14 +52,24 @@ fun Navigation() {
         navController = navController,
         startDestination = Route.Splash.route
     ) {
-        composable(Route.Main.route) {
-            MainView(navController)
+        composable(
+            route = "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+            arguments = listOf(
+                navArgument("placeLat") {
+                    defaultValue = 10000f
+                    type = NavType.FloatType
+                }, navArgument("placeLng") {
+                    defaultValue = 10000f
+                    type = NavType.FloatType
+                })
+        ) {
+            MainView(navController, it)
         }
         composable(Route.Login.route) {
             LoginView(navController)
         }
         composable(Route.Map.route) {
-            MapView(navController)
+            MapView(navController, 10000f)
         }
         composable(Route.MyPage.route) {
             MyPageComposeView(navController)
