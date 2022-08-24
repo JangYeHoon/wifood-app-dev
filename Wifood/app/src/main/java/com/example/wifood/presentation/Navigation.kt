@@ -331,5 +331,27 @@ fun Navigation() {
         composable(Route.AppInfo.route) {
             AppInfoView(navController)
         }
+        composable(
+            route = Route.SignUp4.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            SignUpView4(navController)
+        }
+        composable(
+            route = Route.SignUp5.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            SignUpView5(navController)
+        }
     }
 }
