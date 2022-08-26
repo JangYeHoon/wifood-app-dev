@@ -284,7 +284,7 @@ class WifoodApiImpl @Inject constructor(
                         tmapSearchResult.postValue(tempList)
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: RuntimeException) {
                 tmapSearchResult.postValue(arrayListOf())
             }
         }

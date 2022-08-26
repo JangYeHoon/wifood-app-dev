@@ -8,4 +8,8 @@ object SignUpData {
     lateinit var birthday: String
     var gender: String = "남성"
     lateinit var taste: Taste
+    var cucumberClicked: Boolean = false
+    var corianderClicked: Boolean = false
+    var mintChokoClicked: Boolean = false
+    var eggplantClicked: Boolean = false
 }

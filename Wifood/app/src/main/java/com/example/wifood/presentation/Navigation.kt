@@ -16,7 +16,10 @@ import com.example.wifood.presentation.view.EditMyInfoComposeView
 import com.example.wifood.presentation.view.EditProfileComposeView
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.login.*
+import com.example.wifood.presentation.view.login.join.GetUserFavorContent
+import com.example.wifood.presentation.view.login.join.JoininCompleteView
 import com.example.wifood.presentation.view.login.join.JoininView
+import com.example.wifood.presentation.view.login.join.TestView
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView
@@ -352,6 +355,28 @@ fun Navigation() {
             }
         ) {
             SignUpView5(navController)
+        }
+        composable(
+            route = Route.GetUserFavor.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            GetUserFavorContent(navController)
+        }
+        composable(
+            route = Route.Complete.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            JoininCompleteView(navController)
         }
     }
 }

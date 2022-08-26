@@ -72,7 +72,8 @@ class SignUpViewModel @Inject constructor(
                 _state.value = SignUpState(
                     phoneNumber = event.phoneNumber
                 )
-                SignUpData.phoneNumber = event.phoneNumber
+                SignUpData.phoneNumber =
+                    if (event.phoneNumber.length >= 11) event.phoneNumber.substring(0..10) else event.phoneNumber
             }
             is SignUpEvent.CertChanged -> {
                 _state.value = SignUpState(
@@ -108,14 +109,20 @@ class SignUpViewModel @Inject constructor(
                 /* 개인정보처리방침 다운로드 받아서 화면 하나 생성해놓고, 요청 시 보여줌 */
             }
             is SignUpEvent.ButtonClicked -> {
-                if (_state.value.address.isNotBlank()) {
-                    useCases.GetTMapSearchAddressResult(
-                        _state.value.address
-                    ).observeForever {
-                        _state.value = state.value.copy(
-                            searchResults = it
-                        )
+                try {
+                    if (_state.value.address.isNotBlank()) {
+                        useCases.GetTMapSearchAddressResult(
+                            _state.value.address
+                        ).observeForever {
+                            _state.value = state.value.copy(
+                                searchResults = it
+                            )
+                        }
                     }
+                } catch (e: NullPointerException) {
+                    _state.value = state.value.copy(
+                        searchResults = emptyList()
+                    )
                 }
             }
             is SignUpEvent.AddressClicked -> {

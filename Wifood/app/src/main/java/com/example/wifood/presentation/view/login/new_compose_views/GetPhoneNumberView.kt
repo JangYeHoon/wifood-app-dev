@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.login.new_compose_views
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -34,7 +36,7 @@ fun GetPhoneNumberView(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
-    var phoneNumberValidation = false
+    var phoneNumberValidation by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
         viewModel.validationEvents.collectLatest { event ->
@@ -47,15 +49,8 @@ fun GetPhoneNumberView(
     }
 
     LaunchedEffect(state.phoneNumber) {
-        val success = mutableStateOf(false)
-
         if (state.phoneNumber.length == 11) {
-            success.value = viewModel.checkForm(ViewItem.SignUpView1)
-            phoneNumberValidation = true
-        }
-
-        if (success.value) {
-            navController.navigate(Route.GetAuthNumber.route)
+            phoneNumberValidation = viewModel.checkForm(ViewItem.SignUpView1)
         }
     }
 
@@ -68,7 +63,7 @@ fun GetPhoneNumberView(
                 .verticalScroll(scrollState)
                 .padding(top = 106.dp)
                 .padding(horizontal = sidePaddingValue.dp)
-        ){
+        ) {
             Text(
                 text = "휴대폰 번호를\n입력해주세요.",
                 fontFamily = mainFont,
@@ -109,7 +104,10 @@ fun GetPhoneNumberView(
                 ),
                 visualTransformation = {
                     phoneFilter(it)
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone
+                )
             )
             Spacer(Modifier.weight(1f))
             MainButton(

@@ -26,6 +26,7 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component_box.SingleIconWithText
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Gray01Color
@@ -236,16 +237,17 @@ fun YOGORadioGroup(
 }
 
 @Composable
-fun UserFavorButtonGroup() {
+fun UserFavorButtonGroup(
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
     )
     {
-        var cucumberClicked = remember{ mutableStateOf(false)}
-        var corianderClicked = remember{ mutableStateOf(false)}
-        var mintChokoClicked = remember{ mutableStateOf(false)}
-        var eggplantClicked = remember{ mutableStateOf(false)}
+        var cucumberClicked = remember { mutableStateOf(false) }
+        var corianderClicked = remember { mutableStateOf(false) }
+        var mintChokoClicked = remember { mutableStateOf(false) }
+        var eggplantClicked = remember { mutableStateOf(false) }
 
         SingleIconWithText(
             text = "오이",
@@ -271,7 +273,6 @@ fun UserFavorButtonGroup() {
             ClickedSourceId = R.drawable.ic_favor_eggplant_clicked,
             isClicked = eggplantClicked
         )
-
     }
 }
 
