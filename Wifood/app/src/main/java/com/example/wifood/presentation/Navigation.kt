@@ -16,6 +16,8 @@ import com.example.wifood.presentation.view.EditMyInfoComposeView
 import com.example.wifood.presentation.view.EditProfileComposeView
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.login.*
+import com.example.wifood.presentation.view.login.join.GetUserFavorContent
+import com.example.wifood.presentation.view.login.join.JoininCompleteView
 import com.example.wifood.presentation.view.login.join.JoininView
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
@@ -33,6 +35,7 @@ import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputI
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReview
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
+import com.example.wifood.presentation.view.search.MapSearchAddressView
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
 import com.example.wifood.presentation.view.splash.OnboardingView
 import com.example.wifood.presentation.view.splash.SplashView
@@ -201,9 +204,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            composable(Route.Search.route) {
-                SearchPlaceComposeView(navController)
-            }
+            SearchPlaceComposeView(navController)
         }
         composable(
             route = Route.EditProfile.route,
@@ -352,6 +353,39 @@ fun Navigation() {
             }
         ) {
             SignUpView5(navController)
+        }
+        composable(
+            route = Route.GetUserFavor.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            GetUserFavorContent(navController)
+        }
+        composable(
+            route = Route.Complete.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            JoininCompleteView(navController)
+        }
+        composable(
+            route = Route.MapSearchAddress.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            MapSearchAddressView(navController)
         }
     }
 }

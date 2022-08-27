@@ -48,5 +48,9 @@ interface WifoodRepository {
         keyword: String
     ): LiveData<MutableList<TMapSearch>>
 
+    fun getTMapSearchDetailAddressResult(
+        keyword: String
+    ): LiveData<MutableList<TMapSearch>>
+
     suspend fun requestCertNumber(phoneNumber: String): String
 }

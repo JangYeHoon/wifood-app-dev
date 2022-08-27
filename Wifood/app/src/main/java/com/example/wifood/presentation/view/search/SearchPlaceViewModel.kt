@@ -41,6 +41,23 @@ class SearchPlaceViewModel @Inject constructor(
             is SearchPlaceFormEvent.CurrentLocationChange -> {
                 formState = formState.copy(currentLocation = event.location)
             }
+            is SearchPlaceFormEvent.AddPlaceNameChange -> {
+                formState = formState.copy(addPlaceName = event.placeName)
+            }
+            is SearchPlaceFormEvent.ClickNextBtn -> {
+                formState =
+                    formState.copy(addPlaceContentPageCount = formState.addPlaceContentPageCount + 1)
+            }
+            is SearchPlaceFormEvent.AddPlaceAddressChange -> {
+                formState = formState.copy(addPlaceAddressSearch = event.searchAddress)
+            }
+            is SearchPlaceFormEvent.AddressSearchButtonClick -> {
+                useCases.GetTMapSearchDetailAddressResult(
+                    formState.addPlaceAddressSearch
+                ).observeForever {
+                    formState = formState.copy(addressSearchResults = it)
+                }
+            }
         }
     }
 }

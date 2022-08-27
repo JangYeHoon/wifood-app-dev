@@ -263,26 +263,57 @@ class WifoodApiImpl @Inject constructor(
         val tempList: MutableList<TMapSearch> = mutableListOf()
         thread(start = true) {
             try {
-                tmapData.findAddressPOI(
-                    keyword,
-                    50
-                ) { tMapItems ->
-                    for (searchResult in tMapItems) {
-                        searchResult.poiName
-                        val bizName: String =
-                            searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
-                        val address = searchResult.poiAddress.replace("null", "")
-                        tempList.add(
-                            TMapSearch(
-                                address,
-                                searchResult.poiName,
-                                searchResult.poiPoint.latitude,
-                                searchResult.poiPoint.longitude,
-                                bizName
-                            )
+                val tMapItems = tmapData.findAddressPOI(keyword, 50)
+                tMapItems.forEach { searchResult ->
+                    searchResult.poiName
+                    val bizName: String =
+                        searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
+                    val address = searchResult.poiAddress.replace("null", "")
+                    tempList.add(
+                        TMapSearch(
+                            address,
+                            searchResult.poiName,
+                            searchResult.poiPoint.latitude,
+                            searchResult.poiPoint.longitude,
+                            bizName
                         )
-                        tmapSearchResult.postValue(tempList)
-                    }
+                    )
+                    tmapSearchResult.postValue(tempList)
+                }
+            } catch (e: Exception) {
+                tmapSearchResult.postValue(arrayListOf())
+            }
+        }
+        return tmapSearchResult
+    }
+
+    override fun getTMapSearchDetailAddressResult(keyword: String): LiveData<MutableList<TMapSearch>> {
+        val tmapSearchResult = MutableLiveData<MutableList<TMapSearch>>()
+        val tmapData = TMapData()
+        val tempList: MutableList<TMapSearch> = mutableListOf()
+        thread(start = true) {
+            try {
+                val tMapItems = tmapData.findAddressPOI(keyword, 50)
+                tMapItems.forEach { searchResult ->
+                    searchResult.poiName
+                    val bizName: String =
+                        searchResult.middleBizName.toString() + "," + searchResult.lowerBizName
+                    var addressRoad = ""
+                    for (address in searchResult.newAddressList)
+                        addressRoad = address.fullAddressRoad
+                    addressRoad += searchResult.detailAddrName.replace("null", "")
+                    val oldAddress = searchResult.poiAddress.replace("null", "")
+                    tempList.add(
+                        TMapSearch(
+                            addressRoad,
+                            searchResult.poiName,
+                            searchResult.poiPoint.latitude,
+                            searchResult.poiPoint.longitude,
+                            bizName,
+                            oldAddress
+                        )
+                    )
+                    tmapSearchResult.postValue(tempList)
                 }
             } catch (e: Exception) {
                 tmapSearchResult.postValue(arrayListOf())
