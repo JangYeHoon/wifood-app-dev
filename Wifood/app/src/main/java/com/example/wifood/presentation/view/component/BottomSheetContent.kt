@@ -14,20 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.example.wifood.R
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.Group
-import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.google.gson.Gson
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import timber.log.Timber
 
 @Composable
 fun BottomSheetContent(

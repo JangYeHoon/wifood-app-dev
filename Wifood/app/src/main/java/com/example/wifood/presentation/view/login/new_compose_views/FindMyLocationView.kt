@@ -25,6 +25,8 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.component.TitleText
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
@@ -67,15 +69,30 @@ fun FindMyLocationView(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(state.searchResults) { item ->
-                    SearchPlaceInfoCard(
-                        item.fullAddress,
-                        item.name,
-                        state.address
-                    ) {
-                        viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
-                        navController.navigateUp()
+                if (state.searchResults.isEmpty()) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column() {
+                                TitleText(
+                                    text = "검색 결과가 없습니다.",
+                                    color = Color.Black
+                                )
+                            }
+                        }
                     }
+                } else {
+                    items(state.searchResults) { item ->
+                        SearchPlaceInfoCard(
+                            item.fullAddress,
+                            item.name,
+                            state.address
+                        ) {
+                            viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
+                            navController.navigateUp()
+                        }
 //                    Card(
 //                        modifier = Modifier
 //                            .fillMaxWidth()
@@ -96,6 +113,7 @@ fun FindMyLocationView(
 //                            Text(text = it.fullAddress)
 //                        }
 //                    }
+                    }
                 }
             }
         }
@@ -136,16 +154,18 @@ private fun CustomTextField(
             unfocusedIndicatorColor = Color.Transparent
         ),
         trailingIcon = {
-            IconButton(
-                onClick = onDeleteClicked,
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_delete_text),
-                    contentDescription = "",
-                    modifier = Modifier.wrapContentSize(),
-                    tint = Color.Unspecified
-                )
+            if (address.isNotBlank()) {
+                IconButton(
+                    onClick = onDeleteClicked,
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_delete_text),
+                        contentDescription = "",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
             }
         }
     )

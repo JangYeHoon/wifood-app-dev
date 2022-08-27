@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray01Color
 
@@ -62,10 +63,10 @@ fun SingleIconWithText(
 // TODO GetUserFavorView 수정 후 삭제
 @Composable
 fun SingleIconWithText(
-    text: String = "오이",
+    text: String,
     UnClickedSourceId: Int = R.drawable.ic_favor_cucumber,
     ClickedSourceId: Int = R.drawable.ic_favor_cucumber_clicked,
-    isClicked: MutableState<Boolean>,
+    isClicked: MutableState<Boolean>
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -74,7 +75,9 @@ fun SingleIconWithText(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
-            onClick = { },
+            onClick = {
+
+            },
             modifier = Modifier
                 .size(56.dp)
         ) {
@@ -88,6 +91,20 @@ fun SingleIconWithText(
                         interactionSource = interactionSource
                     ) {
                         isClicked.value = !isClicked.value
+                        when (text) {
+                            "오이" -> {
+                                SignUpData.cucumberClicked = isClicked.value
+                            }
+                            "고수" -> {
+                                SignUpData.corianderClicked = isClicked.value
+                            }
+                            "민트초코" -> {
+                                SignUpData.mintChokoClicked = isClicked.value
+                            }
+                            "가지" -> {
+                                SignUpData.eggplantClicked = isClicked.value
+                            }
+                        }
                     },
                 tint = Color.Unspecified
             )

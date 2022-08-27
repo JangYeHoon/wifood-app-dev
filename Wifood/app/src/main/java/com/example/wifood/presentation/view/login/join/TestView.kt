@@ -43,6 +43,10 @@ fun TestView(
                 text = SignUpData.taste.toString(),
                 color = Color.Black
             )
+            TitleText(
+                text = if (SignUpData.cucumberClicked) "cucumber" else "",
+                color = Color.Black
+            )
         }
     }
 }

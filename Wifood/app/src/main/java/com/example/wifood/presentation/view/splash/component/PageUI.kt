@@ -58,6 +58,7 @@ fun PageUI(page: Page) {
                     .width(page.imageWidth.dp)
                     .height(page.imageHeight.dp)
             )
+            Spacer(Modifier.weight(1f))
         }
     }
 }

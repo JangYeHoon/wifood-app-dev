@@ -19,6 +19,7 @@ import com.example.wifood.presentation.view.login.*
 import com.example.wifood.presentation.view.login.join.GetUserFavorContent
 import com.example.wifood.presentation.view.login.join.JoininCompleteView
 import com.example.wifood.presentation.view.login.join.JoininView
+import com.example.wifood.presentation.view.login.join.TestView
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView

@@ -61,7 +61,9 @@ fun OnboardingView(
         )
     )
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -70,25 +72,26 @@ fun OnboardingView(
         ) { page ->
             PageUI(page = onboardPages[page])
         }
-        Spacer(Modifier.weight(1f))
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(16.dp),
-            activeColor = MainColor,
-            inactiveColor = EnableColor,
-            spacing = 10.dp
-        )
-        Spacer(Modifier.height(56.dp))
-
-        AnimatedVisibility(visible = pagerState.currentPage == 2) {
-            MainButton(
-                text = "시작하기",
-                onClick = {
-                    navController.navigate(Route.GetPhoneNumber.route)
-                }
+        if (pagerState.currentPage != 2) {
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(16.dp),
+                activeColor = MainColor,
+                inactiveColor = EnableColor,
+                spacing = 10.dp
             )
+            Spacer(Modifier.height(56.dp))
+        } else {
+            AnimatedVisibility(visible = true) {
+                MainButton(
+                    text = "시작하기",
+                    onClick = {
+                        navController.navigate(Route.GetPhoneNumber.route)
+                    }
+                )
+            }
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
