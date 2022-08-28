@@ -1,6 +1,5 @@
-package com.example.wifood.presentation.view.component_box
+package com.example.wifood.presentation.view.groupComponet
 
-import android.util.MutableBoolean
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*

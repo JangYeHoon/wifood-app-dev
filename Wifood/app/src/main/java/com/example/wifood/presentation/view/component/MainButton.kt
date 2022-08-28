@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.contentColorFor
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -19,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.Main
@@ -52,6 +50,29 @@ fun MainButton(
             fontSize = 16.sp,
             fontFamily = mainFont,
             fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun MainButtonInversed(
+    text:String = "인증번호 재발송",
+    onClick: () -> Unit
+){
+    OutlinedButton(
+        onClick = onClick,
+        shape = RoundedCornerShape(23.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(46.dp),
+        border = BorderStroke(1.dp, MainColor)
+    ) {
+        Text(
+            text = text,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = MainColor
         )
     }
 }

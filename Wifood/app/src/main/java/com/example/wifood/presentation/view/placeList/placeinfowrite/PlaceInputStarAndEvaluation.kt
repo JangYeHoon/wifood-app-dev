@@ -20,8 +20,8 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
-import com.example.wifood.presentation.view.component_box.RatingWithText
-import com.example.wifood.presentation.view.component_box.SingleIconWithText
+import com.example.wifood.presentation.view.groupComponet.RatingWithText
+import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi

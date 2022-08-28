@@ -16,7 +16,7 @@ import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
-import com.example.wifood.presentation.view.component_box.TextAndInputField
+import com.example.wifood.presentation.view.groupComponet.TextAndInputField
 import com.example.wifood.presentation.util.ValidationEvent
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest

@@ -38,9 +38,9 @@ import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ThickDivider
-import com.example.wifood.presentation.view.component_box.RatingWithText
-import com.example.wifood.presentation.view.component_box.SingleIconWithText
-import com.example.wifood.presentation.view.component_box.SwitchWithText
+import com.example.wifood.presentation.view.groupComponet.RatingWithText
+import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
+import com.example.wifood.presentation.view.groupComponet.SwitchWithText
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText

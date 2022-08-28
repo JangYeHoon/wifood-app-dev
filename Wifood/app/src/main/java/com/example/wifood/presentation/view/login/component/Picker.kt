@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.recyclerview.widget.ItemTouchHelper.UP
+import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -119,24 +122,50 @@ fun Picker(
                 .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
         ) {
             val baseLabelModifier = Modifier.align(Alignment.Center)
+            val labelFirstColor = Gray01Color
+            val labelSecondColor = Color(0xFF9A99A2)
+            val labelThirdColor = Color(0x809A99A2)
+
             ProvideTextStyle(textStyle) {
+                Label(
+                    text = customString((animatedStateValue - 2).toString(), additional),
+                    modifier = baseLabelModifier
+                        .offset(y = -halvedNumbersColumnHeight - halvedNumbersColumnHeight - 18.dp),
+                    color = if (animatedStateValue != 1) labelThirdColor else Color.Transparent,
+                    fontSize = 16
+                )
                 Label(
                     text = customString((animatedStateValue - 1).toString(), additional),
                     modifier = baseLabelModifier
-                        .offset(y = -halvedNumbersColumnHeight)
-                        .alpha(coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                        .offset(y = -halvedNumbersColumnHeight - 12.dp),
+                    color = if (animatedStateValue != 1) labelSecondColor else Color.Transparent,
+                    fontSize = 18
                 )
                 Label(
                     text = customString(animatedStateValue.toString(), additional),
                     modifier = baseLabelModifier
-                        .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx)
+                        .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx),
+                    color = labelFirstColor,
+                    fontSize = 20
                 )
-                Label(
-                    text = customString((animatedStateValue + 1).toString(), additional),
-                    modifier = baseLabelModifier
-                        .offset(y = halvedNumbersColumnHeight)
-                        .alpha(-coercedAnimatedOffset / halvedNumbersColumnHeightPx)
-                )
+                if (range != null) {
+                    Label(
+                        text = customString((animatedStateValue + 1).toString(), additional),
+                        modifier = baseLabelModifier
+                            .offset(y = halvedNumbersColumnHeight + 12.dp),
+                        color = if (animatedStateValue != range.last) labelSecondColor else Color.Transparent,
+                        fontSize = 18
+                    )
+                }
+                if (range != null) {
+                    Label(
+                        text = customString((animatedStateValue + 2).toString(), additional),
+                        modifier = baseLabelModifier
+                            .offset(y = halvedNumbersColumnHeight + halvedNumbersColumnHeight + 18.dp),
+                        color = if (animatedStateValue != range.last) labelThirdColor else Color.Transparent,
+                        fontSize = 16
+                    )
+                }
             }
         }
 
@@ -149,7 +178,12 @@ fun Picker(
 }
 
 @Composable
-private fun Label(text: String, modifier: Modifier) {
+private fun Label(
+    text: String,
+    modifier: Modifier,
+    color: Color,
+    fontSize: Int
+) {
     Text(
         text = text,
         modifier = modifier
@@ -158,19 +192,20 @@ private fun Label(text: String, modifier: Modifier) {
                     // FIXME: Empty to disable text selection
                 })
             }
-            .width(100.dp)
-            .height(40.dp)
             .drawBehind {
                 drawLine(
-                    color = MainColor,
+                    color = Color.Companion.Transparent, //MainColor,
                     start = Offset(x = 0f, y = this.size.height),
                     end = Offset(x = this.size.width, y = this.size.height),
                     strokeWidth = 5F
                 )
-            },
+            }
+            .width(100.dp),
         textAlign = TextAlign.Center,
-        fontSize = 21.sp,
-        fontWeight = FontWeight.Bold
+        fontFamily = mainFont,
+        fontSize = fontSize.sp,
+        fontWeight = FontWeight.Normal,
+        color = color
     )
 }
 
