@@ -130,7 +130,7 @@ fun GetUserFavorContent(
 fun UserFavorRadioGroup(
     viewModel: SignUpViewModel
 ) {
-    val favorSpacerValue = 25
+    val favorSpacerValue = 30
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -159,7 +159,7 @@ fun YOGORadioGroup(
             text = titleText,
             fontFamily = mainFont,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
+            fontSize = 15.sp,
             color = Color.Black
         )
         Spacer(Modifier.height(14.dp))
@@ -189,42 +189,40 @@ fun YOGORadioGroup(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 3.dp)
-
         ) {
             Text(
                 text = "싫음",
                 fontWeight = FontWeight.Normal,
                 fontFamily = mainFont,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Gray01Color
             )
             Text(
                 text = "조금 싫음",
                 fontWeight = FontWeight.Normal,
                 fontFamily = mainFont,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Gray01Color
             )
             Text(
                 text = "보통",
                 fontWeight = FontWeight.Normal,
                 fontFamily = mainFont,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Gray01Color
             )
             Text(
                 text = "조금 좋음",
                 fontWeight = FontWeight.Normal,
                 fontFamily = mainFont,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Gray01Color
             )
             Text(
                 text = "좋음",
                 fontWeight = FontWeight.Normal,
                 fontFamily = mainFont,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 color = Gray01Color
             )
         }
