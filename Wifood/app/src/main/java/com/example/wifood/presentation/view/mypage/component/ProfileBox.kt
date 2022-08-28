@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.component_box
+package com.example.wifood.presentation.view.groupComponet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

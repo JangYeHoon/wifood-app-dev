@@ -17,7 +17,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.ThickDivider
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
-import com.example.wifood.presentation.view.component_box.ProfileBoxImageVector
+import com.example.wifood.presentation.view.groupComponet.ProfileBoxImageVector
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 
 @Composable
