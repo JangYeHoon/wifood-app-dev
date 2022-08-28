@@ -34,6 +34,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.Gray03Color
+import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @Composable
@@ -133,6 +134,7 @@ fun SignUpView4(
                     navController.navigate(Route.SignUp5.route)
                 }
             )
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }

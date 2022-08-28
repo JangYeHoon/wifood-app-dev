@@ -2,16 +2,17 @@ package com.example.wifood.presentation.view.login.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -19,10 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.Gray03Color
-import com.example.wifood.view.ui.theme.Gray09Color
-import com.example.wifood.view.ui.theme.Main
-import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.*
 
 @Composable
 fun YOGORadioButton(
@@ -32,24 +30,31 @@ fun YOGORadioButton(
     onClick:() -> Unit = {},
     selected:Boolean = false
 ){
+    val interactionSource = remember { MutableInteractionSource() }
+
     TextButton(
-        shape = RoundedCornerShape(15.dp),
-        onClick = onClick,
+        shape = CircleShape,
+        onClick = {},
         colors = if (selected) ButtonDefaults.outlinedButtonColors(
             contentColor = MainColor,
-        ) else ButtonDefaults.buttonColors(backgroundColor = Gray09Color),
-        border = BorderStroke(1.dp, if (selected) MainColor else Gray09Color),
+        ) else ButtonDefaults.buttonColors(backgroundColor = Color.White),
+        border = BorderStroke(1.dp, if (selected) MainColor else EnableColor),
         modifier = Modifier
-            .wrapContentWidth()
-            .wrapContentHeight()
+            .size(84.dp)
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ){
+                onClick
+            }
     )
     {
         Text(
             text = text,
-            color = if (selected) MainColor else Gray03Color,
-            fontSize = 13.sp,
+            color = if (selected) MainColor else EnableColor,
+            fontSize = 18.sp,
             fontFamily = mainFont,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

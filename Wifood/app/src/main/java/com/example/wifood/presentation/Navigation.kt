@@ -375,7 +375,8 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            JoininCompleteView(navController)
+            //JoininCompleteView(navController)
+            SignUpCompleteView(navController)
         }
         composable(
             route = Route.MapSearchAddress.route,

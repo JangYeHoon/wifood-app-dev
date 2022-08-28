@@ -24,13 +24,16 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component_box.SingleIconWithText
+import com.example.wifood.presentation.view.login.SignUpCompleteView
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
+import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.sidePaddingValue
 
 //@ExperimentalComposeUiApi
 //@Composable
@@ -69,64 +72,59 @@ fun GetUserFavorContent(
 ) {
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 35.dp)
-            .fillMaxWidth()
-            .verticalScroll(scrollState)
-    ) {
-        Spacer(Modifier.height(27.dp))
-        IconButton(
-            onClick = {
-
-            },
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Column(
             modifier = Modifier
-                .size(25.dp)
-                .align(Alignment.End)
-        ) {
+                .padding(horizontal = sidePaddingValue.dp)
+                .verticalScroll(scrollState)
+        ){
+            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(30.dp))
             Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_closing_button),
+                ImageVector.vectorResource(id = R.drawable.ic_4by4),
                 contentDescription = "",
                 modifier = Modifier.wrapContentSize(),
                 tint = Color.Unspecified
             )
-        }
-        Spacer(Modifier.height(36.dp))
-        Text(
-            text = "조금만 더\n알려주세요!",
-            fontFamily = mainFont,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 28.sp,
-            color = Color.Black
-        )
-        Spacer(Modifier.height(12.dp))
-        Text(
-            text = "등록한 정보는 추후 개인화 추천에 이용됩니다",
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
-            color = Color(0xFF565656)
-        )
-        Spacer(Modifier.height(40.dp))
-        UserFavorRadioGroup(viewModel)
-        Text(
-            text = "좋아하면 선택해주세요",
-            fontFamily = mainFont,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            color = Color.Black
-        )
-        Spacer(Modifier.height(16.dp))
-        UserFavorButtonGroup()
-        Spacer(Modifier.height(59.dp))
-        MainButton(
-            text = "등록하기",
-            onClick = {
-                viewModel.onEvent(SignUpEvent.TasteCreated)
-                navController.navigate(Route.Complete.route)
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = "입맛을 알려주세요",
+                fontFamily = mainFont,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 24.sp,
+                color = Black2Color
+            )
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 14.dp)
+                    .fillMaxWidth()
+            ) {
+                Spacer(Modifier.height(36.dp))
+                UserFavorRadioGroup(viewModel)
+                Text(
+                    text = "좋아하면 선택해주세요",
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 13.sp,
+                    color = Color.Black
+                )
+                Spacer(Modifier.height(16.dp))
+                UserFavorButtonGroup()
             }
-        )
-        Spacer(Modifier.height(buttonBottomValue.dp))
+            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.weight(1f))
+            MainButton(
+                text = "완료하기",
+                onClick = {
+                    viewModel.onEvent(SignUpEvent.TasteCreated)
+                    navController.navigate(Route.Complete.route)
+                }
+            )
+            Spacer(Modifier.height(buttonBottomValue.dp))
+        }
     }
 }
 
