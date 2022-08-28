@@ -121,24 +121,51 @@ fun Picker(
                 .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
         ) {
             val baseLabelModifier = Modifier.align(Alignment.Center)
+            //val labelFirstColor = Color(0xFF232326)
+            val labelFirstColor = MainColor
+            val labelSecondColor = Color(0xFF9A99A2)
+            val labelThirdColor = Color(0x809A99A2)
+
             ProvideTextStyle(textStyle) {
+                Label(
+                    text = customString((animatedStateValue - 2).toString(), additional),
+                    modifier = baseLabelModifier
+                        .offset(y = -halvedNumbersColumnHeight - halvedNumbersColumnHeight - 18.dp),
+                    color = if (animatedStateValue != 1) labelThirdColor else Color.Transparent,
+                    fontSize = 16
+                )
                 Label(
                     text = customString((animatedStateValue - 1).toString(), additional),
                     modifier = baseLabelModifier
-                        .offset(y = -halvedNumbersColumnHeight)
-                        .alpha(coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                        .offset(y = -halvedNumbersColumnHeight - 12.dp),
+                    color = if (animatedStateValue != 1) labelSecondColor else Color.Transparent,
+                    fontSize = 18
                 )
                 Label(
                     text = customString(animatedStateValue.toString(), additional),
                     modifier = baseLabelModifier
-                        .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx)
+                        .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx),
+                    color = labelFirstColor,
+                    fontSize = 20
                 )
-                Label(
-                    text = customString((animatedStateValue + 1).toString(), additional),
-                    modifier = baseLabelModifier
-                        .offset(y = halvedNumbersColumnHeight)
-                        .alpha(-coercedAnimatedOffset / halvedNumbersColumnHeightPx)
-                )
+                if (range != null) {
+                    Label(
+                        text = customString((animatedStateValue + 1).toString(), additional),
+                        modifier = baseLabelModifier
+                            .offset(y = halvedNumbersColumnHeight + 12.dp),
+                        color = if (animatedStateValue != range.last) labelSecondColor else Color.Transparent,
+                        fontSize = 18
+                    )
+                }
+                if (range != null) {
+                    Label(
+                        text = customString((animatedStateValue + 2).toString(), additional),
+                        modifier = baseLabelModifier
+                            .offset(y = halvedNumbersColumnHeight + halvedNumbersColumnHeight + 18.dp),
+                        color = if (animatedStateValue != range.last) labelThirdColor else Color.Transparent,
+                        fontSize = 16
+                    )
+                }
             }
         }
 
@@ -151,7 +178,12 @@ fun Picker(
 }
 
 @Composable
-private fun Label(text: String, modifier: Modifier) {
+private fun Label(
+    text: String,
+    modifier: Modifier,
+    color: Color,
+    fontSize: Int
+) {
     Text(
         text = text,
         modifier = modifier
@@ -160,8 +192,6 @@ private fun Label(text: String, modifier: Modifier) {
                     // FIXME: Empty to disable text selection
                 })
             }
-            .width(100.dp)
-            .height(40.dp)
             .drawBehind {
                 drawLine(
                     color = Color.Companion.Transparent, //MainColor,
@@ -169,12 +199,13 @@ private fun Label(text: String, modifier: Modifier) {
                     end = Offset(x = this.size.width, y = this.size.height),
                     strokeWidth = 5F
                 )
-            },
+            }
+            .width(100.dp),
         textAlign = TextAlign.Center,
         fontFamily = mainFont,
-        fontSize = 20.sp,
+        fontSize = fontSize.sp,
         fontWeight = FontWeight.Normal,
-        color = Color(0xFF232326)
+        color = color
     )
 }
 

@@ -173,7 +173,6 @@ private fun CustomTextField(
                             tint = Color.Unspecified
                         )
                     }
-                    Spacer(Modifier.width(5.dp))
                 }
                 IconButton(
                     onClick = onSearchClicked,

@@ -94,14 +94,15 @@ fun SignUpView4(
                     .wrapContentSize()
                     .fillMaxWidth()
                     .background(
-                        color = Color(0xFFD9D9D9),
+                        color = Color(0x4DD9D9D9),
                         shape = RoundedCornerShape(8.dp)
                     )
             ){
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     Picker(
                         state = year,
