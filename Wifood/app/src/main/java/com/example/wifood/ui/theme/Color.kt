@@ -31,3 +31,7 @@ val PlaceInfoDividerColor = Color(0xFFE7E7E7)
 val PlaceInfoWriteDividerColor = Color(0xFFF1F1F1)
 val ThickDividerColor = Color(0xFFE7E7E7)
 val Black2Color = Color(0xFF424242)
+
+val KindRateColor = Color(0xFFFFB154)
+val MoodRateColor = Color(0xFFFF9534)
+val DeliciousRateColor = Color(0xFFFF8C4B)

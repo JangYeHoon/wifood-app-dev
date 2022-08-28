@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.MutableInt
 import androidx.compose.foundation.*
@@ -24,7 +25,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
@@ -35,6 +38,9 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.RatingStarIcon
+import com.example.wifood.presentation.view.component.SingleRatingStar
+import com.example.wifood.presentation.view.component.YOGORatingStar
 import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
@@ -48,6 +54,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 @Composable
 fun PlaceInfoMenus(
@@ -90,12 +97,13 @@ fun PlaceInfoMenus(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 fun PlaceInfoMainContent(
     placeInfoGroupName: String = "맛집그룹",
     placeInfoName: String = "맛집이름",
-    placeInfoMenuListText: String,
-    placeInfoScore: Float = 1.5f,
+    placeInfoMenuListText: String = "알리올리오",
+    placeInfoScore: Float = 1.4f,
     isKind: Boolean = true,
     isDelicious: Boolean = true,
     isMood: Boolean = false,
@@ -105,7 +113,7 @@ fun PlaceInfoMainContent(
         MutableInteractionSource()
     }
     TextButton(
-        shape = RoundedCornerShape(25.dp),
+        shape = RoundedCornerShape(8.dp),
         onClick = {},
         enabled = true,
         colors = ButtonDefaults.buttonColors(
@@ -120,13 +128,14 @@ fun PlaceInfoMainContent(
             ) {
                 onClick()
             }
+            .background(color = Color(0xFFFFFEFE)),
     )
     {
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 21.dp)
-                .padding(vertical = 17.dp)
+                .padding(vertical = 24.dp)
         ) {
             Text(
                 text = "#$placeInfoGroupName",
@@ -135,57 +144,89 @@ fun PlaceInfoMainContent(
                 fontSize = 10.sp,
                 color = Color.Black
             )
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(6.dp))
             Text(
                 text = placeInfoName,
                 fontFamily = mainFont,
-                fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
+                fontWeight = FontWeight.Normal,
+                fontSize = 18.sp,
                 color = Color.Black
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(10.dp))
             Text(
                 text = placeInfoMenuListText,
                 fontFamily = mainFont,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
                 color = Gray01Color
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(12.dp))
+            Row {
+                for (i in 1..5) {
+                    SingleRatingStar(
+                        isClicked = i < placeInfoScore.toInt(),
+                        starSize = 20
+                    )
+                    Spacer(Modifier.width(2.dp))
+                }
+            }
+            Spacer(Modifier.height(12.dp))
             Row(
-
             ) {
-                Text(
-                    text = buildAnnotatedString {
-                        append("평점 ")
-                        withStyle(
-                            style = SpanStyle(
-                                color = MainColor,
-                                fontFamily = mainFont,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                            ),
-                        ) {
-                            append(placeInfoScore.toString())
-                        }
-                        append("  ")
-                        if (isKind)
-                            append("#친절 ")
-                        if (isDelicious)
-                            append("#맛 ")
-                        if (isMood)
-                            append("#분위기 ")
-                    },
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = Gray01Color
-                )
+                if (isKind) {
+                    RatedMode(
+                        text = "친절함",
+                        color = KindRateColor
+                    )
+                    Spacer(Modifier.width(6.dp))
+                }
+                if (isDelicious) {
+                    RatedMode(
+                        text = "맛집",
+                        color = DeliciousRateColor
+                    )
+                    Spacer(Modifier.width(6.dp))
+                }
+                if (isMood) {
+                    RatedMode(
+                        text = "분위기",
+                        color = MoodRateColor
+                    )
+                    Spacer(Modifier.width(6.dp))
+                }
             }
         }
     }
 }
 
+
+@Composable
+fun RatedMode(
+    text: String = "기분",
+    color: Color = Color(0xFFFFB154)
+) {
+    Box(
+        modifier = Modifier
+            .background(
+                color = color,
+                shape = RoundedCornerShape(10.dp)
+            )
+            .padding(horizontal = 8.dp)
+            .padding(vertical = 2.dp),
+    ) {
+        Text(
+            text = "#" + text,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 11.sp,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.Center),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
@@ -408,7 +449,6 @@ fun PlaceInfoView(
                         resourceId = R.drawable.ic_place_info_back_button,
                         size = 40,
                         onClick = {
-                            // TODO("back button press event")
                             navController.popBackStack()
                         }
                     )

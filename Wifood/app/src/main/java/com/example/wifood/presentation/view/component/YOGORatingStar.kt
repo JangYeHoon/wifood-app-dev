@@ -101,3 +101,23 @@ fun RatingStarIcon(
         )
     }
 }
+@Composable
+fun SingleRatingStar(
+    isClicked: Boolean,
+    starSize: Int = 27
+) {
+
+    IconButton(
+        onClick = {},
+        modifier = Modifier
+            .size(starSize.dp)
+    ) {
+        Icon(
+            ImageVector.vectorResource(id = if (isClicked) R.drawable.ic_rating_star_selected else R.drawable.ic_rating_star_unselected),
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxSize(),
+            tint = Color.Unspecified
+        )
+    }
+}
