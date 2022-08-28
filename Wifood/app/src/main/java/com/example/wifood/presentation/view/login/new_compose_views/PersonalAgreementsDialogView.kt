@@ -52,7 +52,7 @@ fun PersonalAgreementsDialogView(
         }
     }
 }
-@Preview(showBackground = true)
+
 @Composable
 fun PersonalAgreementContent(
     showDialog: MutableState<Boolean> = mutableStateOf(true)

@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +29,6 @@ import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun GetUserLocation(
 ) {
@@ -39,75 +39,79 @@ fun GetUserLocation(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(top = 82.dp)
-                .padding(horizontal = sidePaddingValue.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ){
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_1by4),
-                contentDescription = "",
-                modifier = Modifier.wrapContentSize(),
-                tint = Color.Unspecified
-            )
-            Spacer(Modifier.height(10.dp))
-            Text(
-                text = "동네를 알려주세요",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 24.sp,
-                color = Black2Color
-            )
-            Spacer(Modifier.height(12.dp))
-            Text(
-                text = "동명(읍,면)으로 검색",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
-                color = Gray03Color
-            )
-            Spacer(Modifier.height(24.dp))
-            TextField(
-                value = "",
-                onValueChange = {
-
-                },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                textStyle = TextStyle(
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = sidePaddingValue.dp)
+            ){
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_1by4),
+                    contentDescription = "",
+                    modifier = Modifier.wrapContentSize(),
+                    tint = Color.Unspecified
+                )
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = "동네를 알려주세요",
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 24.sp,
+                    color = Black2Color
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    text = "동명(읍,면)으로 검색",
                     fontFamily = mainFont,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp,
-                    color = Gray01Color
-                ),
-                placeholder = {
-                    Text(
-                        text = "중앙동",
+                    fontSize = 14.sp,
+                    color = Gray03Color
+                )
+                Spacer(Modifier.height(24.dp))
+                TextField(
+                    value = "",
+                    onValueChange = {
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textStyle = TextStyle(
                         fontFamily = mainFont,
                         fontWeight = FontWeight.Normal,
                         fontSize = 18.sp,
-                        color = EnableColor
+                        color = Gray01Color
+                    ),
+                    placeholder = {
+                        Text(
+                            text = "중앙동",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 18.sp,
+                            color = EnableColor
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White,
+                        cursorColor = MainColor,
+                        textColor = Gray01Color,
+                        placeholderColor = EnableColor,
+                        focusedIndicatorColor = MainColor,
+                        unfocusedIndicatorColor = EnableColor
                     )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,
-                    cursorColor = MainColor,
-                    textColor = Gray01Color,
-                    placeholderColor = EnableColor,
-                    focusedIndicatorColor = MainColor,
-                    unfocusedIndicatorColor = EnableColor
                 )
-            )
-            Spacer(Modifier.weight(1f))
-            MainButton(
-                text = "다음",
-                onClick = {
-                },
-                activate = userLocationActivated
-            )
-            Spacer(Modifier.height(buttonBottomValue.dp))
+                Spacer(Modifier.weight(1f))
+                MainButton(
+                    text = "다음",
+                    onClick = {
+                    },
+                    activate = userLocationActivated
+                )
+                Spacer(Modifier.height(buttonBottomValue.dp))
+            }
         }
     }
 }

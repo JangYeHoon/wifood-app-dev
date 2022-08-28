@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -30,9 +31,7 @@ import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
-import com.example.wifood.view.ui.theme.Gray01Color
-import com.example.wifood.view.ui.theme.Gray03Color
-import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -46,27 +45,31 @@ fun FindMyLocationView(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(top = 63.dp)
         ) {
             CustomTextField(
                 address = state.address,
                 onValueChanged = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(it))
                 },
+                onBackClicked = {
+                    // TODO
+                },
                 onDeleteClicked = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(""))
                 },
                 onSearchClicked = {
                     viewModel.onEvent(SignUpEvent.ButtonClicked)
-                }
+                },
             )
             Spacer(Modifier.height(12.dp))
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = sidePaddingValue.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (state.searchResults.isEmpty()) {
@@ -76,9 +79,12 @@ fun FindMyLocationView(
                             contentAlignment = Alignment.Center
                         ) {
                             Column() {
-                                TitleText(
-                                    text = "검색 결과가 없습니다.",
-                                    color = Color.Black
+                                Text(
+                                    text = "",
+                                    fontFamily = mainFont,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    color = EnableColor
                                 )
                             }
                         }
@@ -93,26 +99,6 @@ fun FindMyLocationView(
                             viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
                             navController.navigateUp()
                         }
-//                    Card(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(top = 20.dp)
-//                            .clickable {
-//                                viewModel.onEvent(SignUpEvent.AddressClicked(it.fullAddress))
-//                                navController.navigateUp()
-//                            }
-//                    ) {
-//                        Column(
-//                            horizontalAlignment = Alignment.Start,
-//                            modifier = Modifier.padding(horizontal = 24.dp)
-//                        ) {
-//                            Row {
-//                                Text(text = it.name, fontSize = 16.sp)
-//                                Text(text = it.bizName)
-//                            }
-//                            Text(text = it.fullAddress)
-//                        }
-//                    }
                     }
                 }
             }
@@ -126,18 +112,19 @@ private fun CustomTextField(
     address: String,
     onValueChanged: (String) -> Unit,
     onDeleteClicked: () -> Unit,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     TextField(
         value = address,
         onValueChange = onValueChanged,
         leadingIcon = {
             IconButton(
-                onClick = onSearchClicked,
+                onClick = onBackClicked,
                 modifier = Modifier.wrapContentSize()
             ) {
                 Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_search_icon),
+                    ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
                     contentDescription = "",
                     modifier = Modifier.wrapContentSize(),
                     tint = Color.Unspecified
@@ -146,21 +133,54 @@ private fun CustomTextField(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp),
+            .height(53.dp),
         shape = RoundedCornerShape(18),
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color(0xFFF6F6F6),
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            backgroundColor = Color.White,
+            focusedIndicatorColor = EnableColor,
+            unfocusedIndicatorColor = EnableColor,
+            textColor = Black2Color,
+            placeholderColor = EnableColor
         ),
+        textStyle = TextStyle(
+            fontFamily = mainFont,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
+            color = Gray01Color
+        ),
+        placeholder = {
+            Text(
+                text = "동명(읍,면)으로 검색",
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = EnableColor
+            )
+        },
         trailingIcon = {
-            if (address.isNotBlank()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                if (address.isNotBlank()) {
+                    IconButton(
+                        onClick = onDeleteClicked,
+                        modifier = Modifier.wrapContentSize()
+                    ) {
+                        Icon(
+                            ImageVector.vectorResource(id = R.drawable.ic_delete_text),
+                            contentDescription = "",
+                            modifier = Modifier.wrapContentSize(),
+                            tint = Color.Unspecified
+                        )
+                    }
+                    Spacer(Modifier.width(5.dp))
+                }
                 IconButton(
-                    onClick = onDeleteClicked,
+                    onClick = onSearchClicked,
                     modifier = Modifier.wrapContentSize()
                 ) {
                     Icon(
-                        ImageVector.vectorResource(id = R.drawable.ic_delete_text),
+                        ImageVector.vectorResource(id = R.drawable.ic_search_icon),
                         contentDescription = "",
                         modifier = Modifier.wrapContentSize(),
                         tint = Color.Unspecified
@@ -170,6 +190,8 @@ private fun CustomTextField(
         }
     )
 }
+
+
 
 @Composable
 fun SearchPlaceInfoCard(

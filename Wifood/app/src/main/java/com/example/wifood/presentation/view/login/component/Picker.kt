@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.recyclerview.widget.ItemTouchHelper.UP
+import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -162,15 +164,17 @@ private fun Label(text: String, modifier: Modifier) {
             .height(40.dp)
             .drawBehind {
                 drawLine(
-                    color = MainColor,
+                    color = Color.Companion.Transparent, //MainColor,
                     start = Offset(x = 0f, y = this.size.height),
                     end = Offset(x = this.size.width, y = this.size.height),
                     strokeWidth = 5F
                 )
             },
         textAlign = TextAlign.Center,
-        fontSize = 21.sp,
-        fontWeight = FontWeight.Bold
+        fontFamily = mainFont,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Normal,
+        color = Color(0xFF232326)
     )
 }
 
