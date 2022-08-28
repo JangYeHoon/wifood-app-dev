@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.search
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
 import com.example.wifood.util.getActivity
 import com.google.android.gms.location.LocationServices
+import com.google.gson.Gson
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -59,8 +64,24 @@ fun SearchPlaceComposeView(
             locationResult.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     if (task.result != null) {
-                        viewModel.onEvent(SearchPlaceFormEvent.CurrentLocationChange(task.result))
+                        scope.launch {
+                            viewModel.onEvent(SearchPlaceFormEvent.CurrentLocationChange(task.result))
+                        }
                     }
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = context) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
+                    navController.navigate("${Route.AddNewPlaceComplete.route}/${placeJson}")
+                }
+                is ValidationEvent.Error -> {
+
                 }
             }
         }
@@ -113,16 +134,20 @@ fun SearchPlaceComposeView(
                     TextField(
                         value = formState.searchKeyword,
                         onValueChange = {
-                            viewModel.onEvent(
-                                SearchPlaceFormEvent.SearchKeywordChange(
-                                    it
+                            scope.launch {
+                                viewModel.onEvent(
+                                    SearchPlaceFormEvent.SearchKeywordChange(
+                                        it
+                                    )
                                 )
-                            )
+                            }
                         },
                         modifier = Modifier.width(350.dp)
                     )
                     IconButton(onClick = {
-                        viewModel.onEvent(SearchPlaceFormEvent.SearchButtonClick)
+                        scope.launch {
+                            viewModel.onEvent(SearchPlaceFormEvent.SearchButtonClick)
+                        }
                         searchClickChkForSearchResult.value = true
                     }) {
                         Icon(Icons.Filled.Search, contentDescription = "")

@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.search
 
 import android.location.Location
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.google.maps.android.compose.MapProperties
 
@@ -12,5 +13,6 @@ data class SearchPlaceFormState(
     val addPlaceAddressSearch: String = "",
     val addPlaceContentPageCount: Int = 1,
     val properties: MapProperties = MapProperties(isMyLocationEnabled = true),
-    val currentLocation: Location? = null
+    val currentLocation: Location? = null,
+    val place: Place? = null
 )

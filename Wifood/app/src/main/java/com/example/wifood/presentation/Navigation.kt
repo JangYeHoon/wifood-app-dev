@@ -198,7 +198,10 @@ fun Navigation() {
             PlaceInputImagesAndMenuEvaluation(navController)
         }
         composable(
-            route = Route.Search.route,
+            route = "${Route.Search.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -391,7 +394,10 @@ fun Navigation() {
             MapSearchAddressView(navController)
         }
         composable(
-            route = Route.AddNewPlaceComplete.route,
+            route = "${Route.AddNewPlaceComplete.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },

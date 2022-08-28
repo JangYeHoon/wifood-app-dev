@@ -154,7 +154,8 @@ fun PlaceInputNameAndVisited(
                     ListSelectionButtonWithIcon(
                         buttonText = if (state.place.name.isEmpty()) "장소 검색" else state.place.name,
                         onClick = {
-                            navController.navigate(Route.Search.route)
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.Search.route}/${placeJson}")
                         }
                     )
                     SwitchWithText(

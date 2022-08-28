@@ -6,10 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.wifood.domain.model.Place
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
+import com.example.wifood.presentation.util.ValidationEvent
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,12 +25,17 @@ class SearchPlaceViewModel @Inject constructor(
 ) : ViewModel() {
     var formState by mutableStateOf(SearchPlaceFormState())
     val tMapTapi = TMapTapi(applicationContext)
+    private val validateEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
         tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+        savedStateHandle.get<Place>("place")?.let { place ->
+            formState = formState.copy(place = place)
+        }
     }
 
-    fun onEvent(event: SearchPlaceFormEvent) {
+    suspend fun onEvent(event: SearchPlaceFormEvent) {
         when (event) {
             is SearchPlaceFormEvent.SearchKeywordChange -> {
                 formState = formState.copy(searchKeyword = event.searchKeyword)
@@ -58,6 +68,18 @@ class SearchPlaceViewModel @Inject constructor(
                     formState = formState.copy(addressSearchResults = it)
                 }
             }
+            is SearchPlaceFormEvent.AddressClick -> {
+                setPlaceFromInputAndAddress(event.address)
+            }
         }
+    }
+
+    private suspend fun setPlaceFromInputAndAddress(address: TMapSearch) {
+        formState.place!!.name = formState.addPlaceName
+        formState.place!!.address = address.fullAddress
+        formState.place!!.latitude = address.latitude
+        formState.place!!.longitude = address.longitude
+
+        validateEventChannel.send(ValidationEvent.Success)
     }
 }
