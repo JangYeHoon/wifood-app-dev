@@ -40,6 +40,7 @@ sealed class Route(val route: String) {
     object GetFavor : Route("getfavor")
     object Complete : Route("complete")
     object MapSearchAddress : Route("mapsearchaddress")
+    object AddNewPlaceComplete : Route("addnewplacecomplete")
 
     fun withArgs(vararg args: String): String {
         return buildString {

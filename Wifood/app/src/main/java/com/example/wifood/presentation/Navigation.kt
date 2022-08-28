@@ -36,6 +36,7 @@ import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputI
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReview
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
+import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
 import com.example.wifood.presentation.view.splash.OnboardingView
@@ -387,6 +388,17 @@ fun Navigation() {
             }
         ) {
             MapSearchAddressView(navController)
+        }
+        composable(
+            route = Route.AddNewPlaceComplete.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            AddNewPlaceCompleteView(navController)
         }
     }
 }

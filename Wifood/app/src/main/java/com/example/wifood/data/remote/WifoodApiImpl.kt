@@ -302,7 +302,8 @@ class WifoodApiImpl @Inject constructor(
                     for (address in searchResult.newAddressList)
                         addressRoad = address.fullAddressRoad
                     addressRoad += searchResult.detailAddrName.replace("null", "")
-                    val oldAddress = searchResult.poiAddress.replace("null", "")
+                    var oldAddress = searchResult.poiAddress.replace("null", "")
+                    oldAddress += "" + searchResult.firstNo + "-" + searchResult.secondNo
                     tempList.add(
                         TMapSearch(
                             addressRoad,
@@ -316,6 +317,7 @@ class WifoodApiImpl @Inject constructor(
                     tmapSearchResult.postValue(tempList)
                 }
             } catch (e: Exception) {
+                Timber.e(e.toString())
                 tmapSearchResult.postValue(arrayListOf())
             }
         }
