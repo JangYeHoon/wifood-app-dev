@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -79,84 +81,87 @@ fun GetPhoneAuthenticationNumberView(
         if (state.isLoading) {
             ProgressIndicator()
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(horizontal = sidePaddingValue.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Spacer(Modifier.height(106.dp))
-            Text(
-                text = "인증번호 4자리를\n입력해주세요.",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 24.sp,
-                color = Black2Color
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = toTimer(timer),
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Medium,
-                fontSize = 14.sp,
-                color = MainColor
-            )
-            Spacer(Modifier.height(56.dp))
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = sidePaddingValue.dp)
             ) {
-                GetSingleAuthNumber(first) {
-                    first = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
-                }
-                GetSingleAuthNumber(second) {
-                    second = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
-                    else if (second.isBlank()) focusManager.moveFocus(FocusDirection.Left)
-                }
-                GetSingleAuthNumber(third) {
-                    third = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
-                    else if (third.isBlank()) focusManager.moveFocus(FocusDirection.Left)
-                }
-                GetSingleAuthNumber(fourth) {
-                    fourth = it
-                    if (fourth.isBlank()) focusManager.moveFocus(FocusDirection.Left)
-                    else {
-                        val certNumber = buildString {
-                            append(first)
-                            append(second)
-                            append(third)
-                            append(it)
-                        }
-                        viewModel.onEvent(SignUpEvent.CertChanged(certNumber))
-                    }
-                }
-            }
-            Spacer(Modifier.weight(1f))
-            OutlinedButton(
-                onClick = {
-                    timer = 150
-                    viewModel.onEvent(SignUpEvent.RequestCertNumber)
-                },
-                shape = RoundedCornerShape(23.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(46.dp),
-                border = BorderStroke(1.dp, MainColor)
-            ) {
+                Spacer(Modifier.weight(1f))
                 Text(
-                    text = "인증번호 재발송",
+                    text = "인증번호 4자리를\n입력해주세요.",
                     fontFamily = mainFont,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 24.sp,
+                    color = Black2Color
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = toTimer(timer),
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
                     color = MainColor
                 )
+                Spacer(Modifier.height(56.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                ) {
+                    GetSingleAuthNumber(first) {
+                        first = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                    }
+                    GetSingleAuthNumber(second) {
+                        second = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                        else if (second.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    }
+                    GetSingleAuthNumber(third) {
+                        third = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                        else if (third.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    }
+                    GetSingleAuthNumber(fourth) {
+                        fourth = it
+                        if (fourth.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                        else {
+                            val certNumber = buildString {
+                                append(first)
+                                append(second)
+                                append(third)
+                                append(it)
+                            }
+                            viewModel.onEvent(SignUpEvent.CertChanged(certNumber))
+                        }
+                    }
+                }
+                Spacer(Modifier.weight(1f))
+                OutlinedButton(
+                    onClick = {
+                        timer = 150
+                        viewModel.onEvent(SignUpEvent.RequestCertNumber)
+                    },
+                    shape = RoundedCornerShape(23.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(46.dp),
+                    border = BorderStroke(1.dp, MainColor)
+                ) {
+                    Text(
+                        text = "인증번호 재발송",
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        color = MainColor
+                    )
+                }
+                Spacer(Modifier.height(buttonBottomValue.dp))
             }
-            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }
@@ -178,16 +183,6 @@ fun GetSingleAuthNumber(
             color = MainColor,
             textAlign = TextAlign.Center
         ),
-//        placeholder = {
-//            Text(
-//                text = "-",
-//                fontFamily = mainFont,
-//                fontWeight = FontWeight.SemiBold,
-//                fontSize = 21.sp,
-//                color = EnableColor,
-//                textAlign = TextAlign.Center
-//            )
-//        },
         shape = RoundedCornerShape(9.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = MainColor,

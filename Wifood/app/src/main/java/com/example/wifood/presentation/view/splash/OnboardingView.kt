@@ -61,38 +61,43 @@ fun OnboardingView(
         )
     )
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ) { page ->
-            PageUI(page = onboardPages[page])
-        }
-        if (pagerState.currentPage != 2) {
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalPager(
+                state = pagerState,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(16.dp),
-                activeColor = MainColor,
-                inactiveColor = EnableColor,
-                spacing = 10.dp
-            )
-            Spacer(Modifier.height(56.dp))
-        } else {
-            AnimatedVisibility(visible = true) {
-                MainButton(
-                    text = "시작하기",
-                    onClick = {
-                        navController.navigate(Route.GetPhoneNumber.route)
-                    }
-                )
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) { page ->
+                PageUI(page = onboardPages[page])
             }
-            Spacer(Modifier.height(buttonBottomValue.dp))
+            if (pagerState.currentPage != 2) {
+                HorizontalPagerIndicator(
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp),
+                    activeColor = MainColor,
+                    inactiveColor = EnableColor,
+                    spacing = 10.dp
+                )
+                Spacer(Modifier.height(56.dp))
+            } else {
+                AnimatedVisibility(visible = true) {
+                    MainButton(
+                        text = "시작하기",
+                        onClick = {
+                            navController.navigate(Route.GetPhoneNumber.route)
+                        }
+                    )
+                }
+                Spacer(Modifier.height(buttonBottomValue.dp))
+            }
         }
     }
 }

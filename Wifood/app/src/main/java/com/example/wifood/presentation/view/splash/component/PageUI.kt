@@ -28,7 +28,10 @@ fun PageUI(page: Page) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.weight(1f))
             Text(
                 text = buildAnnotatedString {
                     append(page.title)
