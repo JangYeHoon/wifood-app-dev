@@ -24,10 +24,8 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
-import com.example.wifood.presentation.view.login.SignUpCompleteView
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
-import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Black2Color

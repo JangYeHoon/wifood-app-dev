@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.gowtham.ratingbar.RatingBar
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun EditPlaceComposeView(
     navController: NavController
