@@ -36,7 +36,7 @@ fun ProgressIndicator(
                 contentDescription = "Loading...",
                 alpha = 1f
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             BallPulseProgressIndicator(
                 color = Color.White
             )

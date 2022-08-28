@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.MainButtonInversed
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
@@ -70,7 +72,6 @@ fun GetPhoneAuthenticationNumberView(
     LaunchedEffect(state.certNumber) {
         if (state.certNumber.length == 4) {
             viewModel.onEvent(SignUpEvent.Verify(state.certNumber, timer))
-
             navController.navigate(Route.Agreement.route)
         }
     }
@@ -140,26 +141,15 @@ fun GetPhoneAuthenticationNumberView(
                         }
                     }
                 }
+                Spacer(Modifier.height(100.dp))
                 Spacer(Modifier.weight(1f))
-                OutlinedButton(
+                MainButtonInversed(
+                    text = "인증번호 재발송",
                     onClick = {
                         timer = 150
                         viewModel.onEvent(SignUpEvent.RequestCertNumber)
-                    },
-                    shape = RoundedCornerShape(23.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(46.dp),
-                    border = BorderStroke(1.dp, MainColor)
-                ) {
-                    Text(
-                        text = "인증번호 재발송",
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        color = MainColor
-                    )
-                }
+                    }
+                )
                 Spacer(Modifier.height(buttonBottomValue.dp))
             }
         }

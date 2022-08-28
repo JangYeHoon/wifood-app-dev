@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.MainColor
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -121,8 +122,7 @@ fun Picker(
                 .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
         ) {
             val baseLabelModifier = Modifier.align(Alignment.Center)
-            //val labelFirstColor = Color(0xFF232326)
-            val labelFirstColor = MainColor
+            val labelFirstColor = Gray01Color
             val labelSecondColor = Color(0xFF9A99A2)
             val labelThirdColor = Color(0x809A99A2)
 
