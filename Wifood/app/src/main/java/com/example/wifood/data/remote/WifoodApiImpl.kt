@@ -13,6 +13,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -322,6 +323,21 @@ class WifoodApiImpl @Inject constructor(
             }
         }
         return tmapSearchResult
+    }
+
+    override fun getTMapReverseGeocoding(latLng: LatLng): LiveData<String> {
+        val address = MutableLiveData<String>()
+        val tmapData = TMapData()
+        thread(start = true) {
+            try {
+                val tMapAddressInfo =
+                    tmapData.reverseGeocoding(latLng.latitude, latLng.longitude, "A03")
+                address.postValue(tMapAddressInfo.strFullAddress)
+            } catch (e: Exception) {
+                Timber.e(e.message)
+            }
+        }
+        return address
     }
 
     override suspend fun requestCertNumber(phoneNumber: String): String {

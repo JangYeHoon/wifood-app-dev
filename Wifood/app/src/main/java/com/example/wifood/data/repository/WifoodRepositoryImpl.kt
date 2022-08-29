@@ -12,6 +12,7 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.UploadTask
@@ -95,6 +96,10 @@ class WifoodRepositoryImpl(
 
     override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
         return api.getPlaceImageUri(groupId, placeId)
+    }
+
+    override fun getTMapReverseGeocoding(latLng: LatLng): LiveData<String> {
+        return api.getTMapReverseGeocoding(latLng)
     }
 
     override suspend fun requestCertNumber(phoneNumber: String): String {

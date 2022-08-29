@@ -10,9 +10,11 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
+import com.google.android.gms.maps.model.LatLng
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
@@ -35,6 +37,7 @@ class SearchPlaceViewModel @Inject constructor(
         }
     }
 
+    @DelicateCoroutinesApi
     suspend fun onEvent(event: SearchPlaceFormEvent) {
         when (event) {
             is SearchPlaceFormEvent.SearchKeywordChange -> {
@@ -53,6 +56,7 @@ class SearchPlaceViewModel @Inject constructor(
             }
             is SearchPlaceFormEvent.AddPlaceNameChange -> {
                 formState = formState.copy(addPlaceName = event.placeName)
+                formState.place!!.name = formState.addPlaceName
             }
             is SearchPlaceFormEvent.ClickNextBtn -> {
                 formState =
@@ -69,16 +73,31 @@ class SearchPlaceViewModel @Inject constructor(
                 }
             }
             is SearchPlaceFormEvent.AddressClick -> {
-                setPlaceFromInputAndAddress(event.address)
+                setPlaceFromSearchAddressAndLatLng(
+                    LatLng(
+                        event.address.latitude,
+                        event.address.longitude
+                    ), event.address.fullAddress
+                )
+            }
+            is SearchPlaceFormEvent.GoogleMapLatLngBtnClick -> {
+                useCases.GetTMapReverseGeocoding(event.latLng).observeForever {
+                    if (it != null) {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            withContext(Dispatchers.Main) {
+                                setPlaceFromSearchAddressAndLatLng(event.latLng, it)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
-    private suspend fun setPlaceFromInputAndAddress(address: TMapSearch) {
-        formState.place!!.name = formState.addPlaceName
-        formState.place!!.address = address.fullAddress
-        formState.place!!.latitude = address.latitude
-        formState.place!!.longitude = address.longitude
+    private suspend fun setPlaceFromSearchAddressAndLatLng(latLng: LatLng, address: String) {
+        formState.place!!.address = address
+        formState.place!!.latitude = latLng.latitude
+        formState.place!!.longitude = latLng.longitude
 
         validateEventChannel.send(ValidationEvent.Success)
     }

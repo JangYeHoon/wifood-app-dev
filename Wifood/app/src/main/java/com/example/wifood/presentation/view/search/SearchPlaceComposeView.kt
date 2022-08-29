@@ -49,6 +49,8 @@ fun SearchPlaceComposeView(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+//    val searchLatLngFromMap
+
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true

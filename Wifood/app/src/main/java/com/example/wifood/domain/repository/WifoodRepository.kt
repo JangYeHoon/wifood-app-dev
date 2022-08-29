@@ -8,6 +8,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.model.User
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.UploadTask
@@ -51,6 +52,8 @@ interface WifoodRepository {
     fun getTMapSearchDetailAddressResult(
         keyword: String
     ): LiveData<MutableList<TMapSearch>>
+
+    fun getTMapReverseGeocoding(latLng: LatLng): LiveData<String>
 
     suspend fun requestCertNumber(phoneNumber: String): String
 }

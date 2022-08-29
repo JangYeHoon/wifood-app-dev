@@ -101,7 +101,8 @@ fun SelectAddressSearchWayContent(
         MainButton(
             text = "지도에서 주소찾기",
             onClick = {
-                navController.navigate(Route.MapSearchAddress.route)
+                val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
+                navController.navigate("${Route.MapSearchAddress.route}/${placeJson}")
             }
         )
     }

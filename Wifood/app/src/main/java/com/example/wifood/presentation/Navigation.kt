@@ -383,7 +383,10 @@ fun Navigation() {
             SignUpCompleteView(navController)
         }
         composable(
-            route = Route.MapSearchAddress.route,
+            route = "${Route.MapSearchAddress.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
