@@ -22,7 +22,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 
-@Preview(showBackground = true)
 @Composable
 fun DoubleButton(
     leftButtonText : String = "건너뛰기",
@@ -32,7 +31,7 @@ fun DoubleButton(
 ){
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceBetween
     ){
 
         OutlinedButton(

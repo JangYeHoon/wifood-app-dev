@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.room.util.TableInfo
 import com.example.wifood.R
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.ui.theme.mainFont
