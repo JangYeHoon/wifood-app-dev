@@ -225,7 +225,7 @@ fun SearchPlaceInfoCard(
                                 style = SpanStyle(
                                     fontFamily = mainFont,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
+                                    fontSize = 16.sp,
                                     color = MainColor
                                 ),
                             ) {
