@@ -88,6 +88,7 @@ fun GetPhoneAuthenticationNumberView(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
             ) {
@@ -141,7 +142,6 @@ fun GetPhoneAuthenticationNumberView(
                         }
                     }
                 }
-                Spacer(Modifier.height(100.dp))
                 Spacer(Modifier.weight(1f))
                 MainButtonInversed(
                     text = "인증번호 재발송",

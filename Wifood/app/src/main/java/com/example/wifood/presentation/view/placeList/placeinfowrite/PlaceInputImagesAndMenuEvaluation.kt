@@ -1,25 +1,30 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
+import android.annotation.SuppressLint
 import android.net.Uri
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,18 +35,20 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.MainButtonInversed
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
+import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.Gray01Color
-import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.*
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -254,5 +261,169 @@ fun PlaceInputImagesAndMenuEvaluation(
                 }
             }
         }
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Preview(showBackground = true)
+@Composable
+fun PlaceInputImagesAndMenuEvaluationContent() {
+    val scrollState = rememberScrollState()
+    val scaffoldState = rememberScaffoldState()
+    Scaffold(
+        topBar = {
+            TopAppBar(
+
+            ) {
+
+            }
+        }
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = sidePaddingValue.dp)
+            ) {
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_3by4),
+                    contentDescription = "",
+                    modifier = Modifier.wrapContentSize(),
+                    tint = Color.Unspecified
+                )
+                Spacer(Modifier.height(6.dp))
+                YOGOBasicText(
+                    largeText = "맛집 리뷰를 등록해주세요.",
+                    explainText = "맛집 리뷰와 사진을 등록해주세요."
+                )
+                Spacer(Modifier.height(21.dp))
+                ReviewTextField()
+                Spacer(Modifier.height(24.dp))
+                Row {
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .size(60.dp)
+                            .border(1.dp, Color.Gray)
+                    ) {
+                        Icon(Icons.Filled.Home, "")
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    LazyRow {
+                        items(listOf(R.drawable.place_image, R.drawable.place_image)) {
+                            Image(
+                                painterResource(id = it),
+                                contentDescription = "",
+                                Modifier.size(60.dp),
+                                contentScale = ContentScale.FillBounds
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                        }
+                    }
+                }
+                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.weight(1f))
+                DoubleButton(
+                    leftButtonText = "건너뛰기",
+                    leftButtonClicked = {},
+                    rightButtonText = "맛집 평가",
+                    rightButtonClicked = {}
+                )
+                Spacer(Modifier.height(buttonBottomValue.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun YOGOBasicText(
+    largeText: String = "",
+    explainText: String = ""
+) {
+    YOGOLargeText(text = largeText)
+    if (explainText.isNotEmpty()) {
+        Spacer(Modifier.height(12.dp))
+        YOGOExplainText(text = explainText)
+    }
+}
+
+@Composable
+fun YOGOLargeText(
+    text: String = "맛집 리뷰를 등록해주세요"
+) {
+    Text(
+        text = text,
+        fontFamily = mainFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 24.sp,
+        color = Black2Color
+    )
+}
+
+@Composable
+fun YOGOExplainText(
+    text: String = "맛집리뷰와 사진을 등록해주세요"
+) {
+    Text(
+        text = text,
+        fontFamily = mainFont,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        color = Gray03Color
+    )
+}
+
+@Composable
+fun ReviewTextField(
+    text: String = "",
+    onValueChange: (String) -> Unit = {},
+    placeholder: String = "맛집 리뷰",
+    modifier: Modifier = Modifier
+        .border(1.dp, Color(0xFFF1F1F1))
+        .height(120.dp)
+        .fillMaxWidth()
+) {
+    Box(
+
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 15.sp,
+                    color = Color(0xFFC4C4C4)
+                )
+            },
+            modifier = modifier,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+            ),
+            textStyle = TextStyle(
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 15.sp,
+                color = Gray01Color
+            )
+        )
+        Text(
+            text = text.length.toString() + "/500",
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 14.dp, bottom = 10.dp),
+            color = Color(0xFFC4C4C4)
+        )
     }
 }

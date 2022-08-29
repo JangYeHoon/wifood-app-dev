@@ -498,7 +498,7 @@ fun PlaceImagePopup(
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(5.dp)),
+                    .clip(RoundedCornerShape(0.dp)),
                 contentScale = ContentScale.Crop,
             )
             Row(

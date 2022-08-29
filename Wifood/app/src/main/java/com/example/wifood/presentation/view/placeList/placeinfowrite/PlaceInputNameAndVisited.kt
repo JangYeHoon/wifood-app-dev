@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -35,6 +36,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
