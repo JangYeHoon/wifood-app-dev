@@ -30,6 +30,7 @@ fun YOGOTopAppBar(
     rightButtonClicked:() -> Unit = {}
 
 ){
+
     TopAppBar(
         title = {
             Box(
