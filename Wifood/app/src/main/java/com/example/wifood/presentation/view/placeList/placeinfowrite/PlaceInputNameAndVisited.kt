@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
@@ -66,6 +67,15 @@ fun PlaceInputNameAndVisited(
     searchPlaceViewResult?.value?.let {
         scope.launch {
             viewModel.onEvent(PlaceInfoWriteFormEvent.SearchPlaceSelected(it))
+        }
+    }
+
+    val placeBackStack =
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Place>("placeBack")
+            ?.observeAsState()
+    placeBackStack?.value?.let {
+        scope.launch {
+            viewModel.onEvent(PlaceInfoWriteFormEvent.BackBtnClick(it))
         }
     }
 

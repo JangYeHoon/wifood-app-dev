@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.placeList.placeinfowrite
 import android.location.Location
 import android.net.Uri
 import com.example.wifood.domain.model.Group
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 
 sealed class PlaceInfoWriteFormEvent {
@@ -21,6 +22,7 @@ sealed class PlaceInfoWriteFormEvent {
     data class PlaceImagesAdd(val image: Uri) : PlaceInfoWriteFormEvent()
     data class ImageNameChange(val imageName: String) : PlaceInfoWriteFormEvent()
     data class CurrentLocationChange(val location: Location) : PlaceInfoWriteFormEvent()
+    data class BackBtnClick(val place: Place) : PlaceInfoWriteFormEvent()
     object MenuGradeAddBtnClick : PlaceInfoWriteFormEvent()
     object PlaceAddBtnClick : PlaceInfoWriteFormEvent()
     object PlaceEditBtnClick : PlaceInfoWriteFormEvent()

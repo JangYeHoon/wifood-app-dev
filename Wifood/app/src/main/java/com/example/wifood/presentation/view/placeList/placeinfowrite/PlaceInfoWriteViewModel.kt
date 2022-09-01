@@ -44,8 +44,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
     init {
         savedStateHandle.get<Place>("place")?.let { place ->
             state = state.copy(place = place)
+            setFormInputValueToPlaceEntity(state.place)
+            setStarEnableToSelectedIdx(state.place.score.toInt() - 1)
             if (place.placeId != -1) {
-                setFormInputValueToPlaceEntity(state.place)
                 formState = formState.copy(placeEditChk = true)
                 useCases.GetPlaceImageUris(place.groupId, place.placeId).observeForever { uris ->
                     formState = formState.copy(placeImages = uris as ArrayList<Uri>)
@@ -157,6 +158,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
             is PlaceInfoWriteFormEvent.CurrentLocationChange -> {
                 formState = formState.copy(currentLocation = event.location)
             }
+            is PlaceInfoWriteFormEvent.BackBtnClick -> {
+                state = state.copy(place = event.place)
+            }
         }
     }
 
@@ -191,6 +195,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState.menuMemo
             )
         )
+        state.place.menuList = formState.menuGrades
         formState = formState.copy(menuName = "")
         formState = formState.copy(menuPrice = "")
         formState = formState.copy(menuMemo = "")
