@@ -304,7 +304,9 @@ class WifoodApiImpl @Inject constructor(
                         addressRoad = address.fullAddressRoad
                     addressRoad += searchResult.detailAddrName.replace("null", "")
                     var oldAddress = searchResult.poiAddress.replace("null", "")
-                    oldAddress += "" + searchResult.firstNo + "-" + searchResult.secondNo
+                    oldAddress += "" + searchResult.firstNo
+                    if (searchResult.secondNo != "0" && searchResult.secondNo.isNotEmpty())
+                        oldAddress += "-" + searchResult.secondNo
                     tempList.add(
                         TMapSearch(
                             addressRoad,
@@ -331,8 +333,18 @@ class WifoodApiImpl @Inject constructor(
         thread(start = true) {
             try {
                 val tMapAddressInfo =
-                    tmapData.reverseGeocoding(latLng.latitude, latLng.longitude, "A03")
-                address.postValue(tMapAddressInfo.strFullAddress)
+                    tmapData.reverseGeocoding(latLng.latitude, latLng.longitude, "A10")
+                val firstAddress = tMapAddressInfo.strCity_do + " " + tMapAddressInfo.strGu_gun
+                var roadAddress =
+                    firstAddress + " " + tMapAddressInfo.strRoadName + " " + tMapAddressInfo.strBuildingIndex
+                if (tMapAddressInfo.strBuildingName.isNotEmpty())
+                    roadAddress += " (" + tMapAddressInfo.strBuildingName + ")"
+                var oldAddress =
+                    firstAddress + " " + tMapAddressInfo.strLegalDong
+                if (tMapAddressInfo.strRi.isNotEmpty())
+                    oldAddress += " " + tMapAddressInfo.strRi
+                oldAddress += " " + tMapAddressInfo.strBunji
+                address.postValue("$roadAddress/$oldAddress")
             } catch (e: Exception) {
                 Timber.e(e.message)
             }

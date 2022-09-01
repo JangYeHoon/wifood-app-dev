@@ -11,6 +11,7 @@ sealed class SearchPlaceFormEvent {
     data class AddPlaceAddressChange(val searchAddress: String) : SearchPlaceFormEvent()
     data class AddressClick(val address: TMapSearch) : SearchPlaceFormEvent()
     data class GoogleMapLatLngBtnClick(val latLng: LatLng) : SearchPlaceFormEvent()
+    data class CameraMove(val latLng: LatLng) : SearchPlaceFormEvent()
     object ClickNextBtn : SearchPlaceFormEvent()
     object SearchButtonClick : SearchPlaceFormEvent()
     object AddressSearchButtonClick : SearchPlaceFormEvent()

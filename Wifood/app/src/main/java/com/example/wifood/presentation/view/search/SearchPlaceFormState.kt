@@ -14,5 +14,7 @@ data class SearchPlaceFormState(
     val addPlaceContentPageCount: Int = 1,
     val properties: MapProperties = MapProperties(isMyLocationEnabled = true),
     val currentLocation: Location? = null,
+    val roadAddressGeocoding: String = "",
+    val oldAddressGeocoding: String = "",
     val place: Place? = null
 )

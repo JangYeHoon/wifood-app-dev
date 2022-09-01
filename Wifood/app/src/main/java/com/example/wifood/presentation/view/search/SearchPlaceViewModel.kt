@@ -17,6 +17,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -88,6 +89,17 @@ class SearchPlaceViewModel @Inject constructor(
                                 setPlaceFromSearchAddressAndLatLng(event.latLng, it)
                             }
                         }
+                    }
+                }
+            }
+            is SearchPlaceFormEvent.CameraMove -> {
+                useCases.GetTMapReverseGeocoding(event.latLng).observeForever {
+                    if (it != null) {
+                        val addressSplit = it.split('/')
+                        formState = formState.copy(
+                            roadAddressGeocoding = addressSplit[0],
+                            oldAddressGeocoding = addressSplit[1]
+                        )
                     }
                 }
             }

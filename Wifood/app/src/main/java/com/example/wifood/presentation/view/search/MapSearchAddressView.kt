@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.search
 import android.Manifest
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -69,6 +70,7 @@ fun MapSearchAddressView(
                                     ), 15f
                                 )
                             )
+                            viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
                         }
                     }
                 }
@@ -90,6 +92,12 @@ fun MapSearchAddressView(
         }
     }
 
+    LaunchedEffect(camera.isMoving) {
+        scope.launch {
+            viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
+        }
+    }
+
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         properties = state.properties,
@@ -98,15 +106,18 @@ fun MapSearchAddressView(
     )
     Box {
         Text(text = "맛집 위치를 설정하세요", modifier = Modifier.align(Alignment.TopCenter))
-        Button(
-            onClick = {
-                scope.launch {
-                    viewModel.onEvent(SearchPlaceFormEvent.GoogleMapLatLngBtnClick(camera.position.target))
+        Column(modifier = Modifier.align(Alignment.BottomCenter)) {
+            Text(text = state.oldAddressGeocoding)
+            Text(text = state.roadAddressGeocoding)
+            Button(
+                onClick = {
+                    scope.launch {
+                        viewModel.onEvent(SearchPlaceFormEvent.GoogleMapLatLngBtnClick(camera.position.target))
+                    }
                 }
-            },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        ) {
-            Text(text = "위치 등록하기")
+            ) {
+                Text(text = "위치 등록하기")
+            }
         }
     }
 }
