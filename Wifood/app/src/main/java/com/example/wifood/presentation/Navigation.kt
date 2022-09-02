@@ -32,10 +32,7 @@ import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
 import com.example.wifood.presentation.view.placeList.group.GroupEditView
 import com.example.wifood.presentation.view.placeList.group.GroupNameInputView
-import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputImagesAndMenuEvaluation
-import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
-import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReview
-import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
+import com.example.wifood.presentation.view.placeList.placeinfowrite.*
 import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
@@ -174,12 +171,12 @@ fun Navigation() {
             PlaceInputNameAndVisited(navController)
         }
         composable(
-            route = "${Route.PlaceInputReview.route}/{place}",
+            route = "${Route.PlaceInputReviewAndImages.route}/{place}",
             arguments = listOf(navArgument("place") {
                 type = createParcelableNavType<Place>()
             })
         ) {
-            PlaceInputReview(navController)
+            PlaceInputReviewAndImages(navController)
         }
         composable(
             route = "${Route.PlaceInputStarAndEvaluation.route}/{place}",
@@ -190,15 +187,18 @@ fun Navigation() {
             PlaceInputStarAndEvaluation(navController)
         }
         composable(
-            route = "${Route.PlaceInputImagesAndMenuEvaluation.route}/{place}",
+            route = "${Route.PlaceInputMenuEvaluation.route}/{place}",
             arguments = listOf(navArgument("place") {
                 type = createParcelableNavType<Place>()
             })
         ) {
-            PlaceInputImagesAndMenuEvaluation(navController)
+            PlaceInputMenuEvaluation(navController)
         }
         composable(
-            route = Route.Search.route,
+            route = "${Route.Search.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -380,7 +380,10 @@ fun Navigation() {
             SignUpCompleteView(navController)
         }
         composable(
-            route = Route.MapSearchAddress.route,
+            route = "${Route.MapSearchAddress.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -391,7 +394,10 @@ fun Navigation() {
             MapSearchAddressView(navController)
         }
         composable(
-            route = Route.AddNewPlaceComplete.route,
+            route = "${Route.AddNewPlaceComplete.route}/{place}",
+            arguments = listOf(navArgument("place") {
+                type = createParcelableNavType<Place>()
+            }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },

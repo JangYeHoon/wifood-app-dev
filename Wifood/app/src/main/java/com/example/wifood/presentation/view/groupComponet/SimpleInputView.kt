@@ -36,70 +36,66 @@ fun SimpleInputView(
     buttonActivate: Boolean
 ) {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = sidePaddingValue.dp)
         ) {
-            Column(
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = explainText,
+                fontFamily = mainFont,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 24.sp,
+                color = Black2Color
+            )
+            Spacer(Modifier.height(24.dp))
+            TextField(
+                value = textFieldText,
+                onValueChange = onTextFieldValueChanged,
                 modifier = Modifier
-                    .verticalScroll(scrollState)
-                    .padding(horizontal = sidePaddingValue.dp)
-            ) {
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = explainText,
+                    .fillMaxWidth(),
+                textStyle = TextStyle(
                     fontFamily = mainFont,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 24.sp,
-                    color = Black2Color
-                )
-                Spacer(Modifier.height(24.dp))
-                TextField(
-                    value = textFieldText,
-                    onValueChange = onTextFieldValueChanged,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textStyle = TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp,
+                    color = Gray01Color
+                ),
+                placeholder = {
+                    Text(
+                        text = placeholderText,
                         fontFamily = mainFont,
                         fontWeight = FontWeight.Normal,
                         fontSize = 18.sp,
-                        color = Gray01Color
-                    ),
-                    placeholder = {
-                        Text(
-                            text = placeholderText,
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 18.sp,
-                            color = EnableColor
-                        )
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White,
-                        cursorColor = MainColor,
-                        textColor = Gray01Color,
-                        placeholderColor = EnableColor,
-                        focusedIndicatorColor = MainColor,
-                        unfocusedIndicatorColor = EnableColor
-                    ),
-                    visualTransformation = VisualTransformation.None,
-                    keyboardOptions = KeyboardOptions(
-                        //keyboardType = KeyboardType.Phone
+                        color = EnableColor
                     )
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    cursorColor = MainColor,
+                    textColor = Gray01Color,
+                    placeholderColor = EnableColor,
+                    focusedIndicatorColor = MainColor,
+                    unfocusedIndicatorColor = EnableColor
+                ),
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    //keyboardType = KeyboardType.Phone
                 )
-                Spacer(Modifier.weight(1f))
-                MainButton(
-                    text = buttonText,
-                    onClick = onButtonClick,
-                    activate = buttonActivate
-                )
-                Spacer(Modifier.height(buttonBottomValue.dp))
-            }
+            )
+            Spacer(Modifier.weight(1f))
+            MainButton(
+                text = buttonText,
+                onClick = onButtonClick,
+                activate = buttonActivate
+            )
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }

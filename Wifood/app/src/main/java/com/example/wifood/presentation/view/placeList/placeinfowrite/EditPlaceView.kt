@@ -172,7 +172,8 @@ fun EditPlaceView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.placeName,
                         onClick = {
-                            navController.navigate(Route.Search.route)
+                            val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
+                            navController.navigate("${Route.Search.route}/${placeJson}")
                         }
                     )
                     SwitchWithText(

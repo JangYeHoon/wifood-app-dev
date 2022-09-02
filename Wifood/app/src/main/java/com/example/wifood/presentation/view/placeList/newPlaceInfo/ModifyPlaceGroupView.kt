@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.presentation.view.component.MainButton
@@ -21,8 +22,7 @@ import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ModifyPlaceInfoView(
-
+fun ModifyPlaceGroupView(
 ){
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
@@ -36,6 +36,7 @@ fun ModifyPlaceInfoView(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
             ) {
@@ -63,7 +64,7 @@ fun ModifyPlaceInfoView(
                 )
                 Spacer(Modifier.height(30.dp))
                 Text(
-                    text = "그룹명",
+                    text = "상세 설명",
                     fontFamily = mainFont,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp,
@@ -73,7 +74,7 @@ fun ModifyPlaceInfoView(
                 YOGOBaseTextField(
                     text = "",
                     onValueChange = {},
-                    placeholderText = "샤로수길 맛집 저장소"
+                    placeholderText = "디저트, 맛집, 술집"
                 )
                 Spacer(Modifier.weight(1f))
                 MainButton(

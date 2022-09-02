@@ -88,6 +88,7 @@ fun GetPhoneAuthenticationNumberView(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
                     .fillMaxSize()

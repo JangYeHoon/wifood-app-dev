@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
@@ -35,6 +37,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -64,6 +67,15 @@ fun PlaceInputNameAndVisited(
     searchPlaceViewResult?.value?.let {
         scope.launch {
             viewModel.onEvent(PlaceInfoWriteFormEvent.SearchPlaceSelected(it))
+        }
+    }
+
+    val placeBackStack =
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Place>("placeBack")
+            ?.observeAsState()
+    placeBackStack?.value?.let {
+        scope.launch {
+            viewModel.onEvent(PlaceInfoWriteFormEvent.BackBtnClick(it))
         }
     }
 
@@ -154,7 +166,8 @@ fun PlaceInputNameAndVisited(
                     ListSelectionButtonWithIcon(
                         buttonText = if (state.place.name.isEmpty()) "장소 검색" else state.place.name,
                         onClick = {
-                            navController.navigate(Route.Search.route)
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.Search.route}/${placeJson}")
                         }
                     )
                     SwitchWithText(

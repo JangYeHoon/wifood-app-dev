@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.data.remote.dto.PlaceDto
@@ -29,11 +30,12 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun AddNewPlaceCompleteView(
-    navController: NavController
+    navController: NavController,
+    viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
     LaunchedEffect(true) {
         delay(1000L)
-        val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+        val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
         navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
     }
 

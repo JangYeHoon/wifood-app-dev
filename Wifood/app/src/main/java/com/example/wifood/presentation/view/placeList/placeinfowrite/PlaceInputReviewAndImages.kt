@@ -1,23 +1,37 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
+import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import com.example.wifood.R
+import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
+import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.google.gson.Gson
@@ -25,11 +39,11 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@DelicateCoroutinesApi
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun PlaceInputReview(
+fun PlaceInputReviewAndImages(
     navController: NavController,
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
@@ -42,11 +56,13 @@ fun PlaceInputReview(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
-    val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
-    var customSheetContent by remember { mutableStateOf(sheetContent) }
-
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+
+    BackHandler(enabled = true) {
+        navController.previousBackStackEntry?.savedStateHandle?.set("placeBack", state.place)
+        navController.popBackStack()
+    }
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collectLatest { event ->
@@ -67,7 +83,7 @@ fun PlaceInputReview(
     }
 
     ModalBottomSheetLayout(
-        sheetContent = { customSheetContent() },
+        sheetContent = { CameraAndAlbumBottomSheetContent() },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color(0xFF222222)
@@ -104,6 +120,48 @@ fun PlaceInputReview(
                             }
                         }
                     )
+                    Spacer(Modifier.height(10.dp))
+                    Row {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    modalBottomSheetState.show()
+                                }
+                            },
+                            modifier = Modifier
+                                .size(placeInfoMenuImageSize.dp)
+                        ) {
+                            Icon(
+                                ImageVector.vectorResource(id = R.drawable.ic_place_info_photo_default),
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxSize(),
+                                tint = Color.Unspecified
+                            )
+                        }
+                        Spacer(Modifier.width(6.dp))
+                        LazyRow {
+                            items(formState.placeImages) { image ->
+                                IconButton(
+                                    onClick = {},
+                                    modifier = Modifier
+                                        .width(placeInfoMenuImageSize.dp)
+                                        .height(placeInfoMenuImageSize.dp)
+                                ) {
+                                    Image(
+                                        painter = rememberImagePainter(
+                                            data = image
+                                        ),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clip(RoundedCornerShape(5.dp)),
+                                        contentScale = ContentScale.Crop,
+                                    )
+                                }
+                                Spacer(Modifier.width(6.dp))
+                            }
+                        }
+                    }
                 }
 
                 Column(
@@ -119,8 +177,9 @@ fun PlaceInputReview(
                     MainButton(
                         text = "맛집 등록하기",
                         onClick = {
-                            val placeJson = Uri.encode(Gson().toJson(state.place))
-                            navController.navigate("${Route.PlaceInputImagesAndMenuEvaluation.route}/${placeJson}")
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
+                            }
                         }
                     )
                     Spacer(Modifier.height(buttonBottomValue.dp))

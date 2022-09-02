@@ -6,10 +6,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.wifood.domain.model.Place
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
+import com.example.wifood.presentation.util.ValidationEvent
+import com.google.android.gms.maps.model.LatLng
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,12 +28,18 @@ class SearchPlaceViewModel @Inject constructor(
 ) : ViewModel() {
     var formState by mutableStateOf(SearchPlaceFormState())
     val tMapTapi = TMapTapi(applicationContext)
+    private val validateEventChannel = Channel<ValidationEvent>()
+    val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
         tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+        savedStateHandle.get<Place>("place")?.let { place ->
+            formState = formState.copy(place = place)
+        }
     }
 
-    fun onEvent(event: SearchPlaceFormEvent) {
+    @DelicateCoroutinesApi
+    suspend fun onEvent(event: SearchPlaceFormEvent) {
         when (event) {
             is SearchPlaceFormEvent.SearchKeywordChange -> {
                 formState = formState.copy(searchKeyword = event.searchKeyword)
@@ -43,6 +57,7 @@ class SearchPlaceViewModel @Inject constructor(
             }
             is SearchPlaceFormEvent.AddPlaceNameChange -> {
                 formState = formState.copy(addPlaceName = event.placeName)
+                formState.place!!.name = formState.addPlaceName
             }
             is SearchPlaceFormEvent.ClickNextBtn -> {
                 formState =
@@ -58,6 +73,44 @@ class SearchPlaceViewModel @Inject constructor(
                     formState = formState.copy(addressSearchResults = it)
                 }
             }
+            is SearchPlaceFormEvent.AddressClick -> {
+                setPlaceFromSearchAddressAndLatLng(
+                    LatLng(
+                        event.address.latitude,
+                        event.address.longitude
+                    ), event.address.fullAddress
+                )
+            }
+            is SearchPlaceFormEvent.GoogleMapLatLngBtnClick -> {
+                useCases.GetTMapReverseGeocoding(event.latLng).observeForever {
+                    if (it != null) {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            withContext(Dispatchers.Main) {
+                                setPlaceFromSearchAddressAndLatLng(event.latLng, it)
+                            }
+                        }
+                    }
+                }
+            }
+            is SearchPlaceFormEvent.CameraMove -> {
+                useCases.GetTMapReverseGeocoding(event.latLng).observeForever {
+                    if (it != null) {
+                        val addressSplit = it.split('/')
+                        formState = formState.copy(
+                            roadAddressGeocoding = addressSplit[0],
+                            oldAddressGeocoding = addressSplit[1]
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    private suspend fun setPlaceFromSearchAddressAndLatLng(latLng: LatLng, address: String) {
+        formState.place!!.address = address
+        formState.place!!.latitude = latLng.latitude
+        formState.place!!.longitude = latLng.longitude
+
+        validateEventChannel.send(ValidationEvent.Success)
     }
 }

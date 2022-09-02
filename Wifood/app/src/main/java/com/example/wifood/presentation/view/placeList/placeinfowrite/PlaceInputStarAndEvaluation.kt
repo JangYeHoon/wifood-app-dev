@@ -1,12 +1,15 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
+import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.R
+import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
@@ -28,6 +32,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -49,6 +54,20 @@ fun PlaceInputStarAndEvaluation(
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+
+    val placeBackStack =
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Place>("placeBack")
+            ?.observeAsState()
+    placeBackStack?.value?.let {
+        scope.launch {
+            viewModel.onEvent(PlaceInfoWriteFormEvent.BackBtnClick(it))
+        }
+    }
+
+    BackHandler(enabled = true) {
+        navController.previousBackStackEntry?.savedStateHandle?.set("placeBack", state.place)
+        navController.popBackStack()
+    }
 
     LaunchedEffect(key1 = context) {
         viewModel.validationEvents.collectLatest { event ->
@@ -168,7 +187,7 @@ fun PlaceInputStarAndEvaluation(
                         text = "맛집 등록하기",
                         onClick = {
                             val placeJson = Uri.encode(Gson().toJson(state.place))
-                            navController.navigate("${Route.PlaceInputReview.route}/${placeJson}")
+                            navController.navigate("${Route.PlaceInputMenuEvaluation.route}/${placeJson}")
                         }
                     )
                     Spacer(Modifier.height(buttonBottomValue.dp))

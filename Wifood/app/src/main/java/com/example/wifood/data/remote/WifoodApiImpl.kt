@@ -13,6 +13,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -303,7 +304,9 @@ class WifoodApiImpl @Inject constructor(
                         addressRoad = address.fullAddressRoad
                     addressRoad += searchResult.detailAddrName.replace("null", "")
                     var oldAddress = searchResult.poiAddress.replace("null", "")
-                    oldAddress += "" + searchResult.firstNo + "-" + searchResult.secondNo
+                    oldAddress += "" + searchResult.firstNo
+                    if (searchResult.secondNo != "0" && searchResult.secondNo.isNotEmpty())
+                        oldAddress += "-" + searchResult.secondNo
                     tempList.add(
                         TMapSearch(
                             addressRoad,
@@ -322,6 +325,31 @@ class WifoodApiImpl @Inject constructor(
             }
         }
         return tmapSearchResult
+    }
+
+    override fun getTMapReverseGeocoding(latLng: LatLng): LiveData<String> {
+        val address = MutableLiveData<String>()
+        val tmapData = TMapData()
+        thread(start = true) {
+            try {
+                val tMapAddressInfo =
+                    tmapData.reverseGeocoding(latLng.latitude, latLng.longitude, "A10")
+                val firstAddress = tMapAddressInfo.strCity_do + " " + tMapAddressInfo.strGu_gun
+                var roadAddress =
+                    firstAddress + " " + tMapAddressInfo.strRoadName + " " + tMapAddressInfo.strBuildingIndex
+                if (tMapAddressInfo.strBuildingName.isNotEmpty())
+                    roadAddress += " (" + tMapAddressInfo.strBuildingName + ")"
+                var oldAddress =
+                    firstAddress + " " + tMapAddressInfo.strLegalDong
+                if (tMapAddressInfo.strRi.isNotEmpty())
+                    oldAddress += " " + tMapAddressInfo.strRi
+                oldAddress += " " + tMapAddressInfo.strBunji
+                address.postValue("$roadAddress/$oldAddress")
+            } catch (e: Exception) {
+                Timber.e(e.message)
+            }
+        }
+        return address
     }
 
     override suspend fun requestCertNumber(phoneNumber: String): String {

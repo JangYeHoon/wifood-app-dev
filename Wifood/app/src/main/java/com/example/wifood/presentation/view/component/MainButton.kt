@@ -29,7 +29,7 @@ val mainButtonHeightValue = 46
 fun MainButton(
     text: String,
     onClick: () -> Unit,
-    activate: Boolean = true
+    activate: Boolean = true,
 ) {
 
     TextButton(
@@ -65,7 +65,7 @@ fun MainButtonInversed(
         shape = RoundedCornerShape(23.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(46.dp),
+            .height(mainButtonHeightValue.dp),
         border = BorderStroke(1.dp, MainColor)
     ) {
         Text(
