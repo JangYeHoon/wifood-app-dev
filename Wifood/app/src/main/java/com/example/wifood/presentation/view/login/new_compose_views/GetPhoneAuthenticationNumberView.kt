@@ -90,6 +90,7 @@ fun GetPhoneAuthenticationNumberView(
                 modifier = Modifier
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
+                    .fillMaxSize()
             ) {
                 Spacer(Modifier.weight(1f))
                 Text(
@@ -141,17 +142,20 @@ fun GetPhoneAuthenticationNumberView(
                         }
                     }
                 }
-                Spacer(Modifier.height(100.dp))
                 Spacer(Modifier.weight(1f))
-                MainButtonInversed(
-                    text = "인증번호 재발송",
-                    onClick = {
-                        timer = 150
-                        viewModel.onEvent(SignUpEvent.RequestCertNumber)
-                    }
-                )
-                Spacer(Modifier.height(buttonBottomValue.dp))
+                Spacer(modifier = Modifier.height(200.dp))
             }
+            MainButtonInversed(
+                text = "인증번호 재발송",
+                onClick = {
+                    timer = 150
+                    viewModel.onEvent(SignUpEvent.RequestCertNumber)
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = buttonBottomValue.dp)
+                    .padding(sidePaddingValue.dp)
+            )
         }
     }
 }

@@ -56,7 +56,7 @@ fun FindMyLocationView(
                     viewModel.onEvent(SignUpEvent.AddressChanged(it))
                 },
                 onBackClicked = {
-                    // TODO
+                    navController.navigateUp()
                 },
                 onDeleteClicked = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(""))

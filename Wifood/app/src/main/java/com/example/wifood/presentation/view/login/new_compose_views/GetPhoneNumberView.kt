@@ -61,7 +61,7 @@ fun GetPhoneNumberView(
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()

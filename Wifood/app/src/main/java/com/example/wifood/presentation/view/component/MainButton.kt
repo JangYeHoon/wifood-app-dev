@@ -56,13 +56,14 @@ fun MainButton(
 
 @Composable
 fun MainButtonInversed(
-    text:String = "인증번호 재발송",
-    onClick: () -> Unit
-){
+    text: String = "인증번호 재발송",
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedButton(
         onClick = onClick,
         shape = RoundedCornerShape(23.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(46.dp),
         border = BorderStroke(1.dp, MainColor)

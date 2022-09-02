@@ -34,7 +34,7 @@ fun YOGORadioButton(
 
     TextButton(
         shape = CircleShape,
-        onClick = {},
+        onClick = onClick,
         colors = if (selected) ButtonDefaults.outlinedButtonColors(
             contentColor = MainColor,
         ) else ButtonDefaults.buttonColors(backgroundColor = Color.White),
@@ -44,8 +44,8 @@ fun YOGORadioButton(
             .clickable(
                 indication = null,
                 interactionSource = interactionSource
-            ){
-                onClick
+            ) {
+
             }
     )
     {

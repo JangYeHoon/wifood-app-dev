@@ -204,6 +204,18 @@ class SignUpViewModel @Inject constructor(
      * 2. 인증번호 검증
      */
     private fun tempVerify(certNumber: String, timer: Int): Boolean {
-        return true // certNumber == _state.value.reqCertNumber
+//        if (timer == 0) {
+//            viewModelScope.launch {
+//                validateEventChannel.send(ValidationEvent.Error("제한시간이 초과되었습니다. 다시 시도해주세요."))
+//            }
+//            return false
+//        }
+//        if (certNumber != _state.value.reqCertNumber) {
+//            viewModelScope.launch {
+//                validateEventChannel.send(ValidationEvent.Error("인증번호가 일치하지 않습니다."))
+//            }
+//            return false
+//        }
+        return true
     }
 }
