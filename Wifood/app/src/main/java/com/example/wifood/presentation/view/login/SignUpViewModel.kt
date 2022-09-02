@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.domain.model.Taste
+import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
@@ -19,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -126,7 +128,7 @@ class SignUpViewModel @Inject constructor(
                 }
             }
             is SignUpEvent.AddressClicked -> {
-                SignUpData.address = event.address
+                SignUpData.address = event.address ?: _state.value.address
             }
             is SignUpEvent.AgreementClicked -> {
                 _state.value = SignUpState(
@@ -143,14 +145,46 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.TasteCreated -> {
                 SignUpData.taste = Taste(
-                    userId = "Test",
-                    tasteId = 1,
+                    userId = SignUpData.phoneNumber,
                     spicy = _state.value.taste[0],
                     salty = _state.value.taste[2],
                     acidity = _state.value.taste[4],
                     sour = _state.value.taste[3],
-                    sweet = _state.value.taste[1]
+                    sweet = _state.value.taste[1],
+                    cucumber = SignUpData.cucumberClicked,
+                    coriander = SignUpData.corianderClicked,
+                    mintChoco = SignUpData.mintChokoClicked,
+                    eggplant = SignUpData.eggplantClicked
                 )
+                SignUpData.user = User(
+                    phoneNumber = SignUpData.phoneNumber,
+                    address = SignUpData.address,
+                    birthday = SignUpData.birthday,
+                    gender = if (SignUpData.gender == "남성") 1 else 0,
+                    groupList = emptyList(),
+                    taste = SignUpData.taste
+                )
+                viewModelScope.launch {
+                    useCases.InsertUser(SignUpData.user).collectLatest { result ->
+                        when (result) {
+                            is Resource.Success -> {
+                                validateEventChannel.send(ValidationEvent.Success)
+                                _state.value = state.value.copy(isLoading = false)
+                            }
+                            is Resource.Loading -> {
+                                _state.value = state.value.copy(isLoading = true)
+                            }
+                            is Resource.Error -> {
+                                validateEventChannel.send(
+                                    ValidationEvent.Error(
+                                        result.message ?: "Unkwoun Error"
+                                    )
+                                )
+                                _state.value = state.value.copy(isLoading = false)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

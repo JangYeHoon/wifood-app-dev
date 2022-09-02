@@ -8,10 +8,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Taste(
     val userId: String,
-    val tasteId: Int,
     val spicy: Int,
     val salty: Int,
     val acidity: Int,
     val sour: Int,
-    val sweet: Int
+    val sweet: Int,
+    val cucumber: Boolean,
+    val coriander: Boolean,
+    val mintChoco: Boolean,
+    val eggplant: Boolean
 ) : Parcelable

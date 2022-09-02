@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SignUpCompleteView(
     navController: NavController,
-){
+) {
     val scrollState = rememberScrollState()
     LaunchedEffect(true) {
         delay(1500L)

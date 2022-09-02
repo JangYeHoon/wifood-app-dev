@@ -111,7 +111,7 @@ fun PersonalAgreementsView(
                         )
                     }
                     if (showPersonalAgreementDialog.value)
-                        PersonalAgreementsDialogView(showPersonalAgreementDialog)
+                        PersonalAgreementsDialogView(viewModel, showPersonalAgreementDialog)
                 }
                 Spacer(Modifier.weight(1f))
                 MainButton(

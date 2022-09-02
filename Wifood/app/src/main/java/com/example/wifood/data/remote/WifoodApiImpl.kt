@@ -202,7 +202,7 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertUser(user: User) {
-        db.push().setValue(user)
+        db.child(user.phoneNumber).setValue(user)
     }
 
     override fun insertPlaceImages(

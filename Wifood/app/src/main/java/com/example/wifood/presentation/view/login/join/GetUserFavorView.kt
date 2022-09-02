@@ -23,9 +23,11 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Black2Color
@@ -69,16 +71,36 @@ fun GetUserFavorContent(
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
     val scrollState = rememberScrollState()
+    val state = viewModel.state.value
+
+    LaunchedEffect(true) {
+        viewModel.validationEvents.collect { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    navController.navigate(Route.Complete.route)
+                }
+                is ValidationEvent.Error -> {
+                    /*
+
+                     */
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
+        if (state.isLoading) {
+            ProgressIndicator()
+        }
+
         Column(
             modifier = Modifier
                 .padding(horizontal = sidePaddingValue.dp)
                 .verticalScroll(scrollState)
-        ){
+        ) {
             Spacer(Modifier.weight(1f))
             Spacer(Modifier.height(30.dp))
             Icon(
@@ -118,7 +140,6 @@ fun GetUserFavorContent(
                 text = "완료하기",
                 onClick = {
                     viewModel.onEvent(SignUpEvent.TasteCreated)
-                    navController.navigate(Route.Complete.route)
                 }
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
