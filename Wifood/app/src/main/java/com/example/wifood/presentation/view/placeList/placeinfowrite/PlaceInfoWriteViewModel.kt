@@ -137,6 +137,15 @@ class PlaceInfoWriteViewModel @Inject constructor(
             }
             is PlaceInfoWriteFormEvent.PlaceImagesAdd -> {
                 formState.placeImages.add(event.image)
+                formState =
+                    formState.copy(
+                        placeImagesReCompose =
+                        if (formState.placeImagesReCompose == "1")
+                            "2"
+                        else
+                            "1"
+                    )
+                Timber.i(formState.placeImages.toString())
             }
             is PlaceInfoWriteFormEvent.ImageNameChange -> {
                 formState = formState.copy(currentPhotoPath = event.imageName)

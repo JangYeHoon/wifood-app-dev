@@ -53,9 +53,9 @@ fun SplashView(
         navController.popBackStack()
         // 앱을 맨 처음 실행했을 단 한 번의 경우에만 Onboarding 실행
         if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
-            navController.navigate(Route.Onboarding.route)
+            navController.navigate(Route.Main.route)
         } else {
-            navController.navigate(Route.GetPhoneNumber.route)
+            navController.navigate(Route.Main.route)
         }
     }
 

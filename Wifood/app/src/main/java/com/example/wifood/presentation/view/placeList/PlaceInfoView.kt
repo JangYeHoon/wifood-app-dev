@@ -163,7 +163,7 @@ fun PlaceInfoMainContent(
             Row {
                 for (i in 1..5) {
                     SingleRatingStar(
-                        isClicked = i < placeInfoScore.toInt(),
+                        isClicked = i <= placeInfoScore.toInt(),
                         starSize = 20
                     )
                     Spacer(Modifier.width(2.dp))
