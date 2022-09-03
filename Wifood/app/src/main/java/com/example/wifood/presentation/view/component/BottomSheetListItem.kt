@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.example.wifood.R
+import com.example.wifood.view.ui.theme.bottomSheetButtonColor
 
 @Composable
 fun BottomSheetListItem(icon: ImageVector, title: String, onItemClick: (String) -> Unit) {
@@ -21,9 +22,10 @@ fun BottomSheetListItem(icon: ImageVector, title: String, onItemClick: (String) 
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = { onItemClick(title) })
-            .height(55.dp)
-            .background(color = Color(0xFF262626))
-            .padding(start = 15.dp), verticalAlignment = Alignment.CenterVertically
+            .height(mainButtonHeightValue.dp)
+            .background(color = bottomSheetButtonColor)
+            .padding(start = 15.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 //        Icon(painter = painterResource(id = icon), contentDescription = "Share", tint = Color.White)
         Icon(imageVector = icon, contentDescription = "Icon")

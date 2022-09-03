@@ -23,6 +23,7 @@ import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.login.util.phoneFilter
+import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SelectGroupView
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
@@ -68,6 +69,8 @@ fun GetPhoneNumberView(
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
             ) {
+                //TEST line
+
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = "휴대폰 번호를\n입력해주세요.",

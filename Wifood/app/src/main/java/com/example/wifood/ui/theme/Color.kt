@@ -35,3 +35,6 @@ val Black2Color = Color(0xFF424242)
 val KindRateColor = Color(0xFFFFB154)
 val MoodRateColor = Color(0xFFFF9534)
 val DeliciousRateColor = Color(0xFFFF8C4B)
+
+val dialogCenterDividerColor = Color(0xFFD9D9D9)
+val bottomSheetButtonColor = Color(0xFF262626)

@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.login.new_compose_views
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -111,14 +112,18 @@ fun FindMyLocationView(
 }
 
 @Composable
-private fun CustomTextField(
+fun CustomTextField(
     address: String,
     onValueChanged: (String) -> Unit,
     onDeleteClicked: () -> Unit,
     onSearchClicked: () -> Unit,
     onBackClicked: () -> Unit,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    placeholder:String = "동명(읍,면)으로 검색"
 ) {
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     TextField(
         value = address,
         onValueChange = onValueChanged,
@@ -148,13 +153,13 @@ private fun CustomTextField(
         ),
         textStyle = TextStyle(
             fontFamily = mainFont,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             color = Gray01Color
         ),
         placeholder = {
             Text(
-                text = "동명(읍,면)으로 검색",
+                text = placeholder,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
@@ -166,7 +171,7 @@ private fun CustomTextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (address.isNotBlank()) {
-                    IconButton(
+                    /*IconButton(
                         onClick = onDeleteClicked,
                         modifier = Modifier.wrapContentSize()
                     ) {
@@ -176,7 +181,20 @@ private fun CustomTextField(
                             modifier = Modifier.wrapContentSize(),
                             tint = Color.Unspecified
                         )
-                    }
+                    }*/
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_delete_text),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource
+                            ){
+                                onDeleteClicked()
+                            },
+                        tint = Color.Unspecified
+                    )
                 }
                 IconButton(
                     onClick = onSearchClicked,

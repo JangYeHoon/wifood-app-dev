@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.presentation.view.groupComponet.SimpleInputView
 
+@Preview(showBackground = true)
 @Composable
 fun SetPlaceGroupView(
 

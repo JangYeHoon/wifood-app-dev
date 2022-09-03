@@ -1,0 +1,110 @@
+package com.example.wifood.presentation.view.placeList.newPlaceListComposeView
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.wifood.R
+import com.example.wifood.presentation.view.component.YOGOSwitch
+import com.example.wifood.presentation.view.groupComponet.SwitchWithText
+import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOTextPM15
+import com.example.wifood.ui.theme.fontMiddleSchool
+import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.sidePaddingValue
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Preview(showBackground = true)
+@Composable
+fun SetPlaceInfoBase(
+
+){
+    val scrollState = rememberScrollState()
+    val scaffoldState = rememberScaffoldState()
+    Scaffold(
+        topBar = {
+            PlaceInputTopAppBar(
+                leftButtonClicked = {
+
+                },
+                rightButtonClicked = {
+
+                },
+                rightButtonOn = true
+            )
+        }
+    ){
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = sidePaddingValue.dp)
+            ){
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_1by4),
+                    contentDescription = "",
+                    modifier = Modifier.wrapContentSize(),
+                    tint = Color.Unspecified
+                )
+                Spacer(Modifier.height(6.dp))
+                YOGOLargeText(
+                    text = "맛집 정보를 등록해주세요.",
+                )
+                Spacer(Modifier.height(24.dp))
+                YOGOSubTextFieldWithButton(
+                    titleText = "맛집 그룹",
+                    inputText = "",
+                    placeholder = "맛집 그룹을 입력해주세요",
+                    onTextFieldClick = {}
+                )
+                Spacer(Modifier.height(24.dp))
+                YOGOSubTextFieldWithButton(
+                    titleText = "맛집 이름",
+                    inputText = "",
+                    placeholder = "맛집 이름을 입력해주세요",
+                    onTextFieldClick = {}
+                )
+                Spacer(Modifier.height(24.dp))
+                YOGOTextPM15(
+                    text = "방문 여부"
+                )
+                YOGOSwitch(
+                    checked = false,
+                    onCheckedChange = {},
+                    modifier = Modifier
+                )
+                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.weight(1f))
+                DoubleButton(
+                    leftButtonText = "건너뛰기",
+                    leftButtonClicked = {},
+                    rightButtonText = "맛 평가하기",
+                    rightButtonClicked = {}
+                )
+                Spacer(Modifier.weight(1f))
+            }
+        }
+    }
+}
