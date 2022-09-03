@@ -1,6 +1,10 @@
 package com.example.wifood.presentation.view.login.new_compose_views
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,11 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
@@ -27,6 +33,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -38,6 +45,18 @@ fun GetPhoneNumberView(
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
     var phoneNumberValidation by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                navController.navigate(Route.GetAuthNumber.route)
+            } else {
+                Timber.i("false")
+            }
+        }
 
     LaunchedEffect(true) {
         viewModel.validationEvents.collectLatest { event ->
@@ -118,7 +137,17 @@ fun GetPhoneNumberView(
                 MainButton(
                     text = "인증번호 받기",
                     onClick = {
-                        navController.navigate(Route.GetAuthNumber.route)
+                        when (PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.SEND_SMS
+                            ) -> {
+                                navController.navigate(Route.GetAuthNumber.route)
+                            }
+                            else -> {
+                                permissionLauncher.launch(Manifest.permission.SEND_SMS)
+                            }
+                        }
                     },
                     activate = phoneNumberValidation
                 )

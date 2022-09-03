@@ -1,7 +1,9 @@
 package com.example.wifood.presentation.view.placeList.component
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,11 +14,13 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wifood.presentation.view.component.BottomSheetListItem
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 
 @Composable
@@ -33,6 +37,21 @@ fun CameraAndAlbumBottomSheetContent(
                     val file = File(viewModel.formState.currentPhotoPath)
                     viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceImagesAdd(Uri.fromFile(file)))
                 }
+            }
+        }
+
+    val cameraPermissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                scope.launch {
+                    takePhotoFromCameraLauncher.launch(
+                        viewModel.getPictureIntent(context)
+                    )
+                }
+            } else {
+                Timber.i("false")
             }
         }
 
@@ -58,15 +77,28 @@ fun CameraAndAlbumBottomSheetContent(
                 }
             }
         }
+
     Column {
         BottomSheetListItem(
             icon = Icons.Default.PhotoCamera,
             title = "카메라"
         ) {
-            scope.launch {
-                takePhotoFromCameraLauncher.launch(
-                    viewModel.getPictureIntent(context)
-                )
+            when (PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.CAMERA
+                ) -> {
+                    scope.launch {
+                        takePhotoFromCameraLauncher.launch(
+                            viewModel.getPictureIntent(context)
+                        )
+                    }
+                    Timber.i("Camera permission Accepted")
+                }
+                else -> {
+                    Timber.i("Camera permission Denied")
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }
             }
         }
         BottomSheetListItem(
