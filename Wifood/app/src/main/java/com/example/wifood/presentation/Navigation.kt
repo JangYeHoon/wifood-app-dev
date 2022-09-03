@@ -17,9 +17,6 @@ import com.example.wifood.presentation.view.EditProfileComposeView
 import com.example.wifood.presentation.view.MyPageComposeView
 import com.example.wifood.presentation.view.login.*
 import com.example.wifood.presentation.view.login.join.GetUserFavorContent
-import com.example.wifood.presentation.view.login.join.JoininCompleteView
-import com.example.wifood.presentation.view.login.join.JoininView
-import com.example.wifood.presentation.view.login.join.TestView
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
 import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView
@@ -32,7 +29,10 @@ import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
 import com.example.wifood.presentation.view.placeList.group.GroupEditView
 import com.example.wifood.presentation.view.placeList.group.GroupNameInputView
-import com.example.wifood.presentation.view.placeList.placeinfowrite.*
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputMenuEvaluation
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputNameAndVisited
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputReviewAndImages
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
 import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
@@ -141,18 +141,6 @@ fun Navigation() {
             }
         ) {
             MobileAuthenticationView(navController = (navController))
-        }
-        composable(
-            route = "${Route.Joinin.route}?email={email}",
-            arguments = listOf(
-                navArgument("email") {
-                    nullable = true
-                    defaultValue = null
-                    type = NavType.StringType
-                },
-            )
-        ) {
-            JoininView(navController, it)
         }
         composable(
             route = "${Route.EditPlace.route}/{place}",

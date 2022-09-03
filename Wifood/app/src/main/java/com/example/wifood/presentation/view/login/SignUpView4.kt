@@ -84,12 +84,6 @@ fun SignUpView4(
                 color = Gray03Color
             )
             Spacer(Modifier.height(57.dp))
-            BasicTextField(
-                value = state.birthday,
-                onValueChange = {
-                    viewModel.onEvent(SignUpEvent.CertChanged(it))
-                }
-            )
             Box(
                 modifier = Modifier
                     .wrapContentSize()

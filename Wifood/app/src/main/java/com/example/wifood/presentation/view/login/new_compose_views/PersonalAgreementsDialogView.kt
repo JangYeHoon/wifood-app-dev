@@ -20,7 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.wifood.presentation.view.component.DialogCenterDivider
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
@@ -28,6 +31,7 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 @ExperimentalComposeUiApi
 @Composable
 fun PersonalAgreementsDialogView(
+    viewModel: SignUpViewModel,
     showDialog: MutableState<Boolean> = mutableStateOf(false),
 ) {
     Dialog(
@@ -37,7 +41,7 @@ fun PersonalAgreementsDialogView(
         properties = DialogProperties(
             usePlatformDefaultWidth = false
         ),
-    ){
+    ) {
         Surface(
             modifier = Modifier
                 .wrapContentHeight(),
@@ -47,28 +51,23 @@ fun PersonalAgreementsDialogView(
                 bottomStart = 0.dp,
                 bottomEnd = 0.dp),
             color = Color(0xFFFFFFFF)
-        ){
-            PersonalAgreementContent(showDialog)
+        ) {
+            PersonalAgreementContent(viewModel, showDialog)
         }
     }
 }
 
 @Composable
 fun PersonalAgreementContent(
+    viewModel: SignUpViewModel,
     showDialog: MutableState<Boolean> = mutableStateOf(true)
-){
+) {
     val scrollState = rememberScrollState()
 
     Column(
     ) {
         Spacer(Modifier.height(10.dp))
-        Divider(
-            thickness = 4.dp,
-            modifier = Modifier
-                .width(62.dp)
-                .align(Alignment.CenterHorizontally),
-            color = Color(0xFFD9D9D9)
-        )
+        DialogCenterDivider()
         Spacer(Modifier.height(10.dp))
         Column(
             modifier = Modifier
@@ -96,6 +95,7 @@ fun PersonalAgreementContent(
             MainButton(
                 text = "약관에 동의하기",
                 onClick = {
+                    viewModel.onEvent(SignUpEvent.AgreementClicked)
                     showDialog.value = false
                 }
             )

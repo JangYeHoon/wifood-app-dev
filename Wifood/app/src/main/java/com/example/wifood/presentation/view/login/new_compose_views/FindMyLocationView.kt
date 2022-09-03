@@ -2,11 +2,14 @@ package com.example.wifood.presentation.view.login.new_compose_views
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -19,6 +22,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
@@ -56,14 +60,14 @@ fun FindMyLocationView(
                     viewModel.onEvent(SignUpEvent.AddressChanged(it))
                 },
                 onBackClicked = {
-                    // TODO
+                    navController.navigateUp()
                 },
                 onDeleteClicked = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(""))
                 },
                 onSearchClicked = {
                     viewModel.onEvent(SignUpEvent.ButtonClicked)
-                },
+                }
             )
             Spacer(Modifier.height(12.dp))
             LazyColumn(
@@ -108,13 +112,18 @@ fun FindMyLocationView(
 }
 
 @Composable
-private fun CustomTextField(
+fun CustomTextField(
     address: String,
     onValueChanged: (String) -> Unit,
     onDeleteClicked: () -> Unit,
     onSearchClicked: () -> Unit,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    placeholder:String = "동명(읍,면)으로 검색"
 ) {
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
     TextField(
         value = address,
         onValueChange = onValueChanged,
@@ -144,13 +153,13 @@ private fun CustomTextField(
         ),
         textStyle = TextStyle(
             fontFamily = mainFont,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             color = Gray01Color
         ),
         placeholder = {
             Text(
-                text = "동명(읍,면)으로 검색",
+                text = placeholder,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,
@@ -160,9 +169,9 @@ private fun CustomTextField(
         trailingIcon = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 if (address.isNotBlank()) {
-                    IconButton(
+                    /*IconButton(
                         onClick = onDeleteClicked,
                         modifier = Modifier.wrapContentSize()
                     ) {
@@ -172,7 +181,20 @@ private fun CustomTextField(
                             modifier = Modifier.wrapContentSize(),
                             tint = Color.Unspecified
                         )
-                    }
+                    }*/
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_delete_text),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource
+                            ){
+                                onDeleteClicked()
+                            },
+                        tint = Color.Unspecified
+                    )
                 }
                 IconButton(
                     onClick = onSearchClicked,
@@ -186,7 +208,8 @@ private fun CustomTextField(
                     )
                 }
             }
-        }
+        },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
     )
 }
 
@@ -225,7 +248,7 @@ fun SearchPlaceInfoCard(
                                 style = SpanStyle(
                                     fontFamily = mainFont,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp,
+                                    fontSize = 18.sp,
                                     color = MainColor
                                 ),
                             ) {

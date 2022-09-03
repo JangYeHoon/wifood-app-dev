@@ -1,26 +1,34 @@
 package com.example.wifood.presentation.view.placeList.newPlaceInfo
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Preview(showBackground = true)
 @Composable
 fun ModifyPlaceGroupView(
 ){
@@ -91,40 +99,77 @@ fun ModifyPlaceGroupView(
 fun YOGOBaseTextField(
     text:String,
     onValueChange:(String)->Unit,
-    placeholderText:String
+    placeholderText:String,
+    selectable:Boolean = false,
+    selectFunction:()->Unit = {}
 ){
-    TextField(
-        value = text,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth(),
-        textStyle = TextStyle(
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Normal,
-            fontSize = 18.sp,
-            color = Gray01Color
-        ),
-        placeholder = {
-            Text(
-                text = placeholderText,
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+    Column(
+        modifier = if (selectable){
+            Modifier.clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ){
+                selectFunction()
+            }
+        } else {
+            Modifier
+        }
+    ){
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            textStyle = TextStyle(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 18.sp,
-                color = EnableColor
-            )
-        },
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.White,
-            cursorColor = MainColor,
-            textColor = Gray01Color,
-            placeholderColor = EnableColor,
-            focusedIndicatorColor = MainColor,
-            unfocusedIndicatorColor = EnableColor
-        ),
-        visualTransformation = VisualTransformation.None,
-        keyboardOptions = KeyboardOptions(
-            //keyboardType = KeyboardType.Phone
+                color = Gray01Color,
+            ),
+            placeholder = {
+                Text(
+                    text = placeholderText,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp,
+                    color = EnableColor
+                )
+            },
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                cursorColor = MainColor,
+                textColor = Gray01Color,
+                placeholderColor = EnableColor,
+                focusedIndicatorColor = MainColor,
+                unfocusedIndicatorColor = EnableColor
+            ),
+            visualTransformation = VisualTransformation.None,
+            keyboardOptions = KeyboardOptions(
+                //keyboardType = KeyboardType.Phone
+            ),
+            trailingIcon = {
+                if(selectable){
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_right_arrow),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource
+                            ) {
+                                selectFunction()
+                            },
+                        tint = Color.Unspecified
+                    )
+                }
+            }
         )
-    )
+    }
 }
 

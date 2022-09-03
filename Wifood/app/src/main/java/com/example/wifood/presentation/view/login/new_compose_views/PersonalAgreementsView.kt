@@ -56,7 +56,7 @@ fun PersonalAgreementsView(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
-            ){
+            ) {
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = "이용약관에\n동의해주세요",
@@ -68,14 +68,14 @@ fun PersonalAgreementsView(
                 Spacer(Modifier.height(48.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                ){
+                ) {
                     IconButton(
                         onClick = {
                             viewModel.onEvent(SignUpEvent.AgreementClicked)
                         },
                         modifier = Modifier
                             .wrapContentSize()
-                    ){
+                    ) {
                         Icon(
                             ImageVector.vectorResource(id = if (state.agreement) R.drawable.ic_checked_color else R.drawable.ic_check_button),
                             contentDescription = "",
@@ -88,14 +88,13 @@ fun PersonalAgreementsView(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable (
+                            .clickable(
                                 indication = null,
                                 interactionSource = interactionSource
-                            ){
+                            ) {
                                 showPersonalAgreementDialog.value = true
-                                viewModel.onEvent(SignUpEvent.AgreementClicked)
                             }
-                    ){
+                    ) {
                         Text(
                             text = "이용약관 동의(필수)",
                             fontFamily = mainFont,
@@ -112,7 +111,7 @@ fun PersonalAgreementsView(
                         )
                     }
                     if (showPersonalAgreementDialog.value)
-                        PersonalAgreementsDialogView(showPersonalAgreementDialog)
+                        PersonalAgreementsDialogView(viewModel, showPersonalAgreementDialog)
                 }
                 Spacer(Modifier.weight(1f))
                 MainButton(

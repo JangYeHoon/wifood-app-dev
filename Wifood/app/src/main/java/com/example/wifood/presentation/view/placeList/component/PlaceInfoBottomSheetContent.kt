@@ -54,7 +54,7 @@ fun PlaceInfoBottomSheetContent(
             viewModel.onEvent(PlaceInfoEvent.PlaceDeleteEvent)
             navController.popBackStack()
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
         BottomSheetListItem(
             icon = Icons.Default.Delete,
             title = "취소"

@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList.placeListComposeView
+package com.example.wifood.presentation.view.placeList.newPlaceListComposeView
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.util.TableInfo
 import com.example.wifood.R
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.ui.theme.mainFont
@@ -60,7 +59,7 @@ fun PlaceInputImagesAndMenuEvaluationContent() {
             ) {
                 Spacer(Modifier.weight(1f))
                 Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_3by4),
+                    ImageVector.vectorResource(id = R.drawable.ic_4by4),
                     contentDescription = "",
                     modifier = Modifier.wrapContentSize(),
                     tint = Color.Unspecified
@@ -138,7 +137,11 @@ fun ReviewTextField(
     onValueChange: (String) -> Unit = {},
     placeholder: String = "맛집 리뷰",
     modifier: Modifier = Modifier
-        .border(1.dp, Color(0xFFF1F1F1))
+        .border(
+            width = 2.dp,
+            color = Color(0xFFF1F1F1),
+            shape = RoundedCornerShape(5.dp)
+        )
         .height(120.dp)
         .fillMaxWidth()
 ) {
@@ -160,13 +163,16 @@ fun ReviewTextField(
             modifier = modifier,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Unspecified,
+                unfocusedIndicatorColor = Color.Unspecified,
+                cursorColor = MainColor
             ),
             textStyle = TextStyle(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
                 color = Gray01Color
-            )
+            ),
         )
         Text(
             text = text.length.toString() + "/500",
@@ -236,7 +242,9 @@ fun PhotoListUp(
 @Composable
 fun PlaceInputTopAppBar(
     leftButtonClicked:() -> Unit = {},
-    rightButtonClicked:() -> Unit = {}
+    rightButtonClicked:() -> Unit = {},
+    leftButtonOn: Boolean = true,
+    rightButtonOn: Boolean = false
 ){
     val interactionSource = remember {
         MutableInteractionSource()
@@ -246,35 +254,39 @@ fun PlaceInputTopAppBar(
         title = {
         },
         navigationIcon = {
-            IconButton(
-                onClick = leftButtonClicked,
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = "left button of top app bar",
-                    modifier = Modifier.wrapContentSize(),
-                    tint = Color.Unspecified
-                )
+            if (leftButtonOn){
+                IconButton(
+                    onClick = leftButtonClicked,
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
             }
         },
         backgroundColor = Color.White,
         actions = {
-            Text(
-                text = "등록하기",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
-                color = MainColor,
-                modifier = Modifier
-                    .clickable (
-                        indication = null,
-                        interactionSource = interactionSource
-                    ){
-                        rightButtonClicked
-                    }
-                    .padding(end = 20.dp)
-            )
+            if (rightButtonOn){
+                Text(
+                    text = "등록하기",
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MainColor,
+                    modifier = Modifier
+                        .clickable (
+                            indication = null,
+                            interactionSource = interactionSource
+                        ){
+                            rightButtonClicked
+                        }
+                        .padding(end = 20.dp)
+                )
+            }
         },
         contentColor = Color(0xFFF1F1F1),
         elevation = 1.dp

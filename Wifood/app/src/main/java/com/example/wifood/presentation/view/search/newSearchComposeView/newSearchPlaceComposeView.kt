@@ -1,0 +1,67 @@
+package com.example.wifood.presentation.view.search.newSearchComposeView
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.login.new_compose_views.CustomTextField
+import com.example.wifood.presentation.view.login.new_compose_views.SearchPlaceInfoCard
+import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.EnableColor
+import com.example.wifood.view.ui.theme.sidePaddingValue
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Preview(showBackground = true)
+@Composable
+fun NewSearchPlaceComposeView(
+
+){
+    val scaffoldState = rememberScaffoldState()
+
+    Scaffold(
+        scaffoldState = scaffoldState
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            CustomTextField(
+                address = "강남역",
+                onValueChanged = {},
+                onDeleteClicked = {},
+                onSearchClicked = {},
+                onBackClicked = {},
+                placeholder = "맛집, 주소 검색"
+            )
+            Spacer(Modifier.height(12.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = sidePaddingValue.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    SearchPlaceInfoCard(
+                        address = "강남역 양재역[2호선]",
+                        name = "서울 강남구 역삼동 858",
+                        search = "강남역",
+                        onClick = {}
+                    )
+                }
+            }
+        }
+    }
+
+}
