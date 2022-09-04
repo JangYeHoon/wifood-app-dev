@@ -28,7 +28,6 @@ import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 
-@Preview(showBackground = true)
 @Composable
 fun MySettingView(
 
