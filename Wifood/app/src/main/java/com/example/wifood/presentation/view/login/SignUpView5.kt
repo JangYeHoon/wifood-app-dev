@@ -23,6 +23,7 @@ import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.login.component.YOGORadioButton
 import com.example.wifood.presentation.view.login.util.SignUpData
+import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SelectGroupView
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Black2Color
@@ -43,6 +44,7 @@ fun SignUpView5(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

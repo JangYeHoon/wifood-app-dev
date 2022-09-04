@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
@@ -38,6 +39,7 @@ import com.example.wifood.presentation.view.main.MainState
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable

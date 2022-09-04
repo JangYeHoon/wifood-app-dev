@@ -74,6 +74,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun init() {
+        WifoodApp.pref.setString("user_id", "kmh@naver.com")
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         useCases.GetUserAllData(userId).observeForever { it ->
             state = state.copy(

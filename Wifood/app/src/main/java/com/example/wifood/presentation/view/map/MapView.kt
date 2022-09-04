@@ -7,6 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -66,6 +68,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun MapView(
@@ -90,18 +93,42 @@ fun MapView(
     val builder = LatLngBounds.Builder()
     var locationPermissionGranted = false
 
+    fun moveCameraCurrentLocation() {
+        val locationResult = fusedLocationProviderClient.lastLocation
+        locationResult.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                if (task.result != null) {
+                    viewModel.onEvent(MainEvent.LocationChanged(task.result))
+                    if (placeLat == 10000f) {
+                        viewModel.onEvent(
+                            MainEvent.CameraMove(
+                                LatLng(
+                                    task.result.latitude,
+                                    task.result.longitude
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                moveCameraCurrentLocation()
+            } else {
+                Timber.i("false")
+            }
+        }
+
     val uiSettings = remember {
         MapUiSettings(
             zoomControlsEnabled = false
         )
-    }
-
-    fun checkPermission(permission: String) {
-        if (context.checkPermission(permission)) {
-            locationPermissionGranted = true
-        } else {
-            context.getActivity().shouldShowRationale(permission)
-        }
     }
 
     LaunchedEffect(true) {
@@ -109,28 +136,16 @@ fun MapView(
         /*
            Take permission through popup message
         */
-        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-        if (locationPermissionGranted) {
-            val locationResult = fusedLocationProviderClient.lastLocation
-            locationResult.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result != null) {
-                        viewModel.onEvent(MainEvent.LocationChanged(task.result))
-                        if (placeLat == 10000f) {
-                            viewModel.onEvent(
-                                MainEvent.CameraMove(
-                                    LatLng(
-                                        task.result.latitude,
-                                        task.result.longitude
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                moveCameraCurrentLocation()
             }
-        } else {
-            viewModel.onUiEvent(UiEvent.ShowSnackBar("Permission denied."))
+            else -> {
+                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
         }
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
