@@ -24,15 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.YOGOBasicText
+import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.YOGOBasicText
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.YOGOLargeText
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun SetPlaceInfoMenuInfo() {
     val scrollState = rememberScrollState()
@@ -69,8 +68,8 @@ fun SetPlaceInfoMenuInfo() {
                     tint = Color.Unspecified
                 )
                 Spacer(Modifier.height(6.dp))
-                YOGOBasicText(
-                    largeText = "맛집 정보를 등록해주세요.",
+                YOGOLargeText(
+                    text = "맛집 정보를 등록해주세요."
                 )
                 Spacer(Modifier.height(24.dp))
                 YOGOSubTextField(
@@ -119,7 +118,6 @@ fun SetPlaceInfoMenuInfo() {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun YOGOSubTextField(
     titleText: String = "메뉴명",

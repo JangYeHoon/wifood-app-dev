@@ -24,13 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun PlaceInputImagesAndMenuEvaluationContent() {
     val scrollState = rememberScrollState()
@@ -88,152 +88,6 @@ fun PlaceInputImagesAndMenuEvaluationContent() {
                     rightButtonClicked = {}
                 )
                 Spacer(Modifier.height(buttonBottomValue.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun YOGOBasicText(
-    largeText: String = "",
-    explainText: String = ""
-) {
-    YOGOLargeText(text = largeText)
-    if (explainText.isNotEmpty()) {
-        Spacer(Modifier.height(12.dp))
-        YOGOExplainText(text = explainText)
-    }
-}
-
-@Composable
-fun YOGOLargeText(
-    text: String = "맛집 리뷰를 등록해주세요"
-) {
-    Text(
-        text = text,
-        fontFamily = mainFont,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 24.sp,
-        color = Black2Color
-    )
-}
-
-@Composable
-fun YOGOExplainText(
-    text: String = "맛집리뷰와 사진을 등록해주세요"
-) {
-    Text(
-        text = text,
-        fontFamily = mainFont,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        color = Gray03Color
-    )
-}
-
-@Composable
-fun ReviewTextField(
-    text: String = "",
-    onValueChange: (String) -> Unit = {},
-    placeholder: String = "맛집 리뷰",
-    modifier: Modifier = Modifier
-        .border(
-            width = 2.dp,
-            color = Color(0xFFF1F1F1),
-            shape = RoundedCornerShape(5.dp)
-        )
-        .height(120.dp)
-        .fillMaxWidth()
-) {
-    Box(
-
-    ) {
-        TextField(
-            value = text,
-            onValueChange = onValueChange,
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 15.sp,
-                    color = Color(0xFFC4C4C4)
-                )
-            },
-            modifier = modifier,
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.White,
-                focusedIndicatorColor = Color.Unspecified,
-                unfocusedIndicatorColor = Color.Unspecified,
-                cursorColor = MainColor
-            ),
-            textStyle = TextStyle(
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Normal,
-                fontSize = 15.sp,
-                color = Gray01Color
-            ),
-        )
-        Text(
-            text = text.length.toString() + "/500",
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 14.dp, bottom = 10.dp),
-            color = Color(0xFFC4C4C4)
-        )
-    }
-}
-
-@Composable
-fun PhotoDefaultIcon(
-    onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
-        .size(60.dp)
-){
-    IconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            ImageVector.vectorResource(id = R.drawable.ic_place_info_photo_default),
-            contentDescription = "",
-            modifier = Modifier.wrapContentSize(),
-            tint = Color.Unspecified
-        )
-    }
-}
-
-
-@Composable
-fun PhotoListUp(
-    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image)
-){
-    val photoSize = 60
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ){
-        PhotoDefaultIcon(
-            modifier = Modifier.size(photoSize.dp)
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-
-        LazyRow {
-            items(imageList) {
-                Image(
-                    painter = painterResource(id = it),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(photoSize.dp)
-                        .clip(
-                            RoundedCornerShape(5.dp)
-                        ),
-                    contentScale = ContentScale.FillBounds
-                )
-                Spacer(modifier = Modifier.width(6.dp))
             }
         }
     }

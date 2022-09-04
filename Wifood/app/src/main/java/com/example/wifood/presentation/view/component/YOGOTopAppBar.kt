@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.R
 
-//@Preview(showBackground = true)
 @Composable
 fun YOGOTopAppBar(
     text:String = "내 맛집",

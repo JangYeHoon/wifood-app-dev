@@ -8,7 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.presentation.view.groupComponet.SimpleInputView
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun SetPlaceGroupDetailView(
 ){

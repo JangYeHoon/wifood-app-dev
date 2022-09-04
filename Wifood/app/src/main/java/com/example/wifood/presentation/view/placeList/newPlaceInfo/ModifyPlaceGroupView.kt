@@ -28,7 +28,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun ModifyPlaceGroupView(
 ){

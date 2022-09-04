@@ -37,13 +37,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.recyclerview.widget.ItemTouchHelper.UP
+import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-@Preview(showBackground = true)
 @Composable
 fun SetPlaceInfoGroup(
 
@@ -74,7 +74,6 @@ fun SetPlaceInfoGroup(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun SelectGroupView(
 

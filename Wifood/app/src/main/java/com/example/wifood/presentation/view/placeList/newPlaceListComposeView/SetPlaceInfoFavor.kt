@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.SingleRatingStar
+import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.ui.theme.mainFont
@@ -28,7 +29,6 @@ import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun SetPlaceInfoFavor(
 
@@ -66,8 +66,8 @@ fun SetPlaceInfoFavor(
                     tint = Color.Unspecified
                 )
                 Spacer(Modifier.height(6.dp))
-                YOGOBasicText(
-                    largeText = "맛집을 평가해주세요.",
+                YOGOLargeText(
+                    text = "맛집을 평가해주세요."
                 )
                 Spacer(Modifier.height(24.dp))
                 Column(

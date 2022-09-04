@@ -239,7 +239,6 @@ fun PlaceInfoCard(
 }
 
 @ExperimentalCoilApi
-@Preview(showBackground = true)
 @Composable
 fun PlaceListItem(
     itemTitle: String = "회사 근처 카페",

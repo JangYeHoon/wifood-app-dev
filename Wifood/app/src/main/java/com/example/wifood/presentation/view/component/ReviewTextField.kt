@@ -1,0 +1,78 @@
+package com.example.wifood.presentation.view.component
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.Gray01Color
+import com.example.wifood.view.ui.theme.MainColor
+
+@Composable
+fun ReviewTextField(
+    text: String = "",
+    onValueChange: (String) -> Unit = {},
+    placeholder: String = "맛집 리뷰",
+    modifier: Modifier = Modifier
+        .border(
+            width = 2.dp,
+            color = Color(0xFFF1F1F1),
+            shape = RoundedCornerShape(5.dp)
+        )
+        .height(120.dp)
+        .fillMaxWidth()
+) {
+    Box(
+
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 15.sp,
+                    color = Color(0xFFC4C4C4)
+                )
+            },
+            modifier = modifier,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                focusedIndicatorColor = Color.Unspecified,
+                unfocusedIndicatorColor = Color.Unspecified,
+                cursorColor = MainColor
+            ),
+            textStyle = TextStyle(
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 15.sp,
+                color = Gray01Color
+            ),
+        )
+        Text(
+            text = text.length.toString() + "/500",
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 14.dp, bottom = 10.dp),
+            color = Color(0xFFC4C4C4)
+        )
+    }
+}
