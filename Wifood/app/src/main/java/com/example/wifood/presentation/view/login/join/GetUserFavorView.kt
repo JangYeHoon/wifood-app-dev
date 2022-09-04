@@ -21,12 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
@@ -77,6 +79,11 @@ fun GetUserFavorContent(
         viewModel.validationEvents.collect { event ->
             when (event) {
                 is ValidationEvent.Success -> {
+                    /*
+                    must be fixed
+                     */
+                    WifoodApp.pref.setString("user_id", "kmh@naver.com")
+                    WifoodApp.pref.setString("Initial_Flag", "1")
                     navController.navigate(Route.Complete.route)
                 }
                 is ValidationEvent.Error -> {

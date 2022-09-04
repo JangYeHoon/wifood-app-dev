@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -33,21 +34,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.wifood.R
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.main.UiEvent
+import com.example.wifood.presentation.view.map.component.CustomMarker
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.Main
@@ -145,6 +150,12 @@ fun MapView(
             uiSettings = uiSettings,
             cameraPositionState = camera
         ) {
+//            CustomMarker(
+//                context = context,
+//                position = LatLng(35.0, 129.0),
+//                title = "",
+//                iconResourceId = R.drawable.ic_splash_icon
+//            )
             state.places.forEach { place ->
                 Marker(
                     position = LatLng(place.latitude, place.longitude),
@@ -154,10 +165,6 @@ fun MapView(
                 )
             }
             state.currentLocation?.let {
-                Marker(
-                    position = LatLng(it.latitude, it.longitude),
-                    visible = true
-                )
             }
             state.searchResultLatLng?.let {
                 Marker(
@@ -251,15 +258,5 @@ fun MapView(
                 )
             }
         }
-    }
-}
-
-
-private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
-    return ContextCompat.getDrawable(context, vectorResId)?.run {
-        setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-        val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
-        draw(android.graphics.Canvas(bitmap))
-        BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

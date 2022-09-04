@@ -279,7 +279,8 @@ fun EditPlaceView(
                         LazyRow {
                             items(formState.placeImages) { image ->
                                 IconButton(
-                                    onClick = {},
+                                    onClick = {
+                                    },
                                     modifier = Modifier
                                         .width(placeInfoMenuImageSize.dp)
                                         .height(placeInfoMenuImageSize.dp)
