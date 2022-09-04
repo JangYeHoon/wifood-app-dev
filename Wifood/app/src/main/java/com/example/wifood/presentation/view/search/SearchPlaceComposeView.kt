@@ -7,7 +7,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,8 +28,12 @@ import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.login.new_compose_views.CustomTextField
+import com.example.wifood.presentation.view.login.new_compose_views.SearchPlaceInfoCard
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
+import com.example.wifood.presentation.view.search.newSearchComposeView.SearchPlaceEmptyView
 import com.example.wifood.util.getActivity
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
@@ -95,106 +101,61 @@ fun SearchPlaceComposeView(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color.White
     ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            Alignment.Center
-                        ) {
-                            Text(text = "장소 검색")
-                        }
-                    },
-                    navigationIcon = {
-                        IconButton(
-//                        onClick = { navController.popBackStack() },
-                            onClick = { },
-                            modifier = Modifier.size(40.dp)
-                        ) {
-                            Icon(
-                                Icons.Filled.ArrowBack,
-                                contentDescription = ""
-                            )
-                        }
-                    },
-                    backgroundColor = Color.White,
-                    actions = {
-                        Spacer(modifier = Modifier.width(70.dp))
-                    }
-                )
-            }
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextField(
-                        value = formState.searchKeyword,
-                        onValueChange = {
-                            scope.launch {
-                                viewModel.onEvent(
-                                    SearchPlaceFormEvent.SearchKeywordChange(
-                                        it
-                                    )
-                                )
-                            }
-                        },
-                        modifier = Modifier.width(350.dp)
-                    )
-                    IconButton(onClick = {
-                        scope.launch {
-                            viewModel.onEvent(SearchPlaceFormEvent.SearchButtonClick)
-                        }
-                        searchClickChkForSearchResult.value = true
-                    }) {
-                        Icon(Icons.Filled.Search, contentDescription = "")
-                    }
-                }
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    items(formState.searchResults) {
-                        if (formState.searchResults[0].name == "") {
-                            Text(text = "등록이 안된 식당")
-                            MainButton(
-                                text = "직접 등록하기",
-                                onClick = {
-                                    scope.launch {
-                                        modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                    }
-                                }
+            CustomTextField(
+                address = formState.searchKeyword,
+                onValueChanged = {
+                    scope.launch {
+                        viewModel.onEvent(
+                            SearchPlaceFormEvent.SearchKeywordChange(
+                                it
                             )
-                        } else {
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 20.dp)
-                                    .clickable {
-                                        navController.previousBackStackEntry?.savedStateHandle?.set(
-                                            "searchResult",
-                                            it
-                                        )
-                                        navController.popBackStack()
-                                    }
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.Start,
-                                    modifier = Modifier.padding(horizontal = 24.dp)
-                                ) {
-                                    Row {
-                                        Text(text = it.name, fontSize = 16.sp)
-                                        Text(text = it.bizName)
-                                    }
-                                    Text(text = it.fullAddress)
+                        )
+                    }
+                },
+                onDeleteClicked = {},
+                onSearchClicked = {
+                    scope.launch {
+                        viewModel.onEvent(SearchPlaceFormEvent.SearchButtonClick)
+                    }
+                    searchClickChkForSearchResult.value = true
+                },
+                onBackClicked = {},
+                placeholder = "맛집, 주소 검색"
+            )
+            Spacer(Modifier.height(12.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = sidePaddingValue.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(formState.searchResults){
+                    if (formState.searchResults[0].name == "")
+                        SearchPlaceEmptyView(
+                            onButtonClick = {
+                                scope.launch {
+                                    modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
                                 }
                             }
-                        }
+                        )
+                    else {
+                        SearchPlaceInfoCard(
+                            address = it.name,
+                            name = it.fullAddress,
+                            search = it.bizName,
+                            onClick = {
+                                navController.previousBackStackEntry?.savedStateHandle?.set(
+                                    "searchResult",
+                                    it
+                                )
+                                navController.popBackStack()
+                            }
+                        )
                     }
                 }
             }

@@ -68,7 +68,7 @@ fun NewSearchPlaceComposeView(
 
 @Composable
 fun SearchPlaceEmptyView(
-
+    onButtonClick:() -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -98,7 +98,7 @@ fun SearchPlaceEmptyView(
         Spacer(Modifier.weight(1f))
         MainButton(
             text = "직접 입력하기",
-            onClick = { /*TODO*/ }
+            onClick = { onButtonClick() }
         )
         Spacer(Modifier.height(buttonBottomValue.dp))
     }

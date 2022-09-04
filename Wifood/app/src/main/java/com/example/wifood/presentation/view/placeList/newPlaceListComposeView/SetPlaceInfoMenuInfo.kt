@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.placeList.newPlaceInfo
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -149,7 +150,8 @@ fun YOGOSubTextFieldWithButton_SB(
     onTextFieldClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
         YOGOTextPM15(
             buildText = buildAnnotatedString {
@@ -163,12 +165,20 @@ fun YOGOSubTextFieldWithButton_SB(
                 append(titleText)
             }
         )
-        YOGOBaseTextField(
-            text = inputText,
-            onValueChange = onValueChange,
-            placeholderText = placeholder,
-            selectable = true,
-            selectFunction = onTextFieldClick
-        )
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .clickable(){
+                    onTextFieldClick()
+                }
+        ){
+            YOGOBaseTextField(
+                text = inputText,
+                onValueChange = onValueChange,
+                placeholderText = placeholder,
+                selectable = true,
+                selectFunction = onTextFieldClick
+            )
+        }
     }
 }

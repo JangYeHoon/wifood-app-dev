@@ -82,7 +82,6 @@ fun MyPageTopAppBar(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun DoubleButtonTopAppBar(
     titleText:String = "맛집 리스트",

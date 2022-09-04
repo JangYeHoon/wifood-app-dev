@@ -12,22 +12,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.*
-import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithIcon
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
+import com.example.wifood.R
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.groupComponet.SwitchWithText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
+import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
+import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
@@ -126,80 +132,94 @@ fun PlaceInputNameAndVisited(
         sheetContent = { customSheetContent() },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetBackgroundColor = Color(0xFF222222)
+        sheetBackgroundColor = Color(0xFFFFFFFF)
     ) {
         Scaffold(
             topBar = {
-                YOGOTopAppBar(
-                    text = "맛집 등록",
-                    leftButtonClicked = {/*TODO*/ },
-                    rightButtonOn = true,
+                PlaceInputTopAppBar(
+                    leftButtonClicked = {
+
+                    },
                     rightButtonClicked = {
                         if (formState.groupName != "그룹 선택" && state.place.name.isNotEmpty()) {
                             scope.launch {
                                 viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
                             }
                         }
-                    }
+                    },
+                    rightButtonOn = true
                 )
             }
         ) {
-            Column(
-                modifier = Modifier.verticalScroll(scrollState)
-            ) {
-
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
                 Column(
                     modifier = Modifier
-                        .padding(bottom = 15.dp)
-                        .padding(vertical = 10.dp)
-                        .padding(horizontal = 24.dp)
-                ) {
-                    ListSelectionButtonWithIcon(
-                        buttonText = formState.groupName,
-                        onClick = {
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(horizontal = sidePaddingValue.dp)
+                ){
+                    Spacer(Modifier.weight(1f))
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_1by4),
+                        contentDescription = "",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    YOGOLargeText(
+                        text = "맛집 정보를 등록해주세요.",
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    YOGOSubTextFieldWithButton_SB(
+                        titleText = "맛집 그룹",
+                        inputText = if (formState.groupName == "그룹 선택") "" else formState.groupName,
+                        placeholder = "맛집 그룹을 입력해주세요",
+                        onTextFieldClick = {
                             customSheetContent = { PlaceWriteGroupsBottomSheetContent() }
                             scope.launch {
                                 modalBottomSheetState.show()
                             }
                         }
                     )
-                    ListSelectionButtonWithIcon(
-                        buttonText = if (state.place.name.isEmpty()) "장소 검색" else state.place.name,
-                        onClick = {
+                    Spacer(Modifier.height(24.dp))
+                    YOGOSubTextFieldWithButton_SB(
+                        titleText = "맛집 이름",
+                        inputText = state.place.name,
+                        placeholder = "맛집 이름을 입력해주세요",
+                        onTextFieldClick = {
                             val placeJson = Uri.encode(Gson().toJson(state.place))
                             navController.navigate("${Route.Search.route}/${placeJson}")
                         }
                     )
-                    SwitchWithText(
-                        text = "방문 여부",
-                        spaceBetweenSwitch = 14,
+                    Spacer(Modifier.height(24.dp))
+                    YOGOTextPM15(
+                        text = "방문 여부"
+                    )
+                    YOGOSwitch(
                         checked = formState.visited,
                         onCheckedChange = {
                             scope.launch {
                                 viewModel.onEvent(PlaceInfoWriteFormEvent.VisitedCheck(it))
                             }
-                        }
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(top = 18.dp)
-                        .padding(horizontal = 32.dp)
-                ) {
-                    Box(
+                        },
                         modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
                     )
-                    MainButton(
-                        text = "맛집 등록하기",
-                        activate = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
-                        onClick = {
+                    Spacer(Modifier.height(24.dp))
+                    Spacer(Modifier.weight(1f))
+                    DoubleButton(
+                        leftButtonText = "건너뛰기",
+                        leftButtonClicked = {},
+                        rightButtonOn = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
+                        rightButtonText = "맛 평가하기",
+                        rightButtonClicked = {
                             val placeJson = Uri.encode(Gson().toJson(state.place))
                             navController.navigate("${Route.PlaceInputStarAndEvaluation.route}/${placeJson}")
                         }
                     )
-                    Spacer(Modifier.height(buttonBottomValue.dp))
+                    Spacer(Modifier.weight(1f))
                 }
             }
         }
