@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.groupComponet
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -45,6 +46,7 @@ fun SimpleInputView(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
+                .background(color = Color.White)
                 .padding(horizontal = sidePaddingValue.dp)
         ) {
             Spacer(Modifier.weight(1f))

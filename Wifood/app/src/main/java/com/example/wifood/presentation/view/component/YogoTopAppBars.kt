@@ -22,12 +22,12 @@ import com.example.wifood.R
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.MainColor
 
-@Preview(showBackground = true)
 @Composable
 fun MyPageTopAppBar(
     titleText:String = "프로필 수정",
     leftButtonOn:Boolean = true,
     leftButtonClicked:() -> Unit = {},
+    showUnderLine:Boolean = true
 ){
     val height:Int = 48
     val interactionSource = remember {
@@ -77,7 +77,94 @@ fun MyPageTopAppBar(
         }
         Divider(
             thickness = 1.dp,
-            color = Color(0xFFF1F1F1)
+            color = if (showUnderLine) Color(0xFFF1F1F1) else Color.White
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DoubleButtonTopAppBar(
+    titleText:String = "맛집 리스트",
+    leftButtonOn:Boolean = true,
+    leftButtonClicked:() -> Unit = {},
+    rightButtonOn:Boolean = true,
+    rightButtonClicked:() -> Unit = {},
+    showUnderLine:Boolean = true
+){
+    val height:Int = 48
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.White)
+    ){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height.dp)
+        ){
+            if (leftButtonOn){
+                IconButton(
+                    onClick = leftButtonClicked,
+                    modifier = Modifier
+                        .height(height.dp)
+                        .width(40.dp)
+                        .align(Alignment.CenterStart)
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ){
+                            leftButtonClicked()
+                        }
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+            Text(
+                text = titleText,
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.align(Alignment.Center)
+            )
+
+            if(rightButtonOn){
+                IconButton(
+                    onClick = rightButtonClicked,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.CenterEnd)
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ){
+                            rightButtonClicked()
+                        }
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_add_list_button),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+
+        }
+        Divider(
+            thickness = 1.dp,
+            color = if (showUnderLine) Color(0xFFF1F1F1) else Color.White
         )
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
@@ -34,9 +35,14 @@ fun ModifyPlaceGroupView(
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) {
+    Column {
+        MyPageTopAppBar(
+            titleText = "",
+            leftButtonClicked = {
+
+            },
+            showUnderLine = false
+        )
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

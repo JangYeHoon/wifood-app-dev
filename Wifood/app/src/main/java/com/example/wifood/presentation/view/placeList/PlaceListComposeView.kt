@@ -35,6 +35,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.R
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
+import com.example.wifood.presentation.view.component.DoubleButtonTopAppBar
 import com.example.wifood.presentation.view.main.MainState
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -53,23 +54,15 @@ fun PlaceListComposeView(
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState()
     val cardInterval = 10
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            YOGOTopAppBar(
-                text = "맛집 리스트",
-                leftButtonOn = true,
-                leftButtonClicked = {
-                    navController.popBackStack()
-                },
-                rightButtonOn = true,
-                rightButtonClicked = {
-                    //navController.navigate(Route.)
-                }
-            )
-        }
-    ) {
+    Column{
+        DoubleButtonTopAppBar(
+            leftButtonClicked = {
+                navController.popBackStack()
+            },
+            rightButtonClicked = {
 
+            }
+        )
         // Main Background
         Box(
             modifier = Modifier
