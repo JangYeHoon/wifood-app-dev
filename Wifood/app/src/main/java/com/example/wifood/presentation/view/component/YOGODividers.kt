@@ -34,3 +34,24 @@ fun DialogCenterDivider(
         }
     }
 }
+
+@Composable
+fun CustomDivider(
+    fillColor:Color = Color(0xFFF4F4F4),
+    borderColor:Color = Color(0xFFE7E7E7),
+    thickness:Int = 4
+){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = fillColor,
+            )
+            .border(
+                width = 1.dp,
+                color = borderColor
+            )
+    ){
+        Spacer(Modifier.height(thickness.dp))
+    }
+}

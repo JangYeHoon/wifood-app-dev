@@ -72,7 +72,7 @@ fun PlaceInputImagesAndMenuEvaluationContent() {
                 Spacer(Modifier.height(21.dp))
                 ReviewTextField()
                 Spacer(Modifier.height(24.dp))
-                PhotoListUp(
+                PhotoListUpWithSelection(
                     listOf(
                         R.drawable.place_image,
                         R.drawable.place_image,

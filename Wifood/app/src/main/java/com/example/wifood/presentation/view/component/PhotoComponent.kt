@@ -1,9 +1,11 @@
 package com.example.wifood.presentation.view.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -24,7 +26,7 @@ fun PhotoDefaultIcon(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
         .size(60.dp)
-){
+) {
     IconButton(
         onClick = onClick,
         modifier = modifier
@@ -40,26 +42,30 @@ fun PhotoDefaultIcon(
 
 
 @Composable
-fun PhotoListUp(
-    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image)
-){
-    val photoSize = 60
+fun PhotoListUpWithSelection(
+    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image),
+    imageSize: Int = 60
+) {
+    val scrollState = rememberScrollState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
-    ){
+    ) {
         PhotoDefaultIcon(
-            modifier = Modifier.size(photoSize.dp)
+            modifier = Modifier.size(imageSize.dp)
         )
         Spacer(modifier = Modifier.width(6.dp))
-
-        LazyRow {
-            items(imageList) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(scrollState)
+        ){
+            for (image in imageList){
                 Image(
-                    painter = painterResource(id = it),
+                    painter = painterResource(id = image),
                     contentDescription = "",
                     modifier = Modifier
-                        .size(photoSize.dp)
+                        .size(imageSize.dp)
                         .clip(
                             RoundedCornerShape(5.dp)
                         ),
@@ -67,6 +73,33 @@ fun PhotoListUp(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
             }
+        }
+    }
+}
+
+@Composable
+fun ShowPhotoList(
+    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image),
+    imageSize: Int = 60
+) {
+    val scrollState = rememberScrollState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(scrollState)
+    ){
+        for (image in imageList){
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(imageSize.dp)
+                    .clip(
+                        RoundedCornerShape(5.dp)
+                    ),
+                contentScale = ContentScale.FillBounds
+            )
+            Spacer(modifier = Modifier.width(6.dp))
         }
     }
 }

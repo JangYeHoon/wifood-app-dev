@@ -27,13 +27,9 @@ fun ReviewTextField(
     onValueChange: (String) -> Unit = {},
     placeholder: String = "맛집 리뷰",
     modifier: Modifier = Modifier
-        .border(
-            width = 2.dp,
-            color = Color(0xFFF1F1F1),
-            shape = RoundedCornerShape(5.dp)
-        )
-        .height(120.dp)
-        .fillMaxWidth()
+        .height(120.dp),
+    fontSize:Int = 15,
+    showCount: Boolean = true
 ) {
     Box(
 
@@ -46,11 +42,17 @@ fun ReviewTextField(
                     text = placeholder,
                     fontFamily = mainFont,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 15.sp,
+                    fontSize = fontSize.sp,
                     color = Color(0xFFC4C4C4)
                 )
             },
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth()
+                .border(
+                    width = 2.dp,
+                    color = Color(0xFFF1F1F1),
+                    shape = RoundedCornerShape(5.dp)
+                ),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,
                 focusedIndicatorColor = Color.Unspecified,
@@ -60,19 +62,21 @@ fun ReviewTextField(
             textStyle = TextStyle(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.sp,
+                fontSize = fontSize.sp,
                 color = Gray01Color
             ),
         )
-        Text(
-            text = text.length.toString() + "/500",
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Normal,
-            fontSize = 12.sp,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 14.dp, bottom = 10.dp),
-            color = Color(0xFFC4C4C4)
-        )
+        if (showCount){
+            Text(
+                text = text.length.toString() + "/500",
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 14.dp, bottom = 10.dp),
+                color = Color(0xFFC4C4C4)
+            )
+        }
     }
 }

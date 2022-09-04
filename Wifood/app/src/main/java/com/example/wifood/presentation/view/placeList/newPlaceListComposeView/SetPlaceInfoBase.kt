@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOSwitch
+import com.example.wifood.presentation.view.component.YOGOTextPM15
 import com.example.wifood.presentation.view.groupComponet.SwitchWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOTextPM15
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
 import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
@@ -73,14 +74,14 @@ fun SetPlaceInfoBase(
                     text = "맛집 정보를 등록해주세요.",
                 )
                 Spacer(Modifier.height(24.dp))
-                YOGOSubTextFieldWithButton(
+                YOGOSubTextFieldWithButton_SB(
                     titleText = "맛집 그룹",
                     inputText = "",
                     placeholder = "맛집 그룹을 입력해주세요",
                     onTextFieldClick = {}
                 )
                 Spacer(Modifier.height(24.dp))
-                YOGOSubTextFieldWithButton(
+                YOGOSubTextFieldWithButton_SB(
                     titleText = "맛집 이름",
                     inputText = "",
                     placeholder = "맛집 이름을 입력해주세요",

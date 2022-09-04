@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
+import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Gray03Color
 
 @Composable
@@ -47,5 +50,29 @@ fun YOGOBasicText(
     if (explainText.isNotEmpty()) {
         Spacer(Modifier.height(12.dp))
         YOGOExplainText(text = explainText)
+    }
+}
+
+@Composable
+fun YOGOTextPM15(
+    text:String = "",
+    buildText: AnnotatedString = buildAnnotatedString { append("") }
+){
+    if (buildText.text.isEmpty()) {
+        Text(
+            text = text,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp,
+            color = Gray01Color
+        )
+    } else {
+        Text(
+            text = buildText,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Medium,
+            fontSize = 15.sp,
+            color = Gray01Color
+        )
     }
 }

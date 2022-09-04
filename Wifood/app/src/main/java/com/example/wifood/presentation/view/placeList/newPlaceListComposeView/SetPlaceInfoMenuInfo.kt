@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.component.YOGOBasicText
 import com.example.wifood.presentation.view.component.YOGOLargeText
+import com.example.wifood.presentation.view.component.YOGOTextPM15
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
@@ -141,7 +141,7 @@ fun YOGOSubTextField(
 
 
 @Composable
-fun YOGOSubTextFieldWithButton(
+fun YOGOSubTextFieldWithButton_SB(
     titleText: String,
     inputText: String = "",
     placeholder: String = "맛집 그룹을 입력해주세요",
@@ -171,29 +171,4 @@ fun YOGOSubTextFieldWithButton(
             selectFunction = onTextFieldClick
         )
     }
-}
-
-@Composable
-fun YOGOTextPM15(
-    text:String = "",
-    buildText:AnnotatedString = buildAnnotatedString { append("") }
-){
-    if (buildText.text.isEmpty()) {
-        Text(
-            text = text,
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Medium,
-            fontSize = 15.sp,
-            color = Gray01Color
-        )
-    } else {
-        Text(
-            text = buildText,
-            fontFamily = mainFont,
-            fontWeight = FontWeight.Medium,
-            fontSize = 15.sp,
-            color = Gray01Color
-        )
-    }
-
 }
