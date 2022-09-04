@@ -9,5 +9,5 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class NavItem(var title: String, var icon: ImageVector, var id: String) {
     object Map : NavItem("지도", Icons.Filled.Map, "map")
     object List : NavItem("리스트", Icons.Filled.FavoriteBorder, "list")
-    object MyPage : NavItem("마이페이지", Icons.Filled.PersonOutline, "mypage")
+    object MyPage : NavItem("설정", Icons.Filled.PersonOutline, "mypage")
 }
