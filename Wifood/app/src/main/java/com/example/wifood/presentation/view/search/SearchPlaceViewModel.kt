@@ -49,7 +49,9 @@ class SearchPlaceViewModel @Inject constructor(
                     formState.searchKeyword,
                     formState.currentLocation!!
                 ).observeForever {
-                    formState = formState.copy(searchResults = it)
+                    try {
+                        formState = formState.copy(searchResults = it as ArrayList<TMapSearch>)
+                    } catch (e: ConcurrentModificationException) { }
                 }
             }
             is SearchPlaceFormEvent.CurrentLocationChange -> {

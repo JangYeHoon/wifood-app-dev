@@ -116,9 +116,11 @@ class SignUpViewModel @Inject constructor(
                         useCases.GetTMapSearchAddressResult(
                             _state.value.address
                         ).observeForever {
-                            _state.value = state.value.copy(
-                                searchResults = it
-                            )
+                            try {
+                                _state.value = state.value.copy(
+                                    searchResults = it
+                                )
+                            } catch (e: ConcurrentModificationException) { }
                         }
                     }
                 } catch (e: NullPointerException) {
