@@ -1,10 +1,11 @@
 package com.example.wifood.presentation.view.component
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -18,7 +19,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.presentation.view.placeList.PlaceImagePopup
+import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 
 
 @Composable
@@ -59,8 +64,8 @@ fun PhotoListUpWithSelection(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(scrollState)
-        ){
-            for (image in imageList){
+        ) {
+            for (image in imageList) {
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = "",
@@ -77,9 +82,10 @@ fun PhotoListUpWithSelection(
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun ShowPhotoList(
-    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image),
+    imageList: List<Uri>,
     imageSize: Int = 60
 ) {
     val scrollState = rememberScrollState()
@@ -87,10 +93,12 @@ fun ShowPhotoList(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(scrollState)
-    ){
-        for (image in imageList){
+    ) {
+        for (image in imageList) {
             Image(
-                painter = painterResource(id = image),
+                painter = rememberImagePainter(
+                    data = image
+                ),
                 contentDescription = "",
                 modifier = Modifier
                     .size(imageSize.dp)
@@ -102,4 +110,8 @@ fun ShowPhotoList(
             Spacer(modifier = Modifier.width(6.dp))
         }
     }
+//    showImagePopupChk.value = true
+//    viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
+//    if (showImagePopupChk.value)
+//        PlaceImagePopup(state.placeImageUris, showImagePopupChk)
 }

@@ -32,17 +32,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.component.RatingStarIcon
-import com.example.wifood.presentation.view.component.SingleRatingStar
-import com.example.wifood.presentation.view.component.YOGORatingStar
+import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoAbstractView
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoShowMenu
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
@@ -97,6 +98,7 @@ fun PlaceInfoMenus(
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PlaceInfoMainContent(
@@ -234,6 +236,8 @@ fun PlaceInfoView(
     navController: NavController,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
+    val scrollState = rememberScrollState()
+    val interactionSource = MutableInteractionSource()
     val state = viewModel.state
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
@@ -246,229 +250,182 @@ fun PlaceInfoView(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color(0xFF222222)
     ) {
-        val scrollState = rememberScrollState()
-        val scaffoldState = rememberScaffoldState()
-        Scaffold(
-        ) {
-            Box(
-
-            ) {
-                Column(
-                    Modifier
-                        .padding(horizontal = 14.dp)
-                        .padding(top = 188.dp)
-                        .fillMaxWidth()
-                        .shadow(elevation = 5.dp)
-                ) {
-                    PlaceInfoMainContent(
-                        placeInfoGroupName = state.group!!.name,
-                        placeInfoName = state.place!!.name,
-                        placeInfoMenuListText = state.place.menu,
-                        placeInfoScore = state.place.score,
-                        isKind = state.place.kindChk,
-                        isDelicious = state.place.tasteChk,
-                        isMood = state.place.cleanChk
-                    )
-                }
-
-                Column(
-
-                )
-                {
-                    Image(
-                        painter = rememberImagePainter(
-                            data =
-                            if (state.placeImageUris.isNotEmpty())
-                                state.placeImageUris[0]
-                            else
-                                R.drawable.place_image
-                        ),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(260.dp)
-                    )
-
-                    // show google map
-                    Column(
-                        modifier = Modifier
-                            .padding(top = 120.dp)
-                            .padding(horizontal = 35.dp)
-                            .padding(bottom = 25.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.clickable {
-                                navController.navigate("${Route.Main.route}?placeLat=${state.place!!.latitude}&placeLng=${state.place.longitude}")
-                            }
-                        ) {
-                            Icon(
-                                ImageVector.vectorResource(id = R.drawable.ic_group_pin),
-                                contentDescription = "",
-                                modifier = Modifier.wrapContentSize(),
-                                tint = Color.Unspecified
-                            )
-                            Spacer(Modifier.width(5.dp))
-                            Text(
-                                text = state.place!!.address,
-                                fontFamily = mainFont,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 13.sp,
-                                color = Gray01Color
-                            )
-                        }
-                        Spacer(Modifier.height(10.dp))
-                        GoogleMap(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(55.dp)
-                                .clickable {
-                                    navController.navigate("${Route.Main.route}?placeLat=${state.place!!.latitude}&placeLng=${state.place.longitude}")
-                                },
-                            cameraPositionState = rememberCameraPositionState {
-                                position =
-                                    CameraPosition.fromLatLngZoom(
-                                        LatLng(
-                                            state.place!!.latitude,
-                                            state.place.longitude
-                                        ), 15f
-                                    )
-                            },
-                            uiSettings = MapUiSettings(zoomControlsEnabled = false)
-                        ) {
-                            Marker(
-                                position = LatLng(
-                                    state.place!!.latitude,
-                                    state.place.longitude
-                                ),
-                                title = state.place.name
-                            )
-                        }
-                    }
-                    Divider(
-                        modifier = Modifier.height(2.dp),
-                        color = Color(0xFFE7E7E7)
-                    )
-                    Column(
-                        modifier = Modifier
-                            .verticalScroll(scrollState)
-                            .padding(top = 20.dp)
-                    ) {
-                        LazyRow(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 35.dp)
-                        ) {
-                            itemsIndexed(state.placeImageUris) { idx, image ->
-                                IconButton(
-                                    onClick = {
-                                        showImagePopupChk.value = true
-                                        viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
-                                    },
-                                    modifier = Modifier
-                                        .width(60.dp)
-                                        .height(60.dp)
-                                ) {
-                                    Image(
-                                        painter = rememberImagePainter(
-                                            data = image
-                                        ),
-                                        contentDescription = "",
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .clip(RoundedCornerShape(5.dp)),
-                                        contentScale = ContentScale.Crop,
-                                    )
-                                }
-                                Spacer(Modifier.width(6.dp))
-                                if (showImagePopupChk.value)
-                                    PlaceImagePopup(state.placeImageUris, showImagePopupChk)
-                            }
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 35.dp)
-                                .padding(top = 29.dp)
-                        ) {
-                            Text(
-                                text = "메뉴",
-                                fontFamily = mainFont,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
-                                color = Color.Black
-                            )
-                            Spacer(Modifier.height(5.dp))
-                            state.place!!.menuList.forEach {
-                                PlaceInfoMenus(
-                                    menuName = it.name,
-                                    menuPrice = it.price,
-                                    menuMemo = it.memo
-                                )
-                            }
-
-
-                        }
-                        Spacer(Modifier.height(20.dp))
-                        Divider(
-                            modifier = Modifier.height(2.dp),
-                            color = PlaceInfoDividerColor
-                        )
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 25.dp)
-                                .padding(horizontal = 35.dp)
-                        ) {
-                            Text(
-                                text = "메모",
-                                fontFamily = mainFont,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
-                                color = Color.Black
-                            )
-                            Spacer(Modifier.height(15.dp))
-                            Text(
-                                text = state.place!!.review,
-                                fontFamily = mainFont,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 12.sp,
-                                color = Gray01Color
-                            )
-                            Spacer(Modifier.height(buttonBottomValue.dp))
-                        }
-                    }
-                }
-            }
-        }
-
-
-        // put up buttons
         Box(
-            Modifier
-                .padding(top = 15.dp)
-                .padding(horizontal = 15.dp)
+            modifier = Modifier
+                .fillMaxSize()
         ) {
+            // Top Left Right Buttons
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
+                    .padding(top = 15.dp)
+                    .zIndex(10f),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                SnsIconButton(
-                    resourceId = R.drawable.ic_place_info_back_button,
-                    size = 40,
+                VectorIconWithNoInteraction(
+                    resource = R.drawable.ic_place_info_back_button,
                     onClick = {
                         navController.popBackStack()
                     }
                 )
-                SnsIconButton(
-                    resourceId = R.drawable.ic_place_info_option_button,
-                    size = 40,
+                VectorIconWithNoInteraction(
+                    resource = R.drawable.ic_place_info_option_button,
                     onClick = {
                         scope.launch {
                             modalBottomSheetState.show()
                         }
                     }
                 )
+            }
+
+            // Main Column
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+            ) {
+                // Top Image
+                Image(
+                    painter = rememberImagePainter(
+                        data =
+                        if (state.placeImageUris.isNotEmpty())
+                            state.placeImageUris[0]
+                        else
+                            R.drawable.ic_place_info_photo_default
+                    ),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(230.dp)
+                        .zIndex(-10f)
+                )
+
+                // Place abstract and location view
+                PlaceInfoAbstractView(
+                    placeInfoGroupName = state.group!!.name,
+                    placeInfoName = state.place!!.name,
+                    placeInfoMenuListText = state.place.menu,
+                    placeInfoScore = state.place.score,
+                    isKind = state.place.kindChk,
+                    isDelicious = state.place.tasteChk,
+                    isMood = state.place.cleanChk,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .offset(y = (-30).dp)
+                )
+
+                // Show Location
+                Row(
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("${Route.Main.route}?placeLat=${state.place.latitude}&placeLng=${state.place.longitude}")
+                        }
+                        .padding(horizontal = sidePaddingValue.dp)
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_group_pin),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                    Spacer(Modifier.width(5.dp))
+                    Text(
+                        text = state.place.address,
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        color = Gray01Color
+                    )
+                }
+                Spacer(Modifier.height(10.dp))
+                GoogleMap(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = sidePaddingValue.dp)
+                        .height(82.dp),
+                    cameraPositionState = rememberCameraPositionState {
+                        position =
+                            CameraPosition.fromLatLngZoom(
+                                LatLng(
+                                    state.place.latitude,
+                                    state.place.longitude
+                                ), 15f
+                            )
+                    },
+                    uiSettings = MapUiSettings(zoomControlsEnabled = false)
+                ) {
+                    Marker(
+                        position = LatLng(
+                            state.place.latitude,
+                            state.place.longitude
+                        ),
+                        title = state.place.name
+                    )
+                }
+                Spacer(Modifier.height(18.dp))
+                // Divider if review or something exists
+                CustomDivider(
+                    fillColor = Color(0xFFF4F4F4),
+                    borderColor = Color(0xFFE7E7E7),
+                    thickness = 4
+                )
+
+                // Reviews if it exists
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = sidePaddingValue.dp,
+                            vertical = 22.dp
+                        )
+                ) {
+                    YOGOTextPM15(
+                        text = "맛집 리뷰"
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    ReviewTextField(
+                        text = state.place.review,
+                        onValueChange = {},
+                        placeholder = "",
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        showCount = false,
+                        fontSize = 12
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    ShowPhotoList(
+                        state.placeImageUris
+                    )
+                    Spacer(Modifier.height(28.dp))
+
+                    if (state.place.menuList.isNotEmpty()) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    width = 2.dp,
+                                    color = Color(0xFFF1F1F1),
+                                    shape = RoundedCornerShape(5.dp)
+                                )
+                                .padding(
+                                    horizontal = 16.dp,
+                                    vertical = 22.dp
+                                )
+                        ) {
+                            state.place.menuList.forEach {
+                                PlaceInfoShowMenu(
+                                    menuName = it.name,
+                                    menuPrice = it.price,
+                                    menuMemo = it.memo
+                                )
+                                Spacer(Modifier.height(12.dp))
+                            }
+                        }
+                    }
+                }
             }
         }
     }

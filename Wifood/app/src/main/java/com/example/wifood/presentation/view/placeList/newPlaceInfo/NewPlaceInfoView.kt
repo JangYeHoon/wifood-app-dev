@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.data.remote.dto.MenuGradeDto
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.login.component.SnsIconButton
@@ -156,19 +157,19 @@ fun NewPlaceInfoView(
                     fontSize = 12
                 )
                 Spacer(Modifier.height(10.dp))
-                ShowPhotoList(
-                    listOf(
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                    )
-                )
+//                ShowPhotoList(
+//                    listOf(
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                    )
+//                )
                 Spacer(Modifier.height(28.dp))
 
                 // Menu if exists
@@ -207,32 +208,17 @@ fun PlaceInfoShowMenu(
     menuName: String = "W코스",
     menuPrice: Int = 19800,
     menuMemo: String = "가격값하는 맛, 고기는 말할 것 없고 랍스타 맛있음"
-){
-    var menuPriceString = ""
-
-    // change menuPrice to string
-    menuPriceString = menuPrice.toString()
-    if (menuPriceString.length > 3){
-        menuPriceString = menuPriceString.reversed()
-        var newString = ""
-        for (i in 0..(menuPriceString.length-1)){
-            if ( i % 3 == 0 && i != 0)
-                newString += ","
-            newString += menuPriceString[i]
-        }
-        menuPriceString = newString.reversed()
-    }
-
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp)
-    ){
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = menuName,
                 fontFamily = mainFont,
@@ -242,7 +228,7 @@ fun PlaceInfoShowMenu(
             )
             Spacer(Modifier.weight(1f))
             Text(
-                text = menuPriceString,
+                text = MenuGradeDto().getPriceToCommaString(menuPrice),
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
