@@ -136,7 +136,7 @@ fun PlaceInputTopAppBar(
                             indication = null,
                             interactionSource = interactionSource
                         ){
-                            rightButtonClicked
+                            rightButtonClicked()
                         }
                         .padding(end = 20.dp)
                 )

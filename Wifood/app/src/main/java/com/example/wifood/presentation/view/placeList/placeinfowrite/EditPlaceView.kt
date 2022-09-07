@@ -164,7 +164,7 @@ fun EditPlaceView(
                     ListSelectionButtonWithIcon(
                         buttonText = formState.groupName,
                         onClick = {
-                            customSheetContent = { PlaceWriteGroupsBottomSheetContent() }
+                            customSheetContent = { PlaceWriteGroupsBottomSheetContent(modalBottomSheetState) }
                             scope.launch {
                                 modalBottomSheetState.show()
                             }

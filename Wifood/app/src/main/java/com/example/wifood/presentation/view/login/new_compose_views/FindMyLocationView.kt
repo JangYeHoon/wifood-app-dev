@@ -119,7 +119,7 @@ fun CustomTextField(
     onSearchClicked: () -> Unit,
     onBackClicked: () -> Unit,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    placeholder:String = "동명(읍,면)으로 검색"
+    placeholder: String = "동명(읍,면)으로 검색"
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -190,7 +190,7 @@ fun CustomTextField(
                             .clickable(
                                 indication = null,
                                 interactionSource = interactionSource
-                            ){
+                            ) {
                                 onDeleteClicked()
                             },
                         tint = Color.Unspecified
@@ -209,10 +209,10 @@ fun CustomTextField(
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = keyboardActions
     )
 }
-
 
 
 @Composable

@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList.newPlaceInfo
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
+import kotlinx.coroutines.selects.select
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -109,25 +111,21 @@ fun YOGOBaseTextField(
         MutableInteractionSource()
     }
     Column(
-        modifier = if (selectable) {
-            Modifier
-                .fillMaxWidth()
-                .clickable(
-                    indication = null,
-                    interactionSource = interactionSource
-                ) {
-                    selectFunction()
-                }
-        } else {
-            Modifier
-        }
+        modifier = Modifier.fillMaxWidth()
     ) {
         TextField(
             value = text,
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    if (selectable)
+                        selectFunction()
+                },
             textStyle = TextStyle(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
@@ -143,6 +141,7 @@ fun YOGOBaseTextField(
                     color = EnableColor
                 )
             },
+            enabled = false,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,

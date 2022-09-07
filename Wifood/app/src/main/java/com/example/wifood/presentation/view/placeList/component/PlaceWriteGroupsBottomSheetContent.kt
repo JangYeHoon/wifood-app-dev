@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -34,9 +36,11 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun PlaceWriteGroupsBottomSheetContent(
+    modalBottomSheetState: ModalBottomSheetState,
     viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val formState = viewModel.formState
@@ -97,7 +101,9 @@ fun PlaceWriteGroupsBottomSheetContent(
         MainButton(
             text = "그룹 선택하기",
             onClick = {
-
+                scope.launch {
+                    modalBottomSheetState.hide()
+                }
             }
         )
         Spacer(Modifier.height(buttonBottomValue.dp))

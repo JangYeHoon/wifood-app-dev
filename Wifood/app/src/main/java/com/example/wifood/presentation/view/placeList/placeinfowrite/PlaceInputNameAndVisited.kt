@@ -154,13 +154,13 @@ fun PlaceInputNameAndVisited(
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .padding(horizontal = sidePaddingValue.dp)
-                ){
+                ) {
                     Spacer(Modifier.weight(1f))
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_1by4),
@@ -178,7 +178,8 @@ fun PlaceInputNameAndVisited(
                         inputText = if (formState.groupName == "그룹 선택") "" else formState.groupName,
                         placeholder = "맛집 그룹을 입력해주세요",
                         onTextFieldClick = {
-                            customSheetContent = { PlaceWriteGroupsBottomSheetContent() }
+                            customSheetContent =
+                                { PlaceWriteGroupsBottomSheetContent(modalBottomSheetState) }
                             scope.launch {
                                 modalBottomSheetState.show()
                             }

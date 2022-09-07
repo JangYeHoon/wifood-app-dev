@@ -60,7 +60,8 @@ fun PlaceListComposeView(
                 navController.popBackStack()
             },
             rightButtonClicked = {
-
+                val groupJson = Uri.encode(Gson().toJson(Group()))
+                navController.navigate("${Route.GroupNameInput.route}/$groupJson")
             }
         )
         // Main Background
