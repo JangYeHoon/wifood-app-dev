@@ -26,7 +26,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
+import kotlin.ConcurrentModificationException
 
 /**
  * 새로운 로그인 프로세스 로직을 위한 기능 개발용 임시 뷰모델 클래스입니다.
@@ -163,6 +165,7 @@ class SignUpViewModel @Inject constructor(
                     address = SignUpData.address,
                     birthday = SignUpData.birthday,
                     gender = if (SignUpData.gender == "남성") 1 else 0,
+                    nickname = random(),
                     groupList = emptyList(),
                     taste = SignUpData.taste
                 )
@@ -191,6 +194,14 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
+    private fun random(): String {
+        val random = Random()
+        return buildString {
+            append("요고")
+            append(random.nextInt(999) + 1)
+        }
+    }
+
     private fun showSnackBar(message: String) {
         viewModelScope.launch {
             validateEventChannel.send(ValidationEvent.Error(message))
@@ -198,6 +209,8 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun checkForm(view: ViewItem): Boolean {
+        var exist: Boolean = false
+
         when (view) {
             is ViewItem.SignUpView1 -> {
                 val phoneResult = useCases.ValidatePhone(_state.value.phoneNumber)
@@ -207,7 +220,9 @@ class SignUpViewModel @Inject constructor(
                 if (hasError)
                     showSnackBar(phoneResult.errorMessage!!)
 
-                return !hasError
+                exist = useCases.CheckUser(_state.value.phoneNumber)
+
+                return (!hasError && !exist)
             }
         }
     }

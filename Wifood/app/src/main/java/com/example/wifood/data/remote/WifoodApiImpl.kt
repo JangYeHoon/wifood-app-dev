@@ -184,6 +184,17 @@ class WifoodApiImpl @Inject constructor(
         return user
     }
 
+    override fun checkUser(id: String): Boolean {
+        var result = false
+
+        db.child(id).get().addOnSuccessListener {
+            if (it.exists()) result = true
+        }
+
+        Log.d("check", result.toString())
+        return result
+    }
+
     override fun getUserInfo(id: String): LiveData<User> {
         val user = MutableLiveData<User>()
         db.child(id).get().addOnSuccessListener {

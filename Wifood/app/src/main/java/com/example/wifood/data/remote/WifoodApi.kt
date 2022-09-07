@@ -15,6 +15,8 @@ import com.google.firebase.storage.UploadTask
 
 interface WifoodApi {
 
+    fun checkUser(id: String): Boolean
+
     fun getGroups(): LiveData<MutableList<Group>>
 
     fun deleteGroup(groupId: Int)

@@ -53,7 +53,8 @@ object AppModule {
             GetPlaceImageUri = GetPlaceImageUri(repository),
             RequestCertNumber = RequestCertNumber(repository),
             GetTMapSearchDetailAddressResult = GetTMapSearchDetailAddressResult(repository),
-            GetTMapReverseGeocoding = GetTMapReverseGeocoding(repository)
+            GetTMapReverseGeocoding = GetTMapReverseGeocoding(repository),
+            CheckUser = CheckUser(repository)
         )
     }
 

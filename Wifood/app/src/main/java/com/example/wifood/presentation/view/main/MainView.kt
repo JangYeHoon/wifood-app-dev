@@ -99,18 +99,17 @@ fun MainView(
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                /*
                 when (state.selected) {
                     NavItem.Map.id -> {
                         MapTopAppBar(navController)
                     }
-                    NavItem.List.id -> {
-                        ListTopAppBar(navController)
-                    }
-                    NavItem.MyPage.id -> {
-                        MyPageTAB()
-                    }
-                }*/
+//                    NavItem.List.id -> {
+//                        ListTopAppBar(navController)
+//                    }
+//                    NavItem.MyPage.id -> {
+//                        MyPageTAB()
+//                    }
+                }
             },
             floatingActionButton = {
                 Column(
@@ -170,11 +169,11 @@ fun MainView(
                 ) {
                     items.forEach { item ->
                         BottomNavigationItem(
-                            selected = current == item.id,
+                            selected = state.selected == item.id,
                             selectedContentColor = Main,
                             unselectedContentColor = Color.Black,
                             onClick = {
-                                if (current != item.id) viewModel.onEvent(
+                                if (state.selected != item.id) viewModel.onEvent(
                                     MainEvent.ItemClicked(
                                         item.id
                                     )
