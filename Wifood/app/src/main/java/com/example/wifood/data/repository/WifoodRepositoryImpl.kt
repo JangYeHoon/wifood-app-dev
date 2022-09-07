@@ -23,6 +23,10 @@ class WifoodRepositoryImpl(
     private val dao: WifoodDao,
     private val api: WifoodApi
 ) : WifoodRepository {
+    override fun checkUser(id: String): Boolean {
+        return api.checkUser(id)
+    }
+
     override fun getGroups(): LiveData<MutableList<Group>> {
         return api.getGroups()
     }

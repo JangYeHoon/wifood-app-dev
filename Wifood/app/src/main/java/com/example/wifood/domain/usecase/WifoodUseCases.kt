@@ -24,5 +24,6 @@ data class WifoodUseCases(
     val GetPlaceImageUri: GetPlaceImageUri,
     val RequestCertNumber: RequestCertNumber,
     val GetTMapSearchDetailAddressResult: GetTMapSearchDetailAddressResult,
-    val GetTMapReverseGeocoding: GetTMapReverseGeocoding
+    val GetTMapReverseGeocoding: GetTMapReverseGeocoding,
+    val CheckUser: CheckUser
 )

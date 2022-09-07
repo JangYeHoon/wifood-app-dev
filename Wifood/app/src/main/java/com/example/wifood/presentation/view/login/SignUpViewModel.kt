@@ -161,6 +161,7 @@ class SignUpViewModel @Inject constructor(
                     address = SignUpData.address,
                     birthday = SignUpData.birthday,
                     gender = if (SignUpData.gender == "남성") 1 else 0,
+                    nickname = "요고",
                     groupList = emptyList(),
                     taste = SignUpData.taste
                 )
@@ -196,6 +197,8 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun checkForm(view: ViewItem): Boolean {
+        var exist: Boolean = false
+
         when (view) {
             is ViewItem.SignUpView1 -> {
                 val phoneResult = useCases.ValidatePhone(_state.value.phoneNumber)
@@ -205,7 +208,9 @@ class SignUpViewModel @Inject constructor(
                 if (hasError)
                     showSnackBar(phoneResult.errorMessage!!)
 
-                return !hasError
+                exist = useCases.CheckUser(_state.value.phoneNumber)
+
+                return (!hasError && !exist)
             }
         }
     }
