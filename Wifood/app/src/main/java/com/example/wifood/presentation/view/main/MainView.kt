@@ -99,6 +99,7 @@ fun MainView(
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
+                /*
                 when (state.selected) {
                     NavItem.Map.id -> {
                         MapTopAppBar(navController)
@@ -109,7 +110,7 @@ fun MainView(
                     NavItem.MyPage.id -> {
                         MyPageTAB()
                     }
-                }
+                }*/
             },
             floatingActionButton = {
                 Column(

@@ -24,8 +24,10 @@ import com.example.wifood.view.ui.theme.MainColor
 
 @Composable
 fun DoubleButton(
-    leftButtonText : String = "건너뛰기",
+    leftButtonOn: Boolean = false,
+    leftButtonText: String = "건너뛰기",
     leftButtonClicked : () -> Unit = {},
+    rightButtonOn: Boolean = false,
     rightButtonText : String = "메뉴 평가하기",
     rightButtonClicked : () -> Unit = {},
 ){
@@ -40,7 +42,8 @@ fun DoubleButton(
             modifier = Modifier
                 .width(126.dp)
                 .height(mainButtonHeightValue.dp),
-            border = BorderStroke(1.dp, MainColor)
+            border = BorderStroke(1.dp, MainColor),
+            enabled = leftButtonOn
         ) {
             Text(
                 text = leftButtonText,
@@ -54,7 +57,7 @@ fun DoubleButton(
         TextButton(
             shape = RoundedCornerShape(mainButtonRoundValue.dp),
             onClick = rightButtonClicked,
-            enabled = true,
+            enabled = rightButtonOn,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MainColor,
             ),

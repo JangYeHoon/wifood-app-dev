@@ -1,43 +1,34 @@
-package com.example.wifood.presentation.view.groupComponet
+package com.example.wifood.presentation.view.mypage.NewMypageComposeView
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.util.phoneFilter
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SimpleInputView(
-    explainText: String,
-    textFieldText: String,
-    onTextFieldValueChanged: (String) -> Unit,
-    placeholderText: String,
-    buttonText: String,
-    onButtonClick: () -> Unit,
-    buttonActivate: Boolean
-) {
+fun ModifyUserPhoneNumberView(
+){
+    var phoneNumberValidation by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -46,12 +37,13 @@ fun SimpleInputView(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .background(color = Color.White)
                 .padding(horizontal = sidePaddingValue.dp)
         ) {
+            //TEST line
+
             Spacer(Modifier.weight(1f))
             Text(
-                text = explainText,
+                text = "휴대폰 번호를\n입력해주세요.",
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 24.sp,
@@ -59,8 +51,9 @@ fun SimpleInputView(
             )
             Spacer(Modifier.height(24.dp))
             TextField(
-                value = textFieldText,
-                onValueChange = onTextFieldValueChanged,
+                value = "",
+                onValueChange = {
+                },
                 modifier = Modifier
                     .fillMaxWidth(),
                 textStyle = TextStyle(
@@ -71,7 +64,7 @@ fun SimpleInputView(
                 ),
                 placeholder = {
                     Text(
-                        text = placeholderText,
+                        text = "휴대폰번호 ('-'제외)",
                         fontFamily = mainFont,
                         fontWeight = FontWeight.Normal,
                         fontSize = 18.sp,
@@ -86,18 +79,24 @@ fun SimpleInputView(
                     focusedIndicatorColor = MainColor,
                     unfocusedIndicatorColor = EnableColor
                 ),
-                visualTransformation = VisualTransformation.None,
+                visualTransformation = {
+                    phoneFilter(it)
+                },
                 keyboardOptions = KeyboardOptions(
-                    //keyboardType = KeyboardType.Phone
+                    keyboardType = KeyboardType.Phone
                 )
             )
+            Spacer(Modifier.height(24.dp))
             Spacer(Modifier.weight(1f))
             MainButton(
-                text = buttonText,
-                onClick = onButtonClick,
-                activate = buttonActivate
+                text = "인증번호 받기",
+                onClick = {
+                    //navController.navigate(Route.GetAuthNumber.route)
+                },
+                //activate = phoneNumberValidation
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
+
     }
 }

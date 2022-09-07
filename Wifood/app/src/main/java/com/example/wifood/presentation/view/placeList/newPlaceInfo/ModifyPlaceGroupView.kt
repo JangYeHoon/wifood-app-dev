@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -19,25 +18,28 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true)
 @Composable
 fun ModifyPlaceGroupView(
-){
+) {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) {
+    Column {
+        MyPageTopAppBar(
+            titleText = "",
+            leftButtonClicked = {
+
+            },
+            showUnderLine = false
+        )
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -97,27 +99,29 @@ fun ModifyPlaceGroupView(
 
 @Composable
 fun YOGOBaseTextField(
-    text:String,
-    onValueChange:(String)->Unit,
-    placeholderText:String,
-    selectable:Boolean = false,
-    selectFunction:()->Unit = {}
-){
+    text: String,
+    onValueChange: (String) -> Unit,
+    placeholderText: String,
+    selectable: Boolean = false,
+    selectFunction: () -> Unit = {}
+) {
     val interactionSource = remember {
         MutableInteractionSource()
     }
     Column(
-        modifier = if (selectable){
-            Modifier.clickable(
-                indication = null,
-                interactionSource = interactionSource
-            ){
-                selectFunction()
-            }
+        modifier = if (selectable) {
+            Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    selectFunction()
+                }
         } else {
             Modifier
         }
-    ){
+    ) {
         TextField(
             value = text,
             onValueChange = onValueChange,
@@ -153,7 +157,7 @@ fun YOGOBaseTextField(
                 //keyboardType = KeyboardType.Phone
             ),
             trailingIcon = {
-                if(selectable){
+                if (selectable) {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_right_arrow),
                         contentDescription = "left button of top app bar",

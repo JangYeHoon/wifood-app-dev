@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,6 +11,7 @@ import androidx.navigation.NavController
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun EditMyInfoComposeView(
     navController: NavController
