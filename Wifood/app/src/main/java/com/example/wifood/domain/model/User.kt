@@ -10,6 +10,7 @@ data class User(
     val address: String,
     val birthday: String,
     val gender: Int,
+    val nickname: String,
     val groupList: List<Group> = emptyList(),
     val taste: Taste? = null
 ) : Parcelable {
