@@ -138,7 +138,7 @@ fun PlaceInputNameAndVisited(
             topBar = {
                 PlaceInputTopAppBar(
                     leftButtonClicked = {
-
+                        navController.popBackStack()
                     },
                     rightButtonClicked = {
                         if (formState.groupName != "그룹 선택" && state.place.name.isNotEmpty()) {
@@ -212,7 +212,11 @@ fun PlaceInputNameAndVisited(
                     Spacer(Modifier.weight(1f))
                     DoubleButton(
                         leftButtonText = "건너뛰기",
-                        leftButtonClicked = {},
+                        leftButtonOn = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
+                        leftButtonClicked = {
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.PlaceInputStarAndEvaluation.route}/${placeJson}")
+                        },
                         rightButtonOn = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
                         rightButtonText = "맛 평가하기",
                         rightButtonClicked = {

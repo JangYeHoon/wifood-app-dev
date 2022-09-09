@@ -141,7 +141,7 @@ fun YOGOBaseTextField(
                     color = EnableColor
                 )
             },
-            enabled = false,
+            enabled = !selectable,
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.White,

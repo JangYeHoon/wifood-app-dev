@@ -40,11 +40,14 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.MainButtonInversed
+import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextField
+import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.gson.Gson
@@ -65,18 +68,12 @@ fun PlaceInputMenuEvaluation(
     val interactionSource = remember {
         MutableInteractionSource()
     }
-    val placeInfoMenuImageSize = 60
 
     val formState = viewModel.formState
     val scope = rememberCoroutineScope()
-    val modalBottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
     val state = viewModel.state
-
-    val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
-    var customSheetContent by remember { mutableStateOf(sheetContent) }
 
     val placeBackStack =
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Place>("placeBack")
@@ -110,130 +107,131 @@ fun PlaceInputMenuEvaluation(
         }
     }
 
-    ModalBottomSheetLayout(
-        sheetContent = { customSheetContent() },
-        sheetState = modalBottomSheetState,
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-        sheetBackgroundColor = Color(0xFF222222)
+    Scaffold(
+        topBar = {
+            PlaceInputTopAppBar(
+                leftButtonClicked = {
+                    navController.popBackStack()
+                },
+                rightButtonClicked = {
+                    scope.launch {
+                        viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
+                    }
+                },
+                rightButtonOn = true
+            )
+        }
     ) {
-        Scaffold(
-            topBar = {
-                YOGOTopAppBar(
-                    text = "맛집 등록",
-                    leftButtonClicked = {/*TODO*/ },
-                    rightButtonOn = true,
-                    rightButtonClicked = {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = sidePaddingValue.dp)
+            ) {
+                Spacer(Modifier.weight(1f))
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_3by4),
+                    contentDescription = "",
+                    modifier = Modifier.wrapContentSize(),
+                    tint = Color.Unspecified
+                )
+                Spacer(Modifier.height(6.dp))
+                YOGOLargeText(
+                    text = "맛집 정보를 등록해주세요."
+                )
+                Spacer(Modifier.height(24.dp))
+                YOGOSubTextField(
+                    titleText = "메뉴명",
+                    inputText = formState.menuName,
+                    placeholder = "메뉴명을 입력해주세요",
+                    onValueChange = {
                         scope.launch {
-                            viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceAddBtnClick)
+                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
                         }
                     }
                 )
-            }
-        ) {
-            Column(
-                modifier = Modifier.verticalScroll(scrollState)
-            ) {
-                Column(
+                Spacer(Modifier.height(24.dp))
+                YOGOSubTextField(
+                    titleText = "가격",
+                    inputText = formState.menuPrice,
+                    placeholder = "가격을 입력해주세요",
+                    onValueChange = {
+                        scope.launch {
+                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
+                        }
+                    }
+                )
+                Spacer(Modifier.height(24.dp))
+                YOGOSubTextField(
+                    titleText = "메뉴 리뷰",
+                    inputText = formState.menuMemo,
+                    placeholder = "메뉴 리뷰를 입력해주세요",
+                    onValueChange = {
+                        scope.launch {
+                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
+                        }
+                    }
+                )
+                Spacer(Modifier.height(24.dp))
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_add_menu_eval_button),
+                    contentDescription = "left button of top app bar",
                     modifier = Modifier
-                        .padding(top = 18.dp)
-                        .padding(horizontal = 32.dp)
-                ) {
-                    Row() {
-                        TitleText("메뉴평가")
-                        Spacer(Modifier.weight(1f))
-                        IconButton(
-                            onClick = {
-                                //isClicked.value = !isClicked.value
-                            },
-                            modifier = Modifier
-                                .size(17.dp)
+                        .wrapContentSize()
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource
                         ) {
-                            Icon(
-                                ImageVector.vectorResource(id = R.drawable.ic_add_menu_eval_button),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clickable(
-                                        indication = null,
-                                        interactionSource = interactionSource
-                                    ) {
-                                        scope.launch {
-                                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuGradeAddBtnClick)
-                                        }
-                                    },
-                                tint = Color.Unspecified
-                            )
-                        }
-                    }
-                    Spacer(Modifier.height(12.dp))
-                    InputTextField(
-                        text = formState.menuName,
-                        placeholder = "메뉴명",
-                        height = 50,
-                        onValueChange = {
                             scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuGradeAddBtnClick)
                             }
-                        }
+                        },
+                    tint = Color.Unspecified
+                )
+                Spacer(Modifier.height(24.dp))
+                formState.menuGrades.forEach { menuGrade ->
+                    Text(
+                        text = menuGrade.name,
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = Gray01Color
                     )
-                    InputTextField(
-                        text = formState.menuPrice,
-                        placeholder = "가격",
-                        height = 50,
-                        onValueChange = {
-                            scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
-                            }
-                        }
+                    Text(
+                        text = menuGrade.price.toString(),
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = Gray01Color
                     )
-                    InputTextField(
-                        text = formState.menuMemo,
-                        placeholder = "메모",
-                        height = 50,
-                        onValueChange = {
-                            scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
-                            }
-                        }
+                    Text(
+                        text = menuGrade.memo,
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                        color = Gray01Color
                     )
-                    formState.menuGrades.forEach { menuGrade ->
-                        Text(
-                            text = menuGrade.name,
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp,
-                            color = Gray01Color
-                        )
-                        Text(
-                            text = menuGrade.price.toString(),
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp,
-                            color = Gray01Color
-                        )
-                        Text(
-                            text = menuGrade.memo,
-                            fontFamily = mainFont,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp,
-                            color = Gray01Color
-                        )
-                    }
-                    Spacer(Modifier.height(70.dp))
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                    )
-                    MainButton(
-                        text = "맛집 등록하기",
-                        onClick = {
-                            val placeJson = Uri.encode(Gson().toJson(state.place))
-                            navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
-                        }
-                    )
-                    Spacer(Modifier.height(buttonBottomValue.dp))
                 }
+                Spacer(Modifier.weight(1f))
+                DoubleButton(
+                    leftButtonText = "건너뛰기",
+                    leftButtonOn = true,
+                    leftButtonClicked = {
+                        val placeJson = Uri.encode(Gson().toJson(state.place))
+                        navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                    },
+                    rightButtonText = "리뷰 입력하기",
+                    rightButtonOn = true,
+                    rightButtonClicked = {
+                        val placeJson = Uri.encode(Gson().toJson(state.place))
+                        navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                    }
+                )
+                Spacer(Modifier.height(buttonBottomValue.dp))
             }
         }
     }

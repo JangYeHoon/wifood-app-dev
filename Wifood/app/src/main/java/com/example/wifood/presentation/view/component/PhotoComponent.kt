@@ -4,8 +4,6 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -22,8 +20,6 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
-import com.example.wifood.presentation.view.placeList.PlaceImagePopup
-import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 
 
 @Composable
@@ -46,9 +42,11 @@ fun PhotoDefaultIcon(
 }
 
 
+@ExperimentalCoilApi
 @Composable
 fun PhotoListUpWithSelection(
-    imageList: List<Int> = listOf(R.drawable.place_image, R.drawable.place_image),
+    imageList: ArrayList<Uri>,
+    photoAddClick: () -> Unit,
     imageSize: Int = 60
 ) {
     val scrollState = rememberScrollState()
@@ -57,7 +55,10 @@ fun PhotoListUpWithSelection(
             .fillMaxWidth()
     ) {
         PhotoDefaultIcon(
-            modifier = Modifier.size(imageSize.dp)
+            modifier = Modifier.size(imageSize.dp),
+            onClick = {
+                photoAddClick()
+            }
         )
         Spacer(modifier = Modifier.width(6.dp))
         Row(
@@ -67,7 +68,9 @@ fun PhotoListUpWithSelection(
         ) {
             for (image in imageList) {
                 Image(
-                    painter = painterResource(id = image),
+                    painter = rememberImagePainter(
+                        data = image
+                    ),
                     contentDescription = "",
                     modifier = Modifier
                         .size(imageSize.dp)
