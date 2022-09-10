@@ -159,20 +159,19 @@ fun PlaceInputMenuEvaluation(
                     Spacer(Modifier.height(24.dp))
                     YOGOSubTextField(
                         titleText = "가격",
-                        inputText = if (menuGrade.price == 0) "" else DecimalFormat("#,###").format(
-                            menuGrade.price
-                        ),
+                        inputText = if (menuGrade.price == 0) "" else menuGrade.price.toString(),
                         placeholder = "가격을 입력해주세요",
                         onValueChange = {
                             scope.launch {
                                 viewModel.onEvent(
                                     PlaceInfoWriteFormEvent.MenuPriceChange(
                                         index,
-                                        it.replace(",", "")
+                                        it
                                     )
                                 )
                             }
-                        }
+                        },
+                        transformEnable = true
                     )
                     Spacer(Modifier.height(24.dp))
                     YOGOSubTextField(

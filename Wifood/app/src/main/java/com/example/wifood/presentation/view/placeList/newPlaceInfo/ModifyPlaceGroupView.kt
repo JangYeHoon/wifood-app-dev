@@ -18,12 +18,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.login.util.numberCommaFilter
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import kotlinx.coroutines.selects.select
@@ -176,3 +178,81 @@ fun YOGOBaseTextField(
     }
 }
 
+@Composable
+fun YOGOTransformTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    placeholderText: String,
+    selectable: Boolean = false,
+    selectFunction: () -> Unit = {}
+) {
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ) {
+                    if (selectable)
+                        selectFunction()
+                },
+            textStyle = TextStyle(
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 18.sp,
+                color = Gray01Color,
+            ),
+            placeholder = {
+                Text(
+                    text = placeholderText,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp,
+                    color = EnableColor
+                )
+            },
+            enabled = !selectable,
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.White,
+                cursorColor = MainColor,
+                textColor = Gray01Color,
+                placeholderColor = EnableColor,
+                focusedIndicatorColor = MainColor,
+                unfocusedIndicatorColor = EnableColor
+            ),
+            visualTransformation = {
+                numberCommaFilter(it)
+            },
+            keyboardOptions = KeyboardOptions(
+                //keyboardType = KeyboardType.Phone
+            ),
+            trailingIcon = {
+                if (selectable) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_right_arrow),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource
+                            ) {
+                                selectFunction()
+                            },
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+        )
+    }
+}

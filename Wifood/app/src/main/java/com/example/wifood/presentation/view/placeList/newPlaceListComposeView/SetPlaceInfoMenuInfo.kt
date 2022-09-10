@@ -124,7 +124,8 @@ fun YOGOSubTextField(
     titleText: String = "메뉴명",
     inputText: String = "햄버거",
     placeholder: String = "메뉴명을 입력해주세요",
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
+    transformEnable: Boolean = false
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -132,11 +133,19 @@ fun YOGOSubTextField(
         YOGOTextPM15(
             titleText
         )
-        YOGOBaseTextField(
-            text = inputText,
-            onValueChange = onValueChange,
-            placeholderText = placeholder
-        )
+        if (transformEnable) {
+            YOGOTransformTextField(
+                text = inputText,
+                onValueChange = onValueChange,
+                placeholderText = placeholder
+            )
+        } else {
+            YOGOBaseTextField(
+                text = inputText,
+                onValueChange = onValueChange,
+                placeholderText = placeholder
+            )
+        }
     }
 }
 
@@ -168,7 +177,7 @@ fun YOGOSubTextFieldWithButton_SB(
         Box(
             modifier = Modifier
                 .wrapContentSize()
-                .clickable(){
+                .clickable() {
                     onTextFieldClick()
                 }
         ){
