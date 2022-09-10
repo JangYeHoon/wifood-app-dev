@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.FileProvider
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
@@ -25,6 +26,8 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
 import java.io.File
+import java.lang.NumberFormatException
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -45,6 +48,9 @@ class PlaceInfoWriteViewModel @Inject constructor(
         savedStateHandle.get<Place>("place")?.let { place ->
             state = state.copy(place = place)
             setFormInputValueToPlaceEntity(state.place)
+            if (formState.menuGrades.isEmpty()) {
+                formState.menuGrades.add(MenuGrade(state.place.placeId, "", 0, ""))
+            }
             setStarEnableToSelectedIdx(state.place.score.toInt() - 1)
             if (place.placeId != -1) {
                 formState = formState.copy(placeEditChk = true)
@@ -127,13 +133,30 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 }
             }
             is PlaceInfoWriteFormEvent.MenuNameChange -> {
-                formState = formState.copy(menuName = event.menuName)
+                formState = formState.copy(menuName = if (formState.menuName == "") "1" else "")
+                formState.menuGrades[event.idx].name = event.menuName
+                state.place.menuList[event.idx].name = event.menuName
             }
             is PlaceInfoWriteFormEvent.MenuPriceChange -> {
-                formState = formState.copy(menuPrice = event.menuPrice)
+                try {
+                    if (event.menuPrice.isEmpty()) {
+                        formState.menuGrades[event.idx].price = 0
+                        state.place.menuList[event.idx].price = 0
+                    } else {
+                        formState.menuGrades[event.idx].price = event.menuPrice.toInt()
+                        state.place.menuList[event.idx].price = event.menuPrice.toInt()
+                    }
+                } catch (e: NumberFormatException) {
+                    showSnackBar("숫자만 입력해주세요.")
+                } finally {
+                    formState =
+                        formState.copy(menuPrice = if (formState.menuPrice == "") "1" else "")
+                }
             }
             is PlaceInfoWriteFormEvent.MenuMemoChange -> {
-                formState = formState.copy(menuMemo = event.menuMemo)
+                formState = formState.copy(menuMemo = if (formState.menuMemo == "") "1" else "")
+                formState.menuGrades[event.idx].memo = event.menuMemo
+                state.place.menuList[event.idx].memo = event.menuMemo
             }
             is PlaceInfoWriteFormEvent.PlaceImagesAdd -> {
                 formState.placeImages.add(event.image)
@@ -151,8 +174,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
                 formState = formState.copy(currentPhotoPath = event.imageName)
             }
             is PlaceInfoWriteFormEvent.MenuGradeAddBtnClick -> {
-                if (formState.menuName.isNotEmpty())
-                    addMenuGradeAndSetMenuGradeInputEmpty()
+                addMenuGradeAndSetMenuGradeInputEmpty()
             }
             is PlaceInfoWriteFormEvent.PlaceAddBtnClick -> {
                 setPlaceEntityToInputMenu()
@@ -199,15 +221,13 @@ class PlaceInfoWriteViewModel @Inject constructor(
         formState.menuGrades.add(
             MenuGrade(
                 state.place.placeId,
-                formState.menuName,
-                formState.menuPrice.toInt(),
-                formState.menuMemo
+                "",
+                0,
+                ""
             )
         )
         state.place.menuList = formState.menuGrades
-        formState = formState.copy(menuName = "")
-        formState = formState.copy(menuPrice = "")
-        formState = formState.copy(menuMemo = "")
+        formState = formState.copy(menuName = if (formState.menuName == "") "1" else "")
     }
 
     private fun setPlaceEntityToInputMenu() {
@@ -236,6 +256,22 @@ class PlaceInfoWriteViewModel @Inject constructor(
     private fun updatePlace() {
         Timber.i("update place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
+    }
+
+    fun checkForm(): Boolean {
+        formState.menuGrades.forEach {
+            if (it.name.isEmpty()) {
+                showSnackBar("메뉴명을 입력해주세요.")
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun showSnackBar(message: String) {
+        viewModelScope.launch {
+            validateEventChannel.send(ValidationEvent.Error(message))
+        }
     }
 
     @DelicateCoroutinesApi

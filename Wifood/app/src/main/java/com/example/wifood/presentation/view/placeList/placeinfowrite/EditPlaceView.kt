@@ -353,7 +353,7 @@ fun EditPlaceView(
                         height = 50,
                         onValueChange = {
                             scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
+//                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
                             }
                         }
                     )
@@ -363,7 +363,7 @@ fun EditPlaceView(
                         height = 50,
                         onValueChange = {
                             scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
+//                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
                             }
                         }
                     )
@@ -373,7 +373,7 @@ fun EditPlaceView(
                         height = 50,
                         onValueChange = {
                             scope.launch {
-                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
+//                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
                             }
                         }
                     )

@@ -54,6 +54,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
@@ -144,39 +145,48 @@ fun PlaceInputMenuEvaluation(
                     text = "맛집 정보를 등록해주세요."
                 )
                 Spacer(Modifier.height(24.dp))
-                YOGOSubTextField(
-                    titleText = "메뉴명",
-                    inputText = formState.menuName,
-                    placeholder = "메뉴명을 입력해주세요",
-                    onValueChange = {
-                        scope.launch {
-                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(it))
+                formState.menuGrades.forEachIndexed { index, menuGrade ->
+                    YOGOSubTextField(
+                        titleText = "메뉴명",
+                        inputText = menuGrade.name,
+                        placeholder = "메뉴명을 입력해주세요",
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuNameChange(index, it))
+                            }
                         }
-                    }
-                )
-                Spacer(Modifier.height(24.dp))
-                YOGOSubTextField(
-                    titleText = "가격",
-                    inputText = formState.menuPrice,
-                    placeholder = "가격을 입력해주세요",
-                    onValueChange = {
-                        scope.launch {
-                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuPriceChange(it))
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    YOGOSubTextField(
+                        titleText = "가격",
+                        inputText = if (menuGrade.price == 0) "" else DecimalFormat("#,###").format(
+                            menuGrade.price
+                        ),
+                        placeholder = "가격을 입력해주세요",
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(
+                                    PlaceInfoWriteFormEvent.MenuPriceChange(
+                                        index,
+                                        it.replace(",", "")
+                                    )
+                                )
+                            }
                         }
-                    }
-                )
-                Spacer(Modifier.height(24.dp))
-                YOGOSubTextField(
-                    titleText = "메뉴 리뷰",
-                    inputText = formState.menuMemo,
-                    placeholder = "메뉴 리뷰를 입력해주세요",
-                    onValueChange = {
-                        scope.launch {
-                            viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(it))
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    YOGOSubTextField(
+                        titleText = "메뉴 리뷰",
+                        inputText = menuGrade.memo,
+                        placeholder = "메뉴 리뷰를 입력해주세요",
+                        onValueChange = {
+                            scope.launch {
+                                viewModel.onEvent(PlaceInfoWriteFormEvent.MenuMemoChange(index, it))
+                            }
                         }
-                    }
-                )
-                Spacer(Modifier.height(24.dp))
+                    )
+                    Spacer(Modifier.height(24.dp))
+                }
                 Icon(
                     ImageVector.vectorResource(id = R.drawable.ic_add_menu_eval_button),
                     contentDescription = "left button of top app bar",
@@ -193,42 +203,23 @@ fun PlaceInputMenuEvaluation(
                     tint = Color.Unspecified
                 )
                 Spacer(Modifier.height(24.dp))
-                formState.menuGrades.forEach { menuGrade ->
-                    Text(
-                        text = menuGrade.name,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp,
-                        color = Gray01Color
-                    )
-                    Text(
-                        text = menuGrade.price.toString(),
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp,
-                        color = Gray01Color
-                    )
-                    Text(
-                        text = menuGrade.memo,
-                        fontFamily = mainFont,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp,
-                        color = Gray01Color
-                    )
-                }
                 Spacer(Modifier.weight(1f))
                 DoubleButton(
                     leftButtonText = "건너뛰기",
                     leftButtonOn = true,
                     leftButtonClicked = {
-                        val placeJson = Uri.encode(Gson().toJson(state.place))
-                        navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                        if (viewModel.checkForm()) {
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                        }
                     },
                     rightButtonText = "리뷰 입력하기",
                     rightButtonOn = true,
                     rightButtonClicked = {
-                        val placeJson = Uri.encode(Gson().toJson(state.place))
-                        navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                        if (viewModel.checkForm()) {
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.PlaceInputReviewAndImages.route}/${placeJson}")
+                        }
                     }
                 )
                 Spacer(Modifier.height(buttonBottomValue.dp))
