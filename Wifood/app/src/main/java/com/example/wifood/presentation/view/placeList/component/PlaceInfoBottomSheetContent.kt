@@ -39,6 +39,7 @@ fun PlaceInfoBottomSheetContent(
                 title,
                 Toast.LENGTH_SHORT
             ).show()
+            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
             val placeJson = Uri.encode(Gson().toJson(place))
             navController.navigate("${Route.EditPlace.route}/${placeJson}")
         }

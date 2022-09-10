@@ -26,7 +26,7 @@ class PlaceInfoViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Place>("place")?.let { place ->
-            state = state.copy(place = place)
+            state = state.copy(place = place, placeReview = place.review)
         }
 
         savedStateHandle.get<Group>("group")?.let { group ->
@@ -64,6 +64,13 @@ class PlaceInfoViewModel @Inject constructor(
                     state.copy(popupImageIdx = 0)
                 else
                     state.copy(popupImageIdx = state.popupImageIdx + 1)
+            }
+            is PlaceInfoEvent.ReviewChange -> {
+                state = state.copy(placeReview = event.review)
+            }
+            is PlaceInfoEvent.ViewChangeEvent -> {
+                state.place!!.review = state.placeReview
+                useCases.UpdatePlace(state.place!!)
             }
         }
     }

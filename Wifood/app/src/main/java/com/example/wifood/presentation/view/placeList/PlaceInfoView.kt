@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.placeList
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.MutableInt
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -244,6 +245,11 @@ fun PlaceInfoView(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val showImagePopupChk = remember { mutableStateOf(false) }
 
+    BackHandler(enabled = true) {
+        viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+        navController.popBackStack()
+    }
+
     ModalBottomSheetLayout(
         sheetContent = { PlaceInfoBottomSheetContent(state.place, navController) },
         sheetState = modalBottomSheetState,
@@ -266,6 +272,7 @@ fun PlaceInfoView(
                 VectorIconWithNoInteraction(
                     resource = R.drawable.ic_place_info_back_button,
                     onClick = {
+                        viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
                         navController.popBackStack()
                     }
                 )
@@ -387,8 +394,10 @@ fun PlaceInfoView(
                     )
                     Spacer(Modifier.height(10.dp))
                     ReviewTextField(
-                        text = state.place.review,
-                        onValueChange = {},
+                        text = state.placeReview,
+                        onValueChange = {
+                            viewModel.onEvent(PlaceInfoEvent.ReviewChange(it))
+                        },
                         placeholder = "",
                         modifier = Modifier
                             .wrapContentHeight(),
