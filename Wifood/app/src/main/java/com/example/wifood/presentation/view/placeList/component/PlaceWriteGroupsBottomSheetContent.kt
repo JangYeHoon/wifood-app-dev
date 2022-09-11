@@ -46,7 +46,7 @@ fun PlaceWriteGroupsBottomSheetContent(
     val formState = viewModel.formState
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    var selectedGroup by remember { mutableStateOf("") }
+    var selectedGroup by remember { mutableStateOf(viewModel.formState.groupName) }
     val selectGroupScrollState = rememberScrollState()
     val interactionSource = remember {
         MutableInteractionSource()

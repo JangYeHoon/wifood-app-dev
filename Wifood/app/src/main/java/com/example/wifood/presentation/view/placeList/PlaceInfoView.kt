@@ -206,19 +206,24 @@ fun PlaceInfoMainContent(
 @Composable
 fun RatedMode(
     text: String = "기분",
-    color: Color = Color(0xFFFFB154)
+    color: Color = Color(0xFFFFB154),
+    clickable: Boolean = true,
+    onClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
             .background(
-                color = color,
+                color = if (clickable) Color(0xFFFFB154) else Color(0xFFCFCFCF),
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(horizontal = 8.dp)
-            .padding(vertical = 2.dp),
+            .padding(vertical = 2.dp)
+            .clickable {
+                onClick()
+            },
     ) {
         Text(
-            text = "#" + text,
+            text = "#$text",
             fontFamily = mainFont,
             fontWeight = FontWeight.Medium,
             fontSize = 11.sp,

@@ -178,11 +178,13 @@ class PlaceInfoWriteViewModel @Inject constructor(
             }
             is PlaceInfoWriteFormEvent.PlaceAddBtnClick -> {
                 setPlaceEntityToInputMenu()
+                state.place.deleteMenuGradeFromEmptyName()
                 insertPlace()
                 insertImages()
             }
             is PlaceInfoWriteFormEvent.PlaceEditBtnClick -> {
                 setPlaceEntityToInputMenu()
+                state.place.deleteMenuGradeFromEmptyName()
                 updatePlace()
                 insertImages()
             }
@@ -260,7 +262,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     fun checkForm(): Boolean {
         formState.menuGrades.forEach {
-            if (it.name.isEmpty()) {
+            if ((it.price != 0 || it.memo.isNotEmpty()) && it.name.isEmpty()) {
                 showSnackBar("메뉴명을 입력해주세요.")
                 return false
             }
