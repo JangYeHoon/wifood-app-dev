@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOTextPM15
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
@@ -36,7 +36,6 @@ import com.example.wifood.view.ui.theme.*
 @Composable
 fun SetPlaceInfoMenuInfo() {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
     val interactionSource = remember {
         MutableInteractionSource()
     }

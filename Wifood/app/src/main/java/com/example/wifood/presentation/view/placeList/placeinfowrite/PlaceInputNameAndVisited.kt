@@ -33,7 +33,6 @@ import com.example.wifood.presentation.view.groupComponet.SwitchWithText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices

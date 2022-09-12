@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,20 +14,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.util.phoneFilter
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
 @Composable
-fun ModifyUserPhoneNumberView(
+fun ModifyUserPhoneNumberContent(
+    newPhoneText:String = "",
+    onPhoneValueChanged:(String) -> Unit = {},
+    onModifyButtonClicked:()->Unit = {}
 ){
-    var phoneNumberValidation by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -51,9 +50,8 @@ fun ModifyUserPhoneNumberView(
             )
             Spacer(Modifier.height(24.dp))
             TextField(
-                value = "",
-                onValueChange = {
-                },
+                value = newPhoneText,
+                onValueChange = onPhoneValueChanged,
                 modifier = Modifier
                     .fillMaxWidth(),
                 textStyle = TextStyle(
@@ -91,9 +89,8 @@ fun ModifyUserPhoneNumberView(
             MainButton(
                 text = "변경하기",
                 onClick = {
-                    //navController.navigate(Route.GetAuthNumber.route)
+                    onModifyButtonClicked()
                 },
-                //activate = phoneNumberValidation
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

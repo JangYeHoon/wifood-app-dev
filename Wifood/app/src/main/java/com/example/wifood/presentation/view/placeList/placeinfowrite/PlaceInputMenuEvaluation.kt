@@ -38,16 +38,12 @@ import com.example.wifood.R
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
-import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.component.MainButtonInversed
-import com.example.wifood.presentation.view.component.YOGOLargeText
-import com.example.wifood.presentation.view.component.YOGOTopAppBar
+import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.login.component.InputTextField
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextField
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.gson.Gson
