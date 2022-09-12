@@ -43,7 +43,7 @@ fun ModifyUserPhoneNumberView(
 
             Spacer(Modifier.weight(1f))
             Text(
-                text = "휴대폰 번호를\n입력해주세요.",
+                text = "새로운 휴대폰 번호를\n입력해주세요.",
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 24.sp,
@@ -89,7 +89,7 @@ fun ModifyUserPhoneNumberView(
             Spacer(Modifier.height(24.dp))
             Spacer(Modifier.weight(1f))
             MainButton(
-                text = "인증번호 받기",
+                text = "변경하기",
                 onClick = {
                     //navController.navigate(Route.GetAuthNumber.route)
                 },

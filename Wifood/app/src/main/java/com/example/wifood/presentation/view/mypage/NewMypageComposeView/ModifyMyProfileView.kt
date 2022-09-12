@@ -36,7 +36,7 @@ fun ModifyUserProfileView(
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText = "서비스 이용약관",
+            titleText = "프로필 수정",
             leftButtonOn = true,
             leftButtonClicked = {
 

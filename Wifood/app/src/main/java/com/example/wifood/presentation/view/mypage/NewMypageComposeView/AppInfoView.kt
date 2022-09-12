@@ -27,7 +27,7 @@ fun AppInfoView(
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText = "개발자 정보",
+            titleText =  "앱정보",
             leftButtonOn = true,
             leftButtonClicked = {
 
