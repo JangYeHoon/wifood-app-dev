@@ -58,7 +58,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.math.roundToInt
 
-@Preview(showBackground = true)
 @Composable
 fun PlaceInfoMenus(
     menuName: String = "하와이안 피자",
@@ -100,7 +99,7 @@ fun PlaceInfoMenus(
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
 fun PlaceInfoMainContent(
     placeInfoGroupName: String = "맛집그룹",
@@ -202,7 +201,6 @@ fun PlaceInfoMainContent(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun RatedMode(
     text: String = "기분",
