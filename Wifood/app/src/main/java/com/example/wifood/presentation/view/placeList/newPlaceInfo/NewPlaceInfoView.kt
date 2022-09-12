@@ -133,7 +133,9 @@ fun NewPlaceInfoView(
                 borderColor = Color(0xFFE7E7E7),
                 thickness = 4
             )
-
+            // Menu if exists
+            val isMenuExists = true
+            val isReviewExists = true
             // Reviews if it exists
             Column(
                 modifier = Modifier
@@ -143,21 +145,22 @@ fun NewPlaceInfoView(
                         vertical = 22.dp
                     )
             ){
-                YOGOTextPM15(
-                    text = "맛집 리뷰"
-                )
-                Spacer(Modifier.height(10.dp))
-                ReviewTextField(
-                    text = "3시에서 4시 해피아워 10% 할인됨, 미리 예약하기, 본점이랑 비교하기 미션",
-                    onValueChange = {},
-                    placeholder = "",
-                    modifier = Modifier
-                        .wrapContentHeight(),
-                    showCount = false,
-                    fontSize = 12
-                )
-                Spacer(Modifier.height(10.dp))
-//                ShowPhotoList(
+                if (isReviewExists){
+                    YOGOTextPM15(
+                        text = "맛집 리뷰"
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    ReviewTextField(
+                        text = "3시에서 4시 해피아워 10% 할인됨, 미리 예약하기, 본점이랑 비교하기 미션",
+                        onValueChange = {},
+                        placeholder = "",
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        showCount = false,
+                        fontSize = 12
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    //                ShowPhotoList(
 //                    listOf(
 //                        R.drawable.place_image,
 //                        R.drawable.place_image,
@@ -170,10 +173,9 @@ fun NewPlaceInfoView(
 //                        R.drawable.place_image,
 //                    )
 //                )
-                Spacer(Modifier.height(28.dp))
+                    Spacer(Modifier.height(28.dp))
+                }
 
-                // Menu if exists
-                val isMenuExists = true
                 if (isMenuExists){
                     Column(
                         modifier = Modifier
