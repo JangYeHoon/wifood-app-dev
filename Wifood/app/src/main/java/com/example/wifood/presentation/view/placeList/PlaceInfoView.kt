@@ -2,13 +2,9 @@ package com.example.wifood.presentation.view.placeList
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.MutableInt
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,16 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +33,6 @@ import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
-import com.example.wifood.presentation.view.login.component.SnsIconButton
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoAbstractView
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoShowMenu
@@ -49,14 +40,11 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import kotlin.math.roundToInt
 
 @Preview(showBackground = true)
 @Composable
@@ -250,13 +238,21 @@ fun PlaceInfoView(
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val showImagePopupChk = remember { mutableStateOf(false) }
 
-    BackHandler(enabled = true) {
-        viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
-        navController.popBackStack()
-    }
+    BackBottomSheetHideOrMoveView(
+        modalBottomSheetState,
+        "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+        viewModel,
+        navController
+    )
 
     ModalBottomSheetLayout(
-        sheetContent = { PlaceInfoBottomSheetContent(state.place, navController) },
+        sheetContent = {
+            PlaceInfoBottomSheetContent(
+                state.place,
+                navController,
+                modalBottomSheetState
+            )
+        },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color(0xFF222222)

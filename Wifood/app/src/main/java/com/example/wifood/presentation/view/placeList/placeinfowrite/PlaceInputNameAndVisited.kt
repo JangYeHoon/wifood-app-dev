@@ -103,6 +103,8 @@ fun PlaceInputNameAndVisited(
         }
     }
 
+    BackBottomSheetHide(modalBottomSheetState)
+
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
