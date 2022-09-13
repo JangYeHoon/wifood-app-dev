@@ -91,7 +91,6 @@ fun GetPhoneAuthenticationNumberView(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
-                    .fillMaxSize()
             ) {
                 Spacer(Modifier.weight(1f))
                 Text(

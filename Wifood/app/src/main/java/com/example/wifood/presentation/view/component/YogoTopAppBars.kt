@@ -27,6 +27,9 @@ fun MyPageTopAppBar(
     titleText:String = "프로필 수정",
     leftButtonOn:Boolean = true,
     leftButtonClicked:() -> Unit = {},
+    rightButtonOn:Boolean = false,
+    rightButtonText:String = "완료",
+    rightButtonClicked: () -> Unit = {},
     showUnderLine:Boolean = true
 ){
     val height:Int = 48
@@ -50,6 +53,7 @@ fun MyPageTopAppBar(
                     modifier = Modifier
                         .height(height.dp)
                         .width(40.dp)
+                        .align(Alignment.CenterStart)
                         .clickable(
                             indication = null,
                             interactionSource = interactionSource
@@ -74,6 +78,28 @@ fun MyPageTopAppBar(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.Center)
             )
+            if (rightButtonOn){
+                Text(
+                    text = rightButtonText,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MainColor,
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(height.dp)
+                        .align(Alignment.CenterEnd)
+                        .padding(
+                            end = 20.dp
+                        )
+                        .clickable(
+                            indication = null,
+                            interactionSource = interactionSource
+                        ){
+                            rightButtonClicked()
+                        }
+                )
+            }
         }
         Divider(
             thickness = 1.dp,
@@ -166,4 +192,59 @@ fun DoubleButtonTopAppBar(
             color = if (showUnderLine) Color(0xFFF1F1F1) else Color.White
         )
     }
+}
+
+@Composable
+fun PlaceInputTopAppBar(
+    leftButtonClicked:() -> Unit = {},
+    rightButtonClicked:() -> Unit = {},
+    leftButtonOn: Boolean = true,
+    rightButtonOn: Boolean = false,
+    rightButtonText: String = "등록하기"
+){
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
+
+    TopAppBar(
+        title = {
+        },
+        navigationIcon = {
+            if (leftButtonOn){
+                IconButton(
+                    onClick = leftButtonClicked,
+                    modifier = Modifier.wrapContentSize()
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
+                        contentDescription = "left button of top app bar",
+                        modifier = Modifier.wrapContentSize(),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
+        },
+        backgroundColor = Color.White,
+        actions = {
+            if (rightButtonOn){
+                Text(
+                    text = rightButtonText,
+                    fontFamily = mainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = MainColor,
+                    modifier = Modifier
+                        .clickable (
+                            indication = null,
+                            interactionSource = interactionSource
+                        ){
+                            rightButtonClicked()
+                        }
+                        .padding(end = 20.dp)
+                )
+            }
+        },
+        contentColor = Color(0xFFF1F1F1),
+        elevation = 1.dp
+    )
 }

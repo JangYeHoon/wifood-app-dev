@@ -1,21 +1,19 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.presentation.view.mypage.component.versionInfoField
 
 @Composable
-fun ModifyMyInfoView(
+fun AppInfoView(
 
 ){
+
     val scrollState = rememberScrollState()
 
     Column(
@@ -23,7 +21,7 @@ fun ModifyMyInfoView(
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText = "내 정보 수정",
+            titleText =  "앱정보",
             leftButtonOn = true,
             leftButtonClicked = {
 
@@ -34,30 +32,31 @@ fun ModifyMyInfoView(
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
         ){
-            CommonTextButton(
-                text = "휴대폰 번호 변경",
-                withButton = true,
-                onClick = {
-                    //TODO
-                }
+            versionInfoField(
+                text = "버젼 정보",
+                version = "1.0v",
+                onClick = {}
             )
             CommonTextButton(
-                text = "내 동네 변경",
-                withButton = true,
-                onClick = {
-                    //TODO
-                }
-            )
-            CommonTextButton(
-                text = "내 입맛 수정",
-                withButton = true,
-                onClick = {
-                    //TODO
-                }
-            )
-            CommonTextButton(
-                text = "회원탈퇴",
+                text = "피드백",
                 withButton = false,
+                onClick = {
+                    //TODO
+                }
+            )
+            CommonTextButton(
+                text = "개발자 정보",
+                withButton = true,
+                onClick = {
+                    //TODO
+                }
+            )
+            CommonTextButton(
+                text = "서비스 이용약관",
+                withButton = true,
+                onClick = {
+                    //TODO
+                }
             )
         }
     }

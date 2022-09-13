@@ -1,6 +1,8 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,33 +16,42 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
-import com.example.wifood.view.ui.theme.Gray01Color
+import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ModifyUserProfileView(
-
-){
-    val scrollState = rememberScrollState()
-
+fun ModifyMyProfileContent(
+    onBackButtonClicked: () -> Unit = {},
+    onCameraButtonClicked: () -> Unit = {},
+    nicknameText: String = "요고247",
+    onNicknameTextChanged: (String) -> Unit = {},
+    onCompleteButtonClicked: () -> Unit = {}
+) {
+    val interactionSource = MutableInteractionSource()
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText = "서비스 이용약관",
+            titleText = "프로필 수정",
             leftButtonOn = true,
             leftButtonClicked = {
-
-            }
+                onBackButtonClicked()
+            },
+            rightButtonOn = true,
+            rightButtonClicked = {
+                onCompleteButtonClicked()
+            },
+            rightButtonText = "완료"
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -69,9 +80,10 @@ fun ModifyUserProfileView(
                         .wrapContentSize()
                         .align(Alignment.BottomEnd)
                         .clickable(
-
-                        ){
-
+                            indication = null,
+                            interactionSource = interactionSource
+                        ) {
+                            onCameraButtonClicked()
                         }
                 )
             }
@@ -80,7 +92,7 @@ fun ModifyUserProfileView(
         Column(
             modifier = Modifier
                 .padding(horizontal = sidePaddingValue.dp)
-        ){
+        ) {
             Text(
                 text = "닉네임",
                 fontFamily = mainFont,
@@ -90,8 +102,8 @@ fun ModifyUserProfileView(
             )
             Spacer(Modifier.height(7.dp))
             TextField(
-                value = "요고247",
-                onValueChange = {},
+                value = nicknameText,
+                onValueChange = onNicknameTextChanged,
                 modifier = Modifier
                     .border(
                         width = 1.dp,
@@ -112,7 +124,17 @@ fun ModifyUserProfileView(
                     fontSize = 15.sp,
                     color = Black2Color
                 ),
+                placeholder = {
+                    Text(
+                        text = "닉네임을 입력해주세요",
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        color = EnableColor
+                    )
+                }
             )
         }
     }
+
 }

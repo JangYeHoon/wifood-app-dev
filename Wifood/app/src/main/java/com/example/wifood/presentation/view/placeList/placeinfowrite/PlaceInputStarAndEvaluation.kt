@@ -26,12 +26,12 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.groupComponet.RatingWithText
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.RateFavor
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SelectAdditionalFavor
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SimpleText

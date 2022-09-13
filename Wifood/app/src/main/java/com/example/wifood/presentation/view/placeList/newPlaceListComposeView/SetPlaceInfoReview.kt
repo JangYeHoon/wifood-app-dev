@@ -34,7 +34,6 @@ import com.example.wifood.view.ui.theme.*
 @Composable
 fun PlaceInputImagesAndMenuEvaluationContent() {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
             PlaceInputTopAppBar(
@@ -91,58 +90,4 @@ fun PlaceInputImagesAndMenuEvaluationContent() {
             }
         }
     }
-}
-
-@Composable
-fun PlaceInputTopAppBar(
-    leftButtonClicked:() -> Unit = {},
-    rightButtonClicked:() -> Unit = {},
-    leftButtonOn: Boolean = true,
-    rightButtonOn: Boolean = false
-){
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-
-    TopAppBar(
-        title = {
-        },
-        navigationIcon = {
-            if (leftButtonOn){
-                IconButton(
-                    onClick = leftButtonClicked,
-                    modifier = Modifier.wrapContentSize()
-                ) {
-                    Icon(
-                        ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
-                        contentDescription = "left button of top app bar",
-                        modifier = Modifier.wrapContentSize(),
-                        tint = Color.Unspecified
-                    )
-                }
-            }
-        },
-        backgroundColor = Color.White,
-        actions = {
-            if (rightButtonOn){
-                Text(
-                    text = "등록하기",
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = MainColor,
-                    modifier = Modifier
-                        .clickable (
-                            indication = null,
-                            interactionSource = interactionSource
-                        ){
-                            rightButtonClicked()
-                        }
-                        .padding(end = 20.dp)
-                )
-            }
-        },
-        contentColor = Color(0xFFF1F1F1),
-        elevation = 1.dp
-    )
 }

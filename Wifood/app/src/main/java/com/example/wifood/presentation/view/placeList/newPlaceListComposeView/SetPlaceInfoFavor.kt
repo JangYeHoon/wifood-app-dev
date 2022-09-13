@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.SingleRatingStar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
@@ -36,7 +37,6 @@ import kotlinx.coroutines.launch
 fun SetPlaceInfoFavor(
 ) {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
             PlaceInputTopAppBar(
