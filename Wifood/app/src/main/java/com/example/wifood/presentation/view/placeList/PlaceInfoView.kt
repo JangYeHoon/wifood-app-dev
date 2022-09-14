@@ -229,12 +229,10 @@ fun PlaceInfoView(
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-    val interactionSource = MutableInteractionSource()
     val state = viewModel.state
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val showImagePopupChk = remember { mutableStateOf(false) }
 
     BackBottomSheetHideOrMoveView(
         modalBottomSheetState,

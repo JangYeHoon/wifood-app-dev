@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.component
 
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,17 +10,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
+import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.ImagePopUpView
 
 
 @Composable
@@ -89,15 +95,17 @@ fun PhotoListUpWithSelection(
 @Composable
 fun ShowPhotoList(
     imageList: List<Uri>,
-    imageSize: Int = 60
+    imageSize: Int = 60,
+    viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
+    val showImagePopupChk = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(scrollState)
     ) {
-        for (image in imageList) {
+        imageList.forEachIndexed { idx, image ->
             Image(
                 painter = rememberImagePainter(
                     data = image
@@ -107,14 +115,16 @@ fun ShowPhotoList(
                     .size(imageSize.dp)
                     .clip(
                         RoundedCornerShape(5.dp)
-                    ),
+                    )
+                    .clickable {
+                        showImagePopupChk.value = true
+                        viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
+                    },
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.width(6.dp))
+            if (showImagePopupChk.value)
+                ImagePopUpView(viewModel.state.placeImageUris, showImagePopupChk)
         }
     }
-//    showImagePopupChk.value = true
-//    viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
-//    if (showImagePopupChk.value)
-//        PlaceImagePopup(state.placeImageUris, showImagePopupChk)
 }
