@@ -91,6 +91,7 @@ class SearchPlaceViewModel @Inject constructor(
                         GlobalScope.launch(Dispatchers.IO) {
                             withContext(Dispatchers.Main) {
                                 setPlaceFromSearchAddressAndLatLng(event.latLng, it)
+                                validateEventChannel.send(ValidationEvent.Success)
                             }
                         }
                     }
