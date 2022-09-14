@@ -88,14 +88,12 @@ fun PointLocationAddress2(
 ) {
     val shape = RoundedCornerShape(10.dp)
     val interactionSource = MutableInteractionSource()
-    val isOn = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .clickable(
                 indication = null,
                 interactionSource = interactionSource
             ) {
-                isOn.value != isOn.value
                 function()
             }
             .background(
@@ -104,8 +102,8 @@ fun PointLocationAddress2(
             )
             .fillMaxWidth()
             .border(
-                width = if (isOn.value) 1.dp else 0.dp,
-                color = if (isOn.value) MainColor else Color.Unspecified,
+                width = if (isClicked) 1.dp else 0.dp,
+                color = if (isClicked) MainColor else Color.Unspecified,
                 shape = shape
             )
             .shadow(

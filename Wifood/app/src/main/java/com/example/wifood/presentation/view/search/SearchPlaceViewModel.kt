@@ -51,7 +51,8 @@ class SearchPlaceViewModel @Inject constructor(
                 ).observeForever {
                     try {
                         formState = formState.copy(searchResults = it as ArrayList<TMapSearch>)
-                    } catch (e: ConcurrentModificationException) { }
+                    } catch (e: ConcurrentModificationException) {
+                    }
                 }
             }
             is SearchPlaceFormEvent.CurrentLocationChange -> {
@@ -82,6 +83,7 @@ class SearchPlaceViewModel @Inject constructor(
                         event.address.longitude
                     ), event.address.fullAddress
                 )
+                formState = formState.copy(clickedAddressIdx = event.addressIndex)
             }
             is SearchPlaceFormEvent.GoogleMapLatLngBtnClick -> {
                 useCases.GetTMapReverseGeocoding(event.latLng).observeForever {
@@ -105,14 +107,21 @@ class SearchPlaceViewModel @Inject constructor(
                     }
                 }
             }
+            is SearchPlaceFormEvent.InputAddressViewBtnClick -> {
+                validateEventChannel.send(ValidationEvent.Success)
+            }
+            is SearchPlaceFormEvent.InputAddressClear -> {
+                formState = formState.copy(addPlaceAddressSearch = "")
+            }
+            is SearchPlaceFormEvent.InputNameClear -> {
+                formState = formState.copy(addPlaceName = "")
+            }
         }
     }
 
-    private suspend fun setPlaceFromSearchAddressAndLatLng(latLng: LatLng, address: String) {
+    private fun setPlaceFromSearchAddressAndLatLng(latLng: LatLng, address: String) {
         formState.place!!.address = address
         formState.place!!.latitude = latLng.latitude
         formState.place!!.longitude = latLng.longitude
-
-        validateEventChannel.send(ValidationEvent.Success)
     }
 }

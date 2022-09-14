@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.placeList.newPlaceInfo
+package com.example.wifood.presentation.view.placeList.component
 
 import android.net.Uri
 import androidx.compose.foundation.Image

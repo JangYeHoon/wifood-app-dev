@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.placeList.newPlaceInfo
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -28,13 +29,13 @@ import com.example.wifood.view.ui.theme.*
 @Composable
 fun PutPlaceName(
 
-){
+) {
     Column(
         modifier = Modifier
             .background(Color.White)
             .fillMaxSize()
             .padding(horizontal = sidePaddingValue.dp)
-    ){
+    ) {
         Spacer(Modifier.height(8.dp))
         DialogCenterDivider(
             width = 54,
@@ -60,10 +61,11 @@ fun PutPlaceName(
 
 @Composable
 fun PutPlaceNameTextField(
-    text:String = "",
-    placeholder:String = "맛집이름",
-    onValueChange:(String) -> Unit = {}
-){
+    text: String = "",
+    placeholder: String = "맛집이름",
+    onValueChange: (String) -> Unit = {},
+    onDeleteBtnClick: () -> Unit = {}
+) {
     TextField(
         value = text,
         onValueChange = onValueChange,
@@ -95,12 +97,13 @@ fun PutPlaceNameTextField(
         trailingIcon = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                if (text.isNotEmpty()){
+            ) {
+                if (text.isNotEmpty()) {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_delete_text),
                         contentDescription = "left button of top app bar",
-                        modifier = Modifier.wrapContentSize(),
+                        modifier = Modifier.wrapContentSize()
+                            .clickable { onDeleteBtnClick() },
                         tint = Color.Unspecified
                     )
                     Spacer(Modifier.width(10.dp))

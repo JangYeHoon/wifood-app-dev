@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.DialogCenterDivider
-import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOTextPM15
 import com.example.wifood.ui.theme.mainFont
@@ -60,10 +59,12 @@ fun PutPlaceAddress(
 
 @Composable
 fun PutPlaceAddressTextField(
-    text:String = "은천로25길길 4-5",
-    placeholder:String = "맛집주소",
-    onValueChange:(String) -> Unit = {}
-){
+    text: String = "은천로25길길 4-5",
+    placeholder: String = "맛집주소",
+    onValueChange: (String) -> Unit = {},
+    onSearchBtnClick: () -> Unit = {},
+    onDeleteBtnClick: () -> Unit = {}
+) {
     TextField(
         value = text,
         onValueChange = onValueChange,
@@ -95,20 +96,28 @@ fun PutPlaceAddressTextField(
         trailingIcon = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                if (text.isNotEmpty()){
+            ) {
+                if (text.isNotEmpty()) {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_delete_text),
                         contentDescription = "left button of top app bar",
-                        modifier = Modifier.wrapContentSize(),
-                        tint = Color.Unspecified
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .clickable {
+                                onDeleteBtnClick()
+                            },
+                        tint = Color.Unspecified,
                     )
                     Spacer(Modifier.width(10.dp))
                 }
                 Icon(
                     ImageVector.vectorResource(id = R.drawable.ic_search_icon),
                     contentDescription = "left button of top app bar",
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .clickable {
+                            onSearchBtnClick()
+                        },
                     tint = Color.Unspecified
                 )
             }
@@ -118,10 +127,10 @@ fun PutPlaceAddressTextField(
 
 @Composable
 fun FindAddressOnMapButton(
-    text:String = "지도에서 주소찾기",
-    modifier:Modifier = Modifier,
-    onClick:()->Unit = {}
-){
+    text: String = "지도에서 주소찾기",
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     val interactionSource = MutableInteractionSource()
     Row(
         modifier = Modifier
@@ -133,7 +142,7 @@ fun FindAddressOnMapButton(
                 onClick()
             },
         verticalAlignment = Alignment.CenterVertically,
-    ){
+    ) {
         Spacer(Modifier.weight(1f))
         Icon(
             ImageVector.vectorResource(id = R.drawable.ic_search_from_map),

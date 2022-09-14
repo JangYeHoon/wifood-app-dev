@@ -31,17 +31,17 @@ import com.example.wifood.view.ui.theme.*
 @Composable
 fun MapSearchAddressView(
 
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
-    ){
+    ) {
         SpaceWithTextTop("맛집 주소 등록")
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-        ){
+        ) {
             // map component
             MapContent()
 
@@ -55,7 +55,7 @@ fun MapSearchAddressView(
                         vertical = 8.dp
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 SpaceWithTextBlack()
                 Spacer(Modifier.weight(1f))
                 MapIcon()
@@ -69,8 +69,8 @@ fun MapSearchAddressView(
 
 @Composable
 fun SpaceWithTextTop(
-    text:String = "맛집 주소 등록",
-){
+    text: String = "맛집 주소 등록",
+) {
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -78,7 +78,7 @@ fun SpaceWithTextTop(
             .wrapContentHeight()
             .padding(vertical = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         YOGOPR16_title(text)
     }
 }
@@ -87,15 +87,15 @@ fun SpaceWithTextTop(
 @Composable
 fun MapContent(
 
-){
+) {
     Box(
         modifier = Modifier
             .background(Color.Gray)
             .fillMaxWidth()
-    ){
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             Spacer(Modifier.weight(1f))
         }
     }
@@ -103,7 +103,7 @@ fun MapContent(
 
 @Composable
 fun MapIcon(
-){
+) {
     Icon(
         ImageVector.vectorResource(id = R.drawable.ic_place_location_icon),
         contentDescription = "left button of top app bar",
@@ -115,9 +115,9 @@ fun MapIcon(
 
 @Composable
 fun SpaceWithTextBlack(
-    text:String = "지도를 움직여 배달주소 위치를 설정해주세요",
-    backgroundColor:Color = Color(0xCC000000),
-){
+    text: String = "지도를 움직여 주소 위치를 설정해주세요",
+    backgroundColor: Color = Color(0xCC000000),
+) {
     Column(
         modifier = Modifier
             .background(
@@ -128,9 +128,9 @@ fun SpaceWithTextBlack(
             .wrapContentHeight()
             .padding(vertical = 9.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         YOGOPR12_formInfo(
-            text = "지도를 움직여 배달주소 위치를 설정해주세요.",
+            text = "지도를 움직여 주소 위치를 설정해주세요.",
             color = Color.White
         )
     }
@@ -138,10 +138,10 @@ fun SpaceWithTextBlack(
 
 @Composable
 fun PointLocationAddress(
-    coarseAddress:String = "서울특별시 관악구 봉천동 466-56",
-    fineAddress:String = "서울특별시 관악구 은천로25길 4-5 (채움빌-아트)",
-    backgroundColor:Color = Color(0xF2FFFFFF),
-){
+    coarseAddress: String = "서울특별시 관악구 봉천동 466-56",
+    fineAddress: String = "서울특별시 관악구 은천로25길 4-5 (채움빌-아트)",
+    backgroundColor: Color = Color(0xF2FFFFFF),
+) {
     Column(
         modifier = Modifier
             .background(
@@ -176,8 +176,8 @@ fun PointLocationAddress(
 @Composable
 fun SpaceWithTextBottom(
     text: String = "이 위치로 맛집 주소 등록하기",
-    onClick:()->Unit = {}
-){
+    onClick: () -> Unit = {}
+) {
     val interactionSource = MutableInteractionSource()
     Column(
         modifier = Modifier
@@ -189,12 +189,12 @@ fun SpaceWithTextBottom(
             .clickable(
                 indication = null,
                 interactionSource = interactionSource
-            ){
+            ) {
                 onClick()
             }
             .padding(top = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Text(
             text = text,
             fontFamily = mainFont,

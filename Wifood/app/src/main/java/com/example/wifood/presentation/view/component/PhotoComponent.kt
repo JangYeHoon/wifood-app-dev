@@ -25,7 +25,7 @@ import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.ImagePopUpView
+import com.example.wifood.presentation.view.placeList.component.ImagePopUpView
 
 
 @Composable
