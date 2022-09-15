@@ -172,7 +172,7 @@ fun SearchPlaceComposeView(
                         )
                     }
                 }
-            } else {
+            } else if (formState.searchResults.isNotEmpty() && formState.searchResults[0].name == "") {
                 SearchPlaceEmptyView(
                     onButtonClick = {
                         scope.launch {
