@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.placeList.placeinfowrite
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -102,7 +103,13 @@ fun PlaceInputNameAndVisited(
         }
     }
 
-    BackBottomSheetHide(modalBottomSheetState)
+    BackHandler(enabled = true) {
+        if (modalBottomSheetState.isVisible) {
+            scope.launch { modalBottomSheetState.hide() }
+        } else {
+            scope.launch { navController.popBackStack() }
+        }
+    }
 
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {

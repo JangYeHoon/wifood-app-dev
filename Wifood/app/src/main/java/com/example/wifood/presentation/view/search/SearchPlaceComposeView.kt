@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.search
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -60,7 +61,17 @@ fun SearchPlaceComposeView(
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-//    val searchLatLngFromMap
+    BackHandler(enabled = true) {
+        if (modalBottomSheetState.isVisible) {
+            if (viewModel.formState.addPlaceContentPageCount == 1) {
+                scope.launch { modalBottomSheetState.hide() }
+            } else {
+                scope.launch { viewModel.onEvent(SearchPlaceFormEvent.BackBtnClick) }
+            }
+        } else {
+            navController.popBackStack()
+        }
+    }
 
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {

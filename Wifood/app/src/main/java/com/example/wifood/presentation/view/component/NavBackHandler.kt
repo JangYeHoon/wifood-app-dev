@@ -31,17 +31,3 @@ fun BackBottomSheetHideOrMoveView(
         }
     }
 }
-
-@ExperimentalMaterialApi
-@Composable
-fun BackBottomSheetHide(
-    modalBottomSheetState: ModalBottomSheetState
-) {
-    val scope = rememberCoroutineScope()
-
-    BackHandler(enabled = true) {
-        if (modalBottomSheetState.isVisible) {
-            scope.launch { modalBottomSheetState.hide() }
-        }
-    }
-}

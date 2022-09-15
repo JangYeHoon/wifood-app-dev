@@ -16,6 +16,7 @@ sealed class SearchPlaceFormEvent {
     object InputAddressClear : SearchPlaceFormEvent()
     object InputNameClear : SearchPlaceFormEvent()
     object ClickNextBtn : SearchPlaceFormEvent()
+    object BackBtnClick : SearchPlaceFormEvent()
     object SearchButtonClick : SearchPlaceFormEvent()
     object AddressSearchButtonClick : SearchPlaceFormEvent()
 }

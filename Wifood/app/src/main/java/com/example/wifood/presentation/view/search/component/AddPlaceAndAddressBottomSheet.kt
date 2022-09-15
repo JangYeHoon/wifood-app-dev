@@ -37,7 +37,7 @@ fun AddPlaceAndAddressBottomSheet(
     navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
-    Surface(modifier = Modifier.height(600.dp)) {
+    Surface(modifier = Modifier.height(692.dp)) {
         when (viewModel.formState.addPlaceContentPageCount) {
             1 -> {
                 InputNameContent()

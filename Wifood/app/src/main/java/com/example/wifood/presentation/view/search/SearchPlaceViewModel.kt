@@ -66,6 +66,10 @@ class SearchPlaceViewModel @Inject constructor(
                 formState =
                     formState.copy(addPlaceContentPageCount = formState.addPlaceContentPageCount + 1)
             }
+            is SearchPlaceFormEvent.BackBtnClick -> {
+                formState =
+                    formState.copy(addPlaceContentPageCount = formState.addPlaceContentPageCount - 1)
+            }
             is SearchPlaceFormEvent.AddPlaceAddressChange -> {
                 formState = formState.copy(addPlaceAddressSearch = event.searchAddress)
             }
