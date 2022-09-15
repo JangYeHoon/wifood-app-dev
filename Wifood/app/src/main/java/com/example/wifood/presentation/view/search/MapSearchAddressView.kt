@@ -4,8 +4,6 @@ import android.Manifest
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,13 +16,10 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
-import com.example.wifood.presentation.view.main.MainEvent
-import com.example.wifood.presentation.view.main.UiEvent
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.*
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -34,6 +29,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun MapSearchAddressView(
@@ -65,15 +61,22 @@ fun MapSearchAddressView(
                 if (task.isSuccessful) {
                     if (task.result != null) {
                         scope.launch {
-                            camera.animate(
+                            camera.move(
                                 CameraUpdateFactory.newLatLngZoom(
                                     LatLng(
                                         task.result.latitude,
                                         task.result.longitude
-                                    ), 15f
+                                    ), 18f
                                 )
                             )
-                            viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
+                            viewModel.onEvent(
+                                SearchPlaceFormEvent.CameraMove(
+                                    LatLng(
+                                        task.result.latitude,
+                                        task.result.longitude
+                                    )
+                                )
+                            )
                         }
                     }
                 }
@@ -95,7 +98,7 @@ fun MapSearchAddressView(
         }
     }
 
-    LaunchedEffect(camera.isMoving) {
+    LaunchedEffect(!camera.isMoving) {
         scope.launch {
             viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
         }
