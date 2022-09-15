@@ -68,12 +68,12 @@ fun NewSearchPlaceComposeView(
 
 @Composable
 fun SearchPlaceEmptyView(
-    onButtonClick:() -> Unit = {}
+    onButtonClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

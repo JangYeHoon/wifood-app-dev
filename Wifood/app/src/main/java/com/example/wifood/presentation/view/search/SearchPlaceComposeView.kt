@@ -4,18 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -24,14 +19,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
-import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.new_compose_views.CustomTextField
 import com.example.wifood.presentation.view.login.new_compose_views.SearchPlaceInfoCard
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
@@ -117,7 +110,6 @@ fun SearchPlaceComposeView(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetBackgroundColor = Color.White
     ) {
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -158,22 +150,14 @@ fun SearchPlaceComposeView(
                 )
             )
             Spacer(Modifier.height(12.dp))
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = sidePaddingValue.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(formState.searchResults) {
-                    if (formState.searchResults[0].name == "")
-                        SearchPlaceEmptyView(
-                            onButtonClick = {
-                                scope.launch {
-                                    modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                }
-                            }
-                        )
-                    else {
+            if (formState.searchResults.isNotEmpty() && formState.searchResults[0].name != "") {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = sidePaddingValue.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(formState.searchResults) {
                         SearchPlaceInfoCard(
                             address = it.name,
                             name = it.fullAddress,
@@ -188,6 +172,14 @@ fun SearchPlaceComposeView(
                         )
                     }
                 }
+            } else {
+                SearchPlaceEmptyView(
+                    onButtonClick = {
+                        scope.launch {
+                            modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+                        }
+                    }
+                )
             }
         }
     }
