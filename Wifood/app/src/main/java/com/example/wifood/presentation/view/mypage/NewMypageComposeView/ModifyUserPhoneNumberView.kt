@@ -17,18 +17,39 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.phoneFilter
+import com.example.wifood.presentation.view.main.util.MainData
+import com.example.wifood.presentation.view.mypage.MyPageEvent
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ModifyUserPhoneNumberView(
-){
+    navController: NavController,
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
     var phoneNumberValidation by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
+    val state = viewModel.state.value
+
+    LaunchedEffect(true) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    navController.navigateUp()
+                }
+            }
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -51,8 +72,9 @@ fun ModifyUserPhoneNumberView(
             )
             Spacer(Modifier.height(24.dp))
             TextField(
-                value = "",
+                value = state.phoneNumber,
                 onValueChange = {
+                    viewModel.onEvent(MyPageEvent.PhoneNumChanged(it))
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -91,9 +113,8 @@ fun ModifyUserPhoneNumberView(
             MainButton(
                 text = "인증번호 받기",
                 onClick = {
-                    //navController.navigate(Route.GetAuthNumber.route)
-                },
-                //activate = phoneNumberValidation
+                    viewModel.onEvent(MyPageEvent.ModifyUserInfo("PHONE"))
+                }
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

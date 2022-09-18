@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,19 +17,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.main.util.MainData
+import com.example.wifood.presentation.view.mypage.MyPageEvent
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
+import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
+import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @Composable
 fun ModifyUserProfileView(
-
-){
+    navController: NavController,
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
     val scrollState = rememberScrollState()
+    val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
+    var customSheetContent by remember { mutableStateOf(sheetContent) }
+    val scope = rememberCoroutineScope()
+    val modalBottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val state = viewModel.state.value
 
     Column(
         modifier = Modifier
@@ -39,7 +55,7 @@ fun ModifyUserProfileView(
             titleText = "서비스 이용약관",
             leftButtonOn = true,
             leftButtonClicked = {
-
+                navController.navigateUp()
             }
         )
         Column(
@@ -69,9 +85,12 @@ fun ModifyUserProfileView(
                         .wrapContentSize()
                         .align(Alignment.BottomEnd)
                         .clickable(
-
-                        ){
-
+                            enabled = true
+                        ) {
+                            customSheetContent = { CameraAndAlbumBottomSheetContent() }
+                            scope.launch {
+                                modalBottomSheetState.show()
+                            }
                         }
                 )
             }
@@ -80,7 +99,7 @@ fun ModifyUserProfileView(
         Column(
             modifier = Modifier
                 .padding(horizontal = sidePaddingValue.dp)
-        ){
+        ) {
             Text(
                 text = "닉네임",
                 fontFamily = mainFont,
@@ -90,8 +109,10 @@ fun ModifyUserProfileView(
             )
             Spacer(Modifier.height(7.dp))
             TextField(
-                value = "요고247",
-                onValueChange = {},
+                value = state.nickname,
+                onValueChange = {
+                    viewModel.onEvent(MyPageEvent.NicknameChanged(it))
+                },
                 modifier = Modifier
                     .border(
                         width = 1.dp,

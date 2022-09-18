@@ -184,6 +184,10 @@ class WifoodApiImpl @Inject constructor(
         return user
     }
 
+    override fun deleteUser(id: String) {
+        db.child(id).removeValue()
+    }
+
     override fun checkUser(id: String): Boolean {
         var result = false
 

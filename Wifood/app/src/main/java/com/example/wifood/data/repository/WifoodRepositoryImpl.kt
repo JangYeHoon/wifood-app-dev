@@ -23,6 +23,10 @@ class WifoodRepositoryImpl(
     private val dao: WifoodDao,
     private val api: WifoodApi
 ) : WifoodRepository {
+    override fun deleteUser(id: String) {
+        api.deleteUser(id)
+    }
+
     override fun checkUser(id: String): Boolean {
         return api.checkUser(id)
     }

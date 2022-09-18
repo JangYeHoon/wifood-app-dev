@@ -22,16 +22,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.WifoodApp
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.main.util.MainData
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 
 @Composable
 fun MySettingView(
-
-){
+    navController: NavController,
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
     val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
     Column(
@@ -48,15 +56,15 @@ fun MySettingView(
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource
-                ){
-
+                ) {
+                    navController.navigate(Route.EditProfile.route)
                 }
                 .padding(
                     horizontal = 24.dp,
                     vertical = 20.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.profile),
                 contentDescription = "",
@@ -69,7 +77,7 @@ fun MySettingView(
             )
             Spacer(Modifier.width(14.dp))
             Text(
-                text = "요고247",
+                text = MainData.user.nickname,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
@@ -97,31 +105,32 @@ fun MySettingView(
                     width = 1.dp,
                     color = Color(0xFFE7E7E7)
                 )
-        ){
+        ) {
             Spacer(Modifier.height(4.dp))
         }
         Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             CommonTextButton(
                 text = "내 정보 수정",
                 withButton = true,
                 onClick = {
-                    //TODO
+                    navController.navigate(Route.EditMyInfo.route)
                 }
             )
             CommonTextButton(
                 text = "앱 정보",
                 withButton = true,
                 onClick = {
-                    //TODO
+                    navController.navigate(Route.AppInfo.route)
                 }
             )
             CommonTextButton(
                 text = "로그아웃",
                 withButton = false,
                 onClick = {
-                    //TODO
+                    WifoodApp.pref.setString("Initial_Flag", "0")
+                    navController.navigate(Route.GetPhoneNumber.route)
                 }
             )
         }
