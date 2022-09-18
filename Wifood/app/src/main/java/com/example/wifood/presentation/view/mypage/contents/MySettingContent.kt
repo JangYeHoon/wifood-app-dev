@@ -1,11 +1,9 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,12 +33,14 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 
 @Composable
-fun MySettingView(
-    navController: NavController,
-    viewModel: MyPageViewModel = hiltViewModel()
+fun MySettingContent(
+    onNicknameClicked: () -> Unit = {},
+    onModifyMyInfoClicked: () -> Unit = {},
+    onAppInfoClicked: () -> Unit = {},
+    onLogoutClicked: () -> Unit = {},
 ) {
-    val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +56,7 @@ fun MySettingView(
                     indication = null,
                     interactionSource = interactionSource
                 ) {
-                    navController.navigate(Route.EditProfile.route)
+                    onNicknameClicked()
                 }
                 .padding(
                     horizontal = 24.dp,
@@ -115,22 +114,21 @@ fun MySettingView(
                 text = "내 정보 수정",
                 withButton = true,
                 onClick = {
-                    navController.navigate(Route.EditMyInfo.route)
+                    onModifyMyInfoClicked()
                 }
             )
             CommonTextButton(
                 text = "앱 정보",
                 withButton = true,
                 onClick = {
-                    navController.navigate(Route.AppInfo.route)
+                    onAppInfoClicked()
                 }
             )
             CommonTextButton(
                 text = "로그아웃",
                 withButton = false,
                 onClick = {
-                    WifoodApp.pref.setString("Initial_Flag", "0")
-                    navController.navigate(Route.GetPhoneNumber.route)
+                    onLogoutClicked()
                 }
             )
         }

@@ -2,26 +2,24 @@ package com.example.wifood.presentation.view.search
 
 import android.Manifest
 import android.net.Uri
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
-import com.example.wifood.presentation.view.main.MainEvent
-import com.example.wifood.presentation.view.main.UiEvent
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.*
 import com.example.wifood.util.getActivity
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -31,6 +29,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun MapSearchAddressView(
@@ -62,15 +61,22 @@ fun MapSearchAddressView(
                 if (task.isSuccessful) {
                     if (task.result != null) {
                         scope.launch {
-                            camera.animate(
+                            camera.move(
                                 CameraUpdateFactory.newLatLngZoom(
                                     LatLng(
                                         task.result.latitude,
                                         task.result.longitude
-                                    ), 15f
+                                    ), 18f
                                 )
                             )
-                            viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
+                            viewModel.onEvent(
+                                SearchPlaceFormEvent.CameraMove(
+                                    LatLng(
+                                        task.result.latitude,
+                                        task.result.longitude
+                                    )
+                                )
+                            )
                         }
                     }
                 }
@@ -92,32 +98,54 @@ fun MapSearchAddressView(
         }
     }
 
-    LaunchedEffect(camera.isMoving) {
+    LaunchedEffect(!camera.isMoving) {
         scope.launch {
             viewModel.onEvent(SearchPlaceFormEvent.CameraMove(camera.position.target))
         }
     }
 
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        properties = state.properties,
-        uiSettings = uiSettings,
-        cameraPositionState = camera
-    )
-    Box {
-        Text(text = "맛집 위치를 설정하세요", modifier = Modifier.align(Alignment.TopCenter))
-        Column(modifier = Modifier.align(Alignment.BottomCenter)) {
-            Text(text = state.oldAddressGeocoding)
-            Text(text = state.roadAddressGeocoding)
-            Button(
-                onClick = {
-                    scope.launch {
-                        viewModel.onEvent(SearchPlaceFormEvent.GoogleMapLatLngBtnClick(camera.position.target))
-                    }
-                }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        SpaceWithTextTop("맛집 주소 등록")
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            GoogleMap(
+                modifier = Modifier.fillMaxSize(),
+                properties = state.properties,
+                uiSettings = uiSettings,
+                cameraPositionState = camera
+            )
+
+            Column(
+                modifier = Modifier
+                    .background(Color.Unspecified)
+                    .padding(
+                        horizontal = sidePaddingValue.dp,
+                        vertical = 8.dp
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "위치 등록하기")
+                SpaceWithTextBlack()
+                Spacer(Modifier.weight(1f))
+                MapIcon()
+                Spacer(Modifier.weight(1f))
+                PointLocationAddress(
+                    coarseAddress = state.oldAddressGeocoding,
+                    fineAddress = state.roadAddressGeocoding
+                )
             }
         }
+        SpaceWithTextBottom(
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(SearchPlaceFormEvent.GoogleMapLatLngBtnClick(camera.position.target))
+                }
+            }
+        )
     }
 }

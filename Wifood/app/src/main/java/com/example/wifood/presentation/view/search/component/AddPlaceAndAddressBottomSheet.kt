@@ -1,21 +1,34 @@
 package com.example.wifood.presentation.view.search.component
 
 import android.net.Uri
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.DialogCenterDivider
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.YOGOLargeText
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.FindAddressOnMapButton
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PointLocationAddress2
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PutPlaceAddressTextField
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PutPlaceNameTextField
 import com.example.wifood.presentation.view.search.SearchPlaceFormEvent
 import com.example.wifood.presentation.view.search.SearchPlaceViewModel
+import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -24,7 +37,7 @@ fun AddPlaceAndAddressBottomSheet(
     navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
-    Surface(modifier = Modifier.height(600.dp)) {
+    Surface(modifier = Modifier.height(692.dp)) {
         when (viewModel.formState.addPlaceContentPageCount) {
             1 -> {
                 InputNameContent()
@@ -33,7 +46,7 @@ fun AddPlaceAndAddressBottomSheet(
                 SelectAddressSearchWayContent(navController)
             }
             3 -> {
-                AddressSearchResultContent(navController)
+                AddressSearchResultContent()
             }
         }
     }
@@ -46,17 +59,35 @@ fun InputNameContent(
     val state = viewModel.formState
     val scope = rememberCoroutineScope()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(horizontal = sidePaddingValue.dp)
     ) {
-        Text(text = "맛집 이름을 입력해주세요.")
-        TextField(
-            value = state.addPlaceName,
+        Spacer(Modifier.height(8.dp))
+        DialogCenterDivider(
+            width = 54,
+            thickness = 4
+        )
+        Spacer(Modifier.weight(1f))
+        YOGOLargeText(
+            text = "맛집 이름을\n입력해주세요."
+        )
+        Spacer(Modifier.height(24.dp))
+        PutPlaceNameTextField(
+            text = state.addPlaceName,
             onValueChange = {
                 scope.launch {
                     viewModel.onEvent(SearchPlaceFormEvent.AddPlaceNameChange(it))
                 }
+            },
+            onDeleteBtnClick = {
+                scope.launch {
+                    viewModel.onEvent(SearchPlaceFormEvent.InputNameClear)
+                }
             }
         )
+        Spacer(Modifier.weight(1f))
         MainButton(
             text = "다음",
             onClick = {
@@ -66,6 +97,7 @@ fun InputNameContent(
             },
             activate = state.addPlaceName.isNotEmpty()
         )
+        Spacer(Modifier.height(buttonBottomValue.dp))
     }
 }
 
@@ -77,61 +109,108 @@ fun SelectAddressSearchWayContent(
     val state = viewModel.formState
     val scope = rememberCoroutineScope()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(horizontal = sidePaddingValue.dp)
     ) {
-        Text(text = "맛집 주소를 입력해주세요.")
-        TextField(
-            value = state.addPlaceAddressSearch,
+        Spacer(Modifier.height(8.dp))
+        DialogCenterDivider(
+            width = 54,
+            thickness = 4
+        )
+        Spacer(Modifier.weight(1f))
+        YOGOLargeText(
+            text = "맛집 주소를\n입력해주세요."
+        )
+        Spacer(Modifier.height(24.dp))
+        PutPlaceAddressTextField(
+            text = state.addPlaceAddressSearch,
             onValueChange = {
                 scope.launch {
                     viewModel.onEvent(SearchPlaceFormEvent.AddPlaceAddressChange(it))
                 }
-            }
-        )
-        MainButton(
-            text = "주소 검색",
-            onClick = {
+            },
+            onSearchBtnClick = {
                 scope.launch {
                     viewModel.onEvent(SearchPlaceFormEvent.AddressSearchButtonClick)
                     viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
                 }
             },
-            activate = state.addPlaceAddressSearch.isNotEmpty()
+            onDeleteBtnClick = {
+                scope.launch {
+                    viewModel.onEvent(SearchPlaceFormEvent.InputAddressClear)
+                }
+            }
         )
-        MainButton(
-            text = "지도에서 주소찾기",
+        Spacer(Modifier.height(16.dp))
+        FindAddressOnMapButton(
             onClick = {
                 val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
                 navController.navigate("${Route.MapSearchAddress.route}/${placeJson}")
             }
         )
+        Spacer(Modifier.weight(1f))
     }
 }
 
 @Composable
 fun AddressSearchResultContent(
-    navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
     val state = viewModel.formState
     val scope = rememberCoroutineScope()
-    LazyColumn {
-        items(state.addressSearchResults) { searchResult ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clickable {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(horizontal = sidePaddingValue.dp)
+    ) {
+        Spacer(Modifier.height(8.dp))
+        DialogCenterDivider(
+            width = 54,
+            thickness = 4
+        )
+        Spacer(Modifier.weight(1f))
+        YOGOLargeText(
+            text = "맛집 주소를\n입력해주세요."
+        )
+        Spacer(Modifier.height(24.dp))
+
+        Column(
+            modifier = Modifier.verticalScroll(scrollState)
+        ) {
+            state.addressSearchResults.forEachIndexed { index, searchResult ->
+                PointLocationAddress2(
+                    buildingAddress = searchResult.oldAddress,
+                    roadAddress = searchResult.fullAddress,
+                    function = {
                         scope.launch {
-                            viewModel.onEvent(SearchPlaceFormEvent.AddressClick(searchResult))
+                            viewModel.onEvent(
+                                SearchPlaceFormEvent.AddressClick(
+                                    searchResult,
+                                    index
+                                )
+                            )
                         }
-                    }
-            ) {
-                Column {
-                    Text(text = searchResult.fullAddress)
-                    Text(text = searchResult.oldAddress)
-                }
+                    },
+                    isClicked = state.clickedAddressIdx == index
+                )
+                Spacer(Modifier.height(16.dp))
             }
+
+            Spacer(Modifier.weight(1f))
+            MainButton(
+                text = "다음",
+                onClick = {
+                    scope.launch {
+                        viewModel.onEvent(SearchPlaceFormEvent.InputAddressViewBtnClick)
+                    }
+                },
+                activate = true
+            )
+            Spacer(Modifier.height(buttonBottomValue.dp))
         }
     }
 }

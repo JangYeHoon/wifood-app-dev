@@ -16,5 +16,6 @@ data class SearchPlaceFormState(
     val currentLocation: Location? = null,
     val roadAddressGeocoding: String = "",
     val oldAddressGeocoding: String = "",
-    val place: Place? = null
+    val place: Place? = null,
+    val clickedAddressIdx: Int = -1
 )

@@ -153,6 +153,13 @@ class WifoodApiImpl @Inject constructor(
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
 
+    override fun updatePlace(place: Place) {
+        val placePath =
+            db.child(id).child("Group").child(place.groupId.toString()).child("Place")
+                .child(place.placeId.toString())
+        placePath.child("review").setValue(place.review)
+    }
+
     override fun getUserAllData(id: String): LiveData<User> {
         val user = MutableLiveData<User>()
         db.child(id).addValueEventListener(object : ValueEventListener {

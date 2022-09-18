@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
+import com.example.wifood.data.remote.dto.MenuGradeDto
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.login.component.SnsIconButton
@@ -132,7 +133,9 @@ fun NewPlaceInfoView(
                 borderColor = Color(0xFFE7E7E7),
                 thickness = 4
             )
-
+            // Menu if exists
+            val isMenuExists = true
+            val isReviewExists = true
             // Reviews if it exists
             Column(
                 modifier = Modifier
@@ -142,37 +145,37 @@ fun NewPlaceInfoView(
                         vertical = 22.dp
                     )
             ){
-                YOGOTextPM15(
-                    text = "맛집 리뷰"
-                )
-                Spacer(Modifier.height(10.dp))
-                ReviewTextField(
-                    text = "3시에서 4시 해피아워 10% 할인됨, 미리 예약하기, 본점이랑 비교하기 미션",
-                    onValueChange = {},
-                    placeholder = "",
-                    modifier = Modifier
-                        .wrapContentHeight(),
-                    showCount = false,
-                    fontSize = 12
-                )
-                Spacer(Modifier.height(10.dp))
-                ShowPhotoList(
-                    listOf(
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
-                        R.drawable.place_image,
+                if (isReviewExists){
+                    YOGOTextPM15(
+                        text = "맛집 리뷰"
                     )
-                )
-                Spacer(Modifier.height(28.dp))
+                    Spacer(Modifier.height(10.dp))
+                    ReviewTextField(
+                        text = "3시에서 4시 해피아워 10% 할인됨, 미리 예약하기, 본점이랑 비교하기 미션",
+                        onValueChange = {},
+                        placeholder = "",
+                        modifier = Modifier
+                            .wrapContentHeight(),
+                        showCount = false,
+                        fontSize = 12
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    //                ShowPhotoList(
+//                    listOf(
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                        R.drawable.place_image,
+//                    )
+//                )
+                    Spacer(Modifier.height(28.dp))
+                }
 
-                // Menu if exists
-                val isMenuExists = true
                 if (isMenuExists){
                     Column(
                         modifier = Modifier
@@ -207,32 +210,17 @@ fun PlaceInfoShowMenu(
     menuName: String = "W코스",
     menuPrice: Int = 19800,
     menuMemo: String = "가격값하는 맛, 고기는 말할 것 없고 랍스타 맛있음"
-){
-    var menuPriceString = ""
-
-    // change menuPrice to string
-    menuPriceString = menuPrice.toString()
-    if (menuPriceString.length > 3){
-        menuPriceString = menuPriceString.reversed()
-        var newString = ""
-        for (i in 0..(menuPriceString.length-1)){
-            if ( i % 3 == 0 && i != 0)
-                newString += ","
-            newString += menuPriceString[i]
-        }
-        menuPriceString = newString.reversed()
-    }
-
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp)
-    ){
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 text = menuName,
                 fontFamily = mainFont,
@@ -242,7 +230,7 @@ fun PlaceInfoShowMenu(
             )
             Spacer(Modifier.weight(1f))
             Text(
-                text = menuPriceString,
+                text = MenuGradeDto().getPriceToCommaString(menuPrice),
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,

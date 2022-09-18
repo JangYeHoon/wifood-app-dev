@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
@@ -17,14 +19,17 @@ import com.example.wifood.view.ui.theme.Gray03Color
 
 @Composable
 fun YOGOLargeText(
-    text: String = "맛집 리뷰를 등록해주세요"
+    text: String = "맛집 리뷰를 등록해주세요",
+    color:Color = Black2Color,
+    textAlign:TextAlign = TextAlign.Start
 ) {
     Text(
         text = text,
         fontFamily = mainFont,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
-        color = Black2Color
+        color = color,
+        textAlign = textAlign
     )
 }
 
@@ -75,4 +80,33 @@ fun YOGOTextPM15(
             color = Gray01Color
         )
     }
+}
+
+@Composable
+fun YOGOPR16_title(
+    text:String = "맛집 주소 등록",
+    color:Color = Color.Black
+){
+    Text(
+        text = text,
+        fontFamily = mainFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = color
+    )
+
+}
+
+@Composable
+fun YOGOPR12_formInfo(
+    text: String = "지도를 움직여 위치를 설정해주세요",
+    color: Color = Color.White
+){
+    Text(
+        text = text,
+        fontFamily = mainFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        color = color
+    )
 }

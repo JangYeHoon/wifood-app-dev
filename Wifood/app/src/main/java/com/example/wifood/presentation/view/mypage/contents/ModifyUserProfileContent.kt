@@ -1,6 +1,8 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,30 +16,31 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
-import com.example.wifood.presentation.view.main.MainViewModel
-import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
-import com.example.wifood.view.ui.theme.Gray01Color
+import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ModifyUserProfileView(
-    navController: NavController,
-    viewModel: MyPageViewModel = hiltViewModel()
+fun ModifyUserProfileContent(
+    viewModel: MyPageViewModel = hiltViewModel(),
+    onBackButtonClicked: () -> Unit = {},
+    onCameraButtonClicked: () -> Unit = {},
+    onNicknameTextChanged: (String) -> Unit = {},
+    onCompleteButtonClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
@@ -46,18 +49,25 @@ fun ModifyUserProfileView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val state = viewModel.state.value
+    val interactionSource = MutableInteractionSource()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText = "서비스 이용약관",
+            titleText = "프로필 수정",
             leftButtonOn = true,
             leftButtonClicked = {
-                navController.navigateUp()
-            }
+                onBackButtonClicked()
+            },
+            rightButtonOn = true,
+            rightButtonClicked = {
+                onCompleteButtonClicked()
+            },
+            rightButtonText = "완료"
         )
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -85,7 +95,8 @@ fun ModifyUserProfileView(
                         .wrapContentSize()
                         .align(Alignment.BottomEnd)
                         .clickable(
-                            enabled = true
+                            indication = null,
+                            interactionSource = interactionSource
                         ) {
                             customSheetContent = { CameraAndAlbumBottomSheetContent() }
                             scope.launch {
@@ -133,6 +144,15 @@ fun ModifyUserProfileView(
                     fontSize = 15.sp,
                     color = Black2Color
                 ),
+                placeholder = {
+                    Text(
+                        text = "닉네임을 입력해주세요",
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        color = EnableColor
+                    )
+                }
             )
         }
     }

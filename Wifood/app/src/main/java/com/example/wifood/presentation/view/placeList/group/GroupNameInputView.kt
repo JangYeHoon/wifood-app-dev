@@ -49,7 +49,7 @@ fun GroupNameInputView(
         topBar = {
             YOGOTopAppBar(
                 text = "맛집 그룹 등록",
-                leftButtonClicked = {/*TODO*/ }
+                leftButtonClicked = { navController.popBackStack() }
             )
         }
     ) {

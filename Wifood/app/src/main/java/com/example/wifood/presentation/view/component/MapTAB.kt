@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.component
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
@@ -24,6 +26,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 @Composable
@@ -77,7 +80,8 @@ fun MapTopAppBar(
         actions = {
             Row(modifier = Modifier.width(50.dp)) {
                 IconButton(onClick = {
-                    navController.navigate(Route.Search.route)
+                    val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                    navController.navigate("${Route.Search.route}/${placeJson}")
                 }) {
                     Icon(
                         Icons.Filled.Search,

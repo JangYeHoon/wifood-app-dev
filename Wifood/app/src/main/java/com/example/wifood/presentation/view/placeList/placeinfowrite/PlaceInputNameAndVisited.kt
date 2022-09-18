@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.placeList.placeinfowrite
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +34,6 @@ import com.example.wifood.presentation.view.groupComponet.SwitchWithText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
-import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.PlaceInputTopAppBar
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
@@ -103,6 +103,14 @@ fun PlaceInputNameAndVisited(
         }
     }
 
+    BackHandler(enabled = true) {
+        if (modalBottomSheetState.isVisible) {
+            scope.launch { modalBottomSheetState.hide() }
+        } else {
+            scope.launch { navController.popBackStack() }
+        }
+    }
+
     fun checkPermission(permission: String) {
         if (context.checkPermission(permission)) {
             locationPermissionGranted = true
@@ -138,7 +146,7 @@ fun PlaceInputNameAndVisited(
             topBar = {
                 PlaceInputTopAppBar(
                     leftButtonClicked = {
-
+                        navController.popBackStack()
                     },
                     rightButtonClicked = {
                         if (formState.groupName != "그룹 선택" && state.place.name.isNotEmpty()) {
@@ -154,13 +162,13 @@ fun PlaceInputNameAndVisited(
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .padding(horizontal = sidePaddingValue.dp)
-                ){
+                ) {
                     Spacer(Modifier.weight(1f))
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_1by4),
@@ -178,7 +186,8 @@ fun PlaceInputNameAndVisited(
                         inputText = if (formState.groupName == "그룹 선택") "" else formState.groupName,
                         placeholder = "맛집 그룹을 입력해주세요",
                         onTextFieldClick = {
-                            customSheetContent = { PlaceWriteGroupsBottomSheetContent() }
+                            customSheetContent =
+                                { PlaceWriteGroupsBottomSheetContent(modalBottomSheetState) }
                             scope.launch {
                                 modalBottomSheetState.show()
                             }
@@ -211,7 +220,11 @@ fun PlaceInputNameAndVisited(
                     Spacer(Modifier.weight(1f))
                     DoubleButton(
                         leftButtonText = "건너뛰기",
-                        leftButtonClicked = {},
+                        leftButtonOn = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
+                        leftButtonClicked = {
+                            val placeJson = Uri.encode(Gson().toJson(state.place))
+                            navController.navigate("${Route.PlaceInputStarAndEvaluation.route}/${placeJson}")
+                        },
                         rightButtonOn = state.place.name.isNotEmpty() && formState.groupName != "그룹 선택",
                         rightButtonText = "맛 평가하기",
                         rightButtonClicked = {

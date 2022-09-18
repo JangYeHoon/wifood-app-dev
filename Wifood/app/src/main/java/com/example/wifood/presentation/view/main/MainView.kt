@@ -1,13 +1,9 @@
 package com.example.wifood.presentation.view.main
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
 import android.net.Uri
-import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,8 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CenterFocusStrong
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,37 +22,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.PermissionChecker.checkPermission
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
-import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.view.MyPageComposeView
+import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
-import com.example.wifood.presentation.view.component.ListTopAppBar
 import com.example.wifood.presentation.view.component.MapTopAppBar
-import com.example.wifood.presentation.view.component.MyPageTAB
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.mypage.NewMypageComposeView.MySettingView
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
-import com.example.wifood.util.getActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalPermissionsApi
@@ -74,8 +54,9 @@ fun MainView(
     val scaffoldState = rememberScaffoldState()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val context = LocalContext.current
-    var lastKnownLocation: Location? = null
+    var exitWaitTime = 0L
+    val scope = rememberCoroutineScope()
+    val activity = (LocalContext.current as? Activity)
 
     val placeLng = navBackStackEntry.arguments?.getFloat("placeLng")!!
     val placeLat = navBackStackEntry.arguments?.getFloat("placeLat")!!
@@ -90,9 +71,29 @@ fun MainView(
         }
     }
 
+    BackHandler(enabled = true) {
+        if (modalBottomSheetState.isVisible) {
+            scope.launch { modalBottomSheetState.hide() }
+        } else {
+            if (System.currentTimeMillis() - exitWaitTime >= 1500) {
+                exitWaitTime = System.currentTimeMillis()
+                scope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar("한번 더 누르면 종료됩니다.")
+                }
+            } else {
+                activity?.finish()
+            }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetContent = {
-            BottomSheetContent(state.selectedGroupSheet, navController)
+            BottomSheetContent(
+                state.selectedGroupSheet,
+                navController,
+                viewModel,
+                modalBottomSheetState
+            )
         },
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),

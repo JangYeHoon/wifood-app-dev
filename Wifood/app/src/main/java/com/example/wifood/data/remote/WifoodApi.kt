@@ -37,6 +37,8 @@ interface WifoodApi {
 
     fun insertPlace(place: Place)
 
+    fun updatePlace(place: Place)
+
     fun getUserAllData(id: String): LiveData<User>
 
     fun getUserInfo(id: String): LiveData<User>

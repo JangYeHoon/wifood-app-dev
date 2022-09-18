@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -33,7 +32,7 @@ fun ModifyTasteFavorView(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-    ){
+    ) {
         Spacer(Modifier.height(106.dp))
         YOGOLargeText(
             text = "입맛을 알려주세요."

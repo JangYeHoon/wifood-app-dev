@@ -68,38 +68,37 @@ fun NewSearchPlaceComposeView(
 
 @Composable
 fun SearchPlaceEmptyView(
-    onButtonClick:() -> Unit = {}
+    onButtonClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
-    ){
-
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = sidePaddingValue.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.weight(1f))
-        Icon(
-            ImageVector.vectorResource(R.drawable.ic_search_place_empty),
-            contentDescription = "searched place empty image",
+        Column(
             modifier = Modifier
-                .wrapContentSize(),
-            tint = Color.Unspecified
-        )
-        Spacer(Modifier.height(39.dp))
-        YOGOLargeText(
-            text = "등록이 안된 식당입니다.\n직접 입력해주세요!"
-        )
-        Spacer(Modifier.height(24.dp))
-        Spacer(Modifier.weight(1f))
-        MainButton(
-            text = "직접 입력하기",
-            onClick = { onButtonClick() }
-        )
-        Spacer(Modifier.height(buttonBottomValue.dp))
+                .fillMaxWidth()
+                .padding(horizontal = sidePaddingValue.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.weight(1f))
+            Icon(
+                ImageVector.vectorResource(R.drawable.ic_search_place_empty),
+                contentDescription = "searched place empty image",
+                modifier = Modifier
+                    .wrapContentSize(),
+                tint = Color.Unspecified
+            )
+            Spacer(Modifier.height(39.dp))
+            YOGOLargeText(
+                text = "등록이 안된 식당입니다.\n직접 입력해주세요!"
+            )
+            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.weight(1f))
+            MainButton(
+                text = "직접 입력하기",
+                onClick = { onButtonClick() }
+            )
+            Spacer(Modifier.height(buttonBottomValue.dp))
+        }
     }
 }

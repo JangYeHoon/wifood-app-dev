@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.mypage.NewMypageComposeView
+package com.example.wifood.presentation.view.mypage.contents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
@@ -17,13 +16,17 @@ import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
-import com.example.wifood.presentation.view.mypage.component.versionInfoField
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun ModifyMyInfoView(
+fun ModifyMyInfoContent(
     navController: NavController,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
+    onBackButtonClicked: () -> Unit = {},
+    onModifyPhoneNumberClicked: () -> Unit = {},
+    onModifyUserLocationClicked: () -> Unit = {},
+    onModifyUserFavorClicked: () -> Unit = {},
+    onWithdrawClicked: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
 
@@ -45,9 +48,10 @@ fun ModifyMyInfoView(
             titleText = "내 정보 수정",
             leftButtonOn = true,
             leftButtonClicked = {
-                navController.navigateUp()
+                onBackButtonClicked()
             }
         )
+
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -57,21 +61,21 @@ fun ModifyMyInfoView(
                 text = "휴대폰 번호 변경",
                 withButton = true,
                 onClick = {
-                    navController.navigate(Route.ModifyPhoneNumber.route)
+                    onModifyPhoneNumberClicked()
                 }
             )
             CommonTextButton(
                 text = "내 동네 변경",
                 withButton = true,
                 onClick = {
-                    navController.navigate(Route.ModifyAddress.route)
+                    onModifyUserLocationClicked()
                 }
             )
             CommonTextButton(
                 text = "내 입맛 수정",
                 withButton = true,
                 onClick = {
-                    navController.navigate(Route.ModifyFavor.route)
+                    onModifyUserFavorClicked()
                 }
             )
             CommonTextButton(

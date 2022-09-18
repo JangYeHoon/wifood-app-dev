@@ -8,33 +8,35 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.SingleRatingStar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SetPlaceInfoFavor(
-
-){
+) {
     val scrollState = rememberScrollState()
-    val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
             PlaceInputTopAppBar(
@@ -47,17 +49,17 @@ fun SetPlaceInfoFavor(
                 rightButtonOn = true
             )
         }
-    ){
+    ) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
-            ){
+            ) {
                 Spacer(Modifier.weight(1f))
                 Icon(
                     ImageVector.vectorResource(id = R.drawable.ic_2by4),
@@ -81,18 +83,18 @@ fun SetPlaceInfoFavor(
                         .padding(horizontal = 27.dp)
                         .padding(vertical = 42.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     SimpleText(
                         "맛의 만족도"
                     )
                     Spacer(Modifier.height(5.dp))
-                    RateFavor()
+//                    RateFavor()
                     Spacer(Modifier.height(36.dp))
                     SimpleText(
                         "추가적으로 뭐가 더 좋았는지"
                     )
                     Spacer(Modifier.height(20.dp))
-                    SelectAdditionalFavor()
+//                    SelectAdditionalFavor()
                     // TODO
                 }
                 Spacer(Modifier.height(24.dp))
@@ -117,7 +119,7 @@ fun SetPlaceInfoFavor(
 @Composable
 fun SimpleText(
     text: String = "맛의 만족도"
-){
+) {
     Text(
         text = text,
         fontFamily = mainFont,
@@ -128,33 +130,57 @@ fun SimpleText(
 }
 
 @Composable
-fun RateFavor(
-
-){
+fun RateFavor(starScore: List<Int>, viewModel: PlaceInfoWriteViewModel) {
+    val scope = rememberCoroutineScope()
     Row(
-    ){
+    ) {
         SingleRatingStar(
-            isClicked = true,
+            isClicked = starScore[0] == 1,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(0))
+                }
+            },
             starSize = 36
         )
         Spacer(Modifier.width(9.dp))
         SingleRatingStar(
-            isClicked = false,
+            isClicked = starScore[1] == 1,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(1))
+                }
+            },
             starSize = 36
         )
         Spacer(Modifier.width(9.dp))
         SingleRatingStar(
-            isClicked = false,
+            isClicked = starScore[2] == 1,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(2))
+                }
+            },
             starSize = 36
         )
         Spacer(Modifier.width(9.dp))
         SingleRatingStar(
-            isClicked = false,
+            isClicked = starScore[3] == 1,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(3))
+                }
+            },
             starSize = 36
         )
         Spacer(Modifier.width(9.dp))
         SingleRatingStar(
-            isClicked = false,
+            isClicked = starScore[4] == 1,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.ScoreChange(4))
+                }
+            },
             starSize = 36
         )
     }
@@ -162,8 +188,13 @@ fun RateFavor(
 
 @Composable
 fun SelectAdditionalFavor(
-
-){
+    viewModel: PlaceInfoWriteViewModel,
+    tasteChk: Boolean,
+    cleanChk: Boolean,
+    kindChk: Boolean,
+    vibeChk: Boolean
+) {
+    val scope = rememberCoroutineScope()
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth()
@@ -172,32 +203,44 @@ fun SelectAdditionalFavor(
             text = "기분",
             UnClickedSourceId = R.drawable.ic_place_info_taste_unclicked,
             ClickedSourceId = R.drawable.ic_place_info_taste_clicked,
-            isClicked = false,
+            isClicked = tasteChk,
             onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!tasteChk))
+                }
             }
         )
         SingleIconWithText(
             text = "위생",
             UnClickedSourceId = R.drawable.ic_place_info_clean_unclicked,
             ClickedSourceId = R.drawable.ic_place_info_clean_clicked,
-            isClicked = false,
+            isClicked = cleanChk,
             onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.CleanCheck(!cleanChk))
+                }
             }
         )
         SingleIconWithText(
             text = "친절",
             UnClickedSourceId = R.drawable.ic_place_info_kind_unclicked,
             ClickedSourceId = R.drawable.ic_place_info_kind_clicked,
-            isClicked = false,
+            isClicked = kindChk,
             onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.KindCheck(!kindChk))
+                }
             }
         )
         SingleIconWithText(
             text = "분위기",
             UnClickedSourceId = R.drawable.ic_place_info_mood_unclicked,
             ClickedSourceId = R.drawable.ic_place_info_mood_clicked,
-            isClicked = false,
+            isClicked = vibeChk,
             onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.VibeCheck(!vibeChk))
+                }
             }
         )
     }

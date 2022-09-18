@@ -104,11 +104,14 @@ fun RatingStarIcon(
 @Composable
 fun SingleRatingStar(
     isClicked: Boolean,
+    onClick: () -> Unit = {},
     starSize: Int = 27
 ) {
 
     IconButton(
-        onClick = {},
+        onClick = {
+            onClick()
+        },
         modifier = Modifier
             .size(starSize.dp)
     ) {

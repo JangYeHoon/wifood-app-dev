@@ -12,9 +12,8 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.createParcelableNavType
-import com.example.wifood.presentation.view.EditMyInfoComposeView
-import com.example.wifood.presentation.view.EditProfileComposeView
-import com.example.wifood.presentation.view.MyPageComposeView
+import com.example.wifood.presentation.view.ModifyUserProfileView
+import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.login.*
 import com.example.wifood.presentation.view.login.join.GetUserFavorContent
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
@@ -23,7 +22,11 @@ import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumb
 import com.example.wifood.presentation.view.login.new_compose_views.PersonalAgreementsView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.mypage.NewMypageComposeView.*
+import com.example.wifood.presentation.view.mypage.ModifyMyInfoView
+import com.example.wifood.presentation.view.mypage.ModifyUserPhoneNumberView
+import com.example.wifood.presentation.view.mypage.contents.AppInfoView
+import com.example.wifood.presentation.view.mypage.contents.ModifyTasteFavorView
+import com.example.wifood.presentation.view.mypage.contents.ModifyUserLocationView
 import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView

@@ -7,10 +7,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.*
@@ -113,12 +109,12 @@ fun NewEditPlaceView(
                 showCount = true
             )
             Spacer(Modifier.height(10.dp))
-            PhotoListUpWithSelection(
-                listOf(
-                    R.drawable.place_image, R.drawable.place_image
-                ),
-                imageSize = 60
-            )
+//            PhotoListUpWithSelection(
+//                listOf(
+//                    R.drawable.place_image, R.drawable.place_image
+//                ),
+//                imageSize = 60
+//            )
             Spacer(Modifier.height(34.dp))
             YOGOSubTextField(
                 titleText = "메뉴명",

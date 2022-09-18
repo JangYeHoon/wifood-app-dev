@@ -59,6 +59,10 @@ class WifoodRepositoryImpl(
         api.insertPlace(place)
     }
 
+    override fun updatePlace(place: Place) {
+        api.updatePlace(place)
+    }
+
     override fun getUserAllData(id: String): LiveData<User> {
         return api.getUserAllData(id)
     }

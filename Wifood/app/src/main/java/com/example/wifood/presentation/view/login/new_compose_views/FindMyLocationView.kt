@@ -241,7 +241,8 @@ fun CustomTextField(
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = keyboardActions
     )
 }
 

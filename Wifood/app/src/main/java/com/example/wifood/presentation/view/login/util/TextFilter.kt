@@ -5,6 +5,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
+import java.text.NumberFormat
+import java.util.*
 
 const val phoneMask = "010-1234-5678"
 
@@ -41,3 +43,21 @@ internal fun phoneFilter(text: AnnotatedString): TransformedText {
 
     return TransformedText(annotatedString, offsetTranslator)
 }
+
+internal fun numberCommaFilter(text: AnnotatedString): TransformedText {
+    return TransformedText(
+        text = AnnotatedString(text.text.toLongOrNull().formatWithComma()),
+        offsetMapping = object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int {
+                return text.text.toLongOrNull().formatWithComma().length
+            }
+
+            override fun transformedToOriginal(offset: Int): Int {
+                return text.length
+            }
+        }
+    )
+}
+
+fun Long?.formatWithComma(): String =
+    NumberFormat.getNumberInstance(Locale.US).format(this ?: 0)

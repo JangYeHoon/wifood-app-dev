@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 
 @Serializable
 @Parcelize
@@ -26,4 +27,8 @@ data class Place(
     var menuList: List<MenuGrade>,
     var vibeChk: Boolean,
     var bizName: String
-) : Parcelable
+) : Parcelable {
+    fun deleteMenuGradeFromEmptyName() {
+        menuList = menuList.filter { menuGrade -> menuGrade.name.isNotEmpty() }
+    }
+}

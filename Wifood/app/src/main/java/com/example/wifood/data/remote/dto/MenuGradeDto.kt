@@ -1,6 +1,7 @@
 package com.example.wifood.data.remote.dto
 
 import com.example.wifood.domain.model.MenuGrade
+import java.text.DecimalFormat
 
 data class MenuGradeDto(
     val placeId: Int = -1,
@@ -15,6 +16,11 @@ data class MenuGradeDto(
             price = price,
             memo = memo
         )
+    }
+
+    fun getPriceToCommaString(priceInt: Int): String {
+        val numberCommaFormat = DecimalFormat("#,###")
+        return numberCommaFormat.format(priceInt)
     }
 }
 
