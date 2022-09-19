@@ -9,6 +9,7 @@ import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.SignUpState
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,7 +64,8 @@ class MyPageViewModel @Inject constructor(
                                 _state.value = state.value.copy(
                                     searchResults = it
                                 )
-                            } catch (e: ConcurrentModificationException) { }
+                            } catch (e: ConcurrentModificationException) {
+                            }
                         }
                     }
                 } catch (e: NullPointerException) {
@@ -76,6 +78,7 @@ class MyPageViewModel @Inject constructor(
                 MainData.user = MainData.user.copy(address = event.address ?: _state.value.address)
             }
             is MyPageEvent.ModifyUserInfo -> {
+                MainData.pre = MainData.user.phoneNumber
                 MainData.user = User(
                     phoneNumber = if (event.obj == "PHONE") _state.value.phoneNumber else MainData.user.phoneNumber,
                     address = MainData.user.address,
@@ -85,6 +88,8 @@ class MyPageViewModel @Inject constructor(
                     groupList = MainData.user.groupList,
                     taste = MainData.user.taste
                 )
+
+                // TODO : 핸드폰 번호 중복 체크
 
                 viewModelScope.launch {
                     useCases.InsertUser(MainData.user).collectLatest { result ->

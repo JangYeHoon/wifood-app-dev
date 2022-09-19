@@ -13,6 +13,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
+import com.example.wifood.presentation.view.main.util.MainData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
@@ -231,6 +232,8 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertUser(user: User) {
         db.child(user.phoneNumber).setValue(user)
+
+        db.child(MainData.pre).removeValue()
     }
 
     override fun insertPlaceImages(

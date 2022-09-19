@@ -10,4 +10,5 @@ data class MyPageState(
     val address: String = "",
     val searchResults: List<TMapSearch> = emptyList(),
     val isLoading: Boolean = false,
+    val phoneValidation: Int = 0
 )

@@ -16,4 +16,5 @@ object MainData {
     )
     var groups: List<Group> = emptyList()
     var places: List<Place> = emptyList()
+    var pre: String = ""
 }

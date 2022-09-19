@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.login.util.phoneFilter
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
