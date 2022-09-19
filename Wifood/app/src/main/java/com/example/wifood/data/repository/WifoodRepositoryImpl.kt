@@ -27,7 +27,7 @@ class WifoodRepositoryImpl(
         api.deleteUser(id)
     }
 
-    override fun checkUser(id: String): Boolean {
+    override fun checkUser(id: String): LiveData<Int> {
         return api.checkUser(id)
     }
 

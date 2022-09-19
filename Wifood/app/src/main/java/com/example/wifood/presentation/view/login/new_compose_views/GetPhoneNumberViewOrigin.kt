@@ -52,7 +52,7 @@ fun GetPhoneNumberView2(
 
     LaunchedEffect(state.phoneNumber) {
         if (state.phoneNumber.length == 11) {
-            phoneNumberValidation = viewModel.checkForm(ViewItem.SignUpView1)
+//            phoneNumberValidation = viewModel.checkForm(ViewItem.SignUpView1)
         }
     }
 

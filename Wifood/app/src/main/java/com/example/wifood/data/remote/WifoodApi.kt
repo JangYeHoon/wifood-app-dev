@@ -17,7 +17,7 @@ interface WifoodApi {
 
     fun deleteUser(id: String)
 
-    fun checkUser(id: String): Boolean
+    fun checkUser(id: String): LiveData<Int>
 
     fun getGroups(): LiveData<MutableList<Group>>
 

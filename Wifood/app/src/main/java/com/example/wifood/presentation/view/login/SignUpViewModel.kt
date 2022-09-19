@@ -208,21 +208,30 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    fun checkForm(view: ViewItem): Boolean {
-        var exist: Boolean = false
-
+    fun checkForm(view: ViewItem) {
         when (view) {
             is ViewItem.SignUpView1 -> {
                 val phoneResult = useCases.ValidatePhone(_state.value.phoneNumber)
 
                 val hasError = !phoneResult.successful
 
-                if (hasError)
+                if (hasError) {
+                    _state.value = state.value.copy(
+                        phoneValidation = 0
+                    )
                     showSnackBar(phoneResult.errorMessage!!)
+                }
 
-                exist = useCases.CheckUser(_state.value.phoneNumber)
+                // 1 = Exist, 2 = Loading, 0 = Error
+                useCases.CheckUser(_state.value.phoneNumber).observeForever {
+                    // TODO
+                    if (it == 1) showSnackBar("Already exists number")
 
-                return (!hasError && !exist)
+                    _state.value = state.value.copy(
+                        isLoading = it == 2,
+                        phoneValidation = it
+                    )
+                }
             }
         }
     }

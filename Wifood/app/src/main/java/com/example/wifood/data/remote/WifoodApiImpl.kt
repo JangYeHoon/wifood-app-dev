@@ -195,14 +195,20 @@ class WifoodApiImpl @Inject constructor(
         db.child(id).removeValue()
     }
 
-    override fun checkUser(id: String): Boolean {
-        var result = false
+    override fun checkUser(id: String): LiveData<Int> {
+        val result = MutableLiveData<Int>()
+
+        result.postValue(2)
 
         db.child(id).get().addOnSuccessListener {
-            if (it.exists()) result = true
+            if (it.exists()) {
+                result.postValue(1)
+            } else {
+                result.postValue(-1)
+            }
+        }.addOnFailureListener {
+            result.postValue(0)
         }
-
-        Log.d("check", result.toString())
         return result
     }
 
