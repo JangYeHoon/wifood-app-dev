@@ -75,23 +75,24 @@ class MainViewModel @Inject constructor(
     }
 
     fun init() {
-        WifoodApp.pref.setString("user_id", "01012345678")
+        WifoodApp.pref.setString("user_id", "01033201546")
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         useCases.GetUserAllData(userId).observeForever { it ->
-            state = state.copy(
-                user = it,
-                groups = it.groupList
-            )
+            state = state.copy(user = it)
             MainData.user = it
-            MainData.groups = it.groupList
-            val placeList = mutableListOf<Place>()
-            state.groups.forEach { group ->
-                group.placeList.forEach { place ->
-                    placeList.add(place)
+            Timber.i("MainData user ${MainData.user.phoneNumber}")
+            if (!it.groupList.isNullOrEmpty()) {
+                state = state.copy(groups = it.groupList)
+                MainData.groups = it.groupList
+                val placeList = mutableListOf<Place>()
+                state.groups.forEach { group ->
+                    group.placeList.forEach { place ->
+                        placeList.add(place)
+                    }
                 }
+                state = state.copy(places = placeList)
+                MainData.places = placeList
             }
-            state = state.copy(places = placeList)
-            MainData.places = placeList
             Timber.i("get user from firebase : " + state.user.toString())
 
             /* 여기 임시로 수정했음 */

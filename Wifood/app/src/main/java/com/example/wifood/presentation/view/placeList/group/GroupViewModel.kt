@@ -9,6 +9,7 @@ import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
+import com.example.wifood.presentation.view.main.util.MainData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -61,7 +62,7 @@ class GroupViewModel @Inject constructor(
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         return Group(
             groupId,
-            userId,
+            MainData.user.phoneNumber,
             formState.name,
             formState.description,
             ThreadLocalRandom.current().nextInt(1, 11),
