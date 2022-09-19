@@ -66,7 +66,7 @@ fun SignUpView3(
             ClickableTextFieldForm1(
                 text = SignUpData.address,
                 onClick = {
-                    navController.navigate(Route.FindLocation.route)
+                    navController.navigate("${Route.FindLocation.route}/signup")
                 },
                 onValueChange = {
                     viewModel.onEvent(SignUpEvent.AddressChanged(it))

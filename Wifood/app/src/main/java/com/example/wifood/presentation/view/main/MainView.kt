@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
-import com.example.wifood.presentation.view.MyPageComposeView
+import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.MapTopAppBar
 import com.example.wifood.presentation.view.map.MapView
@@ -156,9 +157,6 @@ fun MainView(
                     NavItem.List,
                     NavItem.MyPage
                 )
-                var current by remember {
-                    mutableStateOf(NavItem.Map.id)
-                }
 
                 BottomNavigation(
                     modifier = Modifier
@@ -180,14 +178,13 @@ fun MainView(
                                         item.id
                                     )
                                 )
-                                current = item.id
                             },
                             icon = {
                                 Column(
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Icon(item.icon, contentDescription = null)
+                                    Icon(painterResource(id = item.icon), contentDescription = null)
                                     Spacer(modifier = Modifier.height(5.dp))
                                     Text(
                                         text = item.title,
@@ -212,7 +209,7 @@ fun MainView(
                     PlaceListComposeView(modalBottomSheetState, navController)
                 }
                 NavItem.MyPage.id -> {
-                    MyPageComposeView(navController)
+                    MySettingView(navController)
                 }
             }
         }

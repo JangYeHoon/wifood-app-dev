@@ -19,20 +19,26 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.wifood.R
+import com.example.wifood.WifoodApp
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.main.util.MainData
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 
 @Composable
 fun MySettingContent(
-    nicknameText : String = "요고247",
-    onNicknameClicked:()->Unit = {},
-    onModifyMyInfoClicked:()->Unit = {},
-    onAppInfoClicked:()->Unit = {},
-    onLogoutClicked:()->Unit = {},
-){
+    onNicknameClicked: () -> Unit = {},
+    onModifyMyInfoClicked: () -> Unit = {},
+    onAppInfoClicked: () -> Unit = {},
+    onLogoutClicked: () -> Unit = {},
+) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(
@@ -49,7 +55,7 @@ fun MySettingContent(
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource
-                ){
+                ) {
                     onNicknameClicked()
                 }
                 .padding(
@@ -57,7 +63,7 @@ fun MySettingContent(
                     vertical = 20.dp
                 ),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.profile),
                 contentDescription = "",
@@ -70,7 +76,7 @@ fun MySettingContent(
             )
             Spacer(Modifier.width(14.dp))
             Text(
-                text = nicknameText,
+                text = MainData.user.nickname,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,
@@ -98,12 +104,12 @@ fun MySettingContent(
                     width = 1.dp,
                     color = Color(0xFFE7E7E7)
                 )
-        ){
+        ) {
             Spacer(Modifier.height(4.dp))
         }
         Column(
             modifier = Modifier.fillMaxWidth()
-        ){
+        ) {
             CommonTextButton(
                 text = "내 정보 수정",
                 withButton = true,

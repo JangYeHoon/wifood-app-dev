@@ -8,6 +8,7 @@ import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
+import com.example.wifood.presentation.view.main.util.MainData
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -74,13 +75,15 @@ class MainViewModel @Inject constructor(
     }
 
     fun init() {
-        WifoodApp.pref.setString("user_id", "kmh@naver.com")
+        WifoodApp.pref.setString("user_id", "01012345678")
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         useCases.GetUserAllData(userId).observeForever { it ->
             state = state.copy(
                 user = it,
                 groups = it.groupList
             )
+            MainData.user = it
+            MainData.groups = it.groupList
             val placeList = mutableListOf<Place>()
             state.groups.forEach { group ->
                 group.placeList.forEach { place ->
@@ -88,14 +91,17 @@ class MainViewModel @Inject constructor(
                 }
             }
             state = state.copy(places = placeList)
+            MainData.places = placeList
             Timber.i("get user from firebase : " + state.user.toString())
 
+            /* 여기 임시로 수정했음 */
             val groupMaxId =
-                state.groups.maxWithOrNull(compareBy { group -> group.groupId })!!.groupId
+                state.groups.maxWithOrNull(compareBy { group -> group.groupId })?.groupId
             val placeMaxId =
-                state.places.maxWithOrNull(compareBy { place -> place.placeId })!!.placeId
-            WifoodApp.pref.setInt("group_max_id", groupMaxId)
-            WifoodApp.pref.setInt("place_max_id", placeMaxId)
+                state.places.maxWithOrNull(compareBy { place -> place.placeId })?.placeId
+            WifoodApp.pref.setInt("group_max_id", groupMaxId ?: 1)
+            WifoodApp.pref.setInt("place_max_id", placeMaxId ?: 1)
+            /* 여기 수정했음 */
 
             state.places.forEach { place ->
                 useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->

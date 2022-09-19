@@ -100,13 +100,15 @@ fun YOGOPR16_title(
 @Composable
 fun YOGOPR12_formInfo(
     text: String = "지도를 움직여 위치를 설정해주세요",
-    color: Color = Color.White
+    color: Color = Color.White,
+    textAlign: TextAlign = TextAlign.Start
 ){
     Text(
         text = text,
         fontFamily = mainFont,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        color = color
+        color = color,
+        textAlign = textAlign
     )
 }

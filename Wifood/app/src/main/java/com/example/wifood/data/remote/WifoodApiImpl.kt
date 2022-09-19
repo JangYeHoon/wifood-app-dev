@@ -13,6 +13,7 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
+import com.example.wifood.presentation.view.main.util.MainData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
@@ -191,14 +192,24 @@ class WifoodApiImpl @Inject constructor(
         return user
     }
 
-    override fun checkUser(id: String): Boolean {
-        var result = false
+    override fun deleteUser(id: String) {
+        db.child(id).removeValue()
+    }
+
+    override fun checkUser(id: String): LiveData<Int> {
+        val result = MutableLiveData<Int>()
+
+        result.postValue(2)
 
         db.child(id).get().addOnSuccessListener {
-            if (it.exists()) result = true
+            if (it.exists()) {
+                result.postValue(1)
+            } else {
+                result.postValue(-1)
+            }
+        }.addOnFailureListener {
+            result.postValue(0)
         }
-
-        Log.d("check", result.toString())
         return result
     }
 
@@ -221,6 +232,8 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertUser(user: User) {
         db.child(user.phoneNumber).setValue(user)
+
+        db.child(MainData.pre).removeValue()
     }
 
     override fun insertPlaceImages(

@@ -26,12 +26,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.component.TitleText
 import com.example.wifood.presentation.view.login.util.SignUpData
+import com.example.wifood.presentation.view.mypage.MyPageEvent
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
@@ -41,9 +45,17 @@ import com.example.wifood.view.ui.theme.*
 @Composable
 fun FindMyLocationView(
     navController: NavController,
-    viewModel: SignUpViewModel = composableActivityViewModel()
+    navBackStackEntry: NavBackStackEntry,
+    viewModel: SignUpViewModel = composableActivityViewModel(),
+    viewModel2: MyPageViewModel = hiltViewModel()
 ) {
+    var view by remember {
+        mutableStateOf("")
+    }
+    view =
+        if (navBackStackEntry.arguments?.getString("viewModel")!! == "modify") "modify" else "signup"
     val state = viewModel.state.value
+    val state2 = viewModel2.state.value
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -55,18 +67,24 @@ fun FindMyLocationView(
                 .fillMaxSize()
         ) {
             CustomTextField(
-                address = state.address,
+                address = if (view == "signup") state.address else state2.address,
                 onValueChanged = {
-                    viewModel.onEvent(SignUpEvent.AddressChanged(it))
+                    if (view == "signup") viewModel.onEvent(SignUpEvent.AddressChanged(it)) else viewModel2.onEvent(
+                        MyPageEvent.AddressChanged(it)
+                    )
                 },
                 onBackClicked = {
                     navController.navigateUp()
                 },
                 onDeleteClicked = {
-                    viewModel.onEvent(SignUpEvent.AddressChanged(""))
+                    if (view == "signup") viewModel.onEvent(SignUpEvent.AddressChanged("")) else viewModel2.onEvent(
+                        MyPageEvent.AddressChanged("")
+                    )
                 },
                 onSearchClicked = {
-                    viewModel.onEvent(SignUpEvent.ButtonClicked)
+                    if (view == "signup") viewModel.onEvent(SignUpEvent.ButtonClicked) else viewModel2.onEvent(
+                        MyPageEvent.ButtonClicked
+                    )
                 }
             )
             Spacer(Modifier.height(12.dp))
@@ -76,35 +94,48 @@ fun FindMyLocationView(
                     .padding(horizontal = sidePaddingValue.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (state.searchResults.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column() {
-                                Text(
-                                    text = "",
-                                    fontFamily = mainFont,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp,
-                                    color = EnableColor
-                                )
+//                if (state.searchResults.isEmpty()) {
+//                    item {
+//                        Box(
+//                            modifier = Modifier.fillMaxSize(),
+//                            contentAlignment = Alignment.Center
+//                        ) {
+//                            Column() {
+//                                Text(
+//                                    text = "",
+//                                    fontFamily = mainFont,
+//                                    fontWeight = FontWeight.Normal,
+//                                    fontSize = 16.sp,
+//                                    color = EnableColor
+//                                )
+//                            }
+//                        }
+//                    }
+//                } else {
+                    if (view == "signup") {
+                        items(state.searchResults) { item ->
+                            SearchPlaceInfoCard(
+                                item.fullAddress,
+                                item.name,
+                                state.address
+                            ) {
+                                viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
+                                navController.navigateUp()
+                            }
+                        }
+                    } else {
+                        items(state2.searchResults) { item ->
+                            SearchPlaceInfoCard(
+                                item.fullAddress,
+                                item.name,
+                                state2.address
+                            ) {
+                                viewModel2.onEvent(MyPageEvent.AddressClicked(item.fullAddress))
+                                navController.navigateUp()
                             }
                         }
                     }
-                } else {
-                    items(state.searchResults) { item ->
-                        SearchPlaceInfoCard(
-                            item.fullAddress,
-                            item.name,
-                            state.address
-                        ) {
-                            viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
-                            navController.navigateUp()
-                        }
-                    }
-                }
+//                }
             }
         }
     }

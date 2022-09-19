@@ -1,18 +1,21 @@
 package com.example.wifood.presentation.view.mypage.contents
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.presentation.view.mypage.component.versionInfoField
 
 @Composable
 fun AppInfoView(
-
-){
+    navController: NavController
+) {
 
     val scrollState = rememberScrollState()
 
@@ -21,7 +24,7 @@ fun AppInfoView(
             .fillMaxSize()
     ) {
         MyPageTopAppBar(
-            titleText =  "앱정보",
+            titleText = "앱정보",
             leftButtonOn = true,
             leftButtonClicked = {
 
@@ -31,7 +34,7 @@ fun AppInfoView(
             modifier = Modifier
                 .verticalScroll(scrollState)
                 .fillMaxWidth()
-        ){
+        ) {
             versionInfoField(
                 text = "버젼 정보",
                 version = "1.0v",

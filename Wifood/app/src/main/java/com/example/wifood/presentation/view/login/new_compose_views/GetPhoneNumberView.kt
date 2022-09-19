@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.util.ValidationEvent
@@ -45,7 +46,6 @@ fun GetPhoneNumberView(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
-    var phoneNumberValidation by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val permissionLauncher =
@@ -55,6 +55,7 @@ fun GetPhoneNumberView(
             if (isGranted) {
                 navController.navigate(Route.GetAuthNumber.route)
             } else {
+                // TODO
                 Timber.i("false")
             }
         }
@@ -70,10 +71,9 @@ fun GetPhoneNumberView(
     }
 
     LaunchedEffect(state.phoneNumber) {
-        phoneNumberValidation = if (state.phoneNumber.length == 11) {
+        if (state.phoneNumber.length == 11) {
             viewModel.checkForm(ViewItem.SignUpView1)
-        } else
-            false
+        }
     }
 
     Scaffold(
@@ -83,6 +83,9 @@ fun GetPhoneNumberView(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+            if (state.isLoading) {
+                ProgressIndicator()
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -154,7 +157,7 @@ fun GetPhoneNumberView(
                             }
                         }
                     },
-                    activate = phoneNumberValidation
+                    activate = state.phoneValidation == -1
                 )
                 Spacer(Modifier.height(buttonBottomValue.dp))
             }

@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wifood.presentation.view.component.BottomSheetListItem
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
 import kotlinx.coroutines.launch
@@ -25,7 +26,8 @@ import java.io.File
 
 @Composable
 fun CameraAndAlbumBottomSheetContent(
-    viewModel: PlaceInfoWriteViewModel = hiltViewModel()
+    viewModel: PlaceInfoWriteViewModel = hiltViewModel(),
+    viewModel2: MyPageViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

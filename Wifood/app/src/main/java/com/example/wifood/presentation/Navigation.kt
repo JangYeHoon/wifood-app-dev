@@ -12,9 +12,8 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.createParcelableNavType
-import com.example.wifood.presentation.view.EditMyInfoComposeView
-import com.example.wifood.presentation.view.EditProfileComposeView
-import com.example.wifood.presentation.view.MyPageComposeView
+import com.example.wifood.presentation.view.ModifyUserProfileView
+import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.login.*
 import com.example.wifood.presentation.view.login.join.GetUserFavorContent
 import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
@@ -23,7 +22,11 @@ import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumb
 import com.example.wifood.presentation.view.login.new_compose_views.PersonalAgreementsView
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.mypage.AppInfoView
+import com.example.wifood.presentation.view.mypage.ModifyMyInfoView
+import com.example.wifood.presentation.view.mypage.ModifyUserPhoneNumberView
+import com.example.wifood.presentation.view.mypage.contents.AppInfoView
+import com.example.wifood.presentation.view.mypage.contents.ModifyTasteFavorView
+import com.example.wifood.presentation.view.mypage.contents.ModifyUserLocationView
 import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
@@ -98,7 +101,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            MyPageComposeView(navController)
+            MySettingView(navController)
         }
         composable(
             route = "${Route.PlaceInfo.route}/{place}/{group}",
@@ -205,7 +208,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            EditProfileComposeView(navController)
+            ModifyUserProfileView(navController)
         }
         composable(
             route = Route.FindPwd.route,
@@ -227,7 +230,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            EditMyInfoComposeView(navController)
+            ModifyMyInfoView(navController)
         }
         composable(
             route = Route.AppInfo.route,
@@ -274,7 +277,13 @@ fun Navigation() {
             PersonalAgreementsView(navController)
         }
         composable(
-            route = Route.FindLocation.route,
+            route = "${Route.FindLocation.route}/{viewModel}",
+            arguments = listOf(
+                navArgument("viewModel") {
+                    nullable = true
+                    defaultValue = ""
+                    type = NavType.StringType
+                }),
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -282,7 +291,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            FindMyLocationView(navController)
+            FindMyLocationView(navController, it)
         }
         composable(
             route = Route.SignUp3.route,
@@ -315,9 +324,6 @@ fun Navigation() {
         }
         composable(Route.FindPwd.route) {
             FindPwdView(navController)
-        }
-        composable(Route.EditMyInfo.route) {
-            EditMyInfoComposeView(navController)
         }
         composable(Route.AppInfo.route) {
             AppInfoView(navController)
@@ -394,6 +400,39 @@ fun Navigation() {
             }
         ) {
             AddNewPlaceCompleteView(navController)
+        }
+        composable(
+            route = Route.ModifyPhoneNumber.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            ModifyUserPhoneNumberView(navController)
+        }
+        composable(
+            route = Route.ModifyAddress.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            ModifyUserLocationView(navController)
+        }
+        composable(
+            route = Route.ModifyFavor.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            ModifyTasteFavorView(navController)
         }
     }
 }

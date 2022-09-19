@@ -14,7 +14,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.storage.UploadTask
 
 interface WifoodRepository {
-    fun checkUser(id: String): Boolean
+    fun deleteUser(id: String)
+
+    fun checkUser(id: String): LiveData<Int>
 
     fun getGroups(): LiveData<MutableList<Group>>
 

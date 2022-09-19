@@ -55,7 +55,8 @@ object AppModule {
             RequestCertNumber = RequestCertNumber(repository),
             GetTMapSearchDetailAddressResult = GetTMapSearchDetailAddressResult(repository),
             GetTMapReverseGeocoding = GetTMapReverseGeocoding(repository),
-            CheckUser = CheckUser(repository)
+            CheckUser = CheckUser(repository),
+            DeleteUser = DeleteUser(repository)
         )
     }
 
