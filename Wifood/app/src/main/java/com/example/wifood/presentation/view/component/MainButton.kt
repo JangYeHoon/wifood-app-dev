@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -75,5 +76,56 @@ fun MainButtonInversed(
             fontSize = 16.sp,
             color = MainColor
         )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun MainButtonToggle(
+    text: String = "전체",
+    onClick: () -> Unit = {},
+    isClicked: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    val cornerValue = 32
+    if (isClicked.not()) {
+        OutlinedButton(
+            onClick = onClick,
+            shape = RoundedCornerShape(cornerValue.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            border = BorderStroke(1.dp, MainColor)
+        ) {
+            Text(
+                text = text,
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = MainColor
+            )
+        }
+    } else {
+        TextButton(
+            shape = RoundedCornerShape(cornerValue.dp),
+            onClick = onClick,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MainColor,
+            ),
+            enabled = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        )
+        {
+            Text(
+                text = text,
+                color = Color.White,
+                fontSize = 14.sp,
+                fontFamily = mainFont,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }

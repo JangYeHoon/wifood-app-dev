@@ -82,7 +82,7 @@ fun SearchPlaceEmptyView(
         ) {
             Spacer(Modifier.weight(1f))
             Icon(
-                ImageVector.vectorResource(R.drawable.ic_search_place_empty),
+                ImageVector.vectorResource(R.drawable.ic_not_registered),
                 contentDescription = "searched place empty image",
                 modifier = Modifier
                     .wrapContentSize(),
