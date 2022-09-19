@@ -85,6 +85,11 @@ fun InputNameContent(
                 scope.launch {
                     viewModel.onEvent(SearchPlaceFormEvent.InputNameClear)
                 }
+            },
+            onNextBtnClick = {
+                scope.launch {
+                    viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
+                }
             }
         )
         Spacer(Modifier.weight(1f))
