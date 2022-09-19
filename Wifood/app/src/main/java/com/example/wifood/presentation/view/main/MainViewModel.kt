@@ -75,38 +75,40 @@ class MainViewModel @Inject constructor(
     }
 
     fun init() {
-        WifoodApp.pref.setString("user_id", "kmh@naver.com")
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         useCases.GetUserAllData(userId).observeForever { it ->
-            state = state.copy(
-                user = it,
-                groups = it.groupList
-            )
-            MainData.user = it
-            MainData.groups = it.groupList
-            val placeList = mutableListOf<Place>()
-            state.groups.forEach { group ->
-                group.placeList.forEach { place ->
-                    placeList.add(place)
+            it?.let {
+                state = state.copy(user = it)
+                MainData.user = it
+                Timber.i("MainData user ${MainData.user.phoneNumber}")
+                if (!it.groupList.isNullOrEmpty()) {
+                    state = state.copy(groups = it.groupList)
+                    MainData.groups = it.groupList
+                    val placeList = mutableListOf<Place>()
+                    state.groups.forEach { group ->
+                        group.placeList.forEach { place ->
+                            placeList.add(place)
+                        }
+                    }
+                    state = state.copy(places = placeList)
+                    MainData.places = placeList
                 }
-            }
-            state = state.copy(places = placeList)
-            MainData.places = placeList
-            Timber.i("get user from firebase : " + state.user.toString())
+                Timber.i("get user from firebase : " + state.user.toString())
 
-            /* 여기 임시로 수정했음 */
-            val groupMaxId =
-                state.groups.maxWithOrNull(compareBy { group -> group.groupId })?.groupId
-            val placeMaxId =
-                state.places.maxWithOrNull(compareBy { place -> place.placeId })?.placeId
-            WifoodApp.pref.setInt("group_max_id", groupMaxId ?: 1)
-            WifoodApp.pref.setInt("place_max_id", placeMaxId ?: 1)
-            /* 여기 수정했음 */
+                /* 여기 임시로 수정했음 */
+                val groupMaxId =
+                    state.groups.maxWithOrNull(compareBy { group -> group.groupId })?.groupId
+                val placeMaxId =
+                    state.places.maxWithOrNull(compareBy { place -> place.placeId })?.placeId
+                WifoodApp.pref.setInt("group_max_id", groupMaxId ?: 1)
+                WifoodApp.pref.setInt("place_max_id", placeMaxId ?: 1)
+                /* 여기 수정했음 */
 
-            state.places.forEach { place ->
-                useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->
-                    state.placeImages[place.placeId] = uri
-                    Timber.i("get image uri list from firebase : $uri")
+                state.places.forEach { place ->
+                    useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->
+                        state.placeImages[place.placeId] = uri
+                        Timber.i("get image uri list from firebase : $uri")
+                    }
                 }
             }
         }

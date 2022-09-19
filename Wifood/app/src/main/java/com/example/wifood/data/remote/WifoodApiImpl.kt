@@ -40,11 +40,10 @@ class WifoodApiImpl @Inject constructor(
     private val db: DatabaseReference,
     private val client: HttpClient
 ) : WifoodApi {
-    val id = WifoodApp.pref.getString("user_id", "No user data").replace('.', '_')
 
     override fun getGroups(): LiveData<MutableList<Group>> {
         val groupList = MutableLiveData<MutableList<Group>>()
-        db.child(id).addValueEventListener(object : ValueEventListener {
+        db.child(MainData.user.phoneNumber).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: MutableList<Group> = mutableListOf()
                 if (snapshot.exists()) {
@@ -65,13 +64,13 @@ class WifoodApiImpl @Inject constructor(
 
     override fun deleteGroup(groupId: Int) {
         Timber.i("delete group : groupId-$groupId")
-        db.child("$id/Group/$groupId").removeValue()
+        db.child("${MainData.user.phoneNumber}/Group/$groupId").removeValue()
             .addOnSuccessListener { Timber.i("Success group delete") }
             .addOnFailureListener { Timber.e("Fail group delete : $it") }
     }
 
     override fun insertGroup(group: Group) {
-        db.child(id).child("Group").child(group.groupId.toString())
+        db.child(MainData.user.phoneNumber).child("Group").child(group.groupId.toString())
             .setValue(group)
             .addOnSuccessListener { Timber.i("Success group insert") }
             .addOnFailureListener { Timber.e("Fail group insert : $it") }
@@ -79,7 +78,7 @@ class WifoodApiImpl @Inject constructor(
 
     override fun updateGroup(group: Group) {
         val groupPath =
-            db.child(id).child("Group").child(group.groupId.toString())
+            db.child(MainData.user.phoneNumber).child("Group").child(group.groupId.toString())
         groupPath.child("groupId").setValue(group.groupId)
         groupPath.child("name").setValue(group.name)
         groupPath.child("description").setValue(group.description)
@@ -112,7 +111,7 @@ class WifoodApiImpl @Inject constructor(
         // TODO "싱글톤에 지정해서 storage를 인자로 받도록 변경 필요"
         val storage = FirebaseStorage.getInstance().reference
         val imageUrisForObserve = MutableLiveData<MutableList<Uri>>()
-        storage.child("$id/$groupId/$placeId/").listAll()
+        storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/").listAll()
             .addOnSuccessListener {
                 val uris: MutableList<Uri> = mutableListOf()
                 for (item in it.items) {
@@ -131,7 +130,7 @@ class WifoodApiImpl @Inject constructor(
     override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
         val storage = FirebaseStorage.getInstance().reference
         val imageUriForObserve = MutableLiveData<Uri>()
-        storage.child("$id/$groupId/$placeId/0").downloadUrl.addOnCompleteListener { url ->
+        storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/0").downloadUrl.addOnCompleteListener { url ->
             if (url.isSuccessful) {
                 imageUriForObserve.value = url.result
                 Timber.i("get image url list from Firebase Storage : " + imageUriForObserve.value.toString())
@@ -141,7 +140,7 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertPlace(place: Place) {
-        db.child(id).child("Group").child(place.groupId.toString()).child("Place")
+        db.child(MainData.user.phoneNumber).child("Group").child(place.groupId.toString()).child("Place")
             .child(place.placeId.toString()).setValue(place)
             .addOnSuccessListener { Timber.i("Success place insert") }
             .addOnFailureListener { Timber.e("Fail place insert : $it") }
@@ -149,14 +148,14 @@ class WifoodApiImpl @Inject constructor(
 
     override fun deletePlace(groupId: Int, placeId: Int) {
         Timber.i("delete place : groupId-$groupId, placeId-$placeId")
-        db.child("$id/Group/$groupId/Place/$placeId").removeValue()
+        db.child("${MainData.user.phoneNumber}/Group/$groupId/Place/$placeId").removeValue()
             .addOnSuccessListener { Timber.i("Success place delete") }
             .addOnFailureListener { Timber.e("Fail place delete : $it") }
     }
 
     override fun updatePlace(place: Place) {
         val placePath =
-            db.child(id).child("Group").child(place.groupId.toString()).child("Place")
+            db.child(MainData.user.phoneNumber).child("Group").child(place.groupId.toString()).child("Place")
                 .child(place.placeId.toString())
         placePath.child("review").setValue(place.review)
     }
@@ -171,7 +170,7 @@ class WifoodApiImpl @Inject constructor(
                         snapshot.child("Group").children.map {
                             it.getValue(GroupDto::class.java)!!
                         }
-                    userDto.taste = snapshot.child("Taste").getValue(TasteDto::class.java)
+                    userDto.taste = snapshot.child("taste").getValue(TasteDto::class.java)
                     for (group in userDto.groupList) {
                         group.placeList =
                             snapshot.child("Group/${group.groupId}/Place").children.map {
@@ -233,8 +232,8 @@ class WifoodApiImpl @Inject constructor(
     override fun insertUser(user: User) {
         db.child(user.phoneNumber).setValue(user)
 
-//        if (MainData.pre.isNotBlank())
-//            db.child(MainData.pre).removeValue()
+        if (MainData.pre.isNotBlank())
+            db.child(MainData.pre).removeValue()
     }
 
     override fun insertPlaceImages(
@@ -245,7 +244,7 @@ class WifoodApiImpl @Inject constructor(
         val storage = FirebaseStorage.getInstance().reference
         var uploadTask: UploadTask? = null
         images.forEachIndexed { index, uri ->
-            uploadTask = storage.child("$id/$groupId/$placeId/").child("$index").putFile(uri)
+            uploadTask = storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/").child("$index").putFile(uri)
         }
         return uploadTask!!
     }

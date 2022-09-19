@@ -64,11 +64,13 @@ fun PutPlaceNameTextField(
     text: String = "",
     placeholder: String = "맛집이름",
     onValueChange: (String) -> Unit = {},
-    onDeleteBtnClick: () -> Unit = {}
+    onDeleteBtnClick: () -> Unit = {},
+    onNextBtnClick: () -> Unit = {}
 ) {
     TextField(
         value = text,
         onValueChange = onValueChange,
+        singleLine = true,
         modifier = Modifier
             .fillMaxWidth(),
         textStyle = TextStyle(
@@ -111,7 +113,8 @@ fun PutPlaceNameTextField(
                 Icon(
                     ImageVector.vectorResource(id = R.drawable.ic_right_arrow),
                     contentDescription = "left button of top app bar",
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.wrapContentSize()
+                        .clickable { onNextBtnClick() },
                     tint = Color.Unspecified
                 )
             }

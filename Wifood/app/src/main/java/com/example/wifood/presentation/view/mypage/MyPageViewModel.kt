@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.SignUpState
@@ -41,8 +42,9 @@ class MyPageViewModel @Inject constructor(
                 _state.value = state.value.copy(nickname = event.nickname)
             }
             is MyPageEvent.DeleteUser -> {
+                WifoodApp.pref.setString("Initial_Flag", "0")
                 viewModelScope.launch {
-                    useCases.DeleteUser(_state.value.currentUser.phoneNumber)
+                    useCases.DeleteUser(MainData.user.phoneNumber)
                     validateEventChannel.send(ValidationEvent.Success)
                 }
             }
@@ -78,7 +80,11 @@ class MyPageViewModel @Inject constructor(
                 MainData.user = MainData.user.copy(address = event.address ?: _state.value.address)
             }
             is MyPageEvent.ModifyUserInfo -> {
-                MainData.pre = MainData.user.phoneNumber
+                if (event.obj == "PHONE") {
+                    WifoodApp.pref.setString("user_id", _state.value.phoneNumber)
+                    MainData.pre = MainData.user.phoneNumber
+                }
+
                 MainData.user = User(
                     phoneNumber = if (event.obj == "PHONE") _state.value.phoneNumber else MainData.user.phoneNumber,
                     address = MainData.user.address,
