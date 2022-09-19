@@ -52,9 +52,8 @@ fun FindMyLocationView(
     var view by remember {
         mutableStateOf("")
     }
-    view = if (navBackStackEntry.arguments?.getString("viewModel")!!
-            .isNotBlank()
-    ) "modify" else "signup"
+    view =
+        if (navBackStackEntry.arguments?.getString("viewModel")!! == "modify") "modify" else "signup"
     val state = viewModel.state.value
     val state2 = viewModel2.state.value
     val scaffoldState = rememberScaffoldState()
@@ -95,24 +94,24 @@ fun FindMyLocationView(
                     .padding(horizontal = sidePaddingValue.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (state.searchResults.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column() {
-                                Text(
-                                    text = "",
-                                    fontFamily = mainFont,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp,
-                                    color = EnableColor
-                                )
-                            }
-                        }
-                    }
-                } else {
+//                if (state.searchResults.isEmpty()) {
+//                    item {
+//                        Box(
+//                            modifier = Modifier.fillMaxSize(),
+//                            contentAlignment = Alignment.Center
+//                        ) {
+//                            Column() {
+//                                Text(
+//                                    text = "",
+//                                    fontFamily = mainFont,
+//                                    fontWeight = FontWeight.Normal,
+//                                    fontSize = 16.sp,
+//                                    color = EnableColor
+//                                )
+//                            }
+//                        }
+//                    }
+//                } else {
                     if (view == "signup") {
                         items(state.searchResults) { item ->
                             SearchPlaceInfoCard(
@@ -136,7 +135,7 @@ fun FindMyLocationView(
                             }
                         }
                     }
-                }
+//                }
             }
         }
     }

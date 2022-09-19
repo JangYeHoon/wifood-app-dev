@@ -5,7 +5,15 @@ import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 
 object MainData {
-    lateinit var user: User
-    lateinit var groups: List<Group>
-    lateinit var places: List<Place>
+    var user: User = User(
+        phoneNumber = "",
+        address = "",
+        nickname = "",
+        taste = null,
+        groupList = emptyList(),
+        birthday = "",
+        gender = -1
+    )
+    var groups: List<Group> = emptyList()
+    var places: List<Place> = emptyList()
 }

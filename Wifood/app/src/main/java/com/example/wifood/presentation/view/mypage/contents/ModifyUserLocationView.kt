@@ -15,6 +15,7 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOBasicText
 import com.example.wifood.presentation.view.login.ClickableTextFieldForm1
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
@@ -59,9 +60,9 @@ fun ModifyUserLocationView(
             )
             Spacer(Modifier.height(24.dp))
             ClickableTextFieldForm1(
-                text = state.address,
+                text = MainData.user.address,
                 onClick = {
-                    navController.navigate(Route.FindLocation.route)
+                    navController.navigate("${Route.FindLocation.route}/modify")
                 },
                 onValueChange = {
                     viewModel.onEvent(MyPageEvent.AddressChanged(it))

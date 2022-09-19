@@ -49,7 +49,9 @@ class MyPageViewModel @Inject constructor(
                 _state.value = state.value.copy(phoneNumber = event.phoneNumber)
             }
             is MyPageEvent.AddressChanged -> {
-                _state.value = state.value.copy(address = event.address)
+                _state.value = state.value.copy(
+                    address = event.address
+                )
             }
             is MyPageEvent.ButtonClicked -> {
                 try {
