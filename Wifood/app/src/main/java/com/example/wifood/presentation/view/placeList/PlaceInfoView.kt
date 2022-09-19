@@ -40,10 +40,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
 
 @Composable
@@ -362,9 +359,11 @@ fun PlaceInfoView(
                     uiSettings = MapUiSettings(zoomControlsEnabled = false)
                 ) {
                     Marker(
-                        position = LatLng(
-                            state.place.latitude,
-                            state.place.longitude
+                        state = rememberMarkerState(
+                            position = LatLng(
+                                state.place.latitude,
+                                state.place.longitude
+                            )
                         ),
                         title = state.place.name
                     )
@@ -431,74 +430,6 @@ fun PlaceInfoView(
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun PlaceImagePopup(
-    images: List<Uri>,
-    showImagePopupChk: MutableState<Boolean>,
-    viewModel: PlaceInfoViewModel = hiltViewModel()
-) {
-    Popup(
-        alignment = Alignment.Center,
-        onDismissRequest = {
-            showImagePopupChk.value = false
-        },
-        properties = PopupProperties()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(500.dp)
-        ) {
-            Image(
-                painter = rememberImagePainter(
-                    data = images[viewModel.state.popupImageIdx]
-                ),
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(0.dp)),
-                contentScale = ContentScale.Crop,
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                IconButton(
-                    onClick = {
-                        viewModel.onEvent(PlaceInfoEvent.ClickPopupLeft)
-                    },
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
-                        tint = Color.Unspecified
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        viewModel.onEvent(PlaceInfoEvent.ClickPopupRight)
-                    },
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowForward,
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
-                        tint = Color.Unspecified
-                    )
                 }
             }
         }

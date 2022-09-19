@@ -1,71 +1,43 @@
 package com.example.wifood.presentation.view.map
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.location.Location
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CenterFocusStrong
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.wifood.R
-import com.example.wifood.presentation.util.*
-import com.example.wifood.presentation.util.checkPermission
+import com.example.wifood.presentation.view.component.SingleRatingStar
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
-import com.example.wifood.presentation.view.main.UiEvent
-import com.example.wifood.presentation.view.map.component.CustomMarker
+import com.example.wifood.presentation.view.map.component.MarkerCustomInfoWindow
 import com.example.wifood.ui.theme.robotoFamily
-import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.Main
+import com.example.wifood.view.ui.theme.MainColor
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdate
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -77,21 +49,15 @@ fun MapView(
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
-    val interactionSource = remember { MutableInteractionSource() }
-    val interactions = remember { mutableStateListOf<Interaction>() }
     val scope = rememberCoroutineScope()
     val state = viewModel.state
     val listState = rememberLazyListState()
-    val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
     var selectedMenu by remember { mutableStateOf(0) }
     val camera = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 1f)
     }
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-    val builder = LatLngBounds.Builder()
-    var locationPermissionGranted = false
 
     fun moveCameraCurrentLocation() {
         val locationResult = fusedLocationProviderClient.lastLocation
@@ -172,18 +138,21 @@ fun MapView(
 //                iconResourceId = R.drawable.ic_splash_icon
 //            )
             state.places.forEach { place ->
-                Marker(
-                    position = LatLng(place.latitude, place.longitude),
+                MarkerInfoWindow(
+                    rememberMarkerState(position = LatLng(place.latitude, place.longitude)),
                     title = place.name,
                     visible = state.selectedGroupId == 0 || place.groupId == state.selectedGroupId,
-                    snippet = place.review
+                    snippet = place.review,
+                    content = {
+                        MarkerCustomInfoWindow(place.name, place.review, place.score.toInt())
+                    }
                 )
             }
             state.currentLocation?.let {
             }
             state.searchResultLatLng?.let {
                 Marker(
-                    position = LatLng(it.latitude, it.longitude),
+                    rememberMarkerState(position = LatLng(it.latitude, it.longitude)),
                     visible = true,
                     icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
                 )
