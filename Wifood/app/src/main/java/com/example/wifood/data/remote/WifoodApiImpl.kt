@@ -233,7 +233,8 @@ class WifoodApiImpl @Inject constructor(
     override fun insertUser(user: User) {
         db.child(user.phoneNumber).setValue(user)
 
-        db.child(MainData.pre).removeValue()
+//        if (MainData.pre.isNotBlank())
+//            db.child(MainData.pre).removeValue()
     }
 
     override fun insertPlaceImages(
