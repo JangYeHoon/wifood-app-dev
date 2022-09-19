@@ -16,6 +16,7 @@ import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.join.UserFavorButtonGroup
 import com.example.wifood.presentation.view.login.join.UserFavorRadioGroup
+import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
@@ -44,7 +45,7 @@ fun ModifyTasteFavorView(
                 .fillMaxWidth()
         ) {
             Spacer(Modifier.height(36.dp))
-            //UserFavorRadioGroup(viewModel)
+            UserFavorRadioGroup(viewModel)
             Text(
                 text = "좋아하면 선택해주세요",
                 fontFamily = mainFont,
@@ -59,7 +60,10 @@ fun ModifyTasteFavorView(
         Spacer(Modifier.weight(1f))
         MainButton(
             text = "변경하기",
-            onClick = { /*TODO*/ }
+            onClick = {
+                viewModel.onEvent(MyPageEvent.ModifyUserInfo("TASTE"))
+                navController.navigateUp()
+            }
         )
         Spacer(Modifier.height(buttonBottomValue.dp))
     }

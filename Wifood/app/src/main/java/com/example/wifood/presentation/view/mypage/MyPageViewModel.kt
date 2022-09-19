@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
+import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.view.login.SignUpState
@@ -56,6 +57,14 @@ class MyPageViewModel @Inject constructor(
                     address = event.address
                 )
             }
+            is MyPageEvent.FavorSelected -> {
+                val temp = _state.value.taste
+                temp.set(event.index, event.selected)
+
+                _state.value = state.value.copy(
+                    taste = temp
+                )
+            }
             is MyPageEvent.ButtonClicked -> {
                 try {
                     if (_state.value.address.isNotBlank()) {
@@ -92,7 +101,20 @@ class MyPageViewModel @Inject constructor(
                     gender = MainData.user.gender,
                     nickname = MainData.user.nickname,
                     groupList = MainData.user.groupList,
-                    taste = MainData.user.taste
+                    taste = if (event.obj != "TASTE") MainData.user.taste else {
+                        Taste(
+                            userId = MainData.user.phoneNumber,
+                            spicy = _state.value.taste[0],
+                            salty = _state.value.taste[2],
+                            acidity = _state.value.taste[4],
+                            sour = _state.value.taste[3],
+                            sweet = _state.value.taste[1],
+                            cucumber = SignUpData.cucumberClicked,
+                            coriander = SignUpData.corianderClicked,
+                            mintChoco = SignUpData.mintChokoClicked,
+                            eggplant = SignUpData.eggplantClicked
+                        )
+                    }
                 )
 
                 // TODO : 핸드폰 번호 중복 체크

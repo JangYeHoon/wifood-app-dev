@@ -19,6 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
@@ -30,6 +31,8 @@ import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.presentation.view.mypage.MyPageEvent
+import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.Black2Color
@@ -156,7 +159,7 @@ fun GetUserFavorContent(
 
 @Composable
 fun UserFavorRadioGroup(
-    viewModel: SignUpViewModel
+    viewModel: ViewModel
 ) {
     val favorSpacerValue = 30
     Column(
@@ -178,7 +181,7 @@ fun UserFavorRadioGroup(
 @Composable
 fun YOGORadioGroup(
     titleText: String,
-    viewModel: SignUpViewModel
+    viewModel: ViewModel
 ) {
     val selected = remember { mutableStateListOf<Int>(0, 0, 1, 0, 0) }
     //semibold 13
@@ -303,7 +306,7 @@ fun YOGORadioButton(
     selected: MutableList<Int>,
     selectedValue: Int = 0,
     index: Int,
-    viewModel: SignUpViewModel
+    viewModel: ViewModel
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
@@ -332,7 +335,21 @@ fun YOGORadioButton(
                 ) {
                     for (i: Int in 0..4) {
                         if (i == selectedValue) {
-                            viewModel.onEvent(SignUpEvent.FavorSelected(i + 1, index))
+                            if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
+                                (viewModel as SignUpViewModel).onEvent(
+                                    SignUpEvent.FavorSelected(
+                                        i + 1,
+                                        index
+                                    )
+                                )
+                            } else {
+                                (viewModel as MyPageViewModel).onEvent(
+                                    MyPageEvent.FavorSelected(
+                                        i + 1,
+                                        index
+                                    )
+                                )
+                            }
                             selected[i] = 1
                             continue
                         }
