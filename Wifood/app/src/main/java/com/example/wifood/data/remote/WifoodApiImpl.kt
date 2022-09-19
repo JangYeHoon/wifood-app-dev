@@ -170,7 +170,7 @@ class WifoodApiImpl @Inject constructor(
                         snapshot.child("Group").children.map {
                             it.getValue(GroupDto::class.java)!!
                         }
-                    userDto.taste = snapshot.child("Taste").getValue(TasteDto::class.java)
+                    userDto.taste = snapshot.child("taste").getValue(TasteDto::class.java)
                     for (group in userDto.groupList) {
                         group.placeList =
                             snapshot.child("Group/${group.groupId}/Place").children.map {
@@ -232,8 +232,8 @@ class WifoodApiImpl @Inject constructor(
     override fun insertUser(user: User) {
         db.child(user.phoneNumber).setValue(user)
 
-        MainData.user = user
-        db.child(MainData.pre).removeValue()
+        if (MainData.pre.isNotBlank())
+            db.child(MainData.pre).removeValue()
     }
 
     override fun insertPlaceImages(

@@ -82,7 +82,7 @@ fun ModifyMyInfoContent(
                 text = "회원탈퇴",
                 withButton = false,
                 onClick = {
-                    viewModel.onEvent(MyPageEvent.DeleteUser)
+                    onWithdrawClicked()
                 }
             )
         }
