@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.presentation.view.mypage.component.versionInfoField
@@ -27,7 +28,7 @@ fun AppInfoView(
             titleText = "앱정보",
             leftButtonOn = true,
             leftButtonClicked = {
-
+                navController.popBackStack()
             }
         )
         Column(
@@ -58,7 +59,7 @@ fun AppInfoView(
                 text = "서비스 이용약관",
                 withButton = true,
                 onClick = {
-                    //TODO
+                    navController.navigate(Route.Document.route)
                 }
             )
         }

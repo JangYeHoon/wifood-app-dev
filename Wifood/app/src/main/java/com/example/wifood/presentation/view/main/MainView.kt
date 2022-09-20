@@ -114,43 +114,43 @@ fun MainView(
 //                    }
                 }
             },
-            floatingActionButton = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    val isMapView = state.selected == NavItem.Map.id
-                    if (isMapView) {
-                        FloatingActionButton(
-                            onClick = {
-                                viewModel.onEvent(
-                                    MainEvent.CameraMove(
-                                        LatLng(
-                                            state.currentLocation!!.latitude,
-                                            state.currentLocation!!.longitude
-                                        )
-                                    )
-                                )
-                            },
-                            backgroundColor = Color.White,
-                            contentColor = Main
-                        ) {
-                            Icon(Icons.Filled.CenterFocusStrong, contentDescription = null)
-                        }
-                        FloatingActionButton(
-                            onClick = {
-                                val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
-                                navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
-                            },
-                            backgroundColor = Main,
-                            contentColor = Color.White,
-                            modifier = Modifier.size(75.dp)
-                        ) {
-                            Icon(Icons.Filled.Add, contentDescription = null)
-                        }
-                    }
-                }
-            },
+//            floatingActionButton = {
+//                Column(
+//                    verticalArrangement = Arrangement.spacedBy(16.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    val isMapView = state.selected == NavItem.Map.id
+//                    if (isMapView) {
+//                        FloatingActionButton(
+//                            onClick = {
+//                                viewModel.onEvent(
+//                                    MainEvent.CameraMove(
+//                                        LatLng(
+//                                            state.currentLocation!!.latitude,
+//                                            state.currentLocation.longitude
+//                                        )
+//                                    )
+//                                )
+//                            },
+//                            backgroundColor = Color.White,
+//                            contentColor = Main
+//                        ) {
+//                            Icon(Icons.Filled.CenterFocusStrong, contentDescription = null)
+//                        }
+//                        FloatingActionButton(
+//                            onClick = {
+//                                val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+//                                navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
+//                            },
+//                            backgroundColor = Main,
+//                            contentColor = Color.White,
+//                            modifier = Modifier.size(75.dp)
+//                        ) {
+//                            Icon(Icons.Filled.Add, contentDescription = null)
+//                        }
+//                    }
+//                }
+//            },
             bottomBar = {
                 val items = listOf(
                     NavItem.Map,

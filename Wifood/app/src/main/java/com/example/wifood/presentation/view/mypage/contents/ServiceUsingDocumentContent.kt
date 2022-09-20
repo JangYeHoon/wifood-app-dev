@@ -9,12 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavController
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.ui.theme.mainFont
 
 @Composable
 fun ServiceUsingDocumentView(
-
+    navController: NavController
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -25,7 +26,7 @@ fun ServiceUsingDocumentView(
             titleText = "서비스 이용약관",
             leftButtonOn = true,
             leftButtonClicked = {
-
+                navController.popBackStack()
             }
         )
 

@@ -1,5 +1,6 @@
 package com.example.wifood.presentation
 
+import android.app.Service
 import androidx.compose.animation.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import com.example.wifood.presentation.view.mypage.ModifyUserPhoneNumberView
 import com.example.wifood.presentation.view.mypage.contents.AppInfoView
 import com.example.wifood.presentation.view.mypage.contents.ModifyTasteFavorView
 import com.example.wifood.presentation.view.mypage.contents.ModifyUserLocationView
+import com.example.wifood.presentation.view.mypage.contents.ServiceUsingDocumentView
 import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
@@ -244,6 +246,17 @@ fun Navigation() {
             AppInfoView(navController)
         }
         composable(
+            route = Route.Document.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            ServiceUsingDocumentView(navController)
+        }
+        composable(
             route = Route.GetPhoneNumber.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
@@ -324,9 +337,6 @@ fun Navigation() {
         }
         composable(Route.FindPwd.route) {
             FindPwdView(navController)
-        }
-        composable(Route.AppInfo.route) {
-            AppInfoView(navController)
         }
         composable(
             route = Route.SignUp4.route,

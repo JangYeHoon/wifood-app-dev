@@ -250,6 +250,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
     }
 
     private fun insertPlace() {
+        randomMarker()
         state.place.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
         Timber.i("insert place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
@@ -321,5 +322,41 @@ class PlaceInfoWriteViewModel @Inject constructor(
             fullSizeCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         }
         return fullSizeCaptureIntent
+    }
+
+    private fun randomMarker() {
+        val random = Random()
+        when (random.nextInt(10)) {
+            0 -> {
+                state.place.color = "57bf7c"
+            }
+            1 -> {
+                state.place.color = "59c3b5"
+            }
+            2 -> {
+                state.place.color = "6153a7"
+            }
+            3 -> {
+                state.place.color = "7eb2ff"
+            }
+            4 -> {
+                state.place.color = "8bd353"
+            }
+            5 -> {
+                state.place.color = "a57dba"
+            }
+            6 -> {
+                state.place.color = "aaa333"
+            }
+            7 -> {
+                state.place.color = "fe6080"
+            }
+            8 -> {
+                state.place.color = "ff8a00"
+            }
+            9 -> {
+                state.place.color = "ffc08d"
+            }
+        }
     }
 }
