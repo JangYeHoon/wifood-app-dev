@@ -195,7 +195,7 @@ fun SelectPlaceGroupContent(
         Spacer(Modifier.width(12.dp))
     }
 }
-
+@Preview(showBackground = true)
 @Composable
 fun CurrentLocationUnion(
     titleText: String = "파리바게트",
@@ -287,7 +287,7 @@ fun CurrentLocationUnion(
         }
     }
 }
-
+@Preview(showBackground = true)
 @Composable
 fun CurrentLocationIcon(
     modifier: Modifier = Modifier
@@ -300,7 +300,7 @@ fun CurrentLocationIcon(
         tint = Color.Unspecified
     )
 }
-
+@Preview(showBackground = true)
 @Composable
 fun UserPlaceLocationIcon(
     groupCount: Int = 4,
@@ -364,7 +364,7 @@ fun UserPlaceLocationIcon(
         }
     }
 }
-
+@Preview(showBackground = true)
 @Composable
 fun AppBottomContent(
     pushMap: Boolean = true,
@@ -422,6 +422,7 @@ fun AppBottomContent(
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 fun AppBottomItems(
     itemId: Int = R.drawable.ic_bottom_map_icon,
