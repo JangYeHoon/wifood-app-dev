@@ -8,8 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,7 +21,6 @@ import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -35,21 +32,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.data.remote.dto.PlaceDto
-import com.example.wifood.presentation.util.NavItem
 import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.component.SingleRatingStar
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.map.component.CustomMarker
-import com.example.wifood.presentation.view.map.component.MarkerCustomInfoWindow
-import com.example.wifood.presentation.view.map.util.MyItem
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
-import com.example.wifood.view.ui.theme.MainColor
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
-import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -177,43 +168,14 @@ fun MapView(
                 uiSettings = uiSettings,
                 cameraPositionState = camera
             ) {
-                var clusterManager by remember { mutableStateOf<ClusterManager<MyItem>?>(null) }
-                MapEffect(true) { map ->
-                    if (clusterManager == null) {
-                        clusterManager = ClusterManager<MyItem>(context, map)
-                    }
-
-                    state.places.forEach {
-                        val item = MyItem(
-                            it.latitude,
-                            it.longitude,
-                            it.name,
-                            it.review
-                        )
-                        clusterManager?.addItem(item)
-                    }
-                }
-//            CustomMarker(
-//                context = context,
-//                position = LatLng(35.0, 129.0),
-//                title = "",
-//                iconResourceId = R.drawable.ic_splash_icon
-//            )
                 state.places.forEach { place ->
-//                MarkerInfoWindow(
-//                    rememberMarkerState(position = LatLng(place.latitude, place.longitude)),
-//                    title = place.name,
-//                    visible = state.selectedGroupId == 0 || place.groupId == state.selectedGroupId,
-//                    snippet = place.review,
-//                    content = {
-//                        MarkerCustomInfoWindow(place.name, place.review, place.score.toInt())
-//                    }
-//                )
                     CustomMarker(
                         context = context,
                         position = LatLng(place.latitude, place.longitude),
                         title = place.name,
-                        iconResourceId = R.drawable.ic_complete_icon
+                        iconResourceId = R.drawable.ic_complete_icon,
+                        review = place.review,
+                        rating = place.score.toInt()
 //                        when (place.color) {
 //                            "57bf7c" -> {
 //                                R.drawable.ic_map_place_icon_57bf7c
@@ -285,9 +247,6 @@ fun MapView(
                             onClick = {
                                 selectedMenu = 0
                                 viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-//                                val location = LatLng(grouplatitude, place.longitude)
-//                                builder.include(location)
-//                                camera.move(CameraUpdateFactory.newLatLngBounds(builder.build(), 64))
                             }
                         )
                         .height(32.dp),
@@ -322,9 +281,6 @@ fun MapView(
                                 selectedMenu =
                                     if (selectedMenu != group.groupId) group.groupId else 0
                                 viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-//                                val location = LatLng(grouplatitude, place.longitude)
-//                                builder.include(location)
-//                                camera.move(CameraUpdateFactory.newLatLngBounds(builder.build(), 64))
                             }
                         )
                         .height(32.dp),

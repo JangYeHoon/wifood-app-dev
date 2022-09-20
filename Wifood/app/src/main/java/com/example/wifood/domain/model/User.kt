@@ -11,7 +11,7 @@ data class User(
     val birthday: String,
     val gender: Int,
     val nickname: String,
-    var groupList: List<Group> = emptyList(),
+    var groups: List<Group> = emptyList(),
     val taste: Taste? = null
 ) : Parcelable {
     fun toUserDto(): UserDto {

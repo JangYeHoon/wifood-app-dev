@@ -81,12 +81,12 @@ class MainViewModel @Inject constructor(
                 state = state.copy(user = it)
                 MainData.user = it
                 Timber.i("MainData user ${MainData.user.phoneNumber}")
-                if (!it.groupList.isNullOrEmpty()) {
-                    state = state.copy(groups = it.groupList)
-                    MainData.user.groupList = it.groupList
+                if (!it.groups.isNullOrEmpty()) {
+                    state = state.copy(groups = it.groups)
+                    MainData.user.groups = it.groups
                     val placeList = mutableListOf<Place>()
                     state.groups.forEach { group ->
-                        group.placeList.forEach { place ->
+                        group.places.forEach { place ->
                             placeList.add(place)
                         }
                     }

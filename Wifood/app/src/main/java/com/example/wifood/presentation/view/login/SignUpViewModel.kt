@@ -166,7 +166,7 @@ class SignUpViewModel @Inject constructor(
                     birthday = SignUpData.birthday,
                     gender = if (SignUpData.gender == "남성") 1 else 0,
                     nickname = random(),
-                    groupList = emptyList(),
+                    groups = emptyList(),
                     taste = SignUpData.taste
                 )
                 viewModelScope.launch {

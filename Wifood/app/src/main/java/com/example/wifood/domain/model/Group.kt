@@ -14,5 +14,5 @@ data class Group(
     var name: String = "",
     var description: String = "",
     val color: Int = 0,
-    val placeList: List<Place> = emptyList()
+    val places: List<Place> = emptyList()
 ) : Parcelable

@@ -134,7 +134,7 @@ class MyPageViewModel @Inject constructor(
                     birthday = MainData.user.birthday,
                     gender = MainData.user.gender,
                     nickname = if (event.obj == "NICKNAME") _state.value.nickname else MainData.user.nickname,
-                    groupList = MainData.user.groupList,
+                    groups = MainData.user.groups,
                     taste = if (event.obj != "TASTE") MainData.user.taste else {
                         Taste(
                             userId = MainData.user.phoneNumber,

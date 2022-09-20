@@ -10,7 +10,7 @@ data class GroupDto(
     var name: String = "",
     var description: String = "",
     var color: Int = -1,
-    var placeList: List<PlaceDto> = emptyList()
+    var places: List<PlaceDto> = emptyList()
 ) {
     fun toGroup(): Group {
         return Group(
@@ -19,7 +19,7 @@ data class GroupDto(
             name = name,
             description = description,
             color = color,
-            placeList = placeList.map { it.toPlace() }
+            places = places.map { it.toPlace() }
         )
     }
 }
