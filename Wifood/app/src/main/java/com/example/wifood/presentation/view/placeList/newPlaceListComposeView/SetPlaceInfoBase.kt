@@ -25,7 +25,7 @@ import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOSwitch
 import com.example.wifood.presentation.view.component.YOGOTextPM15
-import com.example.wifood.presentation.view.groupComponet.SwitchWithText
+import com.example.wifood.presentation.view.groupComponent.SwitchWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB

@@ -30,7 +30,7 @@ import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.view.component.*
-import com.example.wifood.presentation.view.groupComponet.SwitchWithText
+import com.example.wifood.presentation.view.groupComponent.SwitchWithText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB

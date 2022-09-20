@@ -53,7 +53,7 @@ fun AddNewPlaceCompleteView(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_empty_circle),
+                ImageVector.vectorResource(id = R.drawable.ic_complete_icon),
                 contentDescription = "left button of top app bar",
                 modifier = Modifier.wrapContentSize(),
                 tint = Color.Unspecified

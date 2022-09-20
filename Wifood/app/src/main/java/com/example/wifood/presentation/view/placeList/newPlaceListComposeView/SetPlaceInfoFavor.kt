@@ -21,7 +21,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.SingleRatingStar
 import com.example.wifood.presentation.view.component.YOGOLargeText
-import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
+import com.example.wifood.presentation.view.groupComponent.SingleIconWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel

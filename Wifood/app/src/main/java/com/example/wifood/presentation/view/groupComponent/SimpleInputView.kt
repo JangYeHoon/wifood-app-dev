@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.groupComponet
+package com.example.wifood.presentation.view.groupComponent
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

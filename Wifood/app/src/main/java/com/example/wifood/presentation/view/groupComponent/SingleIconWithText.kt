@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.groupComponet
+package com.example.wifood.presentation.view.groupComponent
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
