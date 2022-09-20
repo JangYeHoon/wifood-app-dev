@@ -22,12 +22,13 @@ import com.example.wifood.R
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.MainColor
 
+@Preview(showBackground = true)
 @Composable
 fun MyPageTopAppBar(
     titleText:String = "프로필 수정",
     leftButtonOn:Boolean = true,
     leftButtonClicked:() -> Unit = {},
-    rightButtonOn:Boolean = false,
+    rightButtonOn:Boolean = true,
     rightButtonText:String = "완료",
     rightButtonClicked: () -> Unit = {},
     showUnderLine:Boolean = true
@@ -79,26 +80,33 @@ fun MyPageTopAppBar(
                 modifier = Modifier.align(Alignment.Center)
             )
             if (rightButtonOn){
-                Text(
-                    text = rightButtonText,
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                    color = MainColor,
+                Box(
                     modifier = Modifier
-                        .width(100.dp)
-                        .height(height.dp)
                         .align(Alignment.CenterEnd)
-                        .padding(
-                            end = 20.dp
-                        )
-                        .clickable(
-                            indication = null,
-                            interactionSource = interactionSource
-                        ){
-                            rightButtonClicked()
-                        }
-                )
+                        .height(height.dp)
+                        .wrapContentWidth(),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = rightButtonText,
+                        fontFamily = mainFont,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
+                        color = MainColor,
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(
+                                end = 20.dp
+                            )
+                            .clickable(
+                                indication = null,
+                                interactionSource = interactionSource
+                            ){
+                                rightButtonClicked()
+                            },
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
         Divider(
