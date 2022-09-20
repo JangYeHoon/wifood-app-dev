@@ -83,7 +83,7 @@ class MainViewModel @Inject constructor(
                 Timber.i("MainData user ${MainData.user.phoneNumber}")
                 if (!it.groupList.isNullOrEmpty()) {
                     state = state.copy(groups = it.groupList)
-                    MainData.groups = it.groupList
+                    MainData.user.groupList = it.groupList
                     val placeList = mutableListOf<Place>()
                     state.groups.forEach { group ->
                         group.placeList.forEach { place ->
@@ -91,7 +91,6 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     state = state.copy(places = placeList)
-                    MainData.places = placeList
                 }
                 Timber.i("get user from firebase : " + state.user.toString())
 
@@ -110,8 +109,12 @@ class MainViewModel @Inject constructor(
                         Timber.i("get image uri list from firebase : $uri")
                     }
                 }
+                useCases.GetProfile(it.phoneNumber).observeForever { uri ->
+                    MainData.image = uri.toString()
+                }
             }
         }
+
     }
 }
 

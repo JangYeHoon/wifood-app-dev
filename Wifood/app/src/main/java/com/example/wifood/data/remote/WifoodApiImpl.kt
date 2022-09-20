@@ -1,13 +1,9 @@
 package com.example.wifood.data.remote
 
-import android.graphics.Bitmap
 import android.location.Location
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.android.volley.toolbox.HttpResponse
-import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.*
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
@@ -15,24 +11,18 @@ import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.view.main.util.MainData
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ListResult
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.skt.Tmap.TMapData
 import com.skt.Tmap.TMapPoint
-import com.skt.Tmap.poi_item.TMapPOIItem
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
@@ -131,6 +121,18 @@ class WifoodApiImpl @Inject constructor(
         val storage = FirebaseStorage.getInstance().reference
         val imageUriForObserve = MutableLiveData<Uri>()
         storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/0").downloadUrl.addOnCompleteListener { url ->
+            if (url.isSuccessful) {
+                imageUriForObserve.value = url.result
+                Timber.i("get image url list from Firebase Storage : " + imageUriForObserve.value.toString())
+            }
+        }
+        return imageUriForObserve
+    }
+
+    override fun getProfile(id: String): LiveData<Uri> {
+        val storage = FirebaseStorage.getInstance().reference
+        val imageUriForObserve = MutableLiveData<Uri>()
+        storage.child("${MainData.user.phoneNumber}/image").downloadUrl.addOnCompleteListener { url ->
             if (url.isSuccessful) {
                 imageUriForObserve.value = url.result
                 Timber.i("get image url list from Firebase Storage : " + imageUriForObserve.value.toString())
@@ -247,6 +249,12 @@ class WifoodApiImpl @Inject constructor(
             uploadTask = storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/").child("$index").putFile(uri)
         }
         return uploadTask!!
+    }
+
+    override fun insertProfile(image: Uri, id: String): UploadTask {
+        val storage = FirebaseStorage.getInstance().reference
+
+        return storage.child(MainData.user.phoneNumber).child("image").putFile(image)
     }
 
     override fun getTMapSearchPlaceResult(

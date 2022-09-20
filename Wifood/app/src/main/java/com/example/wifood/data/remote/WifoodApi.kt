@@ -15,6 +15,10 @@ import com.google.firebase.storage.UploadTask
 
 interface WifoodApi {
 
+    fun getProfile(id: String): LiveData<Uri>
+
+    fun insertProfile(image: Uri, id: String): UploadTask
+
     fun deleteUser(id: String)
 
     fun checkUser(id: String): LiveData<Int>

@@ -2,23 +2,25 @@ package com.example.wifood.presentation.view.mypage
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
 import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
-import com.example.wifood.presentation.view.login.SignUpState
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
-import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,6 +58,38 @@ class MyPageViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     address = event.address
                 )
+            }
+            is MyPageEvent.ImageAdd -> {
+                _state.value = state.value.copy(
+                    image = event.image
+                )
+
+//                if (_state.value.placeImagesReCompose == "1") {
+//                    _state.value = state.value.copy(
+//                        placeImagesReCompose = "2"
+//                    )
+//                } else {
+//                    _state.value = state.value.copy(
+//                        placeImagesReCompose = "1"
+//                    )
+//                }
+            }
+            is MyPageEvent.ModifyProfile -> {
+                if (MainData.user.nickname != _state.value.nickname) {
+                    onEvent(MyPageEvent.ModifyUserInfo("NICKNAME"))
+                }
+
+                if (MainData.image.toUri() != _state.value.image) {
+                    _state.value.image?.let {
+                        useCases.InsertProfile(it, MainData.user.phoneNumber).addOnSuccessListener {
+                            GlobalScope.launch(Dispatchers.IO) {
+                                withContext(Dispatchers.Main) {
+                                    validateEventChannel.send(ValidationEvent.Success)
+                                }
+                            }
+                        }
+                    }
+                }
             }
             is MyPageEvent.FavorSelected -> {
                 val temp = _state.value.taste
@@ -99,7 +133,7 @@ class MyPageViewModel @Inject constructor(
                     address = MainData.user.address,
                     birthday = MainData.user.birthday,
                     gender = MainData.user.gender,
-                    nickname = MainData.user.nickname,
+                    nickname = if (event.obj == "NICKNAME") _state.value.nickname else MainData.user.nickname,
                     groupList = MainData.user.groupList,
                     taste = if (event.obj != "TASTE") MainData.user.taste else {
                         Taste(

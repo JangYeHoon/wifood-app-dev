@@ -30,6 +30,8 @@ interface WifoodRepository {
 
     fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri>
 
+    fun getProfile(id: String): LiveData<Uri>
+
     fun deletePlace(groupId: Int, placeId: Int)
 
     fun insertPlace(place: Place)
@@ -45,6 +47,8 @@ interface WifoodRepository {
     fun insertUser(user: User)
 
     fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>): UploadTask
+
+    fun insertProfile(image: Uri, id: String): UploadTask
 
     fun getTMapSearchPlaceResult(
         keyword: String,

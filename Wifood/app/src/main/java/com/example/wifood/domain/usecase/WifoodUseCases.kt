@@ -27,5 +27,7 @@ data class WifoodUseCases(
     val GetTMapSearchDetailAddressResult: GetTMapSearchDetailAddressResult,
     val GetTMapReverseGeocoding: GetTMapReverseGeocoding,
     val CheckUser: CheckUser,
-    val DeleteUser: DeleteUser
+    val DeleteUser: DeleteUser,
+    val InsertProfile: InsertProfile,
+    val GetProfile: GetProfile
 )

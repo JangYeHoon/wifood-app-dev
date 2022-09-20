@@ -26,8 +26,7 @@ import java.io.File
 
 @Composable
 fun CameraAndAlbumBottomSheetContent(
-    viewModel: PlaceInfoWriteViewModel = hiltViewModel(),
-    viewModel2: MyPageViewModel = hiltViewModel()
+    viewModel: PlaceInfoWriteViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

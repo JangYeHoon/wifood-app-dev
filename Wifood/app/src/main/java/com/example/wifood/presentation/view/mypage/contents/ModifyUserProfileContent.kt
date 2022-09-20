@@ -18,10 +18,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
@@ -77,16 +80,31 @@ fun ModifyUserProfileContent(
                 modifier = Modifier
                     .size(100.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.profile),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(
-                            shape = CircleShape
-                        ),
-                    contentScale = ContentScale.FillBounds
-                )
+                val image = MainData.image
+
+                if (image.isNotBlank()) {
+                    Image(
+                        painter = rememberImagePainter(data = image.toUri()),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(
+                                shape = CircleShape
+                            ),
+                        contentScale = ContentScale.FillBounds
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.profile),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(
+                                shape = CircleShape
+                            ),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
                 Icon(
                     painterResource(R.drawable.ic_camera_button),
                     contentDescription = "",
@@ -98,10 +116,7 @@ fun ModifyUserProfileContent(
                             indication = null,
                             interactionSource = interactionSource
                         ) {
-                            customSheetContent = { CameraAndAlbumBottomSheetContent() }
-                            scope.launch {
-                                modalBottomSheetState.show()
-                            }
+                            onCameraButtonClicked()
                         }
                 )
             }

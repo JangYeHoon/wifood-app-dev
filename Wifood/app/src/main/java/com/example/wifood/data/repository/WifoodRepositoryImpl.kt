@@ -87,6 +87,10 @@ class WifoodRepositoryImpl(
         return api.insertPlaceImages(groupId, placeId, images)
     }
 
+    override fun insertProfile(image: Uri, id: String): UploadTask {
+        return api.insertProfile(image, id)
+    }
+
     override fun getTMapSearchPlaceResult(
         keyword: String,
         currentLocation: Location
@@ -108,6 +112,10 @@ class WifoodRepositoryImpl(
 
     override fun getPlaceImageUri(groupId: Int, placeId: Int): LiveData<Uri> {
         return api.getPlaceImageUri(groupId, placeId)
+    }
+
+    override fun getProfile(id: String): LiveData<Uri> {
+        return api.getProfile(id)
     }
 
     override fun getTMapReverseGeocoding(latLng: LatLng): LiveData<String> {

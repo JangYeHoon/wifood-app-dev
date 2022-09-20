@@ -1,6 +1,7 @@
 package com.example.wifood.di
 
 import android.app.Application
+import androidx.room.Insert
 import androidx.room.Room
 import com.example.wifood.data.local.dao.WifoodDatabase
 import com.example.wifood.data.remote.WifoodApi
@@ -56,7 +57,9 @@ object AppModule {
             GetTMapSearchDetailAddressResult = GetTMapSearchDetailAddressResult(repository),
             GetTMapReverseGeocoding = GetTMapReverseGeocoding(repository),
             CheckUser = CheckUser(repository),
-            DeleteUser = DeleteUser(repository)
+            DeleteUser = DeleteUser(repository),
+            GetProfile = GetProfile(repository),
+            InsertProfile = InsertProfile(repository)
         )
     }
 

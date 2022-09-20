@@ -1,6 +1,8 @@
 package com.example.wifood.presentation.view.mypage
 
+import android.net.Uri
 import com.example.wifood.presentation.view.login.SignUpEvent
+import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
 
 sealed class MyPageEvent {
     data class PhoneNumChanged(val phoneNumber: String) : MyPageEvent()
@@ -19,4 +21,6 @@ sealed class MyPageEvent {
     object TasteCreated : MyPageEvent()
     object DeleteUser : MyPageEvent()
     data class ModifyUserInfo(val obj: String) : MyPageEvent()
+    data class ImageAdd(val image: Uri) : MyPageEvent()
+    object ModifyProfile : MyPageEvent()
 }

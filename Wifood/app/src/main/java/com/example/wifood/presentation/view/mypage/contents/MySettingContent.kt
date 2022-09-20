@@ -19,8 +19,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
@@ -64,16 +66,31 @@ fun MySettingContent(
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(55.dp)
-                    .clip(
-                        shape = CircleShape
-                    ),
-                contentScale = ContentScale.FillBounds
-            )
+            val image = MainData.image
+
+            if (image.isNotBlank()) {
+                Image(
+                    painter = rememberImagePainter(data = image.toUri()),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(55.dp)
+                        .clip(
+                            shape = CircleShape
+                        ),
+                    contentScale = ContentScale.FillBounds
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.profile),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(55.dp)
+                        .clip(
+                            shape = CircleShape
+                        ),
+                    contentScale = ContentScale.FillBounds
+                )
+            }
             Spacer(Modifier.width(14.dp))
             Text(
                 text = MainData.user.nickname,
