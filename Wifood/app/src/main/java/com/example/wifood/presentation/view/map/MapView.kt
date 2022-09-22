@@ -213,7 +213,7 @@ fun MapView(
                         context = context,
                         position = LatLng(place.latitude, place.longitude),
                         title = place.name,
-                        iconResourceId = R.drawable.ic_complete_icon
+                        iconResourceId = R.drawable.ic_group_114788,
 //                        when (place.color) {
 //                            "57bf7c" -> {
 //                                R.drawable.ic_map_place_icon_57bf7c
