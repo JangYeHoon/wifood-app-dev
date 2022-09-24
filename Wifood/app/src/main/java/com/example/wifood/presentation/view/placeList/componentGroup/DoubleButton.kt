@@ -40,7 +40,7 @@ fun DoubleButton(
             onClick = leftButtonClicked,
             shape = RoundedCornerShape(23.dp),
             modifier = Modifier
-                .weight(0.3f)
+                .weight(0.4f)
                 .height(mainButtonHeightValue.dp),
             border = BorderStroke(1.dp, MainColor),
             enabled = leftButtonOn
@@ -62,7 +62,7 @@ fun DoubleButton(
                 backgroundColor = MainColor,
             ),
             modifier = Modifier
-                .weight(0.7f)
+                .weight(0.6f)
                 .height(mainButtonHeightValue.dp)
         )
         {

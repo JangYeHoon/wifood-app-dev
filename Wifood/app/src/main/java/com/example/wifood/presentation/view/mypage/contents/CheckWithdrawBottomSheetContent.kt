@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,22 +29,48 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
 
+@Preview(showBackground = true)
 @ExperimentalMaterialApi
 @Composable
-fun CheckWithdrawBottomSheetView(
-    viewModel: MyPageViewModel = hiltViewModel(),
-    modalBottomSheetState: ModalBottomSheetState
+fun CheckWithdrawBottomSheetContent(
+    onLeftButtonClicked: () -> Unit = {},
+    onRightButtonClicked: () -> Unit = {},
 ) {
-    val scope = rememberCoroutineScope()
-
-    CheckWithdrawBottomSheetContent(
-        onLeftButtonClicked = {
-            viewModel.onEvent(MyPageEvent.DeleteUser)
-        },
-        onRightButtonClicked = {
-            scope.launch {
-                modalBottomSheetState.hide()
-            }
-        }
+    val shape = RoundedCornerShape(
+        topStart = 12.dp,
+        topEnd = 12.dp,
+        bottomStart = 0.dp,
+        bottomEnd = 0.dp
     )
+
+    Column(
+        modifier = Modifier
+            .background(
+                color = Color.White,
+                shape = shape
+            )
+            .fillMaxWidth()
+            .padding(horizontal = sidePaddingValue.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(Modifier.height(58.dp))
+        Text(
+            text = "탈퇴 시, 모든 기록이\n사라집니다.",
+            fontFamily = mainFont,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 24.sp,
+            color = Gray01Color,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(42.dp))
+        DoubleButton(
+            leftButtonOn = true,
+            leftButtonText = "탈퇴하기",
+            leftButtonClicked = onLeftButtonClicked,
+            rightButtonOn = true,
+            rightButtonText = "되돌아가기",
+            rightButtonClicked = onRightButtonClicked,
+        )
+        Spacer(Modifier.height(buttonBottomValue.dp))
+    }
 }
