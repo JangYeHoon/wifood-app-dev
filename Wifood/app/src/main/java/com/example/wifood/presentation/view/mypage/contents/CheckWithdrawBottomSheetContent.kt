@@ -29,7 +29,6 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
 @ExperimentalMaterialApi
 @Composable
 fun CheckWithdrawBottomSheetContent(
