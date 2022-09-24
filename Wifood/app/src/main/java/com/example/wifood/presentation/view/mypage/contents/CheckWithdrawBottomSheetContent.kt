@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun CheckWithdrawBottomSheetContent(
+fun CheckWithdrawBottomSheetView(
     viewModel: MyPageViewModel = hiltViewModel(),
     modalBottomSheetState: ModalBottomSheetState
 ) {

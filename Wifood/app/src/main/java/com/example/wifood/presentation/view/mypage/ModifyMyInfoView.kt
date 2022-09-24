@@ -11,11 +11,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.mypage.contents.CheckWithdrawBottomSheetContent
+import com.example.wifood.presentation.view.mypage.contents.CheckWithdrawBottomSheetView
 import com.example.wifood.presentation.view.mypage.contents.ModifyMyInfoContent
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 @ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -29,7 +27,7 @@ fun ModifyMyInfoView(
 
     ModalBottomSheetLayout(
         sheetContent = {
-            CheckWithdrawBottomSheetContent(
+            CheckWithdrawBottomSheetView(
                 modalBottomSheetState = modalBottomSheetState
             )
         },
