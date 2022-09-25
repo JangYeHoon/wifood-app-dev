@@ -30,6 +30,7 @@ import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
+import com.example.wifood.presentation.view.placeList.contents.ImagePopUpContent
 
 @Composable
 fun ImagePopUpView(
@@ -37,89 +38,16 @@ fun ImagePopUpView(
     showImagePopupChk: MutableState<Boolean>,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    Popup(
-        alignment = Alignment.Center,
-        onDismissRequest = {
+    ImagePopUpContent(
+        onBackButtonClicked = {
             showImagePopupChk.value = false
         },
-        properties = PopupProperties()
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color(0xE6222222))
-                .clickable { showImagePopupChk.value = false },
-        ) {
-            IconButton(
-                onClick = { showImagePopupChk.value = false },
-                modifier = Modifier
-                    .size(40.dp)
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .wrapContentSize(),
-                    tint = Color.White
-                )
-            }
-            Image(
-                painter = rememberImagePainter(
-                    data = images[viewModel.state.popupImageIdx]
-                ),
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(360.dp)
-                    .clip(
-                        RoundedCornerShape(0.dp)
-                    )
-                    .align(Alignment.Center)
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) { },
-                contentScale = ContentScale.FillBounds
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                IconButton(
-                    onClick = {
-                        viewModel.onEvent(PlaceInfoEvent.ClickPopupLeft)
-                    },
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
-                        tint = Color.Unspecified
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        viewModel.onEvent(PlaceInfoEvent.ClickPopupRight)
-                    },
-                    modifier = Modifier
-                        .width(40.dp)
-                        .height(40.dp)
-                ) {
-                    Icon(
-                        Icons.Filled.ArrowForward,
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
-                        tint = Color.Unspecified
-                    )
-                }
-            }
-        }
-    }
+        onRightButtonClicked = {
+            viewModel.onEvent(PlaceInfoEvent.ClickPopupLeft)
+        },
+        onLeftButtonClicked = {
+            viewModel.onEvent(PlaceInfoEvent.ClickPopupRight)
+        },
+        popUpImage = images[viewModel.state.popupImageIdx]
+    )
 }
