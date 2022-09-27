@@ -251,7 +251,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     private fun insertPlace() {
         randomMarker()
-        state.place.placeId = WifoodApp.pref.getInt("place_max_id", -1) + 1
+        state.place.placeId = WifoodApp.pref.getInt("place_max_id", -1)
         Timber.i("insert place to firebase : ${state.place}")
         useCases.InsertPlace(state.place)
     }

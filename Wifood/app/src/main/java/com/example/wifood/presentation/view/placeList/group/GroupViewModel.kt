@@ -58,7 +58,7 @@ class GroupViewModel @Inject constructor(
     }
 
     private fun createGroupEntity(): Group {
-        val groupId = WifoodApp.pref.getInt("group_max_id", -1) + 1
+        val groupId = WifoodApp.pref.getInt("group_max_id", -1)
         val userId = WifoodApp.pref.getString("user_id", "No user data")
         return Group(
             groupId,

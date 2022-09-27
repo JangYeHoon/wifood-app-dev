@@ -94,14 +94,12 @@ class MainViewModel @Inject constructor(
                 }
                 Timber.i("get user from firebase : " + state.user.toString())
 
-                /* 여기 임시로 수정했음 */
                 val groupMaxId =
                     state.groups.maxWithOrNull(compareBy { group -> group.groupId })?.groupId
                 val placeMaxId =
                     state.places.maxWithOrNull(compareBy { place -> place.placeId })?.placeId
-                WifoodApp.pref.setInt("group_max_id", groupMaxId ?: 1)
-                WifoodApp.pref.setInt("place_max_id", placeMaxId ?: 1)
-                /* 여기 수정했음 */
+                WifoodApp.pref.setInt("group_max_id", if (groupMaxId != null) groupMaxId + 1 else 0)
+                WifoodApp.pref.setInt("place_max_id", if (placeMaxId != null) placeMaxId + 1 else 0)
 
                 state.places.forEach { place ->
                     useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->
