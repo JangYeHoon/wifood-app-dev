@@ -235,10 +235,21 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertUser(user: User) {
-        db.child(user.phoneNumber).setValue(user)
+        db.child(user.phoneNumber).child("address").setValue(user.address)
+        db.child(user.phoneNumber).child("birthday").setValue(user.birthday)
+        db.child(user.phoneNumber).child("gender").setValue(user.gender)
+        db.child(user.phoneNumber).child("nickname").setValue(user.nickname)
+        db.child(user.phoneNumber).child("phoneNumber").setValue(user.phoneNumber)
+        db.child(user.phoneNumber).child("taste").setValue(user.taste)
 
-        if (MainData.pre.isNotBlank())
+        if (MainData.pre.isNotBlank()) {
+            for (group in user.groups) {
+                insertGroup(group)
+                for (place in group.places)
+                    insertPlace(place)
+            }
             db.child(MainData.pre).removeValue()
+        }
     }
 
     override fun insertPlaceImages(
