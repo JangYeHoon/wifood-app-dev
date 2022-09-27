@@ -7,10 +7,12 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -95,7 +97,7 @@ fun SearchPlaceComposeView(
             when (event) {
                 is ValidationEvent.Success -> {
                     val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
-                    navController.navigate("${Route.AddNewPlaceComplete.route}/${placeJson}")
+                    navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
                 }
                 is ValidationEvent.Error -> {
 

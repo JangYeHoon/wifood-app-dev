@@ -4,38 +4,39 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.*
-import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithIcon
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.R
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
-import com.example.wifood.presentation.util.*
+import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
-import com.example.wifood.presentation.view.component.*
-import com.example.wifood.presentation.view.groupComponent.SwitchWithText
+import com.example.wifood.presentation.util.shouldShowRationale
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
+import com.example.wifood.presentation.view.component.YOGOLargeText
+import com.example.wifood.presentation.view.component.YOGOSwitch
+import com.example.wifood.presentation.view.component.YOGOTextPM15
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
 import com.example.wifood.util.getActivity
-import com.example.wifood.view.ui.theme.*
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -93,8 +94,9 @@ fun PlaceInputNameAndVisited(
                         val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
                         val groupJson = Uri.encode(Gson().toJson(viewModel.state.group))
                         navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                    } else
-                        navController.navigate(Route.Main.route)
+                    } else {
+                        navController.navigate(Route.AddNewPlaceComplete.route)
+                    }
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
@@ -107,7 +109,10 @@ fun PlaceInputNameAndVisited(
         if (modalBottomSheetState.isVisible) {
             scope.launch { modalBottomSheetState.hide() }
         } else {
-            scope.launch { navController.popBackStack() }
+            navController.popBackStack(
+                "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+                false
+            )
         }
     }
 

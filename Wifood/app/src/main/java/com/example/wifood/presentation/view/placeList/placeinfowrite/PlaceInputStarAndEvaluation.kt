@@ -8,9 +8,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,12 +30,8 @@ import com.example.wifood.R
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
-import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
-import com.example.wifood.presentation.view.component.YOGOTopAppBar
-import com.example.wifood.presentation.view.groupComponent.RatingWithText
-import com.example.wifood.presentation.view.groupComponent.SingleIconWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.RateFavor
 import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SelectAdditionalFavor
@@ -83,8 +84,9 @@ fun PlaceInputStarAndEvaluation(
                         val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
                         val groupJson = Uri.encode(Gson().toJson(viewModel.state.group))
                         navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                    } else
-                        navController.navigate(Route.Main.route)
+                    } else {
+                        navController.navigate(Route.AddNewPlaceComplete.route)
+                    }
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)

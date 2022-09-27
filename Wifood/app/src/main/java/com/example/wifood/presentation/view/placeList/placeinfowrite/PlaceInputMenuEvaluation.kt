@@ -3,54 +3,44 @@ package com.example.wifood.presentation.view.placeList.placeinfowrite
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.runtime.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
-import com.example.wifood.presentation.view.component.*
-import com.example.wifood.presentation.view.login.component.InputTextField
-import com.example.wifood.presentation.view.login.component.TitleText
-import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
+import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
+import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextField
-import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.*
+import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @DelicateCoroutinesApi
@@ -94,8 +84,9 @@ fun PlaceInputMenuEvaluation(
                         val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
                         val groupJson = Uri.encode(Gson().toJson(viewModel.state.group))
                         navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                    } else
-                        navController.navigate(Route.Main.route)
+                    } else {
+                        navController.navigate(Route.AddNewPlaceComplete.route)
+                    }
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
