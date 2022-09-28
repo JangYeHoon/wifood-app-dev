@@ -98,8 +98,8 @@ class MainViewModel @Inject constructor(
                     state.groups.maxWithOrNull(compareBy { group -> group.groupId })?.groupId
                 val placeMaxId =
                     state.places.maxWithOrNull(compareBy { place -> place.placeId })?.placeId
-                WifoodApp.pref.setInt("group_max_id", if (groupMaxId != null) groupMaxId + 1 else 0)
-                WifoodApp.pref.setInt("place_max_id", if (placeMaxId != null) placeMaxId + 1 else 0)
+                WifoodApp.pref.setInt("group_max_id", if (groupMaxId != null) groupMaxId + 1 else 1)
+                WifoodApp.pref.setInt("place_max_id", if (placeMaxId != null) placeMaxId + 1 else 1)
 
                 state.places.forEach { place ->
                     useCases.GetPlaceImageUri(place.groupId, place.placeId).observeForever { uri ->
