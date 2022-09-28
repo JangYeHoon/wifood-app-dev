@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.domain.usecase.WifoodUseCases
 import com.example.wifood.presentation.util.ValidationEvent
@@ -31,6 +32,9 @@ class SearchPlaceViewModel @Inject constructor(
 
     init {
         tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+        savedStateHandle.get<Place>("place")?.let { place ->
+            formState = formState.copy(place = place)
+        }
     }
 
     @DelicateCoroutinesApi
