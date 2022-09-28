@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
-import com.example.wifood.presentation.view.groupComponet.TextAndInputField
+import com.example.wifood.presentation.view.groupComponent.TextAndInputField
 import com.example.wifood.presentation.util.ValidationEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

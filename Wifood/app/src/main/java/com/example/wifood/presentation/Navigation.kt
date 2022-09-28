@@ -398,10 +398,7 @@ fun Navigation() {
             MapSearchAddressView(navController)
         }
         composable(
-            route = "${Route.AddNewPlaceComplete.route}/{place}",
-            arguments = listOf(navArgument("place") {
-                type = createParcelableNavType<Place>()
-            }),
+            route = Route.AddNewPlaceComplete.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },

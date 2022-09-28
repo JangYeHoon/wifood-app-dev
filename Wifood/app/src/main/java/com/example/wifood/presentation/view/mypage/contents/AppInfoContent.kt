@@ -14,8 +14,12 @@ import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.presentation.view.mypage.component.versionInfoField
 
 @Composable
-fun AppInfoView(
-    navController: NavController
+fun AppInfoContent(
+    onBackButtonClicked: () -> Unit = {},
+    onVersionInfoClicked:() -> Unit = {},
+    onDeveloperInfoClicked:() -> Unit = {},
+    onServiceAgreementClicked:() -> Unit = {},
+
 ) {
 
     val scrollState = rememberScrollState()
@@ -27,9 +31,7 @@ fun AppInfoView(
         MyPageTopAppBar(
             titleText = "앱정보",
             leftButtonOn = true,
-            leftButtonClicked = {
-                navController.popBackStack()
-            }
+            leftButtonClicked = onBackButtonClicked
         )
         Column(
             modifier = Modifier
@@ -39,28 +41,17 @@ fun AppInfoView(
             versionInfoField(
                 text = "버젼 정보",
                 version = "1.0v",
-                onClick = {}
-            )
-            CommonTextButton(
-                text = "피드백",
-                withButton = false,
-                onClick = {
-                    //TODO
-                }
+                onClick = onVersionInfoClicked
             )
             CommonTextButton(
                 text = "개발자 정보",
                 withButton = true,
-                onClick = {
-                    //TODO
-                }
+                onClick = onDeveloperInfoClicked
             )
             CommonTextButton(
                 text = "서비스 이용약관",
                 withButton = true,
-                onClick = {
-                    navController.navigate(Route.Document.route)
-                }
+                onClick = onServiceAgreementClicked
             )
         }
     }

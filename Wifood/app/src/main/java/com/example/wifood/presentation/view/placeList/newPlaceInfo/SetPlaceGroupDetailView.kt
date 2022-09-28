@@ -7,7 +7,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
-import com.example.wifood.presentation.view.groupComponet.SimpleInputView
+import com.example.wifood.presentation.view.groupComponent.SimpleInputView
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

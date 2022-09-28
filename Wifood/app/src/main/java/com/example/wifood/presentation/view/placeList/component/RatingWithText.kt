@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.groupComponet
+package com.example.wifood.presentation.view.groupComponent
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

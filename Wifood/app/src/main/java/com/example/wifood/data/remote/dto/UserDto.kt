@@ -8,7 +8,7 @@ data class UserDto(
     val birthday: String = "",
     val gender: Int = -1,
     val nickname: String = "",
-    var groups: List<GroupDto> = emptyList(),
+    var groupList: List<GroupDto> = emptyList(),
     var taste: TasteDto? = null
 ) {
     fun toUser(): User {
@@ -18,7 +18,7 @@ data class UserDto(
             birthday = birthday,
             gender = gender,
             nickname = nickname,
-            groups = groups.map { it.toGroup() },
+            groups = groupList.map { it.toGroup() },
             taste = taste?.toTaste()
         )
     }

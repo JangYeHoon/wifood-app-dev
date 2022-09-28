@@ -143,7 +143,7 @@ class WifoodApiImpl @Inject constructor(
 
     override fun insertPlace(place: Place) {
         db.child(MainData.user.phoneNumber).child("groups").child(place.groupId.toString())
-            .child("Place")
+            .child("places")
             .child(place.placeId.toString()).setValue(place)
             .addOnSuccessListener { Timber.i("Success place insert") }
             .addOnFailureListener { Timber.e("Fail place insert : $it") }
@@ -170,13 +170,14 @@ class WifoodApiImpl @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val userDto = snapshot.getValue(UserDto::class.java)
-                    userDto!!.groups =
-                        snapshot.child("places").children.map {
+                    userDto!!.groupList =
+                        snapshot.child("groups").children.map {
+                            Timber.i("getUserAllData ${it.toString()}")
                             it.getValue(GroupDto::class.java)!!
                         }
                     userDto.taste = snapshot.child("taste").getValue(TasteDto::class.java)
-                    for (group in userDto.groups) {
-                        group.places =
+                    for (group in userDto.groupList) {
+                        group.placeList =
                             snapshot.child("groups/${group.groupId}/places").children.map {
                                 it.getValue(PlaceDto::class.java)!!
                             }
@@ -234,10 +235,21 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertUser(user: User) {
-        db.child(user.phoneNumber).setValue(user)
+        db.child(user.phoneNumber).child("address").setValue(user.address)
+        db.child(user.phoneNumber).child("birthday").setValue(user.birthday)
+        db.child(user.phoneNumber).child("gender").setValue(user.gender)
+        db.child(user.phoneNumber).child("nickname").setValue(user.nickname)
+        db.child(user.phoneNumber).child("phoneNumber").setValue(user.phoneNumber)
+        db.child(user.phoneNumber).child("taste").setValue(user.taste)
 
-        if (MainData.pre.isNotBlank())
+        if (MainData.pre.isNotBlank()) {
+            for (group in user.groups) {
+                insertGroup(group)
+                for (place in group.places)
+                    insertPlace(place)
+            }
             db.child(MainData.pre).removeValue()
+        }
     }
 
     override fun insertPlaceImages(

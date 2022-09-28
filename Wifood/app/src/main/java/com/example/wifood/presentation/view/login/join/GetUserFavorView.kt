@@ -26,7 +26,7 @@ import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ProgressIndicator
-import com.example.wifood.presentation.view.groupComponet.SingleIconWithText
+import com.example.wifood.presentation.view.groupComponent.SingleIconWithText
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.util.SignUpData

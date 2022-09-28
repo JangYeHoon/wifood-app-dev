@@ -3,6 +3,7 @@ package com.example.wifood.data.remote.dto
 import com.example.wifood.data.local.entity.GroupEntity
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
+import timber.log.Timber
 
 data class GroupDto(
     var groupId: Int = -1,
@@ -10,7 +11,7 @@ data class GroupDto(
     var name: String = "",
     var description: String = "",
     var color: Int = -1,
-    var places: List<PlaceDto> = emptyList()
+    var placeList: List<PlaceDto> = emptyList()
 ) {
     fun toGroup(): Group {
         return Group(
@@ -19,7 +20,7 @@ data class GroupDto(
             name = name,
             description = description,
             color = color,
-            places = places.map { it.toPlace() }
+            places = placeList.map { it.toPlace() }
         )
     }
 }

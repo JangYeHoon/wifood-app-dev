@@ -32,15 +32,15 @@ fun DoubleButton(
     rightButtonClicked : () -> Unit = {},
 ){
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier
+            .fillMaxWidth()
     ){
 
         OutlinedButton(
             onClick = leftButtonClicked,
             shape = RoundedCornerShape(23.dp),
             modifier = Modifier
-                .width(126.dp)
+                .weight(0.4f)
                 .height(mainButtonHeightValue.dp),
             border = BorderStroke(1.dp, MainColor),
             enabled = leftButtonOn
@@ -53,7 +53,7 @@ fun DoubleButton(
                 color = MainColor
             )
         }
-
+        Spacer(Modifier.width(8.dp))
         TextButton(
             shape = RoundedCornerShape(mainButtonRoundValue.dp),
             onClick = rightButtonClicked,
@@ -62,7 +62,7 @@ fun DoubleButton(
                 backgroundColor = MainColor,
             ),
             modifier = Modifier
-                .width(178.dp)
+                .weight(0.6f)
                 .height(mainButtonHeightValue.dp)
         )
         {

@@ -2,14 +2,10 @@ package com.example.wifood.presentation.view.search.component
 
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -87,8 +83,10 @@ fun InputNameContent(
                 }
             },
             onNextBtnClick = {
-                scope.launch {
-                    viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
+                if (state.addPlaceName.isNotEmpty()) {
+                    scope.launch {
+                        viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
+                    }
                 }
             }
         )
@@ -137,9 +135,11 @@ fun SelectAddressSearchWayContent(
                 }
             },
             onSearchBtnClick = {
-                scope.launch {
-                    viewModel.onEvent(SearchPlaceFormEvent.AddressSearchButtonClick)
-                    viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
+                if (state.addPlaceAddressSearch.isNotEmpty()) {
+                    scope.launch {
+                        viewModel.onEvent(SearchPlaceFormEvent.AddressSearchButtonClick)
+                        viewModel.onEvent(SearchPlaceFormEvent.ClickNextBtn)
+                    }
                 }
             },
             onDeleteBtnClick = {
@@ -213,7 +213,7 @@ fun AddressSearchResultContent(
                         viewModel.onEvent(SearchPlaceFormEvent.InputAddressViewBtnClick)
                     }
                 },
-                activate = true
+                activate = state.clickedAddressIdx != -1
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

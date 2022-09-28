@@ -19,8 +19,8 @@ import com.example.wifood.view.ui.theme.MainColor
 
 
 @Composable
-fun DeveloperInfoView(
-
+fun DeveloperInfoContent(
+    onBackButtonClicked:() -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -31,7 +31,7 @@ fun DeveloperInfoView(
             titleText = "개발자 정보",
             leftButtonOn = true,
             leftButtonClicked = {
-
+                onBackButtonClicked
             }
         )
 

@@ -86,8 +86,9 @@ fun PlaceInputReviewAndImages(
                         val placeJson = Uri.encode(Gson().toJson(viewModel.state.place))
                         val groupJson = Uri.encode(Gson().toJson(viewModel.state.group))
                         navController.navigate("${Route.PlaceInfo.route}/${placeJson}/${groupJson}")
-                    } else
-                        navController.navigate(Route.Main.route)
+                    } else {
+                        navController.navigate(Route.AddNewPlaceComplete.route)
+                    }
                 }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
