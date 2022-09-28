@@ -12,7 +12,7 @@ object MainData {
         address = "",
         nickname = "",
         taste = null,
-        groupList = emptyList(),
+        groups = emptyList(),
         birthday = "",
         gender = -1
     )
