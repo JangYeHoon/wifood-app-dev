@@ -59,7 +59,7 @@ fun MapView(
     val scope = rememberCoroutineScope()
     val state = viewModel.state
     val listState = rememberLazyListState()
-    var selectedMenu by remember { mutableStateOf(0) }
+    var selectedMenu by remember { mutableStateOf(-1) }
     val camera = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 10f)
     }
@@ -176,40 +176,40 @@ fun MapView(
                         title = place.name,
                         review = place.review,
                         rating = place.score.toInt(),
-                        visible = if (selectedMenu == 0) true else selectedMenu == place.groupId,
+                        visible = if (selectedMenu == -1) true else selectedMenu == place.groupId,
                         iconResourceId = when (place.groupId % 10) {
                             1 -> {
-                                Colors.One.id
+                                Colors.One.res
                             }
                             2 -> {
-                                Colors.Two.id
+                                Colors.Two.res
                             }
                             3 -> {
-                                Colors.Three.id
+                                Colors.Three.res
                             }
                             4 -> {
-                                Colors.Four.id
+                                Colors.Four.res
                             }
                             5 -> {
-                                Colors.Five.id
+                                Colors.Five.res
                             }
                             6 -> {
-                                Colors.Six.id
+                                Colors.Six.res
                             }
                             7 -> {
-                                Colors.Seven.id
+                                Colors.Seven.res
                             }
                             8 -> {
-                                Colors.Eight.id
+                                Colors.Eight.res
                             }
                             9 -> {
-                                Colors.Nine.id
+                                Colors.Nine.res
                             }
                             0 -> {
-                                Colors.Ten.id
+                                Colors.Ten.res
                             }
                             else -> {
-                                Colors.One.id
+                                Colors.One.res
                             }
                         }
                     )
@@ -244,26 +244,26 @@ fun MapView(
                     modifier = Modifier
                         .padding(5.dp)
                         .selectable(
-                            selected = 0 == selectedMenu,
+                            selected = -1 == selectedMenu,
                             onClick = {
-                                selectedMenu = 0
+                                selectedMenu = -1
                                 viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                             }
                         )
                         .height(32.dp),
                     onClick = {
-                        selectedMenu = 0
+                        selectedMenu = -1
                         viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                     },
                     shape = RoundedCornerShape(15.dp),
                     border = BorderStroke(1.dp, Main),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = if (selectedMenu == 0) Main else Color.White
+                        backgroundColor = if (selectedMenu == -1) Main else Color.White
                     )
                 ) {
                     Text(
                         text = "전체",
-                        color = if (selectedMenu == 0) Color.White else Main,
+                        color = if (selectedMenu != -1) Main else Color.White,
                         style = TextStyle(
                             fontFamily = robotoFamily,
                             fontWeight = FontWeight.Normal,
@@ -280,27 +280,131 @@ fun MapView(
                             selected = group.groupId == selectedMenu,
                             onClick = {
                                 selectedMenu =
-                                    if (selectedMenu != group.groupId) group.groupId else 0
+                                    if (selectedMenu != group.groupId) group.groupId else -1
                                 viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                             }
                         )
                         .height(32.dp),
                     onClick = {
-                        selectedMenu = if (selectedMenu != group.groupId) group.groupId else 0
+                        selectedMenu = if (selectedMenu != group.groupId) group.groupId else -1
                         viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                         scope.launch {
                             listState.animateScrollToItem(i)
                         }
                     },
                     shape = RoundedCornerShape(15.dp),
-                    border = BorderStroke(1.dp, Main),
+                    border = BorderStroke(
+                        1.dp, if (selectedMenu != group.groupId) when (group.groupId % 10) {
+                            1 -> {
+                                Color(Colors.One.main)
+                            }
+                            2 -> {
+                                Color(Colors.Two.main)
+                            }
+                            3 -> {
+                                Color(Colors.Three.main)
+                            }
+                            4 -> {
+                                Color(Colors.Four.main)
+                            }
+                            5 -> {
+                                Color(Colors.Five.main)
+                            }
+                            6 -> {
+                                Color(Colors.Six.main)
+                            }
+                            7 -> {
+                                Color(Colors.Seven.main)
+                            }
+                            8 -> {
+                                Color(Colors.Eight.main)
+                            }
+                            9 -> {
+                                Color(Colors.Nine.main)
+                            }
+                            0 -> {
+                                Color(Colors.Ten.main)
+                            }
+                            else -> {
+                                Color(Colors.One.main)
+                            }
+                        } else Color.White.copy(alpha = 0f)
+                    ),
                     colors = ButtonDefaults.outlinedButtonColors(
-                        backgroundColor = if (selectedMenu == group.groupId) Main else Color.White
+                        backgroundColor = if (selectedMenu == group.groupId) when (selectedMenu) {
+                            1 -> {
+                                Color(Colors.One.main)
+                            }
+                            2 -> {
+                                Color(Colors.Two.main)
+                            }
+                            3 -> {
+                                Color(Colors.Three.main)
+                            }
+                            4 -> {
+                                Color(Colors.Four.main)
+                            }
+                            5 -> {
+                                Color(Colors.Five.main)
+                            }
+                            6 -> {
+                                Color(Colors.Six.main)
+                            }
+                            7 -> {
+                                Color(Colors.Seven.main)
+                            }
+                            8 -> {
+                                Color(Colors.Eight.main)
+                            }
+                            9 -> {
+                                Color(Colors.Nine.main)
+                            }
+                            0 -> {
+                                Color(Colors.Ten.main)
+                            }
+                            else -> {
+                                Color(Colors.One.main)
+                            }
+                        } else Color.White
                     )
                 ) {
                     Text(
                         text = group.name,
-                        color = if (selectedMenu == group.groupId) Color.White else Main,
+                        color = if (selectedMenu != group.groupId) when (group.groupId % 10) {
+                            1 -> {
+                                Color(Colors.One.main)
+                            }
+                            2 -> {
+                                Color(Colors.Two.main)
+                            }
+                            3 -> {
+                                Color(Colors.Three.main)
+                            }
+                            4 -> {
+                                Color(Colors.Four.main)
+                            }
+                            5 -> {
+                                Color(Colors.Five.main)
+                            }
+                            6 -> {
+                                Color(Colors.Six.main)
+                            }
+                            7 -> {
+                                Color(Colors.Seven.main)
+                            }
+                            8 -> {
+                                Color(Colors.Eight.main)
+                            }
+                            9 -> {
+                                Color(Colors.Nine.main)
+                            }
+                            0 -> {
+                                Color(Colors.Ten.main)
+                            }
+                            else -> {
+                                Color(Colors.One.main)
+                            }
+                        } else Color.White,
                         style = TextStyle(
                             fontFamily = robotoFamily,
                             fontWeight = FontWeight.Normal,
