@@ -14,9 +14,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -41,6 +43,7 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun FindMyLocationView(
@@ -57,6 +60,7 @@ fun FindMyLocationView(
     val state = viewModel.state.value
     val state2 = viewModel2.state.value
     val scaffoldState = rememberScaffoldState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         scaffoldState = scaffoldState
@@ -85,7 +89,15 @@ fun FindMyLocationView(
                     if (view == "signup") viewModel.onEvent(SignUpEvent.ButtonClicked) else viewModel2.onEvent(
                         MyPageEvent.ButtonClicked
                     )
-                }
+                },
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        if (view == "signup") viewModel.onEvent(SignUpEvent.ButtonClicked) else viewModel2.onEvent(
+                            MyPageEvent.ButtonClicked
+                        )
+                        keyboardController?.hide()
+                    }
+                )
             )
             Spacer(Modifier.height(12.dp))
             LazyColumn(
@@ -112,29 +124,29 @@ fun FindMyLocationView(
 //                        }
 //                    }
 //                } else {
-                    if (view == "signup") {
-                        items(state.searchResults) { item ->
-                            SearchPlaceInfoCard(
-                                item.fullAddress,
-                                item.name,
-                                state.address
-                            ) {
-                                viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
-                                navController.navigateUp()
-                            }
-                        }
-                    } else {
-                        items(state2.searchResults) { item ->
-                            SearchPlaceInfoCard(
-                                item.fullAddress,
-                                item.name,
-                                state2.address
-                            ) {
-                                viewModel2.onEvent(MyPageEvent.AddressClicked(item.fullAddress))
-                                navController.navigateUp()
-                            }
+                if (view == "signup") {
+                    items(state.searchResults) { item ->
+                        SearchPlaceInfoCard(
+                            item.fullAddress,
+                            item.name,
+                            state.address
+                        ) {
+                            viewModel.onEvent(SignUpEvent.AddressClicked(item.fullAddress))
+                            navController.navigateUp()
                         }
                     }
+                } else {
+                    items(state2.searchResults) { item ->
+                        SearchPlaceInfoCard(
+                            item.fullAddress,
+                            item.name,
+                            state2.address
+                        ) {
+                            viewModel2.onEvent(MyPageEvent.AddressClicked(item.fullAddress))
+                            navController.navigateUp()
+                        }
+                    }
+                }
 //                }
             }
         }
