@@ -1,6 +1,5 @@
 package com.example.wifood.presentation
 
-import android.app.Service
 import androidx.compose.animation.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -16,11 +15,8 @@ import com.example.wifood.presentation.util.createParcelableNavType
 import com.example.wifood.presentation.view.ModifyUserProfileView
 import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.login.*
-import com.example.wifood.presentation.view.login.join.GetUserFavorContent
-import com.example.wifood.presentation.view.login.new_compose_views.FindMyLocationView
-import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneAuthenticationNumberView
-import com.example.wifood.presentation.view.login.new_compose_views.GetPhoneNumberView
-import com.example.wifood.presentation.view.login.new_compose_views.PersonalAgreementsView
+import com.example.wifood.presentation.view.login.join.GetUserFavorView
+import com.example.wifood.presentation.view.login.new_compose_views.*
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.mypage.ModifyMyInfoView
@@ -41,8 +37,8 @@ import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputS
 import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
 import com.example.wifood.presentation.view.search.SearchPlaceComposeView
-import com.example.wifood.presentation.view.splash.OnboardingView
 import com.example.wifood.presentation.view.splash.SplashView
+import com.example.wifood.presentation.view.splash.StartView
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -123,7 +119,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SplashView(navController = (navController))
+            StartView(navController = (navController))
         }
         composable(
             route = Route.Onboarding.route,
@@ -134,18 +130,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            OnboardingView(navController = (navController))
-        }
-        composable(
-            route = Route.MobileAuthentication.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            MobileAuthenticationView(navController = (navController))
+            SplashView(navController = (navController))
         }
         composable(
             route = "${Route.EditPlace.route}/{place}",
@@ -213,17 +198,6 @@ fun Navigation() {
             ModifyUserProfileView(navController)
         }
         composable(
-            route = Route.FindPwd.route,
-            enterTransition = {
-                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
-            },
-            exitTransition = {
-                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
-            }
-        ) {
-            FindPwdView(navController)
-        }
-        composable(
             route = Route.EditMyInfo.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
@@ -265,7 +239,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            GetPhoneNumberView(navController)
+            GetUserPhoneNumberView(navController)
         }
         composable(
             route = Route.GetAuthNumber.route,
@@ -276,7 +250,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            GetPhoneAuthenticationNumberView(navController)
+            GetAuthenticationNumberView(navController)
         }
         composable(
             route = Route.Agreement.route,
@@ -287,7 +261,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            PersonalAgreementsView(navController)
+            GetUserAgreementView(navController)
         }
         composable(
             route = "${Route.FindLocation.route}/{viewModel}",
@@ -304,7 +278,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            FindMyLocationView(navController, it)
+            SearchUserAddressView(navController, it)
         }
         composable(
             route = Route.SignUp3.route,
@@ -315,7 +289,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SignUpView3(navController)
+            GetUserAddressView(navController)
         }
         composable(
             route = "${Route.GroupNameInput.route}/{group}",
@@ -330,15 +304,6 @@ fun Navigation() {
             GroupDescInputView(navController)
         }
         composable(
-            route = "${Route.GroupEdit.route}/{group}",
-            arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
-        ) {
-            GroupEditView(navController)
-        }
-        composable(Route.FindPwd.route) {
-            FindPwdView(navController)
-        }
-        composable(
             route = Route.SignUp4.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
@@ -347,7 +312,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SignUpView4(navController)
+            GetUserBirthView(navController)
         }
         composable(
             route = Route.SignUp5.route,
@@ -358,7 +323,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SignUpView5(navController)
+            GetUserGenderView(navController)
         }
         composable(
             route = Route.GetUserFavor.route,
@@ -369,7 +334,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            GetUserFavorContent(navController)
+            GetUserFavorView(navController)
         }
         composable(
             route = Route.Complete.route,
@@ -381,7 +346,7 @@ fun Navigation() {
             }
         ) {
             //JoininCompleteView(navController)
-            SignUpCompleteView(navController)
+            JoininCompleteView(navController)
         }
         composable(
             route = "${Route.MapSearchAddress.route}/{place}",

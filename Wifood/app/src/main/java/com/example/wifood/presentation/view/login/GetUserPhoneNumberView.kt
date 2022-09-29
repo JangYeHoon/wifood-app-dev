@@ -1,40 +1,80 @@
 package com.example.wifood.presentation.view.login.new_compose_views
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.login.util.phoneFilter
+import com.example.wifood.presentation.view.placeList.newPlaceListComposeView.SelectGroupView
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
+import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun GetUserLocation(
+fun GetUserPhoneNumberView(
+    navController: NavController,
+    viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
+    val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState() // for horizontal mode screen
-    var userLocationActivated = false
+    val context = LocalContext.current
+
+    val permissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                navController.navigate(Route.GetAuthNumber.route)
+            } else {
+                // TODO
+                Timber.i("false")
+            }
+        }
+
+    LaunchedEffect(true) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Error -> {
+                    scaffoldState.snackbarHostState.showSnackbar(event.message)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(state.phoneNumber) {
+        if (state.phoneNumber.length == 11) {
+            viewModel.checkForm(ViewItem.SignUpView1)
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState
@@ -42,40 +82,31 @@ fun GetUserLocation(
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
-        ){
+        ) {
+            if (state.isLoading) {
+                ProgressIndicator()
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(horizontal = sidePaddingValue.dp)
-            ){
+            ) {
+                //TEST line
+
                 Spacer(Modifier.weight(1f))
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_1by4),
-                    contentDescription = "",
-                    modifier = Modifier.wrapContentSize(),
-                    tint = Color.Unspecified
-                )
-                Spacer(Modifier.height(10.dp))
                 Text(
-                    text = "동네를 알려주세요",
+                    text = "휴대폰 번호를\n입력해주세요.",
                     fontFamily = mainFont,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 24.sp,
                     color = Black2Color
                 )
-                Spacer(Modifier.height(12.dp))
-                Text(
-                    text = "동명(읍,면)으로 검색",
-                    fontFamily = mainFont,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    color = Gray03Color
-                )
                 Spacer(Modifier.height(24.dp))
                 TextField(
-                    value = "",
+                    value = state.phoneNumber,
                     onValueChange = {
+                        viewModel.onEvent(SignUpEvent.PhoneNumChanged(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -87,7 +118,7 @@ fun GetUserLocation(
                     ),
                     placeholder = {
                         Text(
-                            text = "중앙동",
+                            text = "휴대폰번호 ('-'제외)",
                             fontFamily = mainFont,
                             fontWeight = FontWeight.Normal,
                             fontSize = 18.sp,
@@ -101,17 +132,36 @@ fun GetUserLocation(
                         placeholderColor = EnableColor,
                         focusedIndicatorColor = MainColor,
                         unfocusedIndicatorColor = EnableColor
+                    ),
+                    visualTransformation = {
+                        phoneFilter(it)
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone
                     )
                 )
+                Spacer(Modifier.height(24.dp))
                 Spacer(Modifier.weight(1f))
                 MainButton(
-                    text = "다음",
+                    text = "인증번호 받기",
                     onClick = {
+                        when (PackageManager.PERMISSION_GRANTED) {
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.SEND_SMS
+                            ) -> {
+                                navController.navigate(Route.GetAuthNumber.route)
+                            }
+                            else -> {
+                                permissionLauncher.launch(Manifest.permission.SEND_SMS)
+                            }
+                        }
                     },
-                    activate = userLocationActivated
+                    activate = state.phoneValidation == -1
                 )
                 Spacer(Modifier.height(buttonBottomValue.dp))
             }
+
         }
     }
 }

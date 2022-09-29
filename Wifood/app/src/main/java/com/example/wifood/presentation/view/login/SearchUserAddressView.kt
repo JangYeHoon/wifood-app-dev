@@ -6,11 +6,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,19 +24,16 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
-import com.example.wifood.presentation.view.login.component.TitleText
-import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
-import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
@@ -46,7 +41,7 @@ import com.example.wifood.view.ui.theme.*
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun FindMyLocationView(
+fun SearchUserAddressView(
     navController: NavController,
     navBackStackEntry: NavBackStackEntry,
     viewModel: SignUpViewModel = composableActivityViewModel(),

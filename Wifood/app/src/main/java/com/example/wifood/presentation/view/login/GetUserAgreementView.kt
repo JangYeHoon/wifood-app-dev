@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.login.new_compose_views
+package com.example.wifood.presentation.view.login
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -12,20 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.login.SignUpEvent
-import com.example.wifood.presentation.view.login.SignUpViewModel
+import com.example.wifood.presentation.view.login.new_compose_views.GetUserAgreementDetailView
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
@@ -33,7 +29,7 @@ import com.example.wifood.view.ui.theme.*
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun PersonalAgreementsView(
+fun GetUserAgreementView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
@@ -111,7 +107,7 @@ fun PersonalAgreementsView(
                         )
                     }
                     if (showPersonalAgreementDialog.value)
-                        PersonalAgreementsDialogView(viewModel, showPersonalAgreementDialog)
+                        GetUserAgreementDetailView(viewModel, showPersonalAgreementDialog)
                 }
                 Spacer(Modifier.weight(1f))
                 MainButton(

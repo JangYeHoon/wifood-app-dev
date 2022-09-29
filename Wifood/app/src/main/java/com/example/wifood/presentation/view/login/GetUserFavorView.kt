@@ -40,38 +40,9 @@ import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
-//@ExperimentalComposeUiApi
-//@Composable
-//fun GetUserFavorView(
-//    showDialog:MutableState<Boolean>
-//) {
-//    Dialog(
-//        onDismissRequest = {
-//            showDialog.value = false
-//        },
-//        properties = DialogProperties(
-//            usePlatformDefaultWidth = false
-//        ),
-//    ) {
-//        Surface(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .wrapContentHeight()
-//                .padding(top = 85.dp),
-//            shape = RoundedCornerShape(
-//                topStart = 30.dp,
-//                topEnd = 30.dp
-//            ),
-//            color = Color(0xFFFFFFFF)
-//        ) {
-//            GetUserFavorContent(showDialog)
-//        }
-//    }
-//}
-
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun GetUserFavorContent(
+fun GetUserFavorView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {

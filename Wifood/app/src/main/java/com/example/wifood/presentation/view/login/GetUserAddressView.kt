@@ -33,7 +33,7 @@ import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.*
 
 @Composable
-fun SignUpView3(
+fun GetUserAddressView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {

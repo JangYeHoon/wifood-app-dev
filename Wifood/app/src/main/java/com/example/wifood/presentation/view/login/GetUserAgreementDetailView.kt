@@ -30,7 +30,7 @@ import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @ExperimentalComposeUiApi
 @Composable
-fun PersonalAgreementsDialogView(
+fun GetUserAgreementDetailView(
     viewModel: SignUpViewModel,
     showDialog: MutableState<Boolean> = mutableStateOf(false),
 ) {

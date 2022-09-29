@@ -26,8 +26,7 @@ data class Place(
     var address: String,
     var menuList: List<MenuGrade>,
     var vibeChk: Boolean,
-    var bizName: String,
-    var color: String
+    var bizName: String
 ) : Parcelable {
     fun deleteMenuGradeFromEmptyName() {
         menuList = menuList.filter { menuGrade -> menuGrade.name.isNotEmpty() }

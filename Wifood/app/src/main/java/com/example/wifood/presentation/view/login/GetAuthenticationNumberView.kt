@@ -37,7 +37,7 @@ import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun GetPhoneAuthenticationNumberView(
+fun GetAuthenticationNumberView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
