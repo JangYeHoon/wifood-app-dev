@@ -19,6 +19,7 @@ fun CustomMarker(
     title: String,
     review: String = "",
     rating: Int = 0,
+    visible: Boolean = true,
     @DrawableRes iconResourceId: Int
 ) {
     val icon = bitmapDescriptorFromVector(
@@ -28,6 +29,7 @@ fun CustomMarker(
         rememberMarkerState(position = position),
         title = title,
         icon = icon,
+        visible = visible,
         content = { CurrentLocationUnion(title, review, rating) }
     )
 }

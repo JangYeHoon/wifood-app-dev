@@ -36,6 +36,7 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.map.component.CustomMarker
+import com.example.wifood.presentation.view.map.util.Colors
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.location.LocationServices
@@ -173,44 +174,44 @@ fun MapView(
                         context = context,
                         position = LatLng(place.latitude, place.longitude),
                         title = place.name,
-                        iconResourceId = R.drawable.ic_group_114788,
                         review = place.review,
-                        rating = place.score.toInt()
-//                        when (place.color) {
-//                            "57bf7c" -> {
-//                                R.drawable.ic_map_place_icon_57bf7c
-//                            }
-//                            "59c3b5" -> {
-//                                R.drawable.ic_map_place_icon_59c3b5
-//                            }
-//                            "6153a7" -> {
-//                                R.drawable.ic_map_place_icon_6153a7
-//                            }
-//                            "7eb2ff" -> {
-//                                R.drawable.ic_map_place_icon_7eb2ff
-//                            }
-//                            "8bd353" -> {
-//                                R.drawable.ic_map_place_icon_8bd353
-//                            }
-//                            "a57dba" -> {
-//                                R.drawable.ic_map_place_icon_a57dba
-//                            }
-//                            "aaa333" -> {
-//                                R.drawable.ic_map_place_icon_aaa333
-//                            }
-//                            "fe6080" -> {
-//                                R.drawable.ic_map_place_icon_fe6080
-//                            }
-//                            "ff8a00" -> {
-//                                R.drawable.ic_map_place_icon_ff8a00
-//                            }
-//                            "ffc08d" -> {
-//                                R.drawable.ic_map_place_icon_ffc08d
-//                            }
-//                            else -> {
-//                                R.drawable.ic_map_place_icon_57bf7c
-//                            }
-//                        }
+                        rating = place.score.toInt(),
+                        visible = if (selectedMenu == 0) true else selectedMenu == place.groupId,
+                        iconResourceId = when (place.groupId % 10) {
+                            1 -> {
+                                Colors.One.id
+                            }
+                            2 -> {
+                                Colors.Two.id
+                            }
+                            3 -> {
+                                Colors.Three.id
+                            }
+                            4 -> {
+                                Colors.Four.id
+                            }
+                            5 -> {
+                                Colors.Five.id
+                            }
+                            6 -> {
+                                Colors.Six.id
+                            }
+                            7 -> {
+                                Colors.Seven.id
+                            }
+                            8 -> {
+                                Colors.Eight.id
+                            }
+                            9 -> {
+                                Colors.Nine.id
+                            }
+                            0 -> {
+                                Colors.Ten.id
+                            }
+                            else -> {
+                                Colors.One.id
+                            }
+                        }
                     )
                 }
                 state.currentLocation?.let {

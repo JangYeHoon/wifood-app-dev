@@ -309,27 +309,27 @@ fun UserPlaceLocationIcon(
     modifier: Modifier = Modifier
 ) {
     var iconColor = 0
-    if (placeColor.equals("57BF7C")) {
-        iconColor = R.drawable.ic_map_place_icon_57bf7c
-    } else if (placeColor.equals("59C3B5")) {
-        iconColor = R.drawable.ic_map_place_icon_59c3b5
-    } else if (placeColor.equals("6153A7")) {
-        iconColor = R.drawable.ic_map_place_icon_6153a7
-    } else if (placeColor.equals("7EB2FF")) {
-        iconColor = R.drawable.ic_map_place_icon_7eb2ff
-    } else if (placeColor.equals("8DB353")) {
-        iconColor = R.drawable.ic_map_place_icon_8bd353
-    } else if (placeColor.equals("A57DBA")) {
-        iconColor = R.drawable.ic_map_place_icon_a57dba
-    } else if (placeColor.equals("AAA333")) {
-        iconColor = R.drawable.ic_map_place_icon_aaa333
-    } else if (placeColor.equals("FE6080")) {
-        iconColor = R.drawable.ic_map_place_icon_fe6080
-    } else if (placeColor.equals("FF8A00")) {
-        iconColor = R.drawable.ic_map_place_icon_ff8a00
-    } else if (placeColor.equals("FFC08D")) {
-        iconColor = R.drawable.ic_map_place_icon_ffc08d
-    }
+//    if (placeColor.equals("57BF7C")) {
+//        iconColor = R.drawable.ic_map_place_icon_57bf7c
+//    } else if (placeColor.equals("59C3B5")) {
+//        iconColor = R.drawable.ic_map_place_icon_59c3b5
+//    } else if (placeColor.equals("6153A7")) {
+//        iconColor = R.drawable.ic_map_place_icon_6153a7
+//    } else if (placeColor.equals("7EB2FF")) {
+//        iconColor = R.drawable.ic_map_place_icon_7eb2ff
+//    } else if (placeColor.equals("8DB353")) {
+//        iconColor = R.drawable.ic_map_place_icon_8bd353
+//    } else if (placeColor.equals("A57DBA")) {
+//        iconColor = R.drawable.ic_map_place_icon_a57dba
+//    } else if (placeColor.equals("AAA333")) {
+//        iconColor = R.drawable.ic_map_place_icon_aaa333
+//    } else if (placeColor.equals("FE6080")) {
+//        iconColor = R.drawable.ic_map_place_icon_fe6080
+//    } else if (placeColor.equals("FF8A00")) {
+//        iconColor = R.drawable.ic_map_place_icon_ff8a00
+//    } else if (placeColor.equals("FFC08D")) {
+//        iconColor = R.drawable.ic_map_place_icon_ffc08d
+//    }
 
     Box(
 
