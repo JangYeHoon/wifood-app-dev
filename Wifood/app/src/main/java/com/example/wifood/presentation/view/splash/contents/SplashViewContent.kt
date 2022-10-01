@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.splash.component
+package com.example.wifood.presentation.view.splash.contents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -12,20 +12,25 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
-import com.example.wifood.presentation.view.splash.Page
 import com.example.wifood.ui.theme.fontMiddleSchool
-import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.Gray03Color
-import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.view.ui.theme.MainColor
 
+
+//@Preview(showBackground = true)
 @Composable
-fun PageUI(
-    page: Page
-) {
+fun SplashViewContent(
+    title: String = "맛집 기록 어플, ",
+    edge: String = "요고",
+    description: String = "한 줄 설명",
+    imageWidth: Int = 232,
+    imageHeight: Int = 314,
+    image: Int = R.drawable.ic_walk_through_screen1
+){
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -36,7 +41,7 @@ fun PageUI(
             Spacer(Modifier.weight(1f))
             Text(
                 text = buildAnnotatedString {
-                    append(page.title)
+                    append(title)
                     withStyle(
                         style = SpanStyle(
                             fontFamily = fontMiddleSchool,
@@ -45,9 +50,9 @@ fun PageUI(
                             color = MainColor
                         ),
                     ) {
-                        append(page.edge)
+                        append(edge)
                     }
-                    append(page.description)
+                    append(description)
                 },
                 fontFamily = fontMiddleSchool,
                 fontWeight = FontWeight.Normal,
@@ -57,11 +62,11 @@ fun PageUI(
             )
             Spacer(Modifier.height(50.dp))
             Image(
-                painter = painterResource(page.image),
+                painter = painterResource(image),
                 contentDescription = "Splash View Image",
-                modifier = Modifier
-                    .width(page.imageWidth.dp)
-                    .height(page.imageHeight.dp)
+                modifier = androidx.compose.ui.Modifier
+                    .width(imageWidth.dp)
+                    .height(imageHeight.dp)
             )
             Spacer(Modifier.weight(1f))
         }

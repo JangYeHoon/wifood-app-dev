@@ -19,7 +19,7 @@ import com.example.wifood.presentation.view.login.component.LogoImage
 import com.example.wifood.ui.theme.fontTmoney
 import com.example.wifood.view.ui.theme.MainColor
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun StartViewContent(
     scale: Animatable<Float, AnimationVector1D>? = null
