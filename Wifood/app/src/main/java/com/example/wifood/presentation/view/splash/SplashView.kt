@@ -17,9 +17,16 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
+<<<<<<< HEAD
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.splash.component.PageUI
 import com.example.wifood.view.ui.theme.EnableColor
+=======
+import com.example.wifood.presentation.view.login.component.LogoImage
+import com.example.wifood.presentation.view.splash.contents.StartViewContent
+import com.example.wifood.ui.theme.fontTmoney
+import com.example.wifood.util.Constants
+>>>>>>> 3e1b9d3 (splash content)
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -61,6 +68,7 @@ fun SplashView(
         )
     )
 
+<<<<<<< HEAD
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -101,3 +109,9 @@ fun SplashView(
         }
     }
 }
+=======
+    StartViewContent(
+        scale = scale
+    )
+}
+>>>>>>> 3e1b9d3 (splash content)

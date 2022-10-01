@@ -23,7 +23,9 @@ import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.view.ui.theme.MainColor
 
 @Composable
-fun PageUI(page: Page) {
+fun PageUI(
+    page: Page
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

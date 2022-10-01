@@ -142,7 +142,10 @@ fun SearchUserAddressView(
                         }
                     }
                 }
+<<<<<<< HEAD:Wifood/app/src/main/java/com/example/wifood/presentation/view/login/SearchUserAddressView.kt
 //                }
+=======
+>>>>>>> 3e1b9d3 (splash content):Wifood/app/src/main/java/com/example/wifood/presentation/view/login/new_compose_views/FindMyLocationView.kt
             }
         }
     }
