@@ -135,7 +135,6 @@ fun MapView(
         scaffoldState = scaffoldState,
         floatingActionButton = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 FloatingActionButton(
