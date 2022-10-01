@@ -27,6 +27,7 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.component.YOGOBasicText
 import com.example.wifood.presentation.view.login.component.TitleText
+import com.example.wifood.presentation.view.login.contents.GetUserAddressContent
 import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.composableActivityViewModel
@@ -37,51 +38,16 @@ fun GetUserAddressView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
-    val scrollState = rememberScrollState()
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(horizontal = sidePaddingValue.dp)
-        ){
-            Spacer(Modifier.weight(1f))
-            Icon(
-                ImageVector.vectorResource(id = R.drawable.ic_1by4),
-                contentDescription = "",
-                modifier = Modifier.wrapContentSize(),
-                tint = Color.Unspecified
-            )
-            Spacer(Modifier.height(10.dp))
-            YOGOBasicText(
-                largeText = "동네를 알려주세요",
-                explainText = "동명(읍,면)으로 검색"
-            )
-            Spacer(Modifier.height(24.dp))
-            ClickableTextFieldForm1(
-                text = SignUpData.address,
-                onClick = {
-                    navController.navigate("${Route.FindLocation.route}/signup")
-                },
-                onValueChange = {
-                    viewModel.onEvent(SignUpEvent.AddressChanged(it))
-                }
-            )
-            Spacer(Modifier.height(24.dp))
-            Spacer(Modifier.weight(1f))
-            MainButton(
-                text = "다음",
-                onClick = {
-                    navController.navigate(Route.SignUp4.route)
-                },
-                activate = SignUpData.address.isNotEmpty()
-            )
-            Spacer(Modifier.height(buttonBottomValue.dp))
+    GetUserAddressContent(
+        addressText = SignUpData.address,
+        onAddressClicked = {
+            navController.navigate("${Route.FindLocation.route}/signup")
+        },
+        onAddressValueChanged = {
+            viewModel.onEvent(SignUpEvent.AddressChanged(it))
+        },
+        onButtonClicked = {
+            navController.navigate(Route.SignUp4.route)
         }
-    }
+    )
 }
