@@ -21,7 +21,7 @@ import com.example.wifood.view.ui.theme.MainColor
 
 //@Preview(showBackground = true)
 @Composable
-fun StartViewContent(
+fun StartContent(
     scale: Animatable<Float, AnimationVector1D>? = null
 ) {
     Column(

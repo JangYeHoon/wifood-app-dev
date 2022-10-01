@@ -3,22 +3,15 @@ package com.example.wifood.presentation.view.splash
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wifood.R
-import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.splash.contents.SplashViewContent
+import com.example.wifood.presentation.view.splash.contents.SplashContent
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.buttonBottomValue
@@ -74,7 +67,7 @@ fun SplashView(
                     .fillMaxWidth()
                     .weight(1f)
             ) { page ->
-                SplashViewContent(
+                SplashContent(
                     title = onboardPages[page].title,
                     edge = onboardPages[page].edge,
                     description = onboardPages[page].description,

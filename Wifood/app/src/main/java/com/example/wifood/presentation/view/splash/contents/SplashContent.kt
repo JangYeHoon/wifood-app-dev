@@ -23,7 +23,7 @@ import com.example.wifood.view.ui.theme.MainColor
 
 //@Preview(showBackground = true)
 @Composable
-fun SplashViewContent(
+fun SplashContent(
     title: String = "맛집 기록 어플, ",
     edge: String = "요고",
     description: String = "한 줄 설명",
