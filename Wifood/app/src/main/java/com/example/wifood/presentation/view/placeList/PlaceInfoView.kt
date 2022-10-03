@@ -274,8 +274,17 @@ fun PlaceInfoView(
                 VectorIconWithNoInteraction(
                     resource = R.drawable.ic_place_info_back_button,
                     onClick = {
-                        viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
-                        navController.popBackStack()
+                        if (modalBottomSheetState.isVisible) {
+                            scope.launch { modalBottomSheetState.hide() }
+                        } else if (state.popupImageIdx != -1){
+                            viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(-1))
+                        } else {
+                            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+                            navController.popBackStack(
+                                "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+                                false
+                            )
+                        }
                     }
                 )
                 VectorIconWithNoInteraction(
