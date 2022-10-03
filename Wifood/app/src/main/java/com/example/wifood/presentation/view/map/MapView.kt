@@ -4,8 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -39,6 +43,9 @@ import com.example.wifood.presentation.view.map.component.CustomMarker
 import com.example.wifood.presentation.view.map.util.Colors
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
@@ -47,6 +54,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@RequiresApi(Build.VERSION_CODES.S)
 @MapsComposeExperimentalApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -65,6 +73,50 @@ fun MapView(
     }
     val context = LocalContext.current
     val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+
+    fun locationUpdates() {
+        val locationRequest = LocationRequest.create()
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+                for (location in p0.locations) {
+                    viewModel.onEvent(MainEvent.LocationChanged(location))
+//                    if (placeLat == 10000f) {
+                    viewModel.onEvent(
+                        MainEvent.CameraMove(
+                            LatLng(
+                                location.latitude,
+                                location.longitude
+                            )
+                        )
+                    )
+//                    }
+                }
+            }
+        }
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
 
     fun moveCameraCurrentLocation() {
         val locationResult = fusedLocationProviderClient.lastLocation
@@ -92,7 +144,7 @@ fun MapView(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-//                moveCameraCurrentLocation()
+                locationUpdates()
             } else {
                 Timber.i("false")
             }
@@ -114,7 +166,7 @@ fun MapView(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) -> {
-//                moveCameraCurrentLocation()
+                moveCameraCurrentLocation()
             }
             else -> {
                 permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -140,7 +192,7 @@ fun MapView(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        moveCameraCurrentLocation()
+                        locationUpdates()
                     },
                     backgroundColor = Color.White,
                     contentColor = Main
