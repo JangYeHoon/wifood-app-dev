@@ -9,7 +9,7 @@ data class PlaceInfoState(
     val place: Place? = null,
     val group: Group? = null,
     val placeImageUris: List<Uri> = emptyList(),
-    val popupImageIdx: Int = 0,
+    val popupImageIdx: Int = -1,
     val placeReview: String = "",
     val isLoading: Boolean = false,
     val error: String = ""

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOLargeText
-import com.example.wifood.presentation.view.login.new_compose_views.CustomTextField
-import com.example.wifood.presentation.view.login.new_compose_views.SearchPlaceInfoCard
+import com.example.wifood.presentation.view.login.contents.CustomTextField
+import com.example.wifood.presentation.view.login.contents.SearchPlaceInfoCard
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 

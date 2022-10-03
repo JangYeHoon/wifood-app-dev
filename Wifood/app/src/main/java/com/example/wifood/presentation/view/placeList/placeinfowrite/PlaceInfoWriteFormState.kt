@@ -33,5 +33,6 @@ data class PlaceInfoWriteFormState(
     val currentLocation: Location? = null,
     val reviewTextLength: String = "0/200",
     val bizName: String = "",
+    val imageUploadChk: Boolean = false,
     val placeImagesReCompose: String = "1"
 )

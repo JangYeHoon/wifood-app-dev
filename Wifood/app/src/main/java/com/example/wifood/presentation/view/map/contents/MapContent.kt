@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.map
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -12,12 +13,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -29,55 +34,70 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.data.remote.dto.PlaceDto
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.Black2Color
-import com.example.wifood.view.ui.theme.EnableColor
-import com.example.wifood.view.ui.theme.Gray01Color
-import com.example.wifood.view.ui.theme.MainColor
+import com.example.wifood.view.ui.theme.*
+import com.google.gson.Gson
 
-@Preview(showBackground = true)
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+//@Preview(showBackground = true)
 @Composable
 fun MapContent(
-
+    onSearchPlaceIconClicked: () -> Unit = {},
+    searchText: String = "",
+    onSearchTextValueChanged: (String) -> Unit = {},
+    onSearchIconClicked: () -> Unit = {},
+    placeList: List<String> = listOf("회사근처맛집", "테이크아웃"),
+    bottomMapClicked: () -> Unit = {},
+    bottomListClicked: () -> Unit = {},
+    bottomSettingClicked: () -> Unit = {}
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                //color = Color(0xFFEDEDD9)
-                color = Color(0xFF000000)
+    val scaffoldState = rememberScaffoldState()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            AppBottomContent(
+                pushMap = true,
+                pushMapClicked = bottomMapClicked,
+                pushList = false,
+                pushListClicked = bottomListClicked,
+                pushSetting = false,
+                pushSettingClicked = bottomSettingClicked
             )
+        }
     ) {
-        MapSearchTextField()
-        SelectPlaceGroupContent()
-
-        // google map
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .background(
+                    //color = Color(0xFFEDEDD9)
+                    color = Color(0xFF000000)
+                )
         ) {
-            Column(
-            ){
-                Spacer(Modifier.weight(1f))
-                CurrentLocationIcon()
-                Spacer(Modifier.weight(1f))
+            MapSearchTextField()
+            SelectPlaceGroupContent()
+
+            // google map
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                ){
+                    Spacer(Modifier.weight(1f))
+                    CurrentLocationIcon()
+                    Spacer(Modifier.weight(1f))
+                }
             }
         }
-        AppBottomContent(
-            pushMap = true,
-            pushMapClicked = {},
-            pushList = false,
-            pushListClicked = {},
-            pushSetting = false,
-            pushSettingClicked = {}
-        )
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun MapSearchTextField(
     searchText: String = "서울역",
@@ -100,7 +120,7 @@ fun MapSearchTextField(
                     .clickable(
                         indication = null,
                         interactionSource = interactionSource
-                    ){
+                    ) {
                         onFindLocationClicked()
                     }
             ) {
@@ -154,7 +174,7 @@ fun MapSearchTextField(
     )
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun SelectPlaceGroupContent(
 
@@ -195,7 +215,8 @@ fun SelectPlaceGroupContent(
         Spacer(Modifier.width(12.dp))
     }
 }
-@Preview(showBackground = true)
+
+//@Preview(showBackground = true)
 @Composable
 fun CurrentLocationUnion(
     titleText: String = "파리바게트",
@@ -287,20 +308,22 @@ fun CurrentLocationUnion(
         }
     }
 }
-@Preview(showBackground = true)
+
+//@Preview(showBackground = true)
 @Composable
 fun CurrentLocationIcon(
     modifier: Modifier = Modifier
 ) {
     Icon(
-        ImageVector.vectorResource(R.drawable.ic_map_current_location_icon),
+        ImageVector.vectorResource(R.drawable.ic_current_user_location_icon),
         contentDescription = "App bottom Items",
         modifier = Modifier
             .wrapContentSize(),
         tint = Color.Unspecified
     )
 }
-@Preview(showBackground = true)
+
+//@Preview(showBackground = true)
 @Composable
 fun UserPlaceLocationIcon(
     groupCount: Int = 4,
@@ -364,7 +387,8 @@ fun UserPlaceLocationIcon(
         }
     }
 }
-@Preview(showBackground = true)
+
+//@Preview(showBackground = true)
 @Composable
 fun AppBottomContent(
     pushMap: Boolean = true,
@@ -403,18 +427,21 @@ fun AppBottomContent(
     ) {
         AppBottomItems(
             itemId = R.drawable.ic_bottom_map_icon,
+            itemPushedId = R.drawable.ic_bottom_map_clicked_icon,
             itemText = "지도",
             pushed = pushMap,
             onClicked = pushMapClicked
         )
         AppBottomItems(
             itemId = R.drawable.ic_bottom_list_icon,
+            itemPushedId = R.drawable.ic_bottom_list_clicked_icon,
             itemText = "리스트",
             pushed = pushList,
             onClicked = pushListClicked
         )
         AppBottomItems(
             itemId = R.drawable.ic_bottom_settings_icon,
+            itemPushedId = R.drawable.ic_bottom_setting_clicked_icon,
             itemText = "설정",
             pushed = pushSetting,
             onClicked = pushSettingClicked
@@ -422,10 +449,11 @@ fun AppBottomContent(
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun AppBottomItems(
     itemId: Int = R.drawable.ic_bottom_map_icon,
+    itemPushedId: Int = R.drawable.ic_bottom_map_clicked_icon,
     itemText: String = "지도",
     pushed: Boolean = false,
     onClicked: () -> Unit = {}
@@ -445,11 +473,11 @@ fun AppBottomItems(
             }
     ) {
         Icon(
-            ImageVector.vectorResource(itemId),
+            ImageVector.vectorResource(if (pushed) itemPushedId else itemId),
             contentDescription = "App bottom Items",
             modifier = Modifier
                 .wrapContentSize(),
-            tint = if (pushed) MainColor else Color.Unspecified
+            tint = Color.Unspecified
         )
         Spacer(Modifier.height(5.dp))
         YOGOPR12_formInfo(
@@ -457,5 +485,50 @@ fun AppBottomItems(
             color = if (pushed) MainColor else Color(0xBD000000),
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun YOGOFloatingActionGroup(
+    onCurrentFloatingButtonClicked: () -> Unit = {},
+    onAddLocationFloatingButtonClicked: () -> Unit = {}
+){
+    val interactionSource = MutableInteractionSource()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .background(
+                color = Color.Transparent
+            )
+    ) {
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_floating_button_current_location),
+            contentDescription = "current location floating button",
+            modifier = Modifier
+                .wrapContentSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ){
+                    onCurrentFloatingButtonClicked
+                },
+            tint = Color.Unspecified
+        )
+        Spacer(Modifier.height(9.dp))
+        Icon(
+            ImageVector.vectorResource(id = R.drawable.ic_floating_button_add_location),
+            contentDescription = "",
+            modifier = Modifier
+                .wrapContentSize()
+                .clickable(
+                    indication = null,
+                    interactionSource = interactionSource
+                ){
+                    onAddLocationFloatingButtonClicked
+                },
+            tint = Color.Unspecified
+        )
+        Spacer(modifier = Modifier.height(11.dp))
     }
 }

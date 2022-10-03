@@ -11,15 +11,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOLargeText
+import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
-import com.example.wifood.presentation.view.login.join.UserFavorButtonGroup
-import com.example.wifood.presentation.view.login.join.UserFavorRadioGroup
+import com.example.wifood.presentation.view.login.contents.UserFavorButtonGroup
+import com.example.wifood.presentation.view.login.contents.UserFavorRadioGroup
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.util.composableActivityViewModel
 import com.example.wifood.view.ui.theme.buttonBottomValue
 
 @Composable
@@ -28,7 +29,14 @@ fun ModifyTasteFavorView(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-
+    val FavorSelected: (Int, Int) -> Unit = { select, index ->
+        (viewModel as MyPageViewModel).onEvent(
+            MyPageEvent.FavorSelected(
+                select + 1,
+                index
+            )
+        )
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,7 +53,7 @@ fun ModifyTasteFavorView(
                 .fillMaxWidth()
         ) {
             Spacer(Modifier.height(36.dp))
-            UserFavorRadioGroup(viewModel)
+            UserFavorRadioGroup(FavorSelected)
             Text(
                 text = "좋아하면 선택해주세요",
                 fontFamily = mainFont,

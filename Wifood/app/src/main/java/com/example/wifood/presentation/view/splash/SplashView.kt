@@ -3,22 +3,15 @@ package com.example.wifood.presentation.view.splash
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wifood.R
-import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MainButton
-import com.example.wifood.presentation.view.splash.component.PageUI
+import com.example.wifood.presentation.view.splash.contents.SplashContent
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.buttonBottomValue
@@ -36,28 +29,28 @@ fun SplashView(
     val pagerState = rememberPagerState(pageCount = 3)
     val onboardPages = listOf(
         Page(
-            "맛집 기록 어플, ",
-            "요고",
-            "\n맛집을 손 쉽게 찾아보세요",
-            232,
-            314,
-            R.drawable.ic_walk_through_screen1
+            title = "맛집 기록 어플, ",
+            edge = "요고",
+            description = "\n맛집을 손 쉽게 찾아보세요",
+            imageWidth = 232,
+            imageHeight = 314,
+            image = R.drawable.ic_walk_through_screen1
         ),
         Page(
-            "나만의 맛집을 ",
-            "기록",
-            "하고\n한 줄 설명",
-            222,
-            287,
-            R.drawable.ic_walk_through_screen2
+            title = "나만의 맛집을 ",
+            edge = "기록",
+            description = "하고\n한 줄 설명",
+            imageWidth = 222,
+            imageHeight = 287,
+            image = R.drawable.ic_walk_through_screen2
         ),
         Page(
-            "내 취향의 맛집을 ",
-            "추천",
-            "받고\n먹어보세요",
-            253,
-            274,
-            R.drawable.ic_walk_through_screen3,
+            title = "내 취향의 맛집을 ",
+            edge = "추천",
+            description = "받고\n먹어보세요",
+            imageWidth = 253,
+            imageHeight = 274,
+            image = R.drawable.ic_walk_through_screen3,
         )
     )
 
@@ -74,7 +67,14 @@ fun SplashView(
                     .fillMaxWidth()
                     .weight(1f)
             ) { page ->
-                PageUI(page = onboardPages[page])
+                SplashContent(
+                    title = onboardPages[page].title,
+                    edge = onboardPages[page].edge,
+                    description = onboardPages[page].description,
+                    imageWidth = onboardPages[page].imageWidth,
+                    imageHeight = onboardPages[page].imageHeight,
+                    image = onboardPages[page].image
+                )
             }
             if (pagerState.currentPage != 2) {
                 HorizontalPagerIndicator(

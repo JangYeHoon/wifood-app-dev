@@ -166,7 +166,8 @@ class PlaceInfoWriteViewModel @Inject constructor(
                         if (formState.placeImagesReCompose == "1")
                             "2"
                         else
-                            "1"
+                            "1",
+                        imageUploadChk = true
                     )
                 Timber.i(formState.placeImages.toString())
             }
@@ -278,7 +279,7 @@ class PlaceInfoWriteViewModel @Inject constructor(
 
     @DelicateCoroutinesApi
     private suspend fun insertImages() {
-        if (formState.placeImages.isNotEmpty()) {
+        if (formState.placeImages.isNotEmpty() && formState.imageUploadChk) {
             useCases.InsertPlaceImages(
                 state.place.groupId,
                 state.place.placeId,

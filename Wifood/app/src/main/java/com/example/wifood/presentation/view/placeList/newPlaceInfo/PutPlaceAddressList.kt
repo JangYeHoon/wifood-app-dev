@@ -33,7 +33,6 @@ import com.example.wifood.presentation.view.component.*
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
-@Preview(showBackground = true)
 @Composable
 fun PutPlaceAddressList(
 
@@ -62,7 +61,7 @@ fun PutPlaceAddressList(
         ) {
             for (i in 0..3) {
                 PointLocationAddress2(
-
+                    isClicked = true
                 )
                 Spacer(Modifier.height(16.dp))
             }

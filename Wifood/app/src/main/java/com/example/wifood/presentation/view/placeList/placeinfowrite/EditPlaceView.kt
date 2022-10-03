@@ -173,6 +173,9 @@ fun EditPlaceView(
         Scaffold(
             scaffoldState = scaffoldState
         ) {
+            if (formState.isLoading)
+                ProgressIndicator()
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()

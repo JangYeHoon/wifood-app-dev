@@ -99,7 +99,7 @@ fun ShowPhotoList(
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
-    val showImagePopupChk = remember { mutableStateOf(false) }
+//    val showImagePopupChk = remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,14 +117,14 @@ fun ShowPhotoList(
                         RoundedCornerShape(5.dp)
                     )
                     .clickable {
-                        showImagePopupChk.value = true
+//                        showImagePopupChk.value = true
                         viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(idx))
                     },
                 contentScale = ContentScale.FillBounds
             )
             Spacer(modifier = Modifier.width(6.dp))
-            if (showImagePopupChk.value)
-                ImagePopUpView(viewModel.state.placeImageUris, showImagePopupChk)
+            if (viewModel.state.popupImageIdx != -1)
+                ImagePopUpView(viewModel.state.placeImageUris)
         }
     }
 }

@@ -27,8 +27,8 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.util.shouldShowRationale
-import com.example.wifood.presentation.view.login.new_compose_views.CustomTextField
-import com.example.wifood.presentation.view.login.new_compose_views.SearchPlaceInfoCard
+import com.example.wifood.presentation.view.login.contents.CustomTextField
+import com.example.wifood.presentation.view.login.contents.SearchPlaceInfoCard
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
 import com.example.wifood.presentation.view.search.newSearchComposeView.SearchPlaceEmptyView
 import com.example.wifood.util.getActivity
