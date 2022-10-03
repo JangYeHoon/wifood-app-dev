@@ -35,12 +35,11 @@ import com.example.wifood.presentation.view.placeList.contents.ImagePopUpContent
 @Composable
 fun ImagePopUpView(
     images: List<Uri>,
-    showImagePopupChk: MutableState<Boolean>,
     viewModel: PlaceInfoViewModel = hiltViewModel()
 ) {
     ImagePopUpContent(
         onBackButtonClicked = {
-            showImagePopupChk.value = false
+            viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(-1))
         },
         onRightButtonClicked = {
             viewModel.onEvent(PlaceInfoEvent.ClickPopupLeft)

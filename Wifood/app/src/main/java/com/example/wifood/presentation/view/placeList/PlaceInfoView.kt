@@ -2,6 +2,7 @@ package com.example.wifood.presentation.view.placeList
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -231,12 +232,19 @@ fun PlaceInfoView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
-    BackBottomSheetHideOrMoveView(
-        modalBottomSheetState,
-        "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
-        viewModel,
-        navController
-    )
+    BackHandler(enabled = true) {
+        if (modalBottomSheetState.isVisible) {
+            scope.launch { modalBottomSheetState.hide() }
+        } else if (state.popupImageIdx != -1){
+            viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(-1))
+        } else {
+            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+            navController.popBackStack(
+                "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+                false
+            )
+        }
+    }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -321,7 +329,12 @@ fun PlaceInfoView(
                 Row(
                     modifier = Modifier
                         .clickable {
-                            navController.navigate("${Route.Main.route}?placeLat=${state.place.latitude}&placeLng=${state.place.longitude}")
+//                            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+//                            navController.popBackStack(
+//                                "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+//                                false
+//                            )
+                            navController.popBackStack()
                         }
                         .padding(horizontal = sidePaddingValue.dp)
                 ) {

@@ -51,7 +51,8 @@ class PlaceInfoViewModel @Inject constructor(
                 useCases.DeletePlace(state.place!!.groupId, state.place!!.placeId)
             }
             is PlaceInfoEvent.ClickPlaceImage -> {
-                state = state.copy(popupImageIdx = event.imageIdx)
+                state =
+                    state.copy(popupImageIdx = event.imageIdx)
             }
             is PlaceInfoEvent.ClickPopupLeft -> {
                 state = if (state.popupImageIdx == 0)
