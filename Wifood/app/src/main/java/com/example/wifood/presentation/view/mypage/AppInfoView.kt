@@ -25,10 +25,9 @@ fun AppInfoView(
 
         },
         onServiceAgreementClicked = {
-
+            navController.navigate(Route.Document.route)
         },
         onVersionInfoClicked = {
-            navController.navigate(Route.Document.route)
         }
     )
 }
