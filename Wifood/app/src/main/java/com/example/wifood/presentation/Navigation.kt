@@ -304,6 +304,12 @@ fun Navigation() {
             GroupDescInputView(navController)
         }
         composable(
+            route = "${Route.GroupEdit.route}/{group}",
+            arguments = listOf(navArgument("group") { type = createParcelableNavType<Group>() })
+        ) {
+            GroupEditView(navController)
+        }
+        composable(
             route = Route.SignUp4.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
