@@ -15,6 +15,7 @@ import com.example.wifood.presentation.view.splash.contents.SplashContent
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -59,7 +60,9 @@ fun SplashView(
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = sidePaddingValue.dp)
         ) {
             HorizontalPager(
                 state = pagerState,
