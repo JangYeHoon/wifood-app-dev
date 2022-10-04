@@ -3,9 +3,13 @@ package com.example.wifood.presentation.view.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
+import android.os.Build
+import android.os.Looper
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -35,18 +40,29 @@ import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
+import com.example.wifood.presentation.view.main.UiEvent
 import com.example.wifood.presentation.view.map.component.CustomMarker
 import com.example.wifood.presentation.view.map.util.Colors
+import com.example.wifood.presentation.view.map.util.DefaultLocationClient
+import com.example.wifood.presentation.view.map.util.LocationClient
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
+@RequiresApi(Build.VERSION_CODES.S)
 @MapsComposeExperimentalApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -64,35 +80,14 @@ fun MapView(
         position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 10f)
     }
     val context = LocalContext.current
-    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-
-    fun moveCameraCurrentLocation() {
-        val locationResult = fusedLocationProviderClient.lastLocation
-        locationResult.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                if (task.result != null) {
-                    viewModel.onEvent(MainEvent.LocationChanged(task.result))
-//                    if (placeLat == 10000f) {
-                    viewModel.onEvent(
-                        MainEvent.CameraMove(
-                            LatLng(
-                                task.result.latitude,
-                                task.result.longitude
-                            )
-                        )
-                    )
-//                    }
-                }
-            }
-        }
-    }
+    val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val permissionLauncher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-//                moveCameraCurrentLocation()
+
             } else {
                 Timber.i("false")
             }
@@ -104,30 +99,33 @@ fun MapView(
         )
     }
 
-    LaunchedEffect(true) {
-        // Modified later
-        /*
-           Take permission through popup message
-        */
-        when (PackageManager.PERMISSION_GRANTED) {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) -> {
-//                moveCameraCurrentLocation()
+    DisposableEffect(context) {
+        val locationClient = DefaultLocationClient(
+            context,
+            LocationServices.getFusedLocationProviderClient(context)
+        )
+
+        locationClient
+            .getLocationUpdates(10000L)
+            .catch { e -> e.printStackTrace() }
+            .onEach { location ->
+                viewModel.onEvent(MainEvent.LocationChanged(location))
+                viewModel.onUiEvent(UiEvent.ShowSnackBar("${location.latitude.toString()}, ${location.longitude.toString()}"))
             }
-            else -> {
-                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-        }
-        viewModel.toast.collectLatest { message ->
-            scaffoldState.snackbarHostState.showSnackbar(message)
+            .launchIn(serviceScope)
+
+        onDispose {
+            serviceScope.cancel()
         }
     }
 
-    LaunchedEffect(key1 = camera) {
+    LaunchedEffect(true) {
         viewModel.camera.collectLatest { latlng ->
             camera.position = CameraPosition.fromLatLngZoom(latlng, 16f)
+        }
+
+        viewModel.toast.collectLatest { message ->
+            scaffoldState.snackbarHostState.showSnackbar(message)
         }
     }
 
@@ -139,7 +137,18 @@ fun MapView(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        moveCameraCurrentLocation()
+                        val currentLocation = state.currentLocation!!
+                        scope.launch {
+                            camera.animate(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        currentLocation.latitude,
+                                        currentLocation.longitude
+                                    ), 16f
+                                ), 1000
+                            )
+                        }
+                        viewModel.onUiEvent(UiEvent.ShowSnackBar("${currentLocation.latitude.toString()}, ${currentLocation.longitude.toString()}"))
                     },
                     backgroundColor = Color.White,
                     contentColor = Main
