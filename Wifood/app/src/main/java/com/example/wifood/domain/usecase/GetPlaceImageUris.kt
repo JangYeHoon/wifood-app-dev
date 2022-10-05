@@ -1,7 +1,6 @@
 package com.example.wifood.domain.usecase
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wifood.domain.repository.WifoodRepository

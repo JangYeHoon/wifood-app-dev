@@ -3,7 +3,6 @@ package com.example.wifood.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.compose.runtime.Composable
 
 fun Context.getActivity(): Activity {
     var context = this

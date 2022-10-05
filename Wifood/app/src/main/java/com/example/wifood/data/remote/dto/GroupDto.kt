@@ -1,9 +1,6 @@
 package com.example.wifood.data.remote.dto
 
-import com.example.wifood.data.local.entity.GroupEntity
 import com.example.wifood.domain.model.Group
-import com.example.wifood.domain.model.Place
-import timber.log.Timber
 
 data class GroupDto(
     var groupId: Int = -1,

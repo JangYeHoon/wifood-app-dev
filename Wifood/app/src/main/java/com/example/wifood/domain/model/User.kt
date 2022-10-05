@@ -1,6 +1,8 @@
 package com.example.wifood.domain.model
 
 import android.os.Parcelable
+/* Domain layer is lowest layer. It means domain layer is affected by nothing. */
+//checkPoint
 import com.example.wifood.data.remote.dto.UserDto
 import kotlinx.parcelize.Parcelize
 

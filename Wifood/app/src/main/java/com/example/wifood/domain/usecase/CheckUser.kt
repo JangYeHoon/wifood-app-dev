@@ -2,7 +2,6 @@ package com.example.wifood.domain.usecase
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.wifood.domain.model.User
 import com.example.wifood.domain.repository.WifoodRepository
 import javax.inject.Inject
 

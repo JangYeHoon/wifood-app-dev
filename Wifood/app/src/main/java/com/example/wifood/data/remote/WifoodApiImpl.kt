@@ -9,6 +9,8 @@ import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.model.TMapSearch
+/* Don't ref presentation layer. Must be fixed */
+//checkPoint
 import com.example.wifood.presentation.view.main.util.MainData
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot

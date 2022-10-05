@@ -1,9 +1,5 @@
 package com.example.wifood.di
 
-import android.app.Application
-import androidx.room.Insert
-import androidx.room.Room
-import com.example.wifood.data.local.dao.WifoodDatabase
 import com.example.wifood.data.remote.WifoodApi
 import com.example.wifood.data.remote.WifoodApiImpl
 import com.example.wifood.data.repository.WifoodRepositoryImpl
@@ -18,9 +14,6 @@ import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
-import io.ktor.client.features.websocket.*
 import javax.inject.Singleton
 
 @Module
@@ -75,8 +68,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(db: WifoodDatabase, api: WifoodApi): WifoodRepository {
-        return WifoodRepositoryImpl(db.wifoodDao, api)
+    fun provideRepository(api: WifoodApi): WifoodRepository {
+        return WifoodRepositoryImpl(api)
     }
 
     @Provides
@@ -89,15 +82,5 @@ object AppModule {
     @Provides
     fun provideFirebase(): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
-    }
-
-    @Provides
-    @Singleton
-    fun provideDatabase(app: Application): WifoodDatabase {
-        return Room.databaseBuilder(
-            app,
-            WifoodDatabase::class.java,
-            WifoodDatabase.DATABASE_NAME
-        ).build()
     }
 }

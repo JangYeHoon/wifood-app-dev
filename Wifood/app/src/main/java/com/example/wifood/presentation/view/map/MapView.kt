@@ -62,7 +62,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
-@RequiresApi(Build.VERSION_CODES.S)
+@RequiresApi(Build.VERSION_CODES.O)
 @MapsComposeExperimentalApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

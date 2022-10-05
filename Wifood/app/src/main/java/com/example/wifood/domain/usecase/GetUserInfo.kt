@@ -1,6 +1,5 @@
 package com.example.wifood.domain.usecase
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wifood.domain.model.User

@@ -2,7 +2,6 @@ package com.example.wifood.domain.usecase
 
 import com.example.wifood.domain.repository.WifoodRepository
 import com.example.wifood.domain.usecase.util.ValidationResult
-import com.example.wifood.util.Resource
 import javax.inject.Inject
 
 class ValidateNickname @Inject constructor(
