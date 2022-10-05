@@ -18,7 +18,7 @@ data class MainState(
     val selected: String = NavItem.Map.id,
     val selectedGroupSheet: Group? = null,
     val isLoading: Boolean = false,
-    val properties: MapProperties = MapProperties(),
+    val properties: MapProperties = MapProperties(isMyLocationEnabled = true),
     val selectedGroupId: Int = 0,
     val currentLocation: Location? = null,
     val field: List<com.google.android.libraries.places.api.model.Place.Field> = listOf(

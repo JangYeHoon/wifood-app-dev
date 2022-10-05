@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val apikey = BuildConfig.API_KEY
-        
+
         ActivityCompat.requestPermissions(
             this,
             arrayOf(

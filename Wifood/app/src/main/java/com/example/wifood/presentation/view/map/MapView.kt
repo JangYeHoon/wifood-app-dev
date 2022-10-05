@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -82,17 +84,6 @@ fun MapView(
     val context = LocalContext.current
     val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    val permissionLauncher =
-        rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-
-            } else {
-                Timber.i("false")
-            }
-        }
-
     val uiSettings = remember {
         MapUiSettings(
             zoomControlsEnabled = false
@@ -106,7 +97,7 @@ fun MapView(
         )
 
         locationClient
-            .getLocationUpdates(10000L)
+            .getLocationUpdates(3000L)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 viewModel.onEvent(MainEvent.LocationChanged(location))
@@ -175,7 +166,7 @@ fun MapView(
                 modifier = Modifier.matchParentSize(),
                 properties = state.properties,
                 uiSettings = uiSettings,
-                cameraPositionState = camera
+                cameraPositionState = camera,
             ) {
                 state.places.forEach { place ->
                     CustomMarker(
@@ -222,14 +213,14 @@ fun MapView(
                         }
                     )
                 }
-                state.currentLocation?.let {
-                    CustomMarker(
-                        context = context,
-                        position = LatLng(it.latitude, it.longitude),
-                        title = "CL",
-                        iconResourceId = R.drawable.ic_current_location
-                    )
-                }
+//                position.apply {
+//                    CustomMarker(
+//                        context = context,
+//                        position = position,
+//                        title = "CL",
+//                        iconResourceId = R.drawable.ic_current_location
+//                    )
+//                }
                 state.searchResultLatLng?.let {
                     Marker(
                         rememberMarkerState(position = LatLng(it.latitude, it.longitude)),
@@ -280,7 +271,7 @@ fun MapView(
                     )
                 }
             }
-            itemsIndexed(state.groups) { i, group ->
+            itemsIndexed(state.groups) { i, group    ->
                 TextButton(
                     modifier = Modifier
                         .padding(5.dp)
