@@ -14,4 +14,5 @@ object SignUpData {
     var corianderClicked: Boolean = false
     var mintChokoClicked: Boolean = false
     var eggplantClicked: Boolean = false
+    var exist: Boolean = false
 }

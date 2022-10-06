@@ -30,10 +30,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.ConcurrentModificationException
 
-/**
- * 새로운 로그인 프로세스 로직을 위한 기능 개발용 임시 뷰모델 클래스입니다.
- * 테스트용이며, 네이밍은 추후 변경가능.
- */
+
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val useCases: WifoodUseCases,
@@ -41,15 +38,6 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
     private val tMapTapi = TMapTapi(applicationContext)
 
-    /**
-     * SignUp 프로세스(로직) 진행 도중 저장해야 할 필요가 있는 데이터(=상태)가 정의된 State 클래스
-     * phoneNumber : 사용자의 전화번호
-     * phoneNumberError : 전화번호 검증에 대한 에러 핸들링을 위한 프로퍼티
-     * address : 사용자의 주소
-     * birthday : 사용자의 생년월일
-     * birthdayError : 생년월일 검증에 대한 에러 핸들링을 위한 프로퍼티
-     * gender : 사용자의 성별
-     */
     private val _state = mutableStateOf(SignUpState())
     val state: State<SignUpState> = _state
 
@@ -60,16 +48,6 @@ class SignUpViewModel @Inject constructor(
         tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
     }
 
-    /**
-     * SignUp 프로세스(로직) 진행 도중 사용자에 의해 발생할 수 있는 이벤트가 정의된 Event 클래스
-     * PhoneNumChanged : 사용자가 전화번호 입력란의 값을 변경
-     * AddressChanged : 사용자가 주소 입력란의 값을 변경
-     * BirthdayChanged : 사용자가 생년월일 입력란의 값을 변경
-     * GenderClicked : 사용자가 성별 버튼을 클릭
-     * RequestCertNumber : 사용자가 인증번호를 요청
-     * Verity : 사용자가 인증번호 검증을 요청
-     * ShowDocument : 사용자가 개인정보처리방침 문서를 요청
-     */
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.PhoneNumChanged -> {
@@ -225,7 +203,9 @@ class SignUpViewModel @Inject constructor(
                 // 1 = Exist, 2 = Loading, 0 = Error
                 useCases.CheckUser(_state.value.phoneNumber).observeForever {
                     // TODO
-                    if (it == 1) showSnackBar("Already exists number")
+                    if (it == 0) showSnackBar("Unknown error occur!")
+
+                    if (it == 1) SignUpData.exist = true
 
                     _state.value = state.value.copy(
                         isLoading = it == 2,
@@ -263,19 +243,19 @@ class SignUpViewModel @Inject constructor(
      * 1. 타이머가 0:00 이면 실패
      * 2. 인증번호 검증
      */
-    private fun tempVerify(certNumber: String, timer: Int): Boolean {
+    private fun tempVerify(certNumber: String, timer: Int) {
 //        if (timer == 0) {
 //            viewModelScope.launch {
 //                validateEventChannel.send(ValidationEvent.Error("제한시간이 초과되었습니다. 다시 시도해주세요."))
 //            }
-//            return false
+//        return
 //        }
 //        if (certNumber != _state.value.reqCertNumber) {
 //            viewModelScope.launch {
 //                validateEventChannel.send(ValidationEvent.Error("인증번호가 일치하지 않습니다."))
 //            }
-//            return false
+//        return
 //        }
-        return true
+//        validateEventChannel.send(ValidationEvent.Success())
     }
 }

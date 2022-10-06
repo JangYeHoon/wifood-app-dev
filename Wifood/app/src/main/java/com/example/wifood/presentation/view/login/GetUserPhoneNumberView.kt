@@ -14,6 +14,7 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.contents.GetUserPhoneNumberContent
+import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.util.composableActivityViewModel
@@ -79,7 +80,7 @@ fun GetUserPhoneNumberView(
                     }
                 }
             },
-            isButtonOn = (state.phoneValidation == -1)
+            isButtonOn = (state.phoneValidation == -1 || SignUpData.exist)
         )
     }
 }

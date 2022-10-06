@@ -8,8 +8,11 @@ import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.contents.GetAuthenticationNumberContent
+import com.example.wifood.presentation.view.login.util.SignUpData
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.util.composableActivityViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -19,8 +22,8 @@ fun GetAuthenticationNumberView(
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
-
     var timer by remember { mutableStateOf(150) }
+
     DisposableEffect(true) {
         viewModel.onEvent(SignUpEvent.RequestCertNumber)
 
@@ -39,7 +42,25 @@ fun GetAuthenticationNumberView(
     LaunchedEffect(state.certNumber) {
         if (state.certNumber.length == 4) {
             viewModel.onEvent(SignUpEvent.Verify(state.certNumber, timer))
-            navController.navigate(Route.Agreement.route)
+            if (SignUpData.exist) {
+                navController.navigate(Route.Main.route)
+            } else {
+                navController.navigate(Route.Agreement.route)
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.validationEvents.collectLatest { event ->
+            when (event) {
+                is ValidationEvent.Success -> {
+                    if (SignUpData.exist) {
+                        navController.navigate(Route.Main.route)
+                    } else {
+                        navController.navigate(Route.Agreement.route)
+                    }
+                }
+            }
         }
     }
 
