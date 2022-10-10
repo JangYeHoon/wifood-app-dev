@@ -30,9 +30,7 @@ fun DeveloperInfoContent(
         MyPageTopAppBar(
             titleText = "개발자 정보",
             leftButtonOn = true,
-            leftButtonClicked = {
-                onBackButtonClicked
-            }
+            leftButtonClicked = onBackButtonClicked
         )
 
         Column(

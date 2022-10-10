@@ -7,12 +7,16 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.mypage.contents.CheckWithdrawBottomSheetView
 import com.example.wifood.presentation.view.mypage.contents.ModifyMyInfoContent
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -25,6 +29,8 @@ fun ModifyMyInfoView(
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
+
+
     ModalBottomSheetLayout(
         sheetContent = {
             CheckWithdrawBottomSheetView(
@@ -34,8 +40,19 @@ fun ModifyMyInfoView(
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
     ) {
+        val viewModel: MyPageViewModel = hiltViewModel()
+
+        LaunchedEffect(true) {
+            viewModel.validationEvents.collectLatest { event ->
+                when (event) {
+                    is ValidationEvent.Success -> {
+                        navController.navigate(Route.GetPhoneNumber.route)
+                    }
+                }
+            }
+        }
+
         ModifyMyInfoContent(
-            navController,
             onBackButtonClicked = {
                 navController.popBackStack()
             },

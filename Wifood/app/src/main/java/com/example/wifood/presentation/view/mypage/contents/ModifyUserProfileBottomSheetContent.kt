@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun ProfileBottomSheet(
+fun ModifyUserProfileBottomSheetContent(
     navController: NavController,
     modalBottomSheetState: ModalBottomSheetState,
     viewModel: MyPageViewModel = hiltViewModel()

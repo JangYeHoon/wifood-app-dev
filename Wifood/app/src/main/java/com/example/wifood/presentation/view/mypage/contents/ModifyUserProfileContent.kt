@@ -39,19 +39,20 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ModifyUserProfileContent(
-    viewModel: MyPageViewModel = hiltViewModel(),
+    //viewModel: MyPageViewModel = hiltViewModel(),
+    usernickNameText: String = "요고247",
+    onUserNicknameChanged: (String) -> Unit,
     onBackButtonClicked: () -> Unit = {},
     onCameraButtonClicked: () -> Unit = {},
-    onNicknameTextChanged: (String) -> Unit = {},
     onCompleteButtonClicked: () -> Unit = {}
 ) {
-    val scrollState = rememberScrollState()
     val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
+    /*
     var customSheetContent by remember { mutableStateOf(sheetContent) }
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val state = viewModel.state.value
+     */
     val interactionSource = MutableInteractionSource()
 
     Column(
@@ -135,10 +136,8 @@ fun ModifyUserProfileContent(
             )
             Spacer(Modifier.height(7.dp))
             TextField(
-                value = state.nickname,
-                onValueChange = {
-                    viewModel.onEvent(MyPageEvent.NicknameChanged(it))
-                },
+                value = usernickNameText,
+                onValueChange = onUserNicknameChanged,
                 modifier = Modifier
                     .border(
                         width = 1.dp,

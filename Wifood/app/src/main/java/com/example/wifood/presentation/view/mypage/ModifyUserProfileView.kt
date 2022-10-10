@@ -62,6 +62,10 @@ fun ModifyUserProfileView(
     }
 
     ModifyUserProfileContent(
+        usernickNameText = viewModel.state.value.nickname,
+        onUserNicknameChanged = {
+            viewModel.onEvent(MyPageEvent.NicknameChanged(it))
+        },
         onBackButtonClicked = {
             navController.popBackStack()
         },
@@ -77,6 +81,4 @@ fun ModifyUserProfileView(
             viewModel.onEvent(MyPageEvent.ModifyProfile)
         }
     )
-
-
 }

@@ -38,7 +38,8 @@ sealed class Route(val route: String) {
     object ModifyPhoneNumber : Route("modifyphonenumber")
     object ModifyAddress : Route("modifyaddress")
     object ModifyFavor : Route("modifyfavor")
-    object Document : Route("document")
+    object ServiceUsingAgreement : Route("serviceusingagreement")
+    object DeveloperInfo : Route("developerinfo")
 
     fun withArgs(vararg args: String): String {
         return buildString {
