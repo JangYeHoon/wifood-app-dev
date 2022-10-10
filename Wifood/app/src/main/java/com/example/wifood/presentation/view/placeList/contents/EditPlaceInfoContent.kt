@@ -11,10 +11,11 @@ import androidx.compose.ui.unit.*
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.placeList.RatedMode
+import com.example.wifood.presentation.view.placeList.componentGroup.YOGOSubTextFieldWithButton
 import com.example.wifood.view.ui.theme.*
 
 @Composable
-fun NewEditPlaceView(
+fun EditPlaceInfoContent(
 
 ){
     val scrollState = rememberScrollState()
@@ -150,30 +151,5 @@ fun NewEditPlaceView(
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
-    }
-}
-
-
-@Composable
-fun YOGOSubTextFieldWithButton(
-    titleText: String,
-    inputText: String = "",
-    placeholder: String = "맛집 그룹을 입력해주세요",
-    onValueChange: (String) -> Unit = {},
-    onTextFieldClick: () -> Unit = {}
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        YOGOTextPM15(
-            text = titleText
-        )
-        YOGOBaseTextField(
-            text = inputText,
-            onValueChange = onValueChange,
-            placeholderText = placeholder,
-            selectable = true,
-            selectFunction = onTextFieldClick
-        )
     }
 }

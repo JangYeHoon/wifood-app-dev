@@ -30,7 +30,7 @@ import com.example.wifood.presentation.util.shouldShowRationale
 import com.example.wifood.presentation.view.login.contents.CustomTextField
 import com.example.wifood.presentation.view.login.contents.SearchPlaceInfoCard
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
-import com.example.wifood.presentation.view.search.newSearchComposeView.SearchPlaceEmptyView
+import com.example.wifood.presentation.view.search.contents.SearchPlaceEmptyContent
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
@@ -175,7 +175,7 @@ fun SearchPlaceComposeView(
                     }
                 }
             } else if (formState.searchResults.isNotEmpty() && formState.searchResults[0].name == "") {
-                SearchPlaceEmptyView(
+                SearchPlaceEmptyContent(
                     onButtonClick = {
                         scope.launch {
                             modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)

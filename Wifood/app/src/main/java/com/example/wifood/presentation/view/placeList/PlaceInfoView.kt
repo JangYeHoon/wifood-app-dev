@@ -1,31 +1,23 @@
 package com.example.wifood.presentation.view.placeList
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -35,7 +27,7 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoAbstractView
+import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoAbstractComponent
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoShowMenu
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
@@ -321,7 +313,7 @@ fun PlaceInfoView(
                 )
 
                 // Place abstract and location view
-                PlaceInfoAbstractView(
+                PlaceInfoAbstractComponent(
                     placeInfoGroupName = state.group!!.name,
                     placeInfoName = state.place!!.name,
                     placeInfoMenuListText = state.place.menu,

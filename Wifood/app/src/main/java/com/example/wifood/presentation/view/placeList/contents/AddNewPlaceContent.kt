@@ -16,8 +16,7 @@ import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.view.ui.theme.Gray01Color
 
 @Composable
-fun AddNewPlaceCompleteView(
-
+fun AddNewPlaceContent(
 ){
     Box(
         modifier = Modifier.fillMaxSize(),
