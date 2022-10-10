@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SearchPlaceComposeView(
+fun SearchPlaceView(
     navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
@@ -139,7 +139,9 @@ fun SearchPlaceComposeView(
                     searchClickChkForSearchResult.value = true
                     keyboardController?.hide()
                 },
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = {
+                    navController.popBackStack()
+                },
                 placeholder = "맛집, 주소 검색",
                 keyboardActions = KeyboardActions(
                     onSearch = {

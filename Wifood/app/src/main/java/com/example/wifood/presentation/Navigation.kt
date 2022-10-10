@@ -32,7 +32,7 @@ import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputR
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
 import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
-import com.example.wifood.presentation.view.search.SearchPlaceComposeView
+import com.example.wifood.presentation.view.search.SearchPlaceView
 import com.example.wifood.presentation.view.splash.SplashView
 import com.example.wifood.presentation.view.splash.StartView
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -180,7 +180,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SearchPlaceComposeView(navController)
+            SearchPlaceView(navController)
         }
         composable(
             route = Route.EditProfile.route,
