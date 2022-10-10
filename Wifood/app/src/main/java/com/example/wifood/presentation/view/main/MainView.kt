@@ -30,15 +30,21 @@ import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.MapTopAppBar
+import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.MapView
+import com.example.wifood.presentation.view.map.util.DefaultLocationClient
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalPermissionsApi
@@ -50,6 +56,7 @@ fun MainView(
     navBackStackEntry: NavBackStackEntry,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val state = viewModel.state
     val scaffoldState = rememberScaffoldState()
     val modalBottomSheetState =
@@ -57,11 +64,32 @@ fun MainView(
     var exitWaitTime = 0L
     val scope = rememberCoroutineScope()
     val activity = (LocalContext.current as? Activity)
+    val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val placeLng = navBackStackEntry.arguments?.getFloat("placeLng")!!
     val placeLat = navBackStackEntry.arguments?.getFloat("placeLat")!!
     if (placeLng != 10000f) {
         viewModel.onEvent(MainEvent.CameraMove(LatLng(placeLat.toDouble(), placeLng.toDouble())))
+    }
+
+    DisposableEffect(context) {
+        val locationClient = DefaultLocationClient(
+            context,
+            LocationServices.getFusedLocationProviderClient(context)
+        )
+
+        locationClient
+            .getLocationUpdates(3000L)
+            .catch { e -> e.printStackTrace() }
+            .onEach { location ->
+                MainData.location = location
+                viewModel.onEvent(MainEvent.LocationChanged(location))
+            }
+            .launchIn(serviceScope)
+
+        onDispose {
+            serviceScope.cancel()
+        }
     }
 
     LaunchedEffect(key1 = true) {

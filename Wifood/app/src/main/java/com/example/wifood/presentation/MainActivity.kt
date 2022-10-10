@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val apikey = BuildConfig.API_KEY
+        val apikey = BuildConfig.TMAP_KEY
 
         ActivityCompat.requestPermissions(
             this,

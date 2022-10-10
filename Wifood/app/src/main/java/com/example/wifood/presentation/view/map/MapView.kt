@@ -7,6 +7,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Looper
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -14,6 +15,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -40,9 +42,11 @@ import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.Route
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.main.UiEvent
+import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.component.CustomMarker
 import com.example.wifood.presentation.view.map.util.Colors
 import com.example.wifood.presentation.view.map.util.DefaultLocationClient
@@ -58,10 +62,7 @@ import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
 import com.google.maps.android.compose.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -73,41 +74,28 @@ fun MapView(
     placeLat: Float,
     viewModel: MainViewModel = hiltViewModel()
 ) {
+    var isLoading by remember { mutableStateOf(true) }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val state = viewModel.state
     val listState = rememberLazyListState()
     var selectedMenu by remember { mutableStateOf(-1) }
     val camera = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng((-34).toDouble(), 151.toDouble()), 10f)
+        scope.launch {
+            delay(1000L)
+            isLoading = false
+            MainData.location?.let {
+                position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
+            }
+        }
     }
     val context = LocalContext.current
-    val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     val uiSettings = remember {
         MapUiSettings(
-            zoomControlsEnabled = false
+            zoomControlsEnabled = false,
+            myLocationButtonEnabled = false
         )
-    }
-
-    DisposableEffect(context) {
-        val locationClient = DefaultLocationClient(
-            context,
-            LocationServices.getFusedLocationProviderClient(context)
-        )
-
-        locationClient
-            .getLocationUpdates(3000L)
-            .catch { e -> e.printStackTrace() }
-            .onEach { location ->
-                viewModel.onEvent(MainEvent.LocationChanged(location))
-                viewModel.onUiEvent(UiEvent.ShowSnackBar("${location.latitude.toString()}, ${location.longitude.toString()}"))
-            }
-            .launchIn(serviceScope)
-
-        onDispose {
-            serviceScope.cancel()
-        }
     }
 
     LaunchedEffect(true) {
@@ -118,6 +106,10 @@ fun MapView(
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
         }
+    }
+
+    if (isLoading) {
+        ProgressIndicator()
     }
 
     Scaffold(
@@ -213,14 +205,14 @@ fun MapView(
                         }
                     )
                 }
-//                position.apply {
-//                    CustomMarker(
-//                        context = context,
-//                        position = position,
-//                        title = "CL",
-//                        iconResourceId = R.drawable.ic_current_location
-//                    )
-//                }
+                state.currentLocation?.let {
+                    CustomMarker(
+                        context = context,
+                        position = LatLng(it.latitude, it.longitude),
+                        title = "현재 위치",
+                        iconResourceId = R.drawable.ic_current_user_location_icon
+                    )
+                }
                 state.searchResultLatLng?.let {
                     Marker(
                         rememberMarkerState(position = LatLng(it.latitude, it.longitude)),
@@ -271,7 +263,7 @@ fun MapView(
                     )
                 }
             }
-            itemsIndexed(state.groups) { i, group    ->
+            itemsIndexed(state.groups) { i, group ->
                 TextButton(
                     modifier = Modifier
                         .padding(5.dp)

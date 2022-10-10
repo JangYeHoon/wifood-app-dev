@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.map.component
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import com.example.wifood.presentation.view.map.CurrentLocationUnion
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MarkerInfoWindow
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberMarkerState
 
 @Composable
@@ -32,6 +34,7 @@ fun CustomMarker(
         visible = visible,
         content = { CurrentLocationUnion(title, review, rating) }
     )
+
 }
 
 private fun bitmapDescriptorFromVector(

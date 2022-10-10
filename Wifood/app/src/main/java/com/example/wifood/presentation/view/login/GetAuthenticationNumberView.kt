@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
@@ -43,6 +44,7 @@ fun GetAuthenticationNumberView(
         if (state.certNumber.length == 4) {
             viewModel.onEvent(SignUpEvent.Verify(state.certNumber, timer))
             if (SignUpData.exist) {
+                WifoodApp.pref.setString("Initial_Flag", "1")
                 navController.navigate(Route.Main.route)
             } else {
                 navController.navigate(Route.Agreement.route)
@@ -55,6 +57,7 @@ fun GetAuthenticationNumberView(
             when (event) {
                 is ValidationEvent.Success -> {
                     if (SignUpData.exist) {
+                        WifoodApp.pref.setString("Initial_Flag", "1")
                         navController.navigate(Route.Main.route)
                     } else {
                         navController.navigate(Route.Agreement.route)

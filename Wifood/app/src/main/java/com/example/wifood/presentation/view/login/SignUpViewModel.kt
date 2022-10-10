@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wifood.BuildConfig
 import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
@@ -45,7 +46,7 @@ class SignUpViewModel @Inject constructor(
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
+        tMapTapi.setSKTMapAuthentication(BuildConfig.TMAP_KEY)
     }
 
     fun onEvent(event: SignUpEvent) {

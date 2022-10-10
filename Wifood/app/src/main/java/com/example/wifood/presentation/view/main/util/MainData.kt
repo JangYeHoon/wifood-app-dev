@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.main.util
 
+import android.location.Location
 import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.Place
@@ -29,4 +30,5 @@ object MainData {
     var places: List<Place> = emptyList()
     var pre: String = ""
     var image: String = ""
+    var location: Location? = null
 }
