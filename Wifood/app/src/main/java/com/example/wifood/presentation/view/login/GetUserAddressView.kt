@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.login
 
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +40,12 @@ fun GetUserAddressView(
     navController: NavController,
     viewModel: SignUpViewModel = composableActivityViewModel()
 ) {
+    LaunchedEffect(key1 = true) {
+        if (Build.VERSION.SDK_INT < 24) {
+            SignUpData.address = "서초동"
+            navController.navigate(Route.SignUp4.route)
+        }
+    }
     GetUserAddressContent(
         addressText = SignUpData.address,
         onAddressClicked = {

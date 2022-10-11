@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.search
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
@@ -77,6 +79,20 @@ fun SearchPlaceView(
     }
 
     LaunchedEffect(key1 = true) {
+        if (Build.VERSION.SDK_INT < 24) {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                "searchResult",
+                TMapSearch(
+                    fullAddress = "서울 동작구 사당로16길 76",
+                    name = "파스타입니다 사당점",
+                    latitude = 37.48049184,
+                    longitude = 126.97157964,
+                    bizName = "음식점,전문음식점",
+                    oldAddress = "서울특별시 동작구 사당동 300-78"
+                )
+            )
+            navController.popBackStack()
+        }
         checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         if (locationPermissionGranted) {
             val locationResult = fusedLocationProviderClient.lastLocation
