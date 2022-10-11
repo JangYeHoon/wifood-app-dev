@@ -42,7 +42,7 @@ import com.example.wifood.view.ui.theme.*
 import com.google.gson.Gson
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun MapContent(
     onSearchPlaceIconClicked: () -> Unit = {},

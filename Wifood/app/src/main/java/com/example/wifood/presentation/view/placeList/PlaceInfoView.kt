@@ -27,8 +27,8 @@ import com.example.wifood.R
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.*
 import com.example.wifood.presentation.view.placeList.component.PlaceInfoBottomSheetContent
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoAbstractComponent
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.PlaceInfoShowMenu
+import com.example.wifood.presentation.view.placeList.componentGroup.PlaceInfoAbstractComponent
+import com.example.wifood.presentation.view.placeList.componentGroup.PlaceInfoShowMenu
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.maps.model.CameraPosition

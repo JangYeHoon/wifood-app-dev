@@ -13,24 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOSwitch
 import com.example.wifood.presentation.view.component.YOGOTextPM15
-import com.example.wifood.presentation.view.groupComponent.SwitchWithText
 import com.example.wifood.presentation.view.placeList.componentGroup.DoubleButton
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton_SB
-import com.example.wifood.ui.theme.fontMiddleSchool
-import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.wifood.presentation.view.component.YOGOTextPM15
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOBaseTextField
-
+import com.example.wifood.presentation.view.placeList.component.YOGOBaseTextField
 
 @Composable
 fun YOGOSubTextFieldWithButton(

@@ -74,9 +74,6 @@ fun ModifyUserProfileView(
                 takePhotoFromAlbumLauncher.launch(takePhotoFromAlbumIntent)
             }
         },
-        onNicknameTextChanged = {
-
-        },
         onCompleteButtonClicked = {
             viewModel.onEvent(MyPageEvent.ModifyProfile)
         }
