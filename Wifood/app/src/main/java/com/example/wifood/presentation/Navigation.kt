@@ -84,7 +84,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            MapView(navController, 10000f)
+            MapView(navController)
         }
         composable(
             route = Route.MyPage.route,

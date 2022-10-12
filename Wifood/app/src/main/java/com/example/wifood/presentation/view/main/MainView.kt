@@ -2,15 +2,11 @@ package com.example.wifood.presentation.view.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.presentation.util.*
 import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
@@ -33,13 +28,11 @@ import com.example.wifood.presentation.view.component.MapTopAppBar
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.map.util.DefaultLocationClient
+import com.example.wifood.presentation.view.placeList.PlaceListComposeView
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
-import com.example.wifood.presentation.view.placeList.PlaceListComposeView
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -65,12 +58,6 @@ fun MainView(
     val scope = rememberCoroutineScope()
     val activity = (LocalContext.current as? Activity)
     val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    val placeLng = navBackStackEntry.arguments?.getFloat("placeLng")!!
-    val placeLat = navBackStackEntry.arguments?.getFloat("placeLat")!!
-    if (placeLng != 10000f) {
-        viewModel.onEvent(MainEvent.CameraMove(LatLng(placeLat.toDouble(), placeLng.toDouble())))
-    }
 
     DisposableEffect(context) {
         val locationClient = DefaultLocationClient(
@@ -188,7 +175,7 @@ fun MainView(
         ) {
             when (state.selected) {
                 NavItem.Map.id -> {
-                    MapView(navController, placeLat)
+                    MapView(navController)
                 }
                 NavItem.List.id -> {
                     PlaceListComposeView(modalBottomSheetState, navController)

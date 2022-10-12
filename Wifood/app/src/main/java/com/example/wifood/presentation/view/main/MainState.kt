@@ -28,5 +28,6 @@ data class MainState(
     ),
     val searchResultName: String = "",
     val searchResultLatLng: LatLng? = null,
+    val searchPlaceCameraMoveChk: Boolean = true,
     val placeImages: MutableMap<Int, Uri> = mutableMapOf()
 )

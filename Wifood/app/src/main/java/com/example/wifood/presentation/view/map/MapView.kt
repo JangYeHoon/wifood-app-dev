@@ -71,7 +71,6 @@ import timber.log.Timber
 @Composable
 fun MapView(
     navController: NavController,
-    placeLat: Float,
     viewModel: MainViewModel = hiltViewModel()
 ) {
     var isLoading by remember { mutableStateOf(true) }

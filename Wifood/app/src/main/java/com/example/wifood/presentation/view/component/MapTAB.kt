@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun MapTopAppBar(
@@ -40,10 +42,13 @@ fun MapTopAppBar(
     val searchPlaceViewResult =
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<TMapSearch>("searchResult")
             ?.observeAsState()
-    searchPlaceViewResult?.value?.let {
-        scope.launch {
-            viewModel.onEvent(MainEvent.SearchClicked(it))
-            viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
+
+    LaunchedEffect(searchPlaceViewResult) {
+        searchPlaceViewResult?.value?.let {
+            scope.launch {
+                viewModel.onEvent(MainEvent.SearchClicked(it))
+                viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
+            }
         }
     }
 
