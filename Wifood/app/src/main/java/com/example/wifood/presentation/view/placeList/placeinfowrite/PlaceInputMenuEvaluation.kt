@@ -192,7 +192,7 @@ fun PlaceInputMenuEvaluation(
                 Spacer(Modifier.weight(1f))
                 DoubleButton(
                     leftButtonText = "건너뛰기",
-                    leftButtonOn = true,
+                    leftButtonOn = viewModel.checkForm(),
                     leftButtonClicked = {
                         if (viewModel.checkForm()) {
                             val placeJson = Uri.encode(Gson().toJson(state.place))
@@ -200,7 +200,7 @@ fun PlaceInputMenuEvaluation(
                         }
                     },
                     rightButtonText = "리뷰 입력하기",
-                    rightButtonOn = true,
+                    rightButtonOn = viewModel.checkForm(),
                     rightButtonClicked = {
                         if (viewModel.checkForm()) {
                             val placeJson = Uri.encode(Gson().toJson(state.place))

@@ -91,6 +91,8 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     state = state.copy(places = placeList)
+                } else {
+                    state = state.copy(groups = emptyList(), places = emptyList())
                 }
                 Timber.i("get user from firebase : " + state.user.toString())
 

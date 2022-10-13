@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.BuildConfig
+import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
@@ -152,6 +153,15 @@ class SignUpViewModel @Inject constructor(
                     useCases.InsertUser(SignUpData.user).collectLatest { result ->
                         when (result) {
                             is Resource.Success -> {
+                                useCases.InsertGroup(
+                                    GroupDto(
+                                        1,
+                                        SignUpData.phoneNumber,
+                                        "맛집리스트",
+                                        "나만의 맛집",
+                                        1
+                                    ).toGroup()
+                                )
                                 validateEventChannel.send(ValidationEvent.Success)
                                 _state.value = state.value.copy(isLoading = false)
                             }

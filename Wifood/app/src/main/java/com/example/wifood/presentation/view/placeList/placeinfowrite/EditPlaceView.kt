@@ -373,7 +373,8 @@ fun EditPlaceView(
                                 if (viewModel.checkForm())
                                     viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceEditBtnClick)
                             }
-                        }
+                        },
+                        activate = viewModel.checkForm() && formState.placeName != "맛집 선택" && formState.groupName != "그룹 선택",
                     )
                     Spacer(Modifier.height(buttonBottomValue.dp))
                 }

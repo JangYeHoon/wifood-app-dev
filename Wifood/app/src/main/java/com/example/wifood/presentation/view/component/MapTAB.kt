@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.component
 
 import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -62,7 +63,12 @@ fun MapTopAppBar(
                 color = Gray01Color
             )
         },
-        modifier = Modifier.height(48.dp),
+        modifier = Modifier
+            .height(48.dp)
+            .clickable {
+                val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                navController.navigate("${Route.Search.route}/${placeJson}")
+            },
         navigationIcon = {
             IconButton(
                 onClick = {
