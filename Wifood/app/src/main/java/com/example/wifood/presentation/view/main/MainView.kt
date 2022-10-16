@@ -111,11 +111,11 @@ fun MainView(
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                when (state.selected) {
+                /*when (state.selected) {
                     NavItem.Map.id -> {
                         MapTopAppBar(navController)
                     }
-                }
+                }*/
             },
             bottomBar = {
                 YOGOBottomBar(

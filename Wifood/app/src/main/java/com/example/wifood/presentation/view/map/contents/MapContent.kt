@@ -58,6 +58,11 @@ fun MapContent(
                 pushListClicked = bottomListClicked,
                 pushSettingClicked = bottomSettingClicked
             )
+        },
+        floatingActionButton = {
+            YOGOFloatingActionGroup(
+
+            )
         }
     ) {
         Column(
@@ -182,7 +187,7 @@ fun SelectPlaceGroupContent(
             )
             .padding(
                 horizontal = 14.dp,
-                vertical = 10.dp
+                vertical = 5.dp
             )
     ){
         MainButtonToggle(
@@ -421,7 +426,7 @@ fun YOGOFloatingActionGroup(
                 },
             tint = Color.Unspecified
         )
-        Spacer(Modifier.height(11.dp))
-        Spacer(Modifier.height(bottomBarHeight.dp))
+        //Spacer(Modifier.height(0.dp))
+        //Spacer(Modifier.height(bottomBarHeight.dp))
     }
 }
