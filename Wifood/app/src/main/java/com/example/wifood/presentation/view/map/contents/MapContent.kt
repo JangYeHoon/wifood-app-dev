@@ -1,28 +1,19 @@
 package com.example.wifood.presentation.view.map
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -34,12 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
-import com.example.wifood.data.remote.dto.PlaceDto
-import com.example.wifood.presentation.util.Route
-import com.example.wifood.presentation.view.component.*
+import com.example.wifood.presentation.view.component.MainButtonToggle
+import com.example.wifood.presentation.view.component.SingleRatingStar
+import com.example.wifood.presentation.view.main.conponents.YOGOBottomBar
 import com.example.wifood.ui.theme.mainFont
-import com.example.wifood.view.ui.theme.*
-import com.google.gson.Gson
+import com.example.wifood.view.ui.theme.Black2Color
+import com.example.wifood.view.ui.theme.EnableColor
+import com.example.wifood.view.ui.theme.Gray01Color
+import com.example.wifood.view.ui.theme.bottomBarHeight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
@@ -50,6 +43,7 @@ fun MapContent(
     onSearchTextValueChanged: (String) -> Unit = {},
     onSearchIconClicked: () -> Unit = {},
     placeList: List<String> = listOf("회사근처맛집", "테이크아웃"),
+    bottomBarSelected: String = "map",
     bottomMapClicked: () -> Unit = {},
     bottomListClicked: () -> Unit = {},
     bottomSettingClicked: () -> Unit = {}
@@ -58,12 +52,10 @@ fun MapContent(
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = {
-            AppBottomContent(
-                pushMap = true,
+            YOGOBottomBar(
+                selected = bottomBarSelected,
                 pushMapClicked = bottomMapClicked,
-                pushList = false,
                 pushListClicked = bottomListClicked,
-                pushSetting = false,
                 pushSettingClicked = bottomSettingClicked
             )
         }
@@ -388,106 +380,6 @@ fun UserPlaceLocationIcon(
     }
 }
 
-//@Preview(showBackground = true)
-@Composable
-fun AppBottomContent(
-    pushMap: Boolean = true,
-    pushMapClicked: () -> Unit = {},
-    pushList: Boolean = false,
-    pushListClicked: () -> Unit = {},
-    pushSetting: Boolean = false,
-    pushSettingClicked: () -> Unit = {}
-) {
-    Row(
-        modifier = Modifier
-            .clip(
-                RoundedCornerShape(
-                    topStart = 10.dp,
-                    topEnd = 10.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                )
-            )
-            .fillMaxWidth()
-            .height(72.dp)
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(
-                    topStart = 10.dp,
-                    topEnd = 10.dp,
-                    bottomStart = 0.dp,
-                    bottomEnd = 0.dp
-                )
-            )
-            .padding(
-                horizontal = 46.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        AppBottomItems(
-            itemId = R.drawable.ic_bottom_map_icon,
-            itemPushedId = R.drawable.ic_bottom_map_clicked_icon,
-            itemText = "지도",
-            pushed = pushMap,
-            onClicked = pushMapClicked
-        )
-        AppBottomItems(
-            itemId = R.drawable.ic_bottom_list_icon,
-            itemPushedId = R.drawable.ic_bottom_list_clicked_icon,
-            itemText = "리스트",
-            pushed = pushList,
-            onClicked = pushListClicked
-        )
-        AppBottomItems(
-            itemId = R.drawable.ic_bottom_settings_icon,
-            itemPushedId = R.drawable.ic_bottom_setting_clicked_icon,
-            itemText = "설정",
-            pushed = pushSetting,
-            onClicked = pushSettingClicked
-        )
-    }
-}
-
-//@Preview(showBackground = true)
-@Composable
-fun AppBottomItems(
-    itemId: Int = R.drawable.ic_bottom_map_icon,
-    itemPushedId: Int = R.drawable.ic_bottom_map_clicked_icon,
-    itemText: String = "지도",
-    pushed: Boolean = false,
-    onClicked: () -> Unit = {}
-) {
-
-    val interactionSource = MutableInteractionSource()
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .wrapContentWidth()
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource
-            ) {
-                onClicked()
-            }
-    ) {
-        Icon(
-            ImageVector.vectorResource(if (pushed) itemPushedId else itemId),
-            contentDescription = "App bottom Items",
-            modifier = Modifier
-                .wrapContentSize(),
-            tint = Color.Unspecified
-        )
-        Spacer(Modifier.height(5.dp))
-        YOGOPR12_formInfo(
-            text = itemText,
-            color = if (pushed) MainColor else Color(0xBD000000),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun YOGOFloatingActionGroup(
@@ -529,6 +421,7 @@ fun YOGOFloatingActionGroup(
                 },
             tint = Color.Unspecified
         )
-        Spacer(modifier = Modifier.height(11.dp))
+        Spacer(Modifier.height(11.dp))
+        Spacer(Modifier.height(bottomBarHeight.dp))
     }
 }

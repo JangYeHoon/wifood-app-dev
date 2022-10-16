@@ -4,33 +4,27 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.example.wifood.presentation.util.*
+import com.example.wifood.presentation.util.NavItem
 import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
 import com.example.wifood.presentation.view.component.MapTopAppBar
+import com.example.wifood.presentation.view.main.conponents.YOGOBottomBar
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.MapView
 import com.example.wifood.presentation.view.map.util.DefaultLocationClient
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
-import com.example.wifood.ui.theme.robotoFamily
-import com.example.wifood.view.ui.theme.Main
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.*
@@ -124,55 +118,32 @@ fun MainView(
                 }
             },
             bottomBar = {
-                val items = listOf(
-                    NavItem.Map,
-                    NavItem.List,
-                    NavItem.MyPage
-                )
-
-                BottomNavigation(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
-                            clip = true
-                        }
-                        .height(72.dp),
-                    backgroundColor = Color.White
-                ) {
-                    items.forEach { item ->
-                        BottomNavigationItem(
-                            selected = state.selected == item.id,
-                            selectedContentColor = Main,
-                            unselectedContentColor = Color.Black,
-                            onClick = {
-                                if (state.selected != item.id) viewModel.onEvent(
-                                    MainEvent.ItemClicked(
-                                        item.id
-                                    )
-                                )
-                            },
-                            icon = {
-                                Column(
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Icon(painterResource(id = item.icon), contentDescription = null)
-                                    Spacer(modifier = Modifier.height(5.dp))
-                                    Text(
-                                        text = item.title,
-                                        style = TextStyle(
-                                            fontFamily = robotoFamily,
-                                            fontWeight = FontWeight.Normal,
-                                            fontSize = 12.sp
-                                        )
-                                    )
-                                }
-                            }
+                YOGOBottomBar(
+                    selected = state.selected,
+                    pushMapClicked = {
+                        viewModel.onEvent(
+                            MainEvent.ItemClicked(
+                                "map"
+                            )
+                        )
+                    },
+                    pushListClicked = {
+                        viewModel.onEvent(
+                            MainEvent.ItemClicked(
+                                "list"
+                            )
+                        )
+                    },
+                    pushSettingClicked = {
+                        viewModel.onEvent(
+                            MainEvent.ItemClicked(
+                                "mypage"
+                            )
                         )
                     }
-                }
+                )
             }
-        ) {
+        ){
             when (state.selected) {
                 NavItem.Map.id -> {
                     MapView(navController)
