@@ -81,6 +81,7 @@ fun GetUserPhoneNumberView(
                 }
             },
             isButtonOn = (state.phoneValidation == -1 || SignUpData.exist)
+            // kangjik : 잠깐 안되서 일단 억지로 오픈해둠
         )
     }
 }

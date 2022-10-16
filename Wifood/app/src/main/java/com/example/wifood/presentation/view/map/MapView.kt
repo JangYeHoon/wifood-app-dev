@@ -1,42 +1,27 @@
 package com.example.wifood.presentation.view.map
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.location.Location
 import android.net.Uri
 import android.os.Build
-import android.os.Looper
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.R
@@ -49,21 +34,17 @@ import com.example.wifood.presentation.view.main.UiEvent
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.component.CustomMarker
 import com.example.wifood.presentation.view.map.util.Colors
-import com.example.wifood.presentation.view.map.util.DefaultLocationClient
-import com.example.wifood.presentation.view.map.util.LocationClient
 import com.example.wifood.ui.theme.robotoFamily
 import com.example.wifood.view.ui.theme.Main
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.maps.android.compose.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import timber.log.Timber
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @MapsComposeExperimentalApi
@@ -114,42 +95,26 @@ fun MapView(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        val currentLocation = state.currentLocation!!
-                        scope.launch {
-                            camera.animate(
-                                CameraUpdateFactory.newLatLngZoom(
-                                    LatLng(
-                                        currentLocation.latitude,
-                                        currentLocation.longitude
-                                    ), 16f
-                                ), 1000
-                            )
-                        }
-                        viewModel.onUiEvent(UiEvent.ShowSnackBar("${currentLocation.latitude.toString()}, ${currentLocation.longitude.toString()}"))
-                    },
-                    backgroundColor = Color.White,
-                    contentColor = Main
-                ) {
-                    Icon(Icons.Filled.CenterFocusStrong, contentDescription = null)
+            YOGOFloatingActionGroup(
+                onCurrentFloatingButtonClicked = {
+                    val currentLocation = state.currentLocation!!
+                    scope.launch {
+                        camera.animate(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(
+                                    currentLocation.latitude,
+                                    currentLocation.longitude
+                                ), 16f
+                            ), 1000
+                        )
+                    }
+                    viewModel.onUiEvent(UiEvent.ShowSnackBar("${currentLocation.latitude.toString()}, ${currentLocation.longitude.toString()}"))
+                },
+                onAddLocationFloatingButtonClicked = {
+                    val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                    navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
                 }
-                FloatingActionButton(
-                    onClick = {
-                        val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
-                        navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
-                    },
-                    backgroundColor = Main,
-                    contentColor = Color.White,
-                    modifier = Modifier.size(75.dp)
-                ) {
-                    Icon(Icons.Filled.Add, contentDescription = null)
-                }
-                Spacer(modifier = Modifier.height(50.dp))
-            }
+            )
         },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {

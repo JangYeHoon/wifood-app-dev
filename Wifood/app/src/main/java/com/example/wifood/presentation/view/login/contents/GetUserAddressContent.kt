@@ -1,24 +1,20 @@
 package com.example.wifood.presentation.view.login.contents
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOBasicText
 import com.example.wifood.presentation.view.login.ClickableTextFieldForm1
-import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
@@ -28,7 +24,8 @@ fun GetUserAddressContent(
     addressText: String = "",
     onAddressClicked: () -> Unit = {},
     onAddressValueChanged: (String) -> Unit = {},
-    onButtonClicked: () -> Unit = {}
+    onButtonClicked: () -> Unit = {},
+    activateButton: Boolean = false
 ){
     val scrollState = rememberScrollState()
 
@@ -65,7 +62,7 @@ fun GetUserAddressContent(
             MainButton(
                 text = "다음",
                 onClick = onButtonClicked,
-                activate = SignUpData.address.isNotEmpty()
+                activate = activateButton
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }
