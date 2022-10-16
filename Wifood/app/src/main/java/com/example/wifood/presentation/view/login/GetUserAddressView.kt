@@ -57,6 +57,6 @@ fun GetUserAddressView(
         onButtonClicked = {
             navController.navigate(Route.SignUp4.route)
         },
-        activateButton = true //SignUpData.address.isNotEmpty()
+        activateButton = SignUpData.address.isNotEmpty()
     )
 }
