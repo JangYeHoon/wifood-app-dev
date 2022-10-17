@@ -47,7 +47,7 @@ class SignUpViewModel @Inject constructor(
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        tMapTapi.setSKTMapAuthentication(BuildConfig.TMAP_KEY)
+        tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
     }
 
     fun onEvent(event: SignUpEvent) {
