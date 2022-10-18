@@ -1,10 +1,8 @@
 package com.example.wifood.presentation.view.login
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.BuildConfig
@@ -15,21 +13,17 @@ import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.util.Resource
-import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import kotlin.ConcurrentModificationException
 
 
 @HiltViewModel

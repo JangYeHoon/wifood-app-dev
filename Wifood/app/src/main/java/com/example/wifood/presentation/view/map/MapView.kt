@@ -83,7 +83,6 @@ fun MapView(
     val camera = rememberCameraPositionState {
         scope.launch {
             delay(1000L)
-            isLoading = false
             MainData.location?.let {
                 position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
             }
@@ -106,10 +105,6 @@ fun MapView(
         viewModel.toast.collectLatest { message ->
             scaffoldState.snackbarHostState.showSnackbar(message)
         }
-    }
-
-    if (isLoading) {
-        ProgressIndicator()
     }
 
     Scaffold(
