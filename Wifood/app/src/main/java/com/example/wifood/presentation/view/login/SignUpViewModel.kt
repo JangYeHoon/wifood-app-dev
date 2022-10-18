@@ -3,9 +3,11 @@ package com.example.wifood.presentation.view.login
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.BuildConfig
+import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
 import com.example.wifood.domain.usecase.WifoodUseCases
@@ -40,12 +42,16 @@ class SignUpViewModel @Inject constructor(
     val validationEvents = validateEventChannel.receiveAsFlow()
 
     init {
-        tMapTapi.setSKTMapAuthentication(BuildConfig.TMAP_KEY)
+        tMapTapi.setSKTMapAuthentication("l7xx56bf2cddf5f84556bdf35558d72f530a")
     }
 
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.PhoneNumChanged -> {
+                if (!event.phoneNumber.isDigitsOnly()) {
+                    return
+                }
+
                 _state.value = SignUpState(
                     phoneNumber = event.phoneNumber
                 )
@@ -109,7 +115,7 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.AgreementClicked -> {
                 _state.value = SignUpState(
-                    agreement = !_state.value.agreement
+                    agreement = true
                 )
             }
             is SignUpEvent.FavorSelected -> {
@@ -146,6 +152,15 @@ class SignUpViewModel @Inject constructor(
                     useCases.InsertUser(SignUpData.user).collectLatest { result ->
                         when (result) {
                             is Resource.Success -> {
+                                useCases.InsertGroup(
+                                    GroupDto(
+                                        1,
+                                        SignUpData.phoneNumber,
+                                        "맛집리스트",
+                                        "나만의 맛집",
+                                        1
+                                    ).toGroup()
+                                )
                                 validateEventChannel.send(ValidationEvent.Success)
                                 _state.value = state.value.copy(isLoading = false)
                             }
@@ -190,22 +205,41 @@ class SignUpViewModel @Inject constructor(
 
                 if (hasError) {
                     _state.value = state.value.copy(
-                        phoneValidation = 0
+                        phoneValidation = false
                     )
                     showSnackBar(phoneResult.errorMessage!!)
+                    return
                 }
 
-                // 1 = Exist, 2 = Loading, 0 = Error
-                useCases.CheckUser(_state.value.phoneNumber).observeForever {
-                    // TODO
-                    if (it == 0) showSnackBar("Unknown error occur!")
+                _state.value = state.value.copy(
+                    phoneValidation = true
+                )
 
-                    if (it == 1) SignUpData.exist = true
+                if (_state.value.phoneValidation) {
+                    // 1 = Exist, 2 = Loading, 0 = Error
+                    useCases.CheckUser(_state.value.phoneNumber).observeForever {
+                        // TODO
+                        when (it) {
+                            0 -> {
+                                showSnackBar("Unknown error occur!")
+                            }
+                            1 -> {
+                                showSnackBar("${state.value.phoneNumber} is already exists.")
+                            }
+                            -1 -> {
+                                viewModelScope.launch {
+                                    validateEventChannel.send(ValidationEvent.Success)
+                                }
+                            }
+                            else -> {
 
-                    _state.value = state.value.copy(
-                        isLoading = it == 2,
-                        phoneValidation = it
-                    )
+                            }
+                        }
+
+                        _state.value = state.value.copy(
+                            isLoading = it == 2
+                        )
+                    }
                 }
             }
         }

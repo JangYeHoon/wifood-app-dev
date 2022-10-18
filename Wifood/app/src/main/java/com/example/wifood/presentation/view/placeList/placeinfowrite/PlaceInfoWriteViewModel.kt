@@ -13,7 +13,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
-import com.example.wifood.data.remote.dto.PlaceDto
 import com.example.wifood.domain.model.MenuGrade
 import com.example.wifood.domain.model.Place
 import com.example.wifood.domain.model.TMapSearch
@@ -26,12 +25,9 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import timber.log.Timber
 import java.io.File
-import java.lang.NumberFormatException
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @HiltViewModel
 class PlaceInfoWriteViewModel @Inject constructor(

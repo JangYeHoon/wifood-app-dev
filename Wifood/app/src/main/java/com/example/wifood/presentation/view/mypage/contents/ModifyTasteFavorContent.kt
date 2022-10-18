@@ -9,34 +9,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOLargeText
-import com.example.wifood.presentation.view.login.SignUpEvent
-import com.example.wifood.presentation.view.login.SignUpViewModel
 import com.example.wifood.presentation.view.login.contents.UserFavorButtonGroup
 import com.example.wifood.presentation.view.login.contents.UserFavorRadioGroup
-import com.example.wifood.presentation.view.mypage.MyPageEvent
-import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.buttonBottomValue
 
 @Composable
-fun ModifyTasteFavorView(
-    navController: NavController,
-    viewModel: MyPageViewModel = hiltViewModel()
+fun ModifyTasteFavorContent(
+    favorSelected: (Int, Int) -> Unit = { _, _ -> },
+    onClickChangeTasteButton: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
-    val FavorSelected: (Int, Int) -> Unit = { select, index ->
-        (viewModel as MyPageViewModel).onEvent(
-            MyPageEvent.FavorSelected(
-                select + 1,
-                index
-            )
-        )
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +39,7 @@ fun ModifyTasteFavorView(
                 .fillMaxWidth()
         ) {
             Spacer(Modifier.height(36.dp))
-            UserFavorRadioGroup(FavorSelected)
+            UserFavorRadioGroup(favorSelected)
             Text(
                 text = "좋아하면 선택해주세요",
                 fontFamily = mainFont,
@@ -68,10 +54,7 @@ fun ModifyTasteFavorView(
         Spacer(Modifier.weight(1f))
         MainButton(
             text = "변경하기",
-            onClick = {
-                viewModel.onEvent(MyPageEvent.ModifyUserInfo("TASTE"))
-                navController.navigateUp()
-            }
+            onClick = onClickChangeTasteButton
         )
         Spacer(Modifier.height(buttonBottomValue.dp))
     }

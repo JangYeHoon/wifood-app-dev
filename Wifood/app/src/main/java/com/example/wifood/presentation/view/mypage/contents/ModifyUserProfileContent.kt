@@ -1,6 +1,7 @@
 package com.example.wifood.presentation.view.mypage.contents
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
@@ -39,19 +41,19 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ModifyUserProfileContent(
-    viewModel: MyPageViewModel = hiltViewModel(),
+    usernickNameText: String = "요고247",
+    onUserNicknameChanged: (String) -> Unit,
     onBackButtonClicked: () -> Unit = {},
     onCameraButtonClicked: () -> Unit = {},
-    onNicknameTextChanged: (String) -> Unit = {},
     onCompleteButtonClicked: () -> Unit = {}
 ) {
-    val scrollState = rememberScrollState()
     val sheetContent: @Composable (() -> Unit) = { Text("NULL") }
+    /*
     var customSheetContent by remember { mutableStateOf(sheetContent) }
     val scope = rememberCoroutineScope()
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val state = viewModel.state.value
+     */
     val interactionSource = MutableInteractionSource()
 
     Column(
@@ -135,10 +137,8 @@ fun ModifyUserProfileContent(
             )
             Spacer(Modifier.height(7.dp))
             TextField(
-                value = state.nickname,
-                onValueChange = {
-                    viewModel.onEvent(MyPageEvent.NicknameChanged(it))
-                },
+                value = usernickNameText,
+                onValueChange = onUserNicknameChanged,
                 modifier = Modifier
                     .border(
                         width = 1.dp,

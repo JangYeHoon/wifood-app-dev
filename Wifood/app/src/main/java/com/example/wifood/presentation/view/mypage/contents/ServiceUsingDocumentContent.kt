@@ -14,8 +14,8 @@ import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.ui.theme.mainFont
 
 @Composable
-fun ServiceUsingDocumentView(
-    navController: NavController
+fun ServiceUsingDocumentContent(
+    onBackButtonClicked: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -25,9 +25,7 @@ fun ServiceUsingDocumentView(
         MyPageTopAppBar(
             titleText = "서비스 이용약관",
             leftButtonOn = true,
-            leftButtonClicked = {
-                navController.popBackStack()
-            }
+            leftButtonClicked = onBackButtonClicked
         )
 
         Column(

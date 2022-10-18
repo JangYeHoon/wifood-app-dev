@@ -19,12 +19,8 @@ import com.example.wifood.presentation.view.login.join.GetUserFavorView
 import com.example.wifood.presentation.view.login.new_compose_views.*
 import com.example.wifood.presentation.view.main.MainView
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.mypage.ModifyMyInfoView
-import com.example.wifood.presentation.view.mypage.ModifyUserPhoneNumberView
+import com.example.wifood.presentation.view.mypage.*
 import com.example.wifood.presentation.view.mypage.contents.AppInfoView
-import com.example.wifood.presentation.view.mypage.contents.ModifyTasteFavorView
-import com.example.wifood.presentation.view.mypage.contents.ModifyUserLocationView
-import com.example.wifood.presentation.view.mypage.contents.ServiceUsingDocumentView
 import com.example.wifood.presentation.view.placeList.EditPlaceView
 import com.example.wifood.presentation.view.placeList.PlaceInfoView
 import com.example.wifood.presentation.view.placeList.group.GroupDescInputView
@@ -36,7 +32,7 @@ import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputR
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInputStarAndEvaluation
 import com.example.wifood.presentation.view.search.AddNewPlaceCompleteView
 import com.example.wifood.presentation.view.search.MapSearchAddressView
-import com.example.wifood.presentation.view.search.SearchPlaceComposeView
+import com.example.wifood.presentation.view.search.SearchPlaceView
 import com.example.wifood.presentation.view.splash.SplashView
 import com.example.wifood.presentation.view.splash.StartView
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -88,7 +84,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            MapView(navController, 10000f)
+            MapView(navController)
         }
         composable(
             route = Route.MyPage.route,
@@ -184,7 +180,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            SearchPlaceComposeView(navController)
+            SearchPlaceView(navController)
         }
         composable(
             route = Route.EditProfile.route,
@@ -220,7 +216,7 @@ fun Navigation() {
             AppInfoView(navController)
         }
         composable(
-            route = Route.Document.route,
+            route = Route.ServiceUsingAgreement.route,
             enterTransition = {
                 fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
             },
@@ -411,6 +407,18 @@ fun Navigation() {
             }
         ) {
             ModifyTasteFavorView(navController)
+        }
+
+        composable(
+            route = Route.DeveloperInfo.route,
+            enterTransition = {
+                fadeIn() + slideIn(initialOffset = { IntOffset(-it.width, 0) })
+            },
+            exitTransition = {
+                fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
+            }
+        ) {
+            DeveloperInfoView(navController)
         }
     }
 }

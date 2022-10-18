@@ -6,54 +6,33 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.*
-import com.example.wifood.presentation.view.login.component.TitleText
-import com.example.wifood.presentation.view.placeList.component.ListSelectionButtonWithIcon
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.*
-import com.example.wifood.presentation.util.checkPermission
 import com.example.wifood.presentation.view.component.*
-import com.example.wifood.presentation.view.groupComponent.RatingWithText
-import com.example.wifood.presentation.view.groupComponent.SingleIconWithText
-import com.example.wifood.presentation.view.groupComponent.SwitchWithText
-import com.example.wifood.presentation.view.login.component.InputTextField
-import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
-import com.example.wifood.presentation.view.placeList.component.PlaceReviewInputText
 import com.example.wifood.presentation.view.placeList.component.PlaceWriteGroupsBottomSheetContent
+import com.example.wifood.presentation.view.placeList.componentGroup.YOGOSubTextFieldWithButton
 import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextField
-import com.example.wifood.presentation.view.placeList.newPlaceInfo.YOGOSubTextFieldWithButton
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteFormEvent
 import com.example.wifood.presentation.view.placeList.placeinfowrite.PlaceInfoWriteViewModel
-import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.*
 import com.google.android.gms.location.LocationServices
@@ -394,7 +373,8 @@ fun EditPlaceView(
                                 if (viewModel.checkForm())
                                     viewModel.onEvent(PlaceInfoWriteFormEvent.PlaceEditBtnClick)
                             }
-                        }
+                        },
+                        activate = viewModel.checkForm() && formState.placeName != "맛집 선택" && formState.groupName != "그룹 선택",
                     )
                     Spacer(Modifier.height(buttonBottomValue.dp))
                 }

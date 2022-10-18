@@ -1,11 +1,9 @@
 package com.example.wifood.presentation.view.placeList.placeinfowrite
 
-import android.graphics.Bitmap
 import android.location.Location
 import android.net.Uri
 import com.example.wifood.domain.model.Group
 import com.example.wifood.domain.model.MenuGrade
-import com.google.android.gms.maps.model.LatLng
 
 data class PlaceInfoWriteFormState(
     val groups: List<Group> = emptyList(),

@@ -1,12 +1,14 @@
 package com.example.wifood.presentation.view.component
 
 import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ import com.example.wifood.view.ui.theme.Main
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun MapTopAppBar(
@@ -40,10 +43,13 @@ fun MapTopAppBar(
     val searchPlaceViewResult =
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<TMapSearch>("searchResult")
             ?.observeAsState()
-    searchPlaceViewResult?.value?.let {
-        scope.launch {
-            viewModel.onEvent(MainEvent.SearchClicked(it))
-            viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
+
+    LaunchedEffect(searchPlaceViewResult) {
+        searchPlaceViewResult?.value?.let {
+            scope.launch {
+                viewModel.onEvent(MainEvent.SearchClicked(it))
+                viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
+            }
         }
     }
 
@@ -57,7 +63,12 @@ fun MapTopAppBar(
                 color = Gray01Color
             )
         },
-        modifier = Modifier.height(48.dp),
+        modifier = Modifier
+            .height(48.dp)
+            .clickable {
+                val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                navController.navigate("${Route.Search.route}/${placeJson}")
+            },
         navigationIcon = {
             IconButton(
                 onClick = {

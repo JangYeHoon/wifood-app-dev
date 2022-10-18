@@ -2,7 +2,6 @@ package com.example.wifood.presentation.view.placeList.newPlaceInfo
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,20 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.PlaceInputTopAppBar
 import com.example.wifood.presentation.view.component.YOGOLargeText
 import com.example.wifood.presentation.view.component.YOGOTextPM15
-import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.presentation.view.placeList.component.YOGOBaseTextField
+import com.example.wifood.presentation.view.placeList.component.YOGOTransformTextField
 import com.example.wifood.view.ui.theme.*
 
 

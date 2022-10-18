@@ -12,7 +12,7 @@ data class MyPageState(
     val taste: ArrayList<Int> = arrayListOf(3, 3, 3, 3, 3),
     val searchResults: List<TMapSearch> = emptyList(),
     val isLoading: Boolean = false,
-    val phoneValidation: Int = 0,
+    val phoneValidation: Boolean = false,
     val image: Uri? = null,
     val placeImagesReCompose: String = "1"
 )

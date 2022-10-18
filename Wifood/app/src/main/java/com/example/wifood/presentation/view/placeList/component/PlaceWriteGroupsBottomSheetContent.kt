@@ -104,7 +104,8 @@ fun PlaceWriteGroupsBottomSheetContent(
                 scope.launch {
                     modalBottomSheetState.hide()
                 }
-            }
+            },
+            activate = selectedGroup != "그룹 선택"
         )
         Spacer(Modifier.height(buttonBottomValue.dp))
     }

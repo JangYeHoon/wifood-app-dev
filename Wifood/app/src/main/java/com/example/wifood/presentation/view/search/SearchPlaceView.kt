@@ -3,6 +3,7 @@ package com.example.wifood.presentation.view.search
 import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.domain.model.TMapSearch
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.util.ValidationEvent
 import com.example.wifood.presentation.util.checkPermission
@@ -30,7 +32,7 @@ import com.example.wifood.presentation.util.shouldShowRationale
 import com.example.wifood.presentation.view.login.contents.CustomTextField
 import com.example.wifood.presentation.view.login.contents.SearchPlaceInfoCard
 import com.example.wifood.presentation.view.search.component.AddPlaceAndAddressBottomSheet
-import com.example.wifood.presentation.view.search.newSearchComposeView.SearchPlaceEmptyView
+import com.example.wifood.presentation.view.search.contents.SearchPlaceEmptyContent
 import com.example.wifood.util.getActivity
 import com.example.wifood.view.ui.theme.sidePaddingValue
 import com.google.android.gms.location.LocationServices
@@ -42,7 +44,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SearchPlaceComposeView(
+fun SearchPlaceView(
     navController: NavController,
     viewModel: SearchPlaceViewModel = hiltViewModel()
 ) {
@@ -77,6 +79,20 @@ fun SearchPlaceComposeView(
     }
 
     LaunchedEffect(key1 = true) {
+        if (Build.VERSION.SDK_INT < 24) {
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                "searchResult",
+                TMapSearch(
+                    fullAddress = "서울 동작구 사당로16길 76",
+                    name = "파스타입니다 사당점",
+                    latitude = 37.48049184,
+                    longitude = 126.97157964,
+                    bizName = "음식점,전문음식점",
+                    oldAddress = "서울특별시 동작구 사당동 300-78"
+                )
+            )
+            navController.popBackStack()
+        }
         checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         if (locationPermissionGranted) {
             val locationResult = fusedLocationProviderClient.lastLocation
@@ -139,7 +155,9 @@ fun SearchPlaceComposeView(
                     searchClickChkForSearchResult.value = true
                     keyboardController?.hide()
                 },
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = {
+                    navController.popBackStack()
+                },
                 placeholder = "맛집, 주소 검색",
                 keyboardActions = KeyboardActions(
                     onSearch = {
@@ -175,7 +193,7 @@ fun SearchPlaceComposeView(
                     }
                 }
             } else if (formState.searchResults.isNotEmpty() && formState.searchResults[0].name == "") {
-                SearchPlaceEmptyView(
+                SearchPlaceEmptyContent(
                     onButtonClick = {
                         scope.launch {
                             modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)

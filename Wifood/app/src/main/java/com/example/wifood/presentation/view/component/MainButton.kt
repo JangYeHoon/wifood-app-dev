@@ -85,8 +85,9 @@ fun MainButtonInversed(
 fun MainButtonToggle(
     text: String = "전체",
     onClick: () -> Unit = {},
-    isClicked: Boolean = false,
-    modifier: Modifier = Modifier
+    isClicked: Boolean = true,
+    modifier: Modifier = Modifier,
+    buttonColor: Color = MainColor
 ) {
     val cornerValue = 32
     if (isClicked.not()) {
@@ -96,14 +97,14 @@ fun MainButtonToggle(
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            border = BorderStroke(1.dp, MainColor)
+            border = BorderStroke(1.dp, buttonColor)
         ) {
             Text(
                 text = text,
                 fontFamily = mainFont,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                color = MainColor
+                color = buttonColor
             )
         }
     } else {
@@ -111,7 +112,7 @@ fun MainButtonToggle(
             shape = RoundedCornerShape(cornerValue.dp),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = MainColor,
+                backgroundColor = buttonColor,
             ),
             enabled = true,
             modifier = Modifier
@@ -124,7 +125,7 @@ fun MainButtonToggle(
                 color = Color.White,
                 fontSize = 14.sp,
                 fontFamily = mainFont,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Normal
             )
         }
     }

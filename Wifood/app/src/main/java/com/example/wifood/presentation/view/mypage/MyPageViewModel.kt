@@ -1,8 +1,10 @@
 package com.example.wifood.presentation.view.mypage
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.WifoodApp
@@ -52,6 +54,10 @@ class MyPageViewModel @Inject constructor(
                 }
             }
             is MyPageEvent.PhoneNumChanged -> {
+                if (!event.phoneNumber.isDigitsOnly()) {
+                    return
+                }
+
                 _state.value = state.value.copy(phoneNumber = event.phoneNumber)
             }
             is MyPageEvent.AddressChanged -> {
@@ -75,11 +81,13 @@ class MyPageViewModel @Inject constructor(
 //                }
             }
             is MyPageEvent.ModifyProfile -> {
-                if (MainData.user.nickname != _state.value.nickname) {
-                    onEvent(MyPageEvent.ModifyUserInfo("NICKNAME"))
-                }
+                viewModelScope.launch {
+                    validateEventChannel.send(ValidationEvent.Loading)
 
-                if (MainData.image.toUri() != _state.value.image) {
+                    if (MainData.user.nickname != _state.value.nickname) {
+                        onEvent(MyPageEvent.ModifyUserInfo("NICKNAME"))
+                    }
+
                     _state.value.image?.let {
                         useCases.InsertProfile(it, MainData.user.phoneNumber).addOnSuccessListener {
                             GlobalScope.launch(Dispatchers.IO) {
@@ -174,6 +182,50 @@ class MyPageViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun checkForm() {
+        val phoneResult = useCases.ValidatePhone(_state.value.phoneNumber)
+
+        val hasError = !phoneResult.successful
+
+        if (hasError) {
+            _state.value = state.value.copy(
+                phoneValidation = false
+            )
+            return
+        }
+
+        _state.value = state.value.copy(
+            phoneValidation = true
+        )
+
+        if (_state.value.phoneValidation) {
+            // 1 = Exist, 2 = Loading, 0 = Error
+            useCases.CheckUser(_state.value.phoneNumber).observeForever {
+                // TODO
+                when (it) {
+                    0 -> {
+
+                    }
+                    1 -> {
+
+                    }
+                    -1 -> {
+                        viewModelScope.launch {
+                            validateEventChannel.send(ValidationEvent.Success)
+                        }
+                    }
+                    else -> {
+
+                    }
+                }
+
+                _state.value = state.value.copy(
+                    isLoading = it == 2
+                )
             }
         }
     }

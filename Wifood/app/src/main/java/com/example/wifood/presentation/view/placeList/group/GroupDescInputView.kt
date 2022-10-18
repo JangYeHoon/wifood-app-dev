@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList.group
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -19,6 +20,7 @@ import com.example.wifood.presentation.util.ValidationEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GroupDescInputView(
     navController: NavController,

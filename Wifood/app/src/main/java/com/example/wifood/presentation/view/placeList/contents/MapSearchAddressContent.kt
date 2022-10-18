@@ -29,8 +29,7 @@ import com.example.wifood.view.ui.theme.*
 
 
 @Composable
-fun MapSearchAddressView(
-
+fun MapSearchAddressContent(
 ) {
     Column(
         modifier = Modifier

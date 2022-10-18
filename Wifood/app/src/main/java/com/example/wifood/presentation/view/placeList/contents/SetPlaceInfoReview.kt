@@ -32,7 +32,9 @@ import com.example.wifood.view.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun PlaceInputImagesAndMenuEvaluationContent() {
+fun PlaceInputImagesAndMenuEvaluationContent(
+
+) {
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {

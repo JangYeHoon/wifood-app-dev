@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.search.newSearchComposeView
+package com.example.wifood.presentation.view.search.contents
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
@@ -22,9 +21,11 @@ import com.example.wifood.presentation.view.login.contents.SearchPlaceInfoCard
 import com.example.wifood.view.ui.theme.buttonBottomValue
 import com.example.wifood.view.ui.theme.sidePaddingValue
 
+
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NewSearchPlaceComposeView(
+fun SearchPlaceContent(
 
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -67,7 +68,7 @@ fun NewSearchPlaceComposeView(
 }
 
 @Composable
-fun SearchPlaceEmptyView(
+fun SearchPlaceEmptyContent(
     onButtonClick: () -> Unit = {}
 ) {
     Box(

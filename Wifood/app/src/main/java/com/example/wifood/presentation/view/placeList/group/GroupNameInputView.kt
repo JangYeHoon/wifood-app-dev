@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.placeList.group
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
@@ -22,6 +23,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GroupNameInputView(
     navController: NavController,

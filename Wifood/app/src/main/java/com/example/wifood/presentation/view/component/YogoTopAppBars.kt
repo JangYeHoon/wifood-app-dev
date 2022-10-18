@@ -28,7 +28,7 @@ fun MyPageTopAppBar(
     titleText:String = "프로필 수정",
     leftButtonOn:Boolean = true,
     leftButtonClicked:() -> Unit = {},
-    rightButtonOn:Boolean = true,
+    rightButtonOn:Boolean = false,
     rightButtonText:String = "완료",
     rightButtonClicked: () -> Unit = {},
     showUnderLine:Boolean = true
