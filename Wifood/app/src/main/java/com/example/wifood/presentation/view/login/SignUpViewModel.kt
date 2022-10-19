@@ -59,6 +59,10 @@ class SignUpViewModel @Inject constructor(
                     if (event.phoneNumber.length >= 11) event.phoneNumber.substring(0..10) else event.phoneNumber
             }
             is SignUpEvent.CertChanged -> {
+                if (!event.certNumber.isDigitsOnly()) {
+                    return
+                }
+                
                 _state.value = SignUpState(
                     certNumber = event.certNumber
                 )
