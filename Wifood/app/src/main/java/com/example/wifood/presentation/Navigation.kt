@@ -1,5 +1,7 @@
 package com.example.wifood.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -42,6 +44,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.serialization.ExperimentalSerializationApi
 
+@RequiresApi(Build.VERSION_CODES.O)
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalSerializationApi
@@ -84,7 +87,7 @@ fun Navigation() {
                 fadeOut() + slideOut(targetOffset = { IntOffset(-it.width, 0) })
             }
         ) {
-            MapView(navController)
+            MapView(navController, it)
         }
         composable(
             route = Route.MyPage.route,

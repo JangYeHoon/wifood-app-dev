@@ -2,12 +2,13 @@ package com.example.wifood.presentation.view.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
@@ -19,20 +20,14 @@ import androidx.navigation.NavController
 import com.example.wifood.presentation.util.NavItem
 import com.example.wifood.presentation.view.MySettingView
 import com.example.wifood.presentation.view.component.BottomSheetContent
-import com.example.wifood.presentation.view.component.MapTopAppBar
 import com.example.wifood.presentation.view.main.conponents.YOGOBottomBar
-import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.MapView
-import com.example.wifood.presentation.view.map.util.DefaultLocationClient
 import com.example.wifood.presentation.view.placeList.PlaceListComposeView
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalPermissionsApi
 @ExperimentalAnimationApi
@@ -125,7 +120,7 @@ fun MainView(
         ) {
             when (state.selected) {
                 NavItem.Map.id -> {
-                    MapView(navController)
+                    MapView(navController, navBackStackEntry)
                 }
                 NavItem.List.id -> {
                     PlaceListComposeView(modalBottomSheetState, navController)

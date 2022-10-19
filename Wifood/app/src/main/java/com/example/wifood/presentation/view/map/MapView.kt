@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.wifood.R
 import com.example.wifood.data.remote.dto.PlaceDto
@@ -75,7 +76,8 @@ import timber.log.Timber
 @Composable
 fun MapView(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    navBackStackEntry: NavBackStackEntry,
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -119,6 +121,13 @@ fun MapView(
                 viewModel.onEvent(MainEvent.CameraMove(LatLng(it.latitude, it.longitude)))
             }
         }
+    }
+
+    var placeLng = navBackStackEntry.arguments?.getFloat("placeLng")!!
+    var placeLat = navBackStackEntry.arguments?.getFloat("placeLat")!!
+    if (placeLng != 10000f) {
+        viewModel.onEvent(MainEvent.CameraMove(LatLng(placeLat.toDouble(), placeLng.toDouble())))
+        placeLng = 10000f
     }
 
     Scaffold(

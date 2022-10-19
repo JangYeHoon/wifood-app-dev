@@ -227,7 +227,7 @@ fun PlaceInfoView(
     BackHandler(enabled = true) {
         if (modalBottomSheetState.isVisible) {
             scope.launch { modalBottomSheetState.hide() }
-        } else if (state.popupImageIdx != -1){
+        } else if (state.popupImageIdx != -1) {
             viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(-1))
         } else {
             viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
@@ -268,7 +268,7 @@ fun PlaceInfoView(
                     onClick = {
                         if (modalBottomSheetState.isVisible) {
                             scope.launch { modalBottomSheetState.hide() }
-                        } else if (state.popupImageIdx != -1){
+                        } else if (state.popupImageIdx != -1) {
                             viewModel.onEvent(PlaceInfoEvent.ClickPlaceImage(-1))
                         } else {
                             viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
@@ -330,12 +330,8 @@ fun PlaceInfoView(
                 Row(
                     modifier = Modifier
                         .clickable {
-//                            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
-//                            navController.popBackStack(
-//                                "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
-//                                false
-//                            )
-                            navController.popBackStack()
+                            viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+                            navController.navigate("${Route.Main.route}?placeLat=${state.place.latitude}&placeLng=${state.place.longitude}")
                         }
                         .padding(horizontal = sidePaddingValue.dp)
                 ) {
