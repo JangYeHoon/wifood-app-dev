@@ -87,34 +87,43 @@ fun MainButtonToggle(
     onClick: () -> Unit = {},
     isClicked: Boolean = true,
     modifier: Modifier = Modifier,
-    buttonColor: Color = MainColor
+    buttonColor: Color = MainColor,
+    borderColor: Color = MainColor
 ) {
     val cornerValue = 32
     if (isClicked.not()) {
-        OutlinedButton(
+        TextButton(
             onClick = onClick,
             shape = RoundedCornerShape(cornerValue.dp),
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            border = BorderStroke(1.dp, buttonColor)
+            border = BorderStroke(
+                1.dp, borderColor
+            ),
+            colors = ButtonDefaults.outlinedButtonColors(
+                backgroundColor = buttonColor
+            )
         ) {
             Text(
                 text = text,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                color = buttonColor
+                color = borderColor
             )
         }
     } else {
         TextButton(
             shape = RoundedCornerShape(cornerValue.dp),
             onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = buttonColor,
+            colors = ButtonDefaults.outlinedButtonColors(
+                backgroundColor = buttonColor
             ),
             enabled = true,
+            border = BorderStroke(
+                1.dp, borderColor
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()

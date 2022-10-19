@@ -188,52 +188,20 @@ fun MapView(
                         text = "전체",
                         isClicked = -1 == selectedMenu,
                         modifier = Modifier,
-                        buttonColor = MainColor,
-                        onClick = {
-                            selectedMenu = -1
-                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                        }
-                    )
-                    Spacer(Modifier.width(mapGroupListButtonIntervalValue.dp))
-
-                    /*
-                    TextButton(
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .selectable(
-                                selected = -1 == selectedMenu,
-                                onClick = {
-                                    selectedMenu = -1
-                                    viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                                }
-                            )
-                            .height(32.dp),
+                        buttonColor = if (selectedMenu == -1) Main else Color.White,
                         onClick = {
                             selectedMenu = -1
                             viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                         },
-                        shape = RoundedCornerShape(15.dp),
-                        border = BorderStroke(1.dp, Main),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = if (selectedMenu == -1) Main else Color.White
-                        )
-                    ) {
-                        Text(
-                            text = "전체",
-                            color = if (selectedMenu != -1) Main else Color.White,
-                            style = TextStyle(
-                                fontFamily = robotoFamily,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 13.sp
-                            )
-                        )
-                    }*/
+                        borderColor = Main
+                    )
+                    Spacer(Modifier.width(mapGroupListButtonIntervalValue.dp))
                 }
                 itemsIndexed(state.groups) { i, group ->
                     MainButtonToggle(
                         text = group.name,
                         isClicked = group.groupId == selectedMenu,
-                        buttonColor = setColor(selectedMenu),
+                        buttonColor = if (selectedMenu == group.groupId) setColor(selectedMenu) else Color.White,
                         onClick = {
                             selectedMenu =
                                 if (selectedMenu != group.groupId) group.groupId else -1
@@ -241,47 +209,12 @@ fun MapView(
                             scope.launch {
                                 listState.animateScrollToItem(i)
                             }
-                        }
+                        },
+                        borderColor = if (selectedMenu != group.groupId) setColor(group.groupId % 10) else Color.White.copy(
+                            alpha = 0f
+                        )
                     )
                     Spacer(Modifier.width(12.dp))
-                    /*
-                    TextButton(
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .selectable(
-                                selected = group.groupId == selectedMenu,
-                                onClick = {
-                                    selectedMenu =
-                                        if (selectedMenu != group.groupId) group.groupId else -1
-                                    viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                                }
-                            )
-                            .height(32.dp),
-                        onClick = {
-                            selectedMenu = if (selectedMenu != group.groupId) group.groupId else -1
-                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                            scope.launch {
-                                listState.animateScrollToItem(i)
-                            }
-                        },
-                        shape = RoundedCornerShape(15.dp),
-                        border = BorderStroke(
-                            1.dp, if (selectedMenu != group.groupId) setColor(group.groupId % 10) else Color.White.copy(alpha = 0f)
-                        ),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            backgroundColor = if (selectedMenu == group.groupId) setColor(selectedMenu) else Color.White
-                        )
-                    ) {
-                        Text(
-                            text = group.name,
-                            color = if (selectedMenu != group.groupId) setColor(group.groupId % 10) else Color.White,
-                            style = TextStyle(
-                                fontFamily = robotoFamily,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 13.sp
-                            )
-                        )
-                    }*/
                 }
             }
             Box(modifier = Modifier.fillMaxSize()) {
