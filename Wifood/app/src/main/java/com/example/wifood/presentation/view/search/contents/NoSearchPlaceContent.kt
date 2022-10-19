@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Gray01Color
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun NoSearchResultContent(
 ){

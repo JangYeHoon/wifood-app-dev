@@ -35,7 +35,7 @@ fun SplashView(
             description = "\n맛집을 손 쉽게 찾아보세요",
             imageWidth = 232,
             imageHeight = 314,
-            image = R.drawable.ic_walk_through_screen1
+            image = R.drawable.ic_splash_image_1
         ),
         Page(
             title = "나만의 맛집을 ",
@@ -43,7 +43,7 @@ fun SplashView(
             description = "하고\n한 줄 설명",
             imageWidth = 222,
             imageHeight = 287,
-            image = R.drawable.ic_walk_through_screen2
+            image = R.drawable.ic_splash_image_2
         ),
         Page(
             title = "내 취향의 맛집을 ",
@@ -51,7 +51,7 @@ fun SplashView(
             description = "받고\n먹어보세요",
             imageWidth = 253,
             imageHeight = 274,
-            image = R.drawable.ic_walk_through_screen3,
+            image = R.drawable.ic_splash_image_3,
         )
     )
 

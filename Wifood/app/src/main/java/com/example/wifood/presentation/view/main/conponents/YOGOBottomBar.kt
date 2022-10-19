@@ -56,18 +56,18 @@ fun YOGOBottomBar(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         BottomBarItems(
-            itemId = R.drawable.ic_bottom_list_icon,
-            itemPushedId = R.drawable.ic_bottom_list_clicked_icon,
-            itemText = "리스트",
-            pushed = selected == "list",
-            onClicked = pushListClicked
-        )
-        BottomBarItems(
             itemId = R.drawable.ic_bottom_map_icon,
             itemPushedId = R.drawable.ic_bottom_map_clicked_icon,
             itemText = "지도",
             pushed = selected == "map",
             onClicked = pushMapClicked
+        )
+        BottomBarItems(
+            itemId = R.drawable.ic_bottom_list_icon,
+            itemPushedId = R.drawable.ic_bottom_list_clicked_icon,
+            itemText = "리스트",
+            pushed = selected == "list",
+            onClicked = pushListClicked
         )
         BottomBarItems(
             itemId = R.drawable.ic_bottom_settings_icon,
