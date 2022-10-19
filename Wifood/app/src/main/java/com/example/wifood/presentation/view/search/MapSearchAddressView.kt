@@ -89,7 +89,7 @@ fun MapSearchAddressView(
             when (event) {
                 is ValidationEvent.Success -> {
                     val placeJson = Uri.encode(Gson().toJson(viewModel.formState.place))
-                    navController.navigate("${Route.AddNewPlaceComplete.route}/${placeJson}")
+                    navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
                 }
                 is ValidationEvent.Error -> {
 

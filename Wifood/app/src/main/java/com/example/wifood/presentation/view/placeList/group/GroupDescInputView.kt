@@ -66,6 +66,11 @@ fun GroupDescInputView(
                     scope.launch {
                         viewModel.onEvent(GroupFormEvent.DescriptionChange(it))
                     }
+                },
+                onValueReset = {
+                    scope.launch {
+                        viewModel.onEvent(GroupFormEvent.ResetDescriptionText)
+                    }
                 }
             )
             Box(

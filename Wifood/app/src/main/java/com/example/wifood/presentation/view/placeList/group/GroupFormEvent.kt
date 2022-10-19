@@ -5,4 +5,6 @@ sealed class GroupFormEvent {
     data class DescriptionChange(val description: String) : GroupFormEvent()
     object AddBtnClick : GroupFormEvent()
     object EditBtnClick : GroupFormEvent()
+    object ResetNameText : GroupFormEvent()
+    object ResetDescriptionText : GroupFormEvent()
 }
