@@ -69,6 +69,11 @@ fun GroupNameInputView(
                     scope.launch {
                         viewModel.onEvent(GroupFormEvent.NameChange(it))
                     }
+                },
+                onValueReset = {
+                    scope.launch {
+                        viewModel.onEvent(GroupFormEvent.ResetNameText)
+                    }
                 }
             )
             Box(

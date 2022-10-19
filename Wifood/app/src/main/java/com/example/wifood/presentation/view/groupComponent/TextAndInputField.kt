@@ -15,6 +15,7 @@ fun TextAndInputField(
     inputFieldPlaceHolder: String = "그룹명",
     inputFieldText: String = "",
     onValueChange: (String) -> Unit,
+    onValueReset: () -> Unit = {}
 ) {
     Column {
         TitleText(text = titleText)
@@ -22,7 +23,8 @@ fun TextAndInputField(
         InputTextField(
             text = inputFieldText,
             placeholder = inputFieldPlaceHolder,
-            onValueChange = onValueChange
+            onValueChange = onValueChange,
+            onValueReset = onValueReset
         )
     }
 }

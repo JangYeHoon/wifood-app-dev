@@ -66,6 +66,11 @@ fun GroupEditView(
                     scope.launch {
                         viewModel.onEvent(GroupFormEvent.NameChange(it))
                     }
+                },
+                onValueReset = {
+                    scope.launch {
+                        viewModel.onEvent(GroupFormEvent.ResetNameText)
+                    }
                 }
             )
             Spacer(Modifier.height(15.dp))
@@ -76,6 +81,11 @@ fun GroupEditView(
                 onValueChange = {
                     scope.launch {
                         viewModel.onEvent(GroupFormEvent.DescriptionChange(it))
+                    }
+                },
+                onValueReset = {
+                    scope.launch {
+                        viewModel.onEvent(GroupFormEvent.ResetDescriptionText)
                     }
                 }
             )

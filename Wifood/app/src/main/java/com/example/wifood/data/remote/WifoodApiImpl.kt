@@ -62,7 +62,7 @@ class WifoodApiImpl @Inject constructor(
     }
 
     override fun insertGroup(group: Group) {
-        db.child(MainData.user.phoneNumber).child("groups").child(group.groupId.toString())
+        db.child(group.userId).child("groups").child(group.groupId.toString())
             .setValue(group)
             .addOnSuccessListener { Timber.i("Success group insert") }
             .addOnFailureListener { Timber.e("Fail group insert : $it") }

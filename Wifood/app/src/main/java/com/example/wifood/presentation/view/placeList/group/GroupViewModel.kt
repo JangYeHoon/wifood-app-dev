@@ -42,6 +42,12 @@ class GroupViewModel @Inject constructor(
             is GroupFormEvent.DescriptionChange -> {
                 formState = formState.copy(description = event.description)
             }
+            is GroupFormEvent.ResetNameText -> {
+                formState = formState.copy(name = "")
+            }
+            is GroupFormEvent.ResetDescriptionText -> {
+                formState = formState.copy(description = "")
+            }
             is GroupFormEvent.AddBtnClick -> {
                 insertGroup()
             }

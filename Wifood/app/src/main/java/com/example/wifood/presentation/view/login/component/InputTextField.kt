@@ -37,7 +37,8 @@ fun InputTextField(
     isPassword: Boolean = false,
     maxLine: Int = 1,
     resetIconOffset: Int = 10,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    onValueReset: () -> Unit = {}
 ) {
 
     var textFieldText = text
@@ -111,6 +112,7 @@ fun InputTextField(
                                 indication = null,
                                 interactionSource = interactionSource
                             ) {
+                                onValueReset()
                                 text.none()
                             },
                         tint = Color.Unspecified,
