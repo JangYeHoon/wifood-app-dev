@@ -109,6 +109,7 @@ fun MapSearchTextField(
     TextField(
         value = searchText,
         onValueChange = onValueChanged,
+        enabled = false,
         leadingIcon = {
             IconButton(
                 onClick = onFindLocationClicked,
@@ -131,7 +132,13 @@ fun MapSearchTextField(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource
+            ) {
+                onSearchLocationClicked()
+            },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.White,
             focusedIndicatorColor = EnableColor,
@@ -147,7 +154,7 @@ fun MapSearchTextField(
         ),
         placeholder = {
             Text(
-                text = "찾는 이름을 입력해줒세요~",
+                text = "찾는 이름을 입력해주세요~",
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp,

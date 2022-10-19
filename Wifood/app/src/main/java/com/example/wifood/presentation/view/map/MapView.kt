@@ -154,7 +154,16 @@ fun MapView(
                 )
         ) {
             MapSearchTextField(
-
+                searchText = viewModel.state.searchResultName,
+                onFindLocationClicked = {
+                    viewModel.state.searchResultLatLng?.let {
+                        viewModel.onEvent(MainEvent.CameraMove(it))
+                    }
+                },
+                onSearchLocationClicked = {
+                    val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
+                    navController.navigate("${Route.Search.route}/${placeJson}")
+                }
             )
             /*SelectPlaceGroupContent(
 
