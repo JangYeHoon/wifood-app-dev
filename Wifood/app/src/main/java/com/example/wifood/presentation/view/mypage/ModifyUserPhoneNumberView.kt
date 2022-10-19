@@ -1,10 +1,10 @@
 package com.example.wifood.presentation.view.mypage
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.presentation.view.mypage.contents.ModifyUserPhoneNumberContent
 import kotlinx.coroutines.flow.collectLatest
 
@@ -14,12 +14,17 @@ fun ModifyUserPhoneNumberView(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    var done by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.phoneNumber) {
+        viewModel.checkForm()
+    }
 
     LaunchedEffect(true) {
         viewModel.validationEvents.collectLatest { event ->
             when (event) {
                 is ValidationEvent.Success -> {
-                    navController.navigateUp()
+                    done = true
                 }
             }
         }
@@ -32,6 +37,7 @@ fun ModifyUserPhoneNumberView(
         },
         onChangeButtonClicked = {
             viewModel.onEvent(MyPageEvent.ModifyUserInfo("PHONE"))
-        }
+        },
+        done
     )
 }

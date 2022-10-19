@@ -30,6 +30,7 @@ fun GetUserPhoneNumberView(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+    var done by remember { mutableStateOf(false) }
 
     val permissionLauncher =
         rememberLauncherForActivityResult(
@@ -46,6 +47,9 @@ fun GetUserPhoneNumberView(
     LaunchedEffect(true) {
         viewModel.validationEvents.collectLatest { event ->
             when (event) {
+                is ValidationEvent.Success -> {
+                    done = true
+                }
                 is ValidationEvent.Error -> {
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
@@ -54,10 +58,9 @@ fun GetUserPhoneNumberView(
     }
 
     LaunchedEffect(state.phoneNumber) {
-        if (state.phoneNumber.length == 11) {
-            viewModel.checkForm(ViewItem.SignUpView1)
-        }
+        viewModel.checkForm(ViewItem.SignUpView1)
     }
+
     Scaffold(
         scaffoldState = scaffoldState
     ) {
@@ -80,7 +83,7 @@ fun GetUserPhoneNumberView(
                     }
                 }
             },
-            isButtonOn = (state.phoneValidation == -1 || SignUpData.exist)
+            isButtonOn = done
             // kangjik : 잠깐 안되서 일단 억지로 오픈해둠
         )
     }

@@ -11,7 +11,7 @@ data class SignUpState(
     val birthdayError: String? = null,
     val gender: Boolean = true,
     val isLoading: Boolean = false,
-    val phoneValidation: Int = 0,
+    val phoneValidation: Boolean = false,
     val reqCertNumber: String? = null,
     val searchResults: List<TMapSearch> = emptyList(),
     val agreement: Boolean = false,

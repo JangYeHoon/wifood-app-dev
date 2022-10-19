@@ -47,22 +47,13 @@ fun GetUserFavorView(
 
     GetUserFavorContent(
         isLoading = state.isLoading,
-        onFavorSelected = { select,index ->
-            if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
-                (viewModel as SignUpViewModel).onEvent(
-                    SignUpEvent.FavorSelected(
-                        select + 1,
-                        index
-                    )
+        onFavorSelected = { select, index ->
+            viewModel.onEvent(
+                SignUpEvent.FavorSelected(
+                    select + 1,
+                    index
                 )
-            } else {
-                (viewModel as MyPageViewModel).onEvent(
-                    MyPageEvent.FavorSelected(
-                        select + 1,
-                        index
-                    )
-                )
-            }
+            )
         },
         onCucumberClicked = {
             SignUpData.cucumberClicked = it

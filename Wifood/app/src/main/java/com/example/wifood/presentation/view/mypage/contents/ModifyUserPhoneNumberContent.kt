@@ -26,7 +26,8 @@ import com.example.wifood.view.ui.theme.*
 fun ModifyUserPhoneNumberContent(
     phoneNumberText: String = "",
     onPhoneNumberValueChanged: (String) -> Unit = {},
-    onChangeButtonClicked: () -> Unit = {}
+    onChangeButtonClicked: () -> Unit = {},
+    done: Boolean
 ){
     val scrollState = rememberScrollState()
 
@@ -90,7 +91,8 @@ fun ModifyUserPhoneNumberContent(
             Spacer(Modifier.weight(1f))
             MainButton(
                 text = "변경하기",
-                onClick = onChangeButtonClicked
+                onClick = onChangeButtonClicked,
+                activate = done
             )
             Spacer(Modifier.height(buttonBottomValue.dp))
         }

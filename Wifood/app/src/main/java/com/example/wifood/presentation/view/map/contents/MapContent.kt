@@ -84,7 +84,7 @@ fun MapContent(
                 contentAlignment = Alignment.Center
             ) {
                 Column(
-                ){
+                ) {
                     Spacer(Modifier.weight(1f))
                     CurrentLocationIcon()
                     Spacer(Modifier.weight(1f))
@@ -99,8 +99,8 @@ fun MapContent(
 fun MapSearchTextField(
     searchText: String = "서울역",
     onFindLocationClicked: () -> Unit = {},
-    onSearchLocationClicked: ()-> Unit = {},
-    onValueChanged:(String) ->  Unit = {},
+    onSearchLocationClicked: () -> Unit = {},
+    onValueChanged: (String) -> Unit = {},
 ) {
 
     val interactionSource = remember {
@@ -189,7 +189,7 @@ fun SelectPlaceGroupContent(
                 horizontal = 14.dp,
                 vertical = 5.dp
             )
-    ){
+    ) {
         MainButtonToggle(
             text = "전체"
         )
@@ -353,7 +353,7 @@ fun UserPlaceLocationIcon(
 
     Box(
 
-    ){
+    ) {
         Icon(
             ImageVector.vectorResource(iconColor),
             contentDescription = "Map food location icon",
@@ -372,7 +372,7 @@ fun UserPlaceLocationIcon(
                     shape = CircleShape
                 ),
             contentAlignment = Alignment.Center
-        ){
+        ) {
             Text(
                 text = placesNumber.toString(),
                 fontFamily = mainFont,
@@ -390,7 +390,7 @@ fun UserPlaceLocationIcon(
 fun YOGOFloatingActionGroup(
     onCurrentFloatingButtonClicked: () -> Unit = {},
     onAddLocationFloatingButtonClicked: () -> Unit = {}
-){
+) {
     val interactionSource = MutableInteractionSource()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -407,8 +407,8 @@ fun YOGOFloatingActionGroup(
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource
-                ){
-                    onCurrentFloatingButtonClicked
+                ) {
+                    onCurrentFloatingButtonClicked()
                 },
             tint = Color.Unspecified
         )
@@ -421,12 +421,11 @@ fun YOGOFloatingActionGroup(
                 .clickable(
                     indication = null,
                     interactionSource = interactionSource
-                ){
-                    onAddLocationFloatingButtonClicked
+                ) {
+                    onAddLocationFloatingButtonClicked()
                 },
             tint = Color.Unspecified
         )
-        //Spacer(Modifier.height(0.dp))
-        //Spacer(Modifier.height(bottomBarHeight.dp))
+        Spacer(Modifier.height(75.dp))
     }
 }

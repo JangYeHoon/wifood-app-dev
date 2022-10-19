@@ -77,7 +77,6 @@ fun MapView(
     navController: NavController,
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    var isLoading by remember { mutableStateOf(true) }
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val state = viewModel.state
@@ -85,14 +84,11 @@ fun MapView(
     var selectedMenu by remember { mutableStateOf(-1) }
     val camera = rememberCameraPositionState {
         scope.launch {
-            delay(1000L)
-            isLoading = false
             MainData.location?.let {
                 position = CameraPosition.fromLatLngZoom(LatLng(it.latitude, it.longitude), 16f)
             }
         }
     }
-    val scrollState = rememberScrollState()
     val context = LocalContext.current
 
     val uiSettings = remember {
@@ -125,16 +121,12 @@ fun MapView(
         }
     }
 
-    if (isLoading) {
-        ProgressIndicator()
-    }
-
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
             YOGOFloatingActionGroup(
                 onCurrentFloatingButtonClicked = {
-                    val currentLocation = state.currentLocation!!
+                    val currentLocation = MainData.location!!
                     scope.launch {
                         camera.animate(
                             CameraUpdateFactory.newLatLngZoom(
@@ -145,20 +137,11 @@ fun MapView(
                             ), 1000
                         )
                     }
-                    viewModel.onUiEvent(UiEvent.ShowSnackBar("${currentLocation.latitude.toString()}, ${currentLocation.longitude.toString()}"))
                 },
                 onAddLocationFloatingButtonClicked = {
                     val placeJson = Uri.encode(Gson().toJson(PlaceDto().toPlace()))
                     navController.navigate("${Route.PlaceInputNameAndVisited.route}/${placeJson}")
                 }
-            )
-        },
-        bottomBar = {
-            YOGOBottomBar(
-                selected = "map",
-                pushMapClicked = {},
-                pushListClicked = {},
-                pushSettingClicked = {}
             )
         }
     ) {

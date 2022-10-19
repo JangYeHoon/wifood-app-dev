@@ -7,12 +7,13 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.login.util.ValidationEvent
+import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.mypage.contents.ModifyUserProfileContent
@@ -27,6 +28,7 @@ fun ModifyUserProfileView(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
+    var isLoading by remember { mutableStateOf(false) }
 
     val takePhotoFromAlbumIntent =
         Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
@@ -43,6 +45,7 @@ fun ModifyUserProfileView(
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
                     scope.launch {
+                        MainData.image = uri.toString()
                         viewModel.onEvent(
                             MyPageEvent.ImageAdd(uri)
                         )
@@ -57,8 +60,15 @@ fun ModifyUserProfileView(
                 is ValidationEvent.Success -> {
                     navController.popBackStack()
                 }
+                is ValidationEvent.Loading -> {
+                    isLoading = true
+                }
             }
         }
+    }
+
+    if (isLoading) {
+        ProgressIndicator()
     }
 
     ModifyUserProfileContent(

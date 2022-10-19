@@ -1,10 +1,9 @@
 package com.example.wifood.presentation.view.login
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.BuildConfig
@@ -16,21 +15,17 @@ import com.example.wifood.presentation.view.login.util.SignUpData
 import com.example.wifood.presentation.view.login.util.ValidationEvent
 import com.example.wifood.presentation.view.login.util.ViewItem
 import com.example.wifood.util.Resource
-import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import com.skt.Tmap.TMapTapi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import kotlin.ConcurrentModificationException
 
 
 @HiltViewModel
@@ -53,6 +48,10 @@ class SignUpViewModel @Inject constructor(
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.PhoneNumChanged -> {
+                if (!event.phoneNumber.isDigitsOnly()) {
+                    return
+                }
+
                 _state.value = SignUpState(
                     phoneNumber = event.phoneNumber
                 )
@@ -116,7 +115,7 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.AgreementClicked -> {
                 _state.value = SignUpState(
-                    agreement = !_state.value.agreement
+                    agreement = true
                 )
             }
             is SignUpEvent.FavorSelected -> {
@@ -206,22 +205,41 @@ class SignUpViewModel @Inject constructor(
 
                 if (hasError) {
                     _state.value = state.value.copy(
-                        phoneValidation = 0
+                        phoneValidation = false
                     )
                     showSnackBar(phoneResult.errorMessage!!)
+                    return
                 }
 
-                // 1 = Exist, 2 = Loading, 0 = Error
-                useCases.CheckUser(_state.value.phoneNumber).observeForever {
-                    // TODO
-                    if (it == 0) showSnackBar("Unknown error occur!")
+                _state.value = state.value.copy(
+                    phoneValidation = true
+                )
 
-                    if (it == 1) SignUpData.exist = true
+                if (_state.value.phoneValidation) {
+                    // 1 = Exist, 2 = Loading, 0 = Error
+                    useCases.CheckUser(_state.value.phoneNumber).observeForever {
+                        // TODO
+                        when (it) {
+                            0 -> {
+                                showSnackBar("Unknown error occur!")
+                            }
+                            1 -> {
+                                showSnackBar("${state.value.phoneNumber} is already exists.")
+                            }
+                            -1 -> {
+                                viewModelScope.launch {
+                                    validateEventChannel.send(ValidationEvent.Success)
+                                }
+                            }
+                            else -> {
 
-                    _state.value = state.value.copy(
-                        isLoading = it == 2,
-                        phoneValidation = it
-                    )
+                            }
+                        }
+
+                        _state.value = state.value.copy(
+                            isLoading = it == 2
+                        )
+                    }
                 }
             }
         }

@@ -51,27 +51,6 @@ fun MainView(
     var exitWaitTime = 0L
     val scope = rememberCoroutineScope()
     val activity = (LocalContext.current as? Activity)
-    val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
-    DisposableEffect(context) {
-        val locationClient = DefaultLocationClient(
-            context,
-            LocationServices.getFusedLocationProviderClient(context)
-        )
-
-        locationClient
-            .getLocationUpdates(3000L)
-            .catch { e -> e.printStackTrace() }
-            .onEach { location ->
-                MainData.location = location
-                viewModel.onEvent(MainEvent.LocationChanged(location))
-            }
-            .launchIn(serviceScope)
-
-        onDispose {
-            serviceScope.cancel()
-        }
-    }
 
     LaunchedEffect(key1 = true) {
         viewModel.init()
@@ -143,7 +122,7 @@ fun MainView(
                     }
                 )
             }
-        ){
+        ) {
             when (state.selected) {
                 NavItem.Map.id -> {
                     MapView(navController)
