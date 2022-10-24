@@ -410,10 +410,10 @@ fun YOGOFloatingActionGroup(
             ImageVector.vectorResource(id = R.drawable.ic_floating_button_current_location),
             contentDescription = "current location floating button",
             modifier = Modifier
-                .wrapContentSize()
+                .size(54.dp)
                 .clickable(
-                    indication = null,
-                    interactionSource = interactionSource
+                    //indication = null,
+                    //interactionSource = interactionSource
                 ) {
                     onCurrentFloatingButtonClicked()
                 },
@@ -424,10 +424,10 @@ fun YOGOFloatingActionGroup(
             ImageVector.vectorResource(id = R.drawable.ic_floating_button_add_location),
             contentDescription = "",
             modifier = Modifier
-                .wrapContentSize()
+                .size(70.dp)
                 .clickable(
-                    indication = null,
-                    interactionSource = interactionSource
+                    //indication = null,
+                    //interactionSource = interactionSource
                 ) {
                     onAddLocationFloatingButtonClicked()
                 },
