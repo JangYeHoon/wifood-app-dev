@@ -17,23 +17,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
-import com.example.wifood.WifoodApp
-import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
-import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.main.util.MainData
-import com.example.wifood.presentation.view.mypage.MyPageViewModel
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 
+@Preview(showBackground = true)
 @Composable
 fun MySettingContent(
     onNicknameClicked: () -> Unit = {},
@@ -80,20 +76,21 @@ fun MySettingContent(
                     contentScale = ContentScale.FillBounds
                 )
             } else {
-                Image(
-                    painter = painterResource(id = R.drawable.profile),
-                    contentDescription = "",
+                Icon(
+                    ImageVector.vectorResource(R.drawable.default_profile_svg_image),
+                    contentDescription = "back button",
                     modifier = Modifier
                         .size(55.dp)
-                        .clip(
-                            shape = CircleShape
-                        ),
-                    contentScale = ContentScale.FillBounds
+                        .clip(shape = CircleShape),
+                    tint = Color.Unspecified,
                 )
             }
             Spacer(Modifier.width(14.dp))
+            var userNickName = MainData.user.nickname
+            if (userNickName.length == 0 )
+                userNickName = "요고247"
             Text(
-                text = MainData.user.nickname,
+                text = userNickName,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp,

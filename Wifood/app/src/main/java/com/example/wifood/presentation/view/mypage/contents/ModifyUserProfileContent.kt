@@ -1,7 +1,6 @@
 package com.example.wifood.presentation.view.mypage.contents
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -13,29 +12,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
-import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.main.util.MainData
-import com.example.wifood.presentation.view.mypage.MyPageEvent
-import com.example.wifood.presentation.view.mypage.MyPageViewModel
-import com.example.wifood.presentation.view.placeList.component.CameraAndAlbumBottomSheetContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.sidePaddingValue
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -96,15 +90,13 @@ fun ModifyUserProfileContent(
                         contentScale = ContentScale.FillBounds
                     )
                 } else {
-                    Image(
-                        painter = painterResource(R.drawable.profile),
+                    Icon(
+                        ImageVector.vectorResource(R.drawable.default_profile_svg_image),
                         contentDescription = "",
                         modifier = Modifier
                             .size(100.dp)
-                            .clip(
-                                shape = CircleShape
-                            ),
-                        contentScale = ContentScale.FillBounds
+                            .clip(shape = CircleShape),
+                        tint = Color.Unspecified,
                     )
                 }
                 Icon(
