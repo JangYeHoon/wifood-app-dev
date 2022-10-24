@@ -56,6 +56,7 @@ fun PlaceListComposeView(
     val cardInterval = 10
     Column{
         DoubleButtonTopAppBar(
+            leftButtonOn = false,
             leftButtonClicked = {
                 navController.popBackStack()
             },
