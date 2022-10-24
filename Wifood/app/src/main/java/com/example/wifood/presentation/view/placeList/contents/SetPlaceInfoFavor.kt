@@ -200,17 +200,6 @@ fun SelectAdditionalFavor(
         modifier = Modifier.fillMaxWidth()
     ) {
         SingleIconWithText(
-            text = "기분",
-            UnClickedSourceId = R.drawable.ic_place_info_taste_unclicked,
-            ClickedSourceId = R.drawable.ic_place_info_taste_clicked,
-            isClicked = tasteChk,
-            onClick = {
-                scope.launch {
-                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!tasteChk))
-                }
-            }
-        )
-        SingleIconWithText(
             text = "위생",
             UnClickedSourceId = R.drawable.ic_place_info_clean_unclicked,
             ClickedSourceId = R.drawable.ic_place_info_clean_clicked,
@@ -240,6 +229,17 @@ fun SelectAdditionalFavor(
             onClick = {
                 scope.launch {
                     viewModel.onEvent(PlaceInfoWriteFormEvent.VibeCheck(!vibeChk))
+                }
+            }
+        )
+        SingleIconWithText(
+            text = "주차",
+            UnClickedSourceId = R.drawable.ic_place_info_parking_unclicked,
+            ClickedSourceId = R.drawable.ic_place_info_parking_clicked,
+            isClicked = tasteChk,
+            onClick = {
+                scope.launch {
+                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!tasteChk))
                 }
             }
         )
