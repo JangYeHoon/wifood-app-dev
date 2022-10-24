@@ -174,9 +174,6 @@ fun MapView(
                     navController.navigate("${Route.Search.route}/${placeJson}")
                 }
             )
-            /*SelectPlaceGroupContent(
-
-            )*/
 
             LazyRow(
                 state = listState,
@@ -184,7 +181,7 @@ fun MapView(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .background(
-                        color = Color(0xE6FFFFFF)
+                        color = Color(0xF2FFFFFF)
                     )
                     .padding(
                         horizontal = 14.dp,
