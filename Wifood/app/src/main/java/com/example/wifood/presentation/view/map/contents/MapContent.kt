@@ -220,11 +220,11 @@ fun SelectPlaceGroupContent(
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun CurrentLocationUnion(
     titleText: String = "파리바게트",
-    explainText: String = "황홀한맛입니다아아",
+    explainText: String = "황홀한맛입니다아아 매우 황홀해요~~~",
     rating: Int = 3,
     onClicked: () -> Unit = {}
 ) {
@@ -406,33 +406,33 @@ fun YOGOFloatingActionGroup(
                 color = Color.Transparent
             )
     ) {
-        Icon(
-            ImageVector.vectorResource(id = R.drawable.ic_floating_button_current_location),
-            contentDescription = "current location floating button",
+        IconButton(
+            onClick = onCurrentFloatingButtonClicked,
             modifier = Modifier
-                .size(54.dp)
-                .clickable(
-                    //indication = null,
-                    //interactionSource = interactionSource
-                ) {
-                    onCurrentFloatingButtonClicked()
-                },
-            tint = Color.Unspecified
-        )
+                .wrapContentSize()
+        ){
+            Icon(
+                ImageVector.vectorResource(id = R.drawable.ic_floating_button_current_location),
+                contentDescription = "current location floating button",
+                modifier = Modifier
+                    .size(54.dp),
+                tint = Color.Unspecified
+            )
+        }
         Spacer(Modifier.height(9.dp))
-        Icon(
-            ImageVector.vectorResource(id = R.drawable.ic_floating_button_add_location),
-            contentDescription = "",
+        IconButton(
+            onClick = onAddLocationFloatingButtonClicked,
             modifier = Modifier
                 .size(70.dp)
-                .clickable(
-                    //indication = null,
-                    //interactionSource = interactionSource
-                ) {
-                    onAddLocationFloatingButtonClicked()
-                },
-            tint = Color.Unspecified
-        )
+        ) {
+            Icon(
+                ImageVector.vectorResource(id = R.drawable.ic_floating_button_add_location),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(70.dp),
+                tint = Color.Unspecified
+            )
+        }
         Spacer(Modifier.height(75.dp))
     }
 }

@@ -14,16 +14,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wifood.R
 import com.example.wifood.presentation.view.component.YOGOPR12_formInfo
 import com.example.wifood.view.ui.theme.MainColor
 import com.example.wifood.view.ui.theme.bottomBarHeight
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun YOGOBottomBar(
-    selected:String = "map",
+    selected: String = "map",
     pushMapClicked: () -> Unit = {},
     pushListClicked: () -> Unit = {},
     pushSettingClicked: () -> Unit = {}
@@ -90,18 +91,19 @@ fun BottomBarItems(
 ) {
 
     val interactionSource = MutableInteractionSource()
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .wrapContentWidth()
+            .width(70.dp)
+            .height(bottomBarHeight.dp)
             .clickable(
-                indication = null,
-                interactionSource = interactionSource
+                //indication = null,
+                //interactionSource = interactionSource
             ) {
                 onClicked()
             }
     ) {
+        Spacer(Modifier.weight(1f))
         Icon(
             ImageVector.vectorResource(if (pushed) itemPushedId else itemId),
             contentDescription = "App bottom Items",
@@ -115,5 +117,7 @@ fun BottomBarItems(
             color = if (pushed) MainColor else Color(0xBD000000),
             textAlign = TextAlign.Center
         )
+        Spacer(Modifier.weight(1f))
     }
+
 }
