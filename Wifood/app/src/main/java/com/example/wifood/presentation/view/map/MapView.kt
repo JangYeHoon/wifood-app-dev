@@ -181,7 +181,7 @@ fun MapView(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .background(
-                        color = Color(0xF2FFFFFF)
+                        color = Color(0xF9FFFFFF)
                     )
                     .padding(
                         horizontal = 14.dp,

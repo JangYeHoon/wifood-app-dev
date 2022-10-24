@@ -97,8 +97,8 @@ fun BottomBarItems(
             .width(70.dp)
             .height(bottomBarHeight.dp)
             .clickable(
-                //indication = null,
-                //interactionSource = interactionSource
+                indication = null,
+                interactionSource = interactionSource
             ) {
                 onClicked()
             }

@@ -32,7 +32,9 @@ fun CustomMarker(
         title = title,
         icon = icon,
         visible = visible,
-        content = { CurrentLocationUnion(title, review, rating) }
+        content = {
+            CurrentLocationUnion(title, review, rating)
+        }
     )
 
 }

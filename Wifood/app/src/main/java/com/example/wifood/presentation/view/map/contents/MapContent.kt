@@ -223,9 +223,9 @@ fun SelectPlaceGroupContent(
 @Preview(showBackground = true)
 @Composable
 fun CurrentLocationUnion(
-    titleText: String = "파리바게트",
+    titleText: String = "파리바게트가 뭔지 몰라요",
     explainText: String = "황홀한맛입니다아아 매우 황홀해요~~~",
-    rating: Int = 3,
+    rating: Int = 2,
     onClicked: () -> Unit = {}
 ) {
     val InteractionSource = MutableInteractionSource()
@@ -292,7 +292,7 @@ fun CurrentLocationUnion(
                 Spacer(Modifier.height(3.dp))
             }
             Text(
-                text = titleText,
+                text = titleText.substring(0, 8) + "...",
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 12.sp,
@@ -301,7 +301,7 @@ fun CurrentLocationUnion(
             )
             if (explainText.isNotEmpty()) {
                 Text(
-                    text = explainText.substring(0, 6) + "...",
+                    text = explainText.substring(0, 8) + "...",
                     fontFamily = mainFont,
                     fontWeight = FontWeight.Normal,
                     fontSize = 10.sp,

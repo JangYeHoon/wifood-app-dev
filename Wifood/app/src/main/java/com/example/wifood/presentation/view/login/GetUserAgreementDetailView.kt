@@ -50,7 +50,13 @@ fun GetUserAgreementDetailView(
             ),
             color = Color(0xFFFFFFFF)
         ) {
-            PersonalAgreementContent(viewModel, showDialog)
+            Column(
+            ) {
+                Spacer(Modifier.height(10.dp))
+                DialogCenterDivider()
+                Spacer(Modifier.height(10.dp))
+                PersonalAgreementContent(viewModel, showDialog)
+            }
         }
     }
 }
@@ -63,42 +69,36 @@ fun PersonalAgreementContent(
     val scrollState = rememberScrollState()
 
     Column(
+        modifier = Modifier
+            .verticalScroll(scrollState)
+            .padding(vertical = 26.dp)
+            .padding(horizontal = sidePaddingValue.dp)
     ) {
-        Spacer(Modifier.height(10.dp))
-        DialogCenterDivider()
-        Spacer(Modifier.height(10.dp))
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .padding(vertical = 26.dp)
-                .padding(horizontal = sidePaddingValue.dp)
-        ) {
-            Text(
-                text = "이용약관동의",
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                color = Color(0xFF424242)
-            )
-            Spacer(Modifier.height(18.dp))
-            Text(
-                text = personalAgreementText,
-                fontFamily = mainFont,
-                fontWeight = FontWeight.Normal,
-                fontSize = 10.sp,
-                color = Color(0xFF979797)
-            )
-            Spacer(Modifier.height(44.dp))
-            Spacer(Modifier.weight(1f))
-            MainButton(
-                text = "약관에 동의하기",
-                onClick = {
-                    viewModel.onEvent(SignUpEvent.AgreementClicked)
-                    showDialog.value = false
-                }
-            )
-            Spacer(Modifier.height(buttonBottomValue.dp))
-        }
+        Text(
+            text = "이용약관동의",
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            color = Color(0xFF424242)
+        )
+        Spacer(Modifier.height(18.dp))
+        Text(
+            text = personalAgreementText,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Normal,
+            fontSize = 10.sp,
+            color = Color(0xFF979797)
+        )
+        Spacer(Modifier.height(44.dp))
+        Spacer(Modifier.weight(1f))
+        MainButton(
+            text = "약관에 동의하기",
+            onClick = {
+                viewModel.onEvent(SignUpEvent.AgreementClicked)
+                showDialog.value = false
+            }
+        )
+        Spacer(Modifier.height(buttonBottomValue.dp))
     }
 }
 
