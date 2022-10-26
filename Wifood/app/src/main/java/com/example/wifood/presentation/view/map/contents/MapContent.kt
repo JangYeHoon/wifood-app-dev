@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.map
+package com.example.wifood.presentation.view.map.contents
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,7 +33,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.EnableColor
 import com.example.wifood.view.ui.theme.Gray01Color
-import com.example.wifood.view.ui.theme.bottomBarHeight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
@@ -406,11 +406,13 @@ fun YOGOFloatingActionGroup(
                 color = Color.Transparent
             )
     ) {
-        IconButton(
+        FloatingActionButton(
             onClick = onCurrentFloatingButtonClicked,
             modifier = Modifier
-                .wrapContentSize()
-        ){
+                .wrapContentSize(),
+            elevation = FloatingActionButtonDefaults.elevation(16.dp),
+            backgroundColor = Color.White
+        ) {
             Icon(
                 ImageVector.vectorResource(id = R.drawable.ic_floating_button_current_location),
                 contentDescription = "current location floating button",
@@ -420,10 +422,11 @@ fun YOGOFloatingActionGroup(
             )
         }
         Spacer(Modifier.height(9.dp))
-        IconButton(
+        FloatingActionButton(
             onClick = onAddLocationFloatingButtonClicked,
             modifier = Modifier
-                .size(70.dp)
+                .size(70.dp),
+            elevation = FloatingActionButtonDefaults.elevation(16.dp)
         ) {
             Icon(
                 ImageVector.vectorResource(id = R.drawable.ic_floating_button_add_location),
