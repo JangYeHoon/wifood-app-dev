@@ -19,7 +19,11 @@ import com.example.wifood.view.ui.theme.buttonBottomValue
 @Composable
 fun ModifyTasteFavorContent(
     favorSelected: (Int, Int) -> Unit = { _, _ -> },
-    onClickChangeTasteButton: () -> Unit = {}
+    onClickChangeTasteButton: () -> Unit = {},
+    onCucumberClicked: (Boolean) -> Unit = {},
+    onCorianderClicked: (Boolean) -> Unit = {},
+    onMintClicked: (Boolean) -> Unit = {},
+    onEggplantClicked: (Boolean) -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 
@@ -48,7 +52,12 @@ fun ModifyTasteFavorContent(
                 color = Color.Black
             )
             Spacer(Modifier.height(16.dp))
-            UserFavorButtonGroup()
+            UserFavorButtonGroup(
+                onCucumberClicked = onCucumberClicked,
+                onCorianderClicked = onCorianderClicked,
+                onMintClicked = onMintClicked,
+                onEggplantClicked = onEggplantClicked
+            )
         }
         Spacer(Modifier.height(130.dp))
         Spacer(Modifier.weight(1f))

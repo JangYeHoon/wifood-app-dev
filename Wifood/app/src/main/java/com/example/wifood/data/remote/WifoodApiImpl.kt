@@ -411,7 +411,7 @@ class WifoodApiImpl @Inject constructor(
 
     override suspend fun requestCertNumber(phoneNumber: String): String {
         val response = client.post<Response> {
-            url("http://192.168.0.8:8080/sms")
+            url("http://172.30.1.14:8080/sms")
             contentType(ContentType.Application.Json)
             body = Request(phoneNumber)
         }

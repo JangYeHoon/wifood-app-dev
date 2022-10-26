@@ -12,6 +12,7 @@ sealed class SignUpEvent() {
     object ButtonClicked : SignUpEvent()
     data class AddressClicked(val address: String? = "") : SignUpEvent()
     object AgreementClicked : SignUpEvent()
+    object AgreementDetailClicked : SignUpEvent()
     data class FavorSelected(val selected: Int, val index: Int) : SignUpEvent()
     object TasteCreated : SignUpEvent()
 }

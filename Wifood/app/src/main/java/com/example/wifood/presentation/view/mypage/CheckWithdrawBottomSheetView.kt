@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun CheckWithdrawBottomSheetView(
+    navController: NavController,
     viewModel: MyPageViewModel = hiltViewModel(),
     modalBottomSheetState: ModalBottomSheetState
 ) {
@@ -38,6 +39,7 @@ fun CheckWithdrawBottomSheetView(
 
     CheckWithdrawBottomSheetContent(
         onLeftButtonClicked = {
+            navController.popBackStack()
             viewModel.onEvent(MyPageEvent.DeleteUser)
         },
         onRightButtonClicked = {

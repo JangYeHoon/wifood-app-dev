@@ -25,6 +25,7 @@ fun MySettingView(
         },
         onLogoutClicked = {
             WifoodApp.pref.setString("Initial_Flag", "0")
+            navController.popBackStack()
             navController.navigate(Route.GetPhoneNumber.route)
         }
     )

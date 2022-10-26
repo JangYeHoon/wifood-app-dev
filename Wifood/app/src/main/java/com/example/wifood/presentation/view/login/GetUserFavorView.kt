@@ -32,7 +32,6 @@ fun GetUserFavorView(
                     /*
                     must be fixed
                      */
-                    WifoodApp.pref.setString("user_id", SignUpData.phoneNumber)
                     WifoodApp.pref.setString("Initial_Flag", "1")
                     navController.navigate(Route.Complete.route)
                 }

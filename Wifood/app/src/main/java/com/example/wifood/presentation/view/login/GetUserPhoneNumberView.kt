@@ -51,6 +51,7 @@ fun GetUserPhoneNumberView(
                     done = true
                 }
                 is ValidationEvent.Error -> {
+                    done = false
                     scaffoldState.snackbarHostState.showSnackbar(event.message)
                 }
             }

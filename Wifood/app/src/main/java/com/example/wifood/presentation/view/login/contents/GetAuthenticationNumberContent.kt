@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.example.wifood.presentation.view.component.MainButtonInversed
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.ui.theme.mainFont
@@ -75,7 +76,7 @@ fun GetAuthenticationNumberContent(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
-                color = MainColor
+                color = if (timeText != "0:00") MainColor else Color.Red
             )
             Spacer(Modifier.height(56.dp))
             Row(
@@ -84,31 +85,39 @@ fun GetAuthenticationNumberContent(
                 horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 GetSingleAuthNumber(firstAuthNumber) {
-                    firstAuthNumber = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                    if (it.isDigitsOnly()) {
+                        firstAuthNumber = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                    }
                 }
 
                 GetSingleAuthNumber(secondAuthNumber) {
-                    secondAuthNumber = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
-                    else if (secondAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    if (it.isDigitsOnly()) {
+                        secondAuthNumber = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                        else if (secondAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    }
                 }
                 GetSingleAuthNumber(thirdAuthNumber) {
-                    thirdAuthNumber = it
-                    if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
-                    else if (thirdAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    if (it.isDigitsOnly()) {
+                        thirdAuthNumber = it
+                        if (it.length == 1) focusManager.moveFocus(FocusDirection.Right)
+                        else if (thirdAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                    }
                 }
                 GetSingleAuthNumber(fourthAuthNumber) {
-                    fourthAuthNumber = it
-                    if (fourthAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
-                    else {
-                        val certNumber = buildString {
-                            append(firstAuthNumber)
-                            append(secondAuthNumber)
-                            append(thirdAuthNumber)
-                            append(it)
+                    if (it.isDigitsOnly()) {
+                        fourthAuthNumber = it
+                        if (fourthAuthNumber.isBlank()) focusManager.moveFocus(FocusDirection.Left)
+                        else {
+                            val certNumber = buildString {
+                                append(firstAuthNumber)
+                                append(secondAuthNumber)
+                                append(thirdAuthNumber)
+                                append(it)
+                            }
+                            checkAuthNumber(certNumber)
                         }
-                        checkAuthNumber(certNumber)
                     }
                 }
             }

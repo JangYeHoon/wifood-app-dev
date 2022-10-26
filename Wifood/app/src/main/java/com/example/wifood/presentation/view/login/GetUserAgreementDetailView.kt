@@ -94,7 +94,7 @@ fun PersonalAgreementContent(
         MainButton(
             text = "약관에 동의하기",
             onClick = {
-                viewModel.onEvent(SignUpEvent.AgreementClicked)
+                viewModel.onEvent(SignUpEvent.AgreementDetailClicked)
                 showDialog.value = false
             }
         )

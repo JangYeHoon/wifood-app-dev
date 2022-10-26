@@ -31,10 +31,30 @@ class MyPageViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = mutableStateOf(
-        MyPageState(
-            currentUser = MainData.user,
-            nickname = MainData.user.nickname
-        )
+        if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
+            MyPageState(
+                currentUser = User(
+                    "",
+                    "",
+                    "",
+                    0,
+                    ""
+                ),
+                ""
+            )
+        } else {
+            MyPageState(
+                currentUser = MainData.user,
+                nickname = MainData.user.nickname,
+//                taste = arrayListOf(
+//                    MainData.user.taste!!.spicy,
+//                    MainData.user.taste!!.salty,
+//                    MainData.user.taste!!.acidity,
+//                    MainData.user.taste!!.sour,
+//                    MainData.user.taste!!.sweet
+//                )
+            )
+        }
     )
     val state: State<MyPageState> = _state
 
@@ -103,6 +123,8 @@ class MyPageViewModel @Inject constructor(
                 val temp = _state.value.taste
                 temp.set(event.index, event.selected)
 
+                Log.d("FAVOR", "onEvent: ${temp}")
+
                 _state.value = state.value.copy(
                     taste = temp
                 )
@@ -159,6 +181,7 @@ class MyPageViewModel @Inject constructor(
                     }
                 )
 
+                Log.d("FAVOR", "onEvent: ${_state.value.taste}")
                 // TODO : 핸드폰 번호 중복 체크
 
                 viewModelScope.launch {

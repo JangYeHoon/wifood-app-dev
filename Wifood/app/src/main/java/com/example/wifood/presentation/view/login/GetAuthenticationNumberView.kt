@@ -43,12 +43,6 @@ fun GetAuthenticationNumberView(
     LaunchedEffect(state.certNumber) {
         if (state.certNumber.length == 4) {
             viewModel.onEvent(SignUpEvent.Verify(state.certNumber, timer))
-            if (SignUpData.exist) {
-                WifoodApp.pref.setString("Initial_Flag", "1")
-                navController.navigate(Route.Main.route)
-            } else {
-                navController.navigate(Route.Agreement.route)
-            }
         }
     }
 

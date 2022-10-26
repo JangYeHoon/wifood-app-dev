@@ -34,6 +34,7 @@ fun ModifyMyInfoView(
     ModalBottomSheetLayout(
         sheetContent = {
             CheckWithdrawBottomSheetView(
+                navController,
                 modalBottomSheetState = modalBottomSheetState
             )
         },
@@ -54,7 +55,7 @@ fun ModifyMyInfoView(
 
         ModifyMyInfoContent(
             onBackButtonClicked = {
-                navController.popBackStack()
+                navController.navigateUp()
             },
             onModifyPhoneNumberClicked = {
                 navController.navigate(Route.ModifyPhoneNumber.route)

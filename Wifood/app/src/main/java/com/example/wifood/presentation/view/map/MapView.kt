@@ -209,8 +209,7 @@ fun MapView(
                         isClicked = group.groupId == selectedMenu,
                         buttonColor = if (selectedMenu == group.groupId) setColor(selectedMenu) else Color.White,
                         onClick = {
-                            selectedMenu =
-                                if (selectedMenu != group.groupId) group.groupId else -1
+                            selectedMenu = group.groupId
                             viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
                             scope.launch {
                                 listState.animateScrollToItem(i)

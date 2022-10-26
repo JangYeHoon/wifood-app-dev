@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.domain.model.TMapSearch
+import com.example.wifood.presentation.view.search.contents.NoSearchResultContent
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.*
 
@@ -55,19 +56,23 @@ fun SearchUserAddressContent(
             keyboardActions = keyboardActions
         )
         Spacer(Modifier.height(12.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = sidePaddingValue.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(searchList) { item ->
-                SearchPlaceInfoCard(
-                    item.fullAddress,
-                    item.name,
-                    addressText
-                ) {
-                    onSearchedCardClicked(item.fullAddress)
+        if (searchList.isEmpty()) {
+            NoSearchResultContent()
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = sidePaddingValue.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(searchList) { item ->
+                    SearchPlaceInfoCard(
+                        item.fullAddress,
+                        item.name,
+                        addressText
+                    ) {
+                        onSearchedCardClicked(item.fullAddress)
+                    }
                 }
             }
         }

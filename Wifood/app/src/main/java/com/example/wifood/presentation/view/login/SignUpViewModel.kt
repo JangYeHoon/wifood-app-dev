@@ -1,12 +1,14 @@
 package com.example.wifood.presentation.view.login
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wifood.BuildConfig
+import com.example.wifood.WifoodApp
 import com.example.wifood.data.remote.dto.GroupDto
 import com.example.wifood.domain.model.Taste
 import com.example.wifood.domain.model.User
@@ -62,8 +64,8 @@ class SignUpViewModel @Inject constructor(
                 if (!event.certNumber.isDigitsOnly()) {
                     return
                 }
-                
-                _state.value = SignUpState(
+
+                _state.value = state.value.copy(
                     certNumber = event.certNumber
                 )
             }
@@ -90,7 +92,9 @@ class SignUpViewModel @Inject constructor(
             }
             is SignUpEvent.Verify -> {
                 /* 서버에 인증번호 전송, 서버에서 결과 응답하면 받아서 처리 */
-                tempVerify(event.certNumber, event.timer)
+                viewModelScope.launch {
+                    tempVerify(event.certNumber, event.timer)
+                }
             }
             is SignUpEvent.ShowDocument -> {
                 /* 개인정보처리방침 다운로드 받아서 화면 하나 생성해놓고, 요청 시 보여줌 */
@@ -105,7 +109,8 @@ class SignUpViewModel @Inject constructor(
                                 _state.value = state.value.copy(
                                     searchResults = it
                                 )
-                            } catch (e: ConcurrentModificationException) { }
+                            } catch (e: ConcurrentModificationException) {
+                            }
                         }
                     }
                 } catch (e: NullPointerException) {
@@ -118,6 +123,11 @@ class SignUpViewModel @Inject constructor(
                 SignUpData.address = event.address ?: _state.value.address
             }
             is SignUpEvent.AgreementClicked -> {
+                _state.value = SignUpState(
+                    agreement = !_state.value.agreement
+                )
+            }
+            is SignUpEvent.AgreementDetailClicked -> {
                 _state.value = SignUpState(
                     agreement = true
                 )
@@ -200,7 +210,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    fun checkForm(view: ViewItem) {
+    suspend fun checkForm(view: ViewItem) {
         when (view) {
             is ViewItem.SignUpView1 -> {
                 val phoneResult = useCases.ValidatePhone(_state.value.phoneNumber)
@@ -211,7 +221,7 @@ class SignUpViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         phoneValidation = false
                     )
-                    showSnackBar(phoneResult.errorMessage!!)
+                    validateEventChannel.send(ValidationEvent.Error(phoneResult.errorMessage!!))
                     return
                 }
 
@@ -226,12 +236,19 @@ class SignUpViewModel @Inject constructor(
                         when (it) {
                             0 -> {
                                 showSnackBar("Unknown error occur!")
+                                SignUpData.exist = false
                             }
                             1 -> {
                                 showSnackBar("${state.value.phoneNumber} is already exists.")
+                                SignUpData.exist = true
+                                viewModelScope.launch {
+                                    WifoodApp.pref.setString("user_id", _state.value.phoneNumber)
+                                    validateEventChannel.send(ValidationEvent.Success)
+                                }
                             }
                             -1 -> {
                                 viewModelScope.launch {
+                                    SignUpData.exist = false
                                     validateEventChannel.send(ValidationEvent.Success)
                                 }
                             }
@@ -253,18 +270,18 @@ class SignUpViewModel @Inject constructor(
         useCases.RequestCertNumber(phoneNumber).onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    _state.value = SignUpState(
+                    _state.value = state.value.copy(
                         reqCertNumber = result.data,
                         isLoading = false
                     )
                 }
                 is Resource.Loading -> {
-                    _state.value = SignUpState(
+                    _state.value = state.value.copy(
                         isLoading = true
                     )
                 }
                 is Resource.Error -> {
-                    _state.value = SignUpState(
+                    _state.value = state.value.copy(
                         isLoading = false
                     )
                 }
@@ -276,19 +293,19 @@ class SignUpViewModel @Inject constructor(
      * 1. 타이머가 0:00 이면 실패
      * 2. 인증번호 검증
      */
-    private fun tempVerify(certNumber: String, timer: Int) {
+    private suspend fun tempVerify(certNumber: String, timer: Int) {
 //        if (timer == 0) {
 //            viewModelScope.launch {
 //                validateEventChannel.send(ValidationEvent.Error("제한시간이 초과되었습니다. 다시 시도해주세요."))
 //            }
-//        return
+//            return
 //        }
 //        if (certNumber != _state.value.reqCertNumber) {
 //            viewModelScope.launch {
 //                validateEventChannel.send(ValidationEvent.Error("인증번호가 일치하지 않습니다."))
 //            }
-//        return
+//            return
 //        }
-//        validateEventChannel.send(ValidationEvent.Success())
+        validateEventChannel.send(ValidationEvent.Success)
     }
 }

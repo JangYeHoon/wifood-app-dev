@@ -23,7 +23,7 @@ fun GetUserAgreementView(
         onAgreeClicked = {
             viewModel.onEvent(SignUpEvent.AgreementClicked)
         },
-        agreeChecked =  state.agreement,
+        agreeChecked = state.agreement,
         showAgreementDialog = showPersonalAgreementDialog,
         onButtonClicked = {
             navController.navigate(Route.SignUp3.route)

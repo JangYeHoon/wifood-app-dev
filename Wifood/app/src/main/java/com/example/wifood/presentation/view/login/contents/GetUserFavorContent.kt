@@ -9,10 +9,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,9 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.ProgressIndicator
 import com.example.wifood.presentation.view.groupComponent.SingleIconWithText
+import com.example.wifood.presentation.view.login.util.SignUpData
+import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.Gray01Color
@@ -116,15 +116,15 @@ fun UserFavorRadioGroup(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        YOGORadioGroup(titleText = "매운맛", onFavorSelected)
+        YOGORadioGroup(titleText = "매운맛", 0, onFavorSelected)
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup(titleText = "단맛", onFavorSelected)
+        YOGORadioGroup(titleText = "단맛", 1, onFavorSelected)
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup(titleText = "짠맛", onFavorSelected)
+        YOGORadioGroup(titleText = "짠맛", 2, onFavorSelected)
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup(titleText = "신맛", onFavorSelected)
+        YOGORadioGroup(titleText = "신맛", 3, onFavorSelected)
         Spacer(Modifier.height(favorSpacerValue.dp))
-        YOGORadioGroup(titleText = "쓴맛", onFavorSelected)
+        YOGORadioGroup(titleText = "쓴맛", 4, onFavorSelected)
         Spacer(Modifier.height(favorSpacerValue.dp))
     }
 }
@@ -132,9 +132,40 @@ fun UserFavorRadioGroup(
 @Composable
 fun YOGORadioGroup(
     titleText: String,
+    index: Int,
     onFavorSelected: (Int, Int) -> Unit = { _: Int, _: Int -> }
 ) {
-    val selected = remember { mutableStateListOf<Int>(0, 0, 1, 0, 0) }
+    var now: Int = 0
+    if (WifoodApp.pref.getString("Initial_Flag", "0") == "0") {
+        now = 2
+    } else {
+        when (index) {
+            0 -> {
+                now = (MainData.user.taste?.spicy ?: 3) - 1
+            }
+            1 -> {
+                now = (MainData.user.taste?.sweet ?: 3) - 1
+            }
+            2 -> {
+                now = (MainData.user.taste?.salty ?: 3) - 1
+            }
+            3 -> {
+                now = (MainData.user.taste?.sour ?: 3) - 1
+            }
+            4 -> {
+                now = (MainData.user.taste?.acidity ?: 3) - 1
+            }
+        }
+    }
+    val selected = remember {
+        mutableStateListOf<Int>(
+            if (now == 0) 1 else 0,
+            if (now == 1) 1 else 0,
+            if (now == 2) 1 else 0,
+            if (now == 3) 1 else 0,
+            if (now == 4) 1 else 0
+        )
+    }
     //semibold 13
     Column() {
         Text(
@@ -158,11 +189,11 @@ fun YOGORadioGroup(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                YOGORadioButton(selected, 0, 0, onFavorSelected = onFavorSelected)
-                YOGORadioButton(selected, 1, 1, onFavorSelected = onFavorSelected)
-                YOGORadioButton(selected, 2, 2, onFavorSelected = onFavorSelected)
-                YOGORadioButton(selected, 3, 3, onFavorSelected = onFavorSelected)
-                YOGORadioButton(selected, 4, 4, onFavorSelected = onFavorSelected)
+                YOGORadioButton(selected, 0, index, onFavorSelected = onFavorSelected)
+                YOGORadioButton(selected, 1, index, onFavorSelected = onFavorSelected)
+                YOGORadioButton(selected, 2, index, onFavorSelected = onFavorSelected)
+                YOGORadioButton(selected, 3, index, onFavorSelected = onFavorSelected)
+                YOGORadioButton(selected, 4, index, onFavorSelected = onFavorSelected)
             }
         }
         Spacer(Modifier.height(7.dp))
@@ -239,7 +270,7 @@ fun YOGORadioButton(
                 ) {
                     for (i: Int in 0..4) {
                         if (i == selectedValue) {
-                            onFavorSelected(index, i)
+                            onFavorSelected(selectedValue, index)
                             selected[i] = 1
                             continue
                         }
@@ -268,7 +299,12 @@ fun UserFavorButtonGroup(
         var corianderClicked = remember { mutableStateOf(false) }
         var mintChokoClicked = remember { mutableStateOf(false) }
         var eggplantClicked = remember { mutableStateOf(false) }
-
+        MainData.user.taste?.let {
+            cucumberClicked = remember { mutableStateOf(MainData.user.taste!!.cucumber) }
+            corianderClicked = remember { mutableStateOf(MainData.user.taste!!.coriander) }
+            mintChokoClicked = remember { mutableStateOf(MainData.user.taste!!.mintChoco) }
+            eggplantClicked = remember { mutableStateOf(MainData.user.taste!!.eggplant) }
+        }
         SingleIconWithText(
             text = "오이",
             UnClickedSourceId = R.drawable.ic_favor_cucumber,
