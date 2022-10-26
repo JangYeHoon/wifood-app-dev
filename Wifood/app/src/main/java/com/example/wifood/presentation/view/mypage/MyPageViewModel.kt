@@ -102,13 +102,12 @@ class MyPageViewModel @Inject constructor(
             }
             is MyPageEvent.ModifyProfile -> {
                 viewModelScope.launch {
-                    validateEventChannel.send(ValidationEvent.Loading)
-
                     if (MainData.user.nickname != _state.value.nickname) {
                         onEvent(MyPageEvent.ModifyUserInfo("NICKNAME"))
                     }
 
                     _state.value.image?.let {
+                        validateEventChannel.send(ValidationEvent.Loading)
                         useCases.InsertProfile(it, MainData.user.phoneNumber).addOnSuccessListener {
                             GlobalScope.launch(Dispatchers.IO) {
                                 withContext(Dispatchers.Main) {
@@ -122,8 +121,6 @@ class MyPageViewModel @Inject constructor(
             is MyPageEvent.FavorSelected -> {
                 val temp = _state.value.taste
                 temp.set(event.index, event.selected)
-
-                Log.d("FAVOR", "onEvent: ${temp}")
 
                 _state.value = state.value.copy(
                     taste = temp
