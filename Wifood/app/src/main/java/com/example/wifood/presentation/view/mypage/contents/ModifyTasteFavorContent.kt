@@ -15,6 +15,7 @@ import com.example.wifood.presentation.view.login.contents.UserFavorButtonGroup
 import com.example.wifood.presentation.view.login.contents.UserFavorRadioGroup
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.buttonBottomValue
+import com.example.wifood.view.ui.theme.sidePaddingValue
 
 @Composable
 fun ModifyTasteFavorContent(
@@ -30,6 +31,7 @@ fun ModifyTasteFavorContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(horizontal = sidePaddingValue.dp)
             .verticalScroll(scrollState)
     ) {
         Spacer(Modifier.height(106.dp))

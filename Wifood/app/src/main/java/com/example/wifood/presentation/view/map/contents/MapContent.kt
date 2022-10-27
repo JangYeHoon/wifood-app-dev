@@ -284,7 +284,7 @@ fun CurrentLocationUnion(
                         SingleRatingStar(
                             isClicked = i < rating,
                             onClick = {},
-                            starSize = 8
+                            starSize = 9
                         )
                         Spacer(Modifier.width(1.dp))
                     }
@@ -292,16 +292,16 @@ fun CurrentLocationUnion(
                 Spacer(Modifier.height(3.dp))
             }
             Text(
-                text = titleText.substring(0, 8) + "...",
+                text = titleText.substring(0, 5) + "...",
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 12.sp,
+                fontSize = 11.sp,
                 color = Black2Color,
                 textAlign = TextAlign.Center
             )
             if (explainText.isNotEmpty()) {
                 Text(
-                    text = explainText.substring(0, 8) + "...",
+                    text = explainText.substring(0, 5) + "...",
                     fontFamily = mainFont,
                     fontWeight = FontWeight.Normal,
                     fontSize = 10.sp,
