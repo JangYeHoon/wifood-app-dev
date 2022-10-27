@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -145,54 +146,6 @@ fun MapView(
                     navController.navigate("${Route.Search.route}/${placeJson}")
                 }
             )
-
-            LazyRow(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(
-                        color = Color(0xF9FFFFFF)
-                    )
-                    .padding(
-                        horizontal = 14.dp,
-                        vertical = 5.dp
-                    ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                item {
-                    MainButtonToggle(
-                        text = "전체",
-                        isClicked = -1 == selectedMenu,
-                        modifier = Modifier,
-                        buttonColor = if (selectedMenu == -1) Main else Color.White,
-                        onClick = {
-                            selectedMenu = -1
-                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                        },
-                        borderColor = Main
-                    )
-                    Spacer(Modifier.width(mapGroupListButtonIntervalValue.dp))
-                }
-                itemsIndexed(state.groups) { i, group ->
-                    MainButtonToggle(
-                        text = group.name,
-                        isClicked = group.groupId == selectedMenu,
-                        buttonColor = if (selectedMenu == group.groupId) setColor(selectedMenu) else Color.White,
-                        onClick = {
-                            selectedMenu = group.groupId
-                            viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
-                            scope.launch {
-                                listState.animateScrollToItem(i)
-                            }
-                        },
-                        borderColor = if (selectedMenu != group.groupId) setColor(group.groupId % 10) else Color.White.copy(
-                            alpha = 0f
-                        )
-                    )
-                    Spacer(Modifier.width(12.dp))
-                }
-            }
             Box(modifier = Modifier.fillMaxSize()) {
                 GoogleMap(
                     modifier = Modifier.matchParentSize(),
@@ -225,6 +178,53 @@ fun MapView(
                             visible = true,
                             icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
                         )
+                    }
+                }
+                LazyRow(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(
+                            color = Color(0xB2FFFFFF),
+                        )
+                        .padding(
+                            horizontal = 14.dp,
+                            vertical = 5.dp
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    item {
+                        MainButtonToggle(
+                            text = "전체",
+                            isClicked = -1 == selectedMenu,
+                            modifier = Modifier,
+                            buttonColor = if (selectedMenu == -1) Main else Color.White,
+                            onClick = {
+                                selectedMenu = -1
+                                viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
+                            },
+                            borderColor = Main
+                        )
+                        Spacer(Modifier.width(mapGroupListButtonIntervalValue.dp))
+                    }
+                    itemsIndexed(state.groups) { i, group ->
+                        MainButtonToggle(
+                            text = group.name,
+                            isClicked = group.groupId == selectedMenu,
+                            buttonColor = if (selectedMenu == group.groupId) setColor(selectedMenu) else Color.White,
+                            onClick = {
+                                selectedMenu = group.groupId
+                                viewModel.onEvent(MainEvent.GroupClicked(selectedMenu))
+                                scope.launch {
+                                    listState.animateScrollToItem(i)
+                                }
+                            },
+                            borderColor = if (selectedMenu != group.groupId) setColor(group.groupId % 10) else Color.White.copy(
+                                alpha = 0f
+                            )
+                        )
+                        Spacer(Modifier.width(12.dp))
                     }
                 }
             }
