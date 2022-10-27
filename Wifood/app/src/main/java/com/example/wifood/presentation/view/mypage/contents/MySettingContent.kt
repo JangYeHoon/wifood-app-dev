@@ -4,6 +4,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.mypage.component.CommonTextButton
 import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
+import com.example.wifood.view.ui.theme.Gray03Color
 
 @Preview(showBackground = true)
 @Composable
@@ -111,19 +113,15 @@ fun MySettingContent(
                 tint = Color.Unspecified
             )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = Color(0xFFF4F4F4)
-                )
-                .border(
-                    width = 1.dp,
-                    color = Color(0xFFE7E7E7)
-                )
-        ) {
-            Spacer(Modifier.height(4.dp))
-        }
+        Divider(
+            thickness = 1.dp,
+            color = Color(0xFFE7E7E7)
+        )
+        Divider(
+            thickness = 4.dp,
+            color = Color(0xFFF4F4F4)
+        )
+
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
