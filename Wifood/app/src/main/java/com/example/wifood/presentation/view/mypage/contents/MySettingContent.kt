@@ -31,7 +31,6 @@ import com.example.wifood.ui.theme.mainFont
 import com.example.wifood.view.ui.theme.Black2Color
 import com.example.wifood.view.ui.theme.Gray03Color
 
-@Preview(showBackground = true)
 @Composable
 fun MySettingContent(
     onNicknameClicked: () -> Unit = {},

@@ -23,7 +23,7 @@ import com.example.wifood.view.ui.theme.Gray03Color
 import com.example.wifood.view.ui.theme.MainColor
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun SplashContent(
     title: String = "맛집 기록 어플, ",
