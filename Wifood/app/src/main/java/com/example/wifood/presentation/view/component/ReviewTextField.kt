@@ -29,7 +29,8 @@ fun ReviewTextField(
     modifier: Modifier = Modifier
         .height(120.dp),
     fontSize:Int = 15,
-    showCount: Boolean = true
+    showCount: Boolean = true,
+    enabled: Boolean = true
 ) {
     Box(
 
@@ -65,6 +66,7 @@ fun ReviewTextField(
                 fontSize = fontSize.sp,
                 color = Gray01Color
             ),
+            enabled = enabled
         )
         if (showCount){
             Text(

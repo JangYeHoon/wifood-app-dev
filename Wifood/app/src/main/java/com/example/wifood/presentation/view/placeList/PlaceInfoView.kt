@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -391,53 +392,90 @@ fun PlaceInfoView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = sidePaddingValue.dp,
-                            vertical = 22.dp
+                            horizontal = 20.dp,
+                            vertical = 18.dp
                         )
                 ) {
-                    YOGOTextPM15(
-                        text = "맛집 리뷰"
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    ReviewTextField(
-                        text = state.placeReview,
-                        onValueChange = {
-                            viewModel.onEvent(PlaceInfoEvent.ReviewChange(it))
-                        },
-                        placeholder = "",
-                        modifier = Modifier
-                            .wrapContentHeight(),
-                        showCount = false,
-                        fontSize = 12
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    ShowPhotoList(
-                        state.placeImageUris
-                    )
-                    Spacer(Modifier.height(28.dp))
-
-                    if (state.place.menuList.isNotEmpty()) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(
-                                    width = 2.dp,
-                                    color = Color(0xFFF1F1F1),
-                                    shape = RoundedCornerShape(5.dp)
+                    if (state.placeReview.isNotEmpty()) {
+                        Spacer(Modifier.height(18.dp))
+                        Text(
+                            text = "맛집 리뷰",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = Gray01Color
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Divider(
+                            thickness = 1.dp,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = Color.Black
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            text = state.placeReview,
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 12.sp,
+                            color = Gray01Color
+                        )
+                    }
+                    if (state.placeImageUris.isNotEmpty()) {
+                        Spacer(Modifier.height(20.dp))
+                        ShowPhotoList(
+                            state.placeImageUris,
+                            imageSize = 80
+                        )
+                        Spacer(Modifier.height(20.dp))
+                    }
+                    if (state.place.menuList.isNotEmpty()){
+                        Spacer(Modifier.height(18.dp))
+                        Text(
+                            text = "메뉴 리뷰",
+                            fontFamily = mainFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = Gray01Color
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Divider(
+                            thickness = 1.dp,
+                            modifier = Modifier.fillMaxWidth(),
+                            color = Color.Black
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        state.place.menuList.forEach {
+                            Spacer(Modifier.height(10.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                SpaceBetween
+                            ){
+                                Text(
+                                    text = it.name,
+                                    fontFamily = mainFont,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Gray01Color
                                 )
-                                .padding(
-                                    horizontal = 16.dp,
-                                    vertical = 22.dp
+                                Text(
+                                    text = it.price.toString() + "원",
+                                    fontFamily = mainFont,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Gray01Color
                                 )
-                        ) {
-                            state.place.menuList.forEach {
-                                PlaceInfoShowMenu(
-                                    menuName = it.name,
-                                    menuPrice = it.price,
-                                    menuMemo = it.memo
-                                )
-                                Spacer(Modifier.height(12.dp))
                             }
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                text = it.memo,
+                                fontFamily = mainFont,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                color = Gray01Color
+                            )
+                            Spacer(Modifier.height(10.dp))
+                            Spacer(Modifier.height(12.dp))
                         }
                     }
                 }
