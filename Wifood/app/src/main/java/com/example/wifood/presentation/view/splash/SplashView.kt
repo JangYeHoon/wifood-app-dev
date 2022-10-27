@@ -32,23 +32,23 @@ fun SplashView(
         Page(
             title = "맛집 기록 어플, ",
             edge = "요고",
-            description = "\n맛집을 손 쉽게 찾아보세요",
+            description = "\n내 취향의 맛집들을 찾고",
             imageWidth = 232,
             imageHeight = 314,
             image = R.drawable.ic_splash_image_1
         ),
         Page(
-            title = "나만의 맛집을 ",
-            edge = "기록",
-            description = "하고\n한 줄 설명",
+            title = "나만의 ",
+            edge = "맛집 지도",
+            description = "로\n찾기 좋게 만들고",
             imageWidth = 222,
             imageHeight = 287,
             image = R.drawable.ic_splash_image_2
         ),
         Page(
-            title = "내 취향의 맛집을 ",
-            edge = "추천",
-            description = "받고\n먹어보세요",
+            title = "나만의 기준으로 ",
+            edge = "맛집 후기",
+            description = "도\n꼼꼼하게 기록하면 완고",
             imageWidth = 253,
             imageHeight = 274,
             image = R.drawable.ic_splash_image_3,

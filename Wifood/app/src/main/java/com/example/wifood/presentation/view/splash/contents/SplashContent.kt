@@ -28,7 +28,7 @@ import com.example.wifood.view.ui.theme.MainColor
 fun SplashContent(
     title: String = "맛집 기록 어플, ",
     edge: String = "요고",
-    description: String = "한 줄 설명",
+    description: String = "\n내 취향의 맛집들을 찾고",
     imageWidth: Int = 232,
     imageHeight: Int = 314,
     image: Int = R.drawable.ic_splash_image_1
@@ -59,7 +59,7 @@ fun SplashContent(
             textAlign = TextAlign.Center,
             color = Gray03Color
         )
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(18.dp))
         Icon(
             ImageVector.vectorResource(image),
             contentDescription = "",
