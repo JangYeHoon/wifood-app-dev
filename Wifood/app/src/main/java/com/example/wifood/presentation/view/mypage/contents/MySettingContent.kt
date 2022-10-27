@@ -42,6 +42,9 @@ fun MySettingContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                color = Color.White
+            )
     ) {
         MyPageTopAppBar(
             titleText = "설정",
