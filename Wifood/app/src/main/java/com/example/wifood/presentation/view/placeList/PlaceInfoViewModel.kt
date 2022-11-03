@@ -41,6 +41,7 @@ class PlaceInfoViewModel @Inject constructor(
     fun onEvent(event: PlaceInfoEvent) {
         when (event) {
             is PlaceInfoEvent.PlaceDeleteEvent -> {
+                useCases.DeletePlaceImages(state.place!!.groupId, state.place!!.placeId)
                 useCases.DeletePlace(state.place!!.groupId, state.place!!.placeId)
             }
             is PlaceInfoEvent.ClickPlaceImage -> {

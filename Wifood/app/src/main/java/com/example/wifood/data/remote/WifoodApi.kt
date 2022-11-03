@@ -50,6 +50,8 @@ interface WifoodApi {
 
     fun insertPlaceImages(groupId: Int, placeId: Int, images: ArrayList<Uri>): UploadTask
 
+    fun deletePlaceImages(groupId: Int, placeId: Int)
+
     fun getTMapSearchPlaceResult(
         keyword: String,
         currentLocation: Location

@@ -269,6 +269,15 @@ class WifoodApiImpl @Inject constructor(
         return uploadTask!!
     }
 
+    override fun deletePlaceImages(groupId: Int, placeId: Int) {
+        val storage = FirebaseStorage.getInstance().reference
+        storage.child("${MainData.user.phoneNumber}/$groupId/$placeId/").listAll()
+            .addOnSuccessListener {
+                for (item in it.items)
+                    item.delete()
+            }
+    }
+
     override fun insertProfile(image: Uri, id: String): UploadTask {
         val storage = FirebaseStorage.getInstance().reference
 

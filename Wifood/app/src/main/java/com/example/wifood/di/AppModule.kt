@@ -52,7 +52,8 @@ object AppModule {
             CheckUser = CheckUser(repository),
             DeleteUser = DeleteUser(repository),
             GetProfile = GetProfile(repository),
-            InsertProfile = InsertProfile(repository)
+            InsertProfile = InsertProfile(repository),
+            DeletePlaceImages = DeletePlaceImages(repository)
         )
     }
 

@@ -29,5 +29,6 @@ data class WifoodUseCases(
     val CheckUser: CheckUser,
     val DeleteUser: DeleteUser,
     val InsertProfile: InsertProfile,
-    val GetProfile: GetProfile
+    val GetProfile: GetProfile,
+    val DeletePlaceImages: DeletePlaceImages
 )
