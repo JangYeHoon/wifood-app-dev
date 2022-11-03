@@ -47,7 +47,9 @@ fun ModifyMyInfoView(
             viewModel.validationEvents.collectLatest { event ->
                 when (event) {
                     is ValidationEvent.Success -> {
-                        navController.navigate(Route.GetPhoneNumber.route)
+                        navController.navigate(Route.GetPhoneNumber.route) {
+                            popUpTo(0)
+                        }
                     }
                 }
             }

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.main.MainViewModel
 import com.example.wifood.presentation.view.mypage.MyPageEvent
 import com.example.wifood.presentation.view.mypage.MyPageViewModel
@@ -39,7 +40,6 @@ fun CheckWithdrawBottomSheetView(
 
     CheckWithdrawBottomSheetContent(
         onLeftButtonClicked = {
-            navController.popBackStack()
             viewModel.onEvent(MyPageEvent.DeleteUser)
         },
         onRightButtonClicked = {
