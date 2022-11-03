@@ -53,7 +53,8 @@ object AppModule {
             DeleteUser = DeleteUser(repository),
             GetProfile = GetProfile(repository),
             InsertProfile = InsertProfile(repository),
-            DeletePlaceImages = DeletePlaceImages(repository)
+            DeletePlaceImages = DeletePlaceImages(repository),
+            DeleteGroupImages = DeleteGroupImages(repository)
         )
     }
 

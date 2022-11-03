@@ -47,6 +47,8 @@ interface WifoodRepository {
 
     fun deletePlaceImages(groupId: Int, placeId: Int)
 
+    fun deleteGroupImages(groupId: Int)
+
     fun insertProfile(image: Uri, id: String): UploadTask
 
     fun getTMapSearchPlaceResult(

@@ -52,6 +52,8 @@ interface WifoodApi {
 
     fun deletePlaceImages(groupId: Int, placeId: Int)
 
+    fun deleteGroupImages(groupId: Int)
+
     fun getTMapSearchPlaceResult(
         keyword: String,
         currentLocation: Location

@@ -43,6 +43,7 @@ class MainViewModel @Inject constructor(
                 state = state.copy(selectedGroupSheet = event.selectedGroup)
             }
             is MainEvent.DeleteGroupEvent -> {
+                useCases.DeleteGroupImages(event.groupId)
                 useCases.DeleteGroup(event.groupId)
             }
             is MainEvent.LocationChanged -> {

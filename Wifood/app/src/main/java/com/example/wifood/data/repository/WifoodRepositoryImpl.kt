@@ -84,6 +84,10 @@ class WifoodRepositoryImpl(
         api.deletePlaceImages(groupId, placeId)
     }
 
+    override fun deleteGroupImages(groupId: Int) {
+        api.deleteGroupImages(groupId)
+    }
+
     override fun insertProfile(image: Uri, id: String): UploadTask {
         return api.insertProfile(image, id)
     }
