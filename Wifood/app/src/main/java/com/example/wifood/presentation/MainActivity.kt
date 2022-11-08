@@ -1,6 +1,7 @@
 package com.example.wifood.presentation
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,10 +13,10 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import coil.annotation.ExperimentalCoilApi
 import com.example.wifood.BuildConfig
 import com.example.wifood.WifoodApp
-import com.example.wifood.presentation.view.main.MainEvent
 import com.example.wifood.presentation.view.main.util.MainData
 import com.example.wifood.presentation.view.map.util.DefaultLocationClient
 import com.example.wifood.view.ui.theme.WifoodTheme
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.ExperimentalSerializationApi
+import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalPermissionsApi
@@ -38,29 +40,39 @@ import kotlinx.serialization.ExperimentalSerializationApi
 @ExperimentalSerializationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-
+    private lateinit var locationClient: DefaultLocationClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val apikey = BuildConfig.TMAP_KEY
-        val locationClient = DefaultLocationClient(
-            this,
-            LocationServices.getFusedLocationProviderClient(this)
-        )
 
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ),
-            0
-        )
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationClient = DefaultLocationClient(
+                this,
+                LocationServices.getFusedLocationProviderClient(this)
+            )
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                ),
+                0
+            )
+        }
 
         locationClient
             .getLocationUpdates(3000L)
-            .catch { e -> e.printStackTrace() }
+            .catch { e -> Timber.e(e.printStackTrace().toString()) }
             .onEach { location ->
                 MainData.location = location
             }
@@ -81,5 +93,20 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         WifoodApp.serviceScope.cancel()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1) {
+            locationClient = DefaultLocationClient(
+                this,
+                LocationServices.getFusedLocationProviderClient(this)
+            )
+        }
     }
 }
