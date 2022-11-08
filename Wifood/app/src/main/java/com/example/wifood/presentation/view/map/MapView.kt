@@ -107,16 +107,18 @@ fun MapView(
         floatingActionButton = {
             YOGOFloatingActionGroup(
                 onCurrentFloatingButtonClicked = {
-                    val currentLocation = MainData.location!!
-                    scope.launch {
-                        camera.animate(
-                            CameraUpdateFactory.newLatLngZoom(
-                                LatLng(
-                                    currentLocation.latitude,
-                                    currentLocation.longitude
-                                ), 16f
-                            ), 1000
-                        )
+                    if (MainData.location != null) {
+                        val currentLocation = MainData.location!!
+                        scope.launch {
+                            camera.animate(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        currentLocation.latitude,
+                                        currentLocation.longitude
+                                    ), 16f
+                                ), 1000
+                            )
+                        }
                     }
                 },
                 onAddLocationFloatingButtonClicked = {
