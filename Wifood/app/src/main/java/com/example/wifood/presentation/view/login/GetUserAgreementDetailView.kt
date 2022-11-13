@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,11 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.wifood.R
 import com.example.wifood.presentation.view.component.DialogCenterDivider
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.SignUpEvent
@@ -54,9 +59,29 @@ fun GetUserAgreementDetailView(
             ) {
                 Spacer(Modifier.height(10.dp))
                 DialogCenterDivider()
-                Spacer(Modifier.height(10.dp))
-                PersonalAgreementContent(viewModel, showDialog)
+                Spacer(Modifier.height(9.dp))
+                Row(
+                    modifier = Modifier.padding(horizontal = 23.dp)
+                ) {
+                    Spacer(Modifier.weight(1f))
+                    IconButton(
+                        onClick = {
+                            showDialog.value = false
+                        },
+                        modifier = Modifier
+                            .wrapContentSize()
+                    ) {
+                        Icon(
+                            ImageVector.vectorResource(id = R.drawable.ic_exit_button),
+                            contentDescription = "",
+                            modifier = Modifier.wrapContentSize(),
+                            tint = Color.Unspecified,
+                        )
+                    }
+                }
             }
+            Spacer(Modifier.height(15.dp))
+            PersonalAgreementContent(viewModel, showDialog)
         }
     }
 }
@@ -71,7 +96,6 @@ fun PersonalAgreementContent(
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
-            .padding(vertical = 26.dp)
             .padding(horizontal = sidePaddingValue.dp)
     ) {
         Text(
@@ -98,7 +122,7 @@ fun PersonalAgreementContent(
                 showDialog.value = false
             }
         )
-        Spacer(Modifier.height(buttonBottomValue.dp))
+        Spacer(Modifier.height(40.dp))
     }
 }
 

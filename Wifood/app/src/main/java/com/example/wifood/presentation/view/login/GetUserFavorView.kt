@@ -1,4 +1,4 @@
-package com.example.wifood.presentation.view.login.join
+ package com.example.wifood.presentation.view.login.join
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.rememberScrollState
