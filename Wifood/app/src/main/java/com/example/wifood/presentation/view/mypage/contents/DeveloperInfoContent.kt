@@ -1,5 +1,6 @@
 package com.example.wifood.presentation.view.mypage.contents
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.VectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.wifood.presentation.view.component.MyPageTopAppBar
 import com.example.wifood.R
 import com.example.wifood.ui.theme.mainFont
+import com.example.wifood.view.ui.theme.Gray01Color
 import com.example.wifood.view.ui.theme.MainColor
 
 @Preview(showBackground = true)
@@ -52,20 +56,52 @@ fun DeveloperInfoContent(
             Spacer(Modifier.height(35.dp))
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                Arrangement.SpaceEvenly
             ) {
-                DeveloperComponent()
-                Spacer(Modifier.width(24.dp))
-                DeveloperComponent()
+                DeveloperComponent(
+                    developerName = "JYH",
+                    developerJob = "Team Leader",
+                    backgroundColor = Color(0xFFFDF5F1),
+                    circleColor = Color(0xFFE3783F),
+                    imageWidth = 150,
+                    imageHeight = 150,
+                    resourceId = R.drawable.developer_3
+                )
+                DeveloperComponent(
+                    developerName = "KKJ",
+                    developerJob = "Developer",
+                    backgroundColor = Color(0xFFFDFAF1),
+                    circleColor = Color(0xFFF2BE45),
+                    imageWidth = 95,
+                    imageHeight = 127,
+                    resourceId = R.drawable.developer_2
+                )
             }
             Spacer(Modifier.height(35.dp))
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                Arrangement.SpaceEvenly
             ) {
-                DeveloperComponent()
-                Spacer(Modifier.width(24.dp))
-                DeveloperComponent()
+                DeveloperComponent(
+                    developerName = "KMH",
+                    developerJob = "Developer",
+                    backgroundColor = Color(0xFFFBFDF1),
+                    circleColor = Color(0xFF9ABC76),
+                    imageWidth = 105,
+                    imageHeight = 117,
+                    resourceId = R.drawable.developer_1
+                )
+                DeveloperComponent(
+                    developerName = "JHY",
+                    developerJob = "Designer",
+                    backgroundColor = Color(0xFFF1F7FD),
+                    circleColor = Color(0xFF6A829B),
+                    imageWidth = 145,
+                    imageHeight = 150,
+                    resourceId = R.drawable.developer_4
+                )
             }
         }
 
@@ -77,44 +113,60 @@ fun DeveloperInfoContent(
 fun DeveloperComponent(
     resourceId: Int = R.drawable.ic_splash_image_1,
     developerName: String = "김강직",
-    developerJob: String = "디자이너"
+    developerJob: String = "디자이너",
+    backgroundColor: Color = Color(0xFFFDF5F1),
+    circleColor: Color = Color(0xFFE3783F),
+    imageWidth: Int = 140,
+    imageHeight: Int = 150,
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .background(
-                color = Color(0xFFFDF5F1),
+                color = backgroundColor,
                 shape = RoundedCornerShape(24.dp)
             )
             .width(138.dp)
-            .height(193.dp),
-        contentAlignment = Alignment.Center,
+            .height(220.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .background(
-                    color = MainColor,
-                    shape = CircleShape
-                )
-                .size(117.dp)
-        ) {
+        Spacer(Modifier.weight(1f))
+        Box(
+            contentAlignment = Alignment.Center
+        ){
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = circleColor,
+                        shape = CircleShape
+                    )
+                    .size(117.dp)
+            ) {
+            }
+            Image(
+                painter = painterResource(id = resourceId),
+                contentDescription = "",
+                modifier = Modifier
+                    .width(imageWidth.dp)
+                    .height(imageHeight.dp)
+            )
         }
-        Icon(
-            ImageVector.vectorResource(resourceId),
-            contentDescription = "Developers",
-            modifier = Modifier
-                .size(100.dp),
-            tint = Color.Unspecified
-        )
+        Spacer(Modifier.height(15.dp))
         Text(
-            text = developerName,
+            text = developerJob,
             fontFamily = mainFont,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
-            color = Color(0xFF1A1A1A),
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .offset(y = (-15).dp)
+            color = circleColor,
         )
+        Spacer(Modifier.height(2.dp))
+        Text(
+            text = developerName,
+            fontFamily = mainFont,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            color = Gray01Color,
+        )
+        Spacer(Modifier.height(15.dp))
     }
 
 }

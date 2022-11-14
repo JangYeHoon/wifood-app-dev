@@ -102,7 +102,7 @@ fun GetUserPhoneNumberContent(
             Spacer(Modifier.height(24.dp))
             Spacer(Modifier.weight(1f))
             MainButton(
-                text = "인증번호 받기",
+                text = "다음",
                 onClick = onButtonClicked,
                 activate = isButtonOn
             )

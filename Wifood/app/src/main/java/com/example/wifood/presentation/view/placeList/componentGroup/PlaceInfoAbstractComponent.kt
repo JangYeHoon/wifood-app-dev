@@ -30,9 +30,10 @@ fun PlaceInfoAbstractComponent(
     placeInfoName: String = "맛집이름",
     placeInfoMenuListText: String = "알리올리오",
     placeInfoScore: Float = 1.4f,
+    isClean: Boolean = true,
     isKind: Boolean = true,
-    isDelicious: Boolean = true,
     isMood: Boolean = false,
+    isParking: Boolean = false,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -104,16 +105,16 @@ fun PlaceInfoAbstractComponent(
             Spacer(Modifier.height(12.dp))
             Row(
             ) {
-                if (isKind) {
+                if (isClean) {
                     RatedMode(
-                        text = "친절함",
+                        text = "위생",
                         color = KindRateColor
                     )
                     Spacer(Modifier.width(6.dp))
                 }
-                if (isDelicious) {
+                if (isKind) {
                     RatedMode(
-                        text = "맛집",
+                        text = "친절",
                         color = DeliciousRateColor
                     )
                     Spacer(Modifier.width(6.dp))
@@ -121,6 +122,13 @@ fun PlaceInfoAbstractComponent(
                 if (isMood) {
                     RatedMode(
                         text = "분위기",
+                        color = MoodRateColor
+                    )
+                    Spacer(Modifier.width(6.dp))
+                }
+                if (isParking) {
+                    RatedMode(
+                        text = "주차",
                         color = MoodRateColor
                     )
                     Spacer(Modifier.width(6.dp))

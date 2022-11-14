@@ -319,9 +319,10 @@ fun PlaceInfoView(
                     placeInfoName = state.place!!.name,
                     placeInfoMenuListText = state.place.menu,
                     placeInfoScore = state.place.score,
+                    isClean = state.place.cleanChk,
                     isKind = state.place.kindChk,
-                    isDelicious = state.place.tasteChk,
-                    isMood = state.place.cleanChk,
+                    isMood = state.place.vibeChk,
+                    isParking = state.place.tasteChk,
                     modifier = Modifier
                         .padding(horizontal = 10.dp)
                         .offset(y = (-30).dp)

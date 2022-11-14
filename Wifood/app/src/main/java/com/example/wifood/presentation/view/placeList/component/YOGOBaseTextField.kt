@@ -85,7 +85,7 @@ fun YOGOBaseTextField(
                 //keyboardType = KeyboardType.Phone
             ),
             trailingIcon = {
-                if (selectable) {
+                if (text.isNotEmpty()) {
                     Icon(
                         ImageVector.vectorResource(id = R.drawable.ic_right_arrow),
                         contentDescription = "left button of top app bar",

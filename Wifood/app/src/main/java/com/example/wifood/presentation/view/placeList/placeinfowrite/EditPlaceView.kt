@@ -229,19 +229,8 @@ fun EditPlaceView(
                     Row(
                     ) {
                         RatedMode(
-                            text = "기분",
-                            color = KindRateColor,
-                            clickable = formState.tasteChk,
-                            onClick = {
-                                scope.launch {
-                                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!formState.tasteChk))
-                                }
-                            }
-                        )
-                        Spacer(Modifier.width(6.dp))
-                        RatedMode(
                             text = "위생",
-                            color = DeliciousRateColor,
+                            color = KindRateColor,
                             clickable = formState.cleanChk,
                             onClick = {
                                 scope.launch {
@@ -252,7 +241,7 @@ fun EditPlaceView(
                         Spacer(Modifier.width(6.dp))
                         RatedMode(
                             text = "친절",
-                            color = MoodRateColor,
+                            color = DeliciousRateColor,
                             clickable = formState.kindChk,
                             onClick = {
                                 scope.launch {
@@ -268,6 +257,17 @@ fun EditPlaceView(
                             onClick = {
                                 scope.launch {
                                     viewModel.onEvent(PlaceInfoWriteFormEvent.VibeCheck(!formState.vibeChk))
+                                }
+                            }
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        RatedMode(
+                            text = "주차",
+                            color = MoodRateColor,
+                            clickable = formState.tasteChk,
+                            onClick = {
+                                scope.launch {
+                                    viewModel.onEvent(PlaceInfoWriteFormEvent.TasteCheck(!formState.tasteChk))
                                 }
                             }
                         )

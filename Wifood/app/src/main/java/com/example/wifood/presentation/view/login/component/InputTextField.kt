@@ -64,8 +64,7 @@ fun InputTextField(
                     fontSize = 14.sp,
                     color = Gray01Color,
                     textDecoration = TextDecoration.None,
-
-                ),
+                    ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp)

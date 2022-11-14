@@ -9,19 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wifood.R
 import com.example.wifood.ui.theme.fontMiddleSchool
 import com.example.wifood.view.ui.theme.Gray03Color
+import com.example.wifood.view.ui.theme.MainColor
 
 //@Preview(showBackground = true)
 @Composable
 fun JoininCompleteContent(
-
 ){
     val scrollState = rememberScrollState()
     Box(
@@ -30,23 +33,35 @@ fun JoininCompleteContent(
         contentAlignment = Alignment.Center
     ){
         Column(
-            modifier = Modifier.verticalScroll(scrollState)
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
-                text = "반갑습니다!회원가입이 완료되었습니다",
+                text = buildAnnotatedString {
+                    append("반갑습니다!\n")
+                    withStyle(
+                        style = SpanStyle(
+                            fontFamily = fontMiddleSchool,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 32.sp,
+                            color = MainColor
+                        ),
+                    ) {
+                        append("회원가입")
+                    }
+                    append("이 완료되었습니다.")
+                },
                 fontFamily = fontMiddleSchool,
                 fontWeight = FontWeight.Normal,
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center,
                 color = Gray03Color
             )
-            Spacer(Modifier.height(48.5.dp))
+            Spacer(Modifier.height(18.dp))
             Image(
-                painter = painterResource(R.drawable.ic_signup_complete),
+                painter = painterResource(R.drawable.ic_joinin_complete),
                 contentDescription = "Splash View Image",
                 modifier = Modifier
-                    .width(254.dp)
-                    .height(294.dp)
+                    .wrapContentSize()
             )
         }
     }

@@ -8,7 +8,6 @@ import com.example.wifood.presentation.view.groupComponent.SimpleInputView
 
 @Composable
 fun SetPlaceGroupView(
-
 ){
     Column {
         MyPageTopAppBar(

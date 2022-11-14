@@ -17,6 +17,8 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.groupComponent.TextAndInputField
 import com.example.wifood.presentation.util.ValidationEvent
+import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.groupComponent.SimpleInputView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,6 +46,38 @@ fun GroupDescInputView(
         }
     }
 
+    Column {
+        MyPageTopAppBar(
+            titleText = "",
+            leftButtonClicked = {
+                navController.popBackStack()
+            },
+            showUnderLine = false
+        )
+        SimpleInputView(
+            explainText = "그룹에 대한\n간단한 설명을 해주세요.",
+            textFieldText = state.description,
+            onTextFieldValueChanged = {
+                scope.launch {
+                    viewModel.onEvent(GroupFormEvent.DescriptionChange(it))
+                }
+            },
+            onTextFieldValueReset = {
+                scope.launch {
+                    viewModel.onEvent(GroupFormEvent.ResetDescriptionText)
+                }
+            },
+            placeholderText = "맛집 그룹 설명",
+            buttonText = "맛집 그룹 등록하기",
+            onButtonClick = {
+                scope.launch {
+                    viewModel.onEvent(GroupFormEvent.AddBtnClick)
+                }
+            },
+            buttonActivate = state.description.isNotEmpty()
+        )
+    }
+    /*
     Scaffold(
         topBar = {
             YOGOTopAppBar(
@@ -90,4 +124,5 @@ fun GroupDescInputView(
             Spacer(Modifier.height(50.dp))
         }
     }
+    */
 }

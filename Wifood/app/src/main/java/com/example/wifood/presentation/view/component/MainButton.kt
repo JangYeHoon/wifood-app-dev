@@ -1,10 +1,7 @@
 package com.example.wifood.presentation.view.component
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -105,6 +102,7 @@ fun MainButtonToggle(
                 backgroundColor = buttonColor
             )
         ) {
+            Spacer(Modifier.width(14.dp))
             Text(
                 text = text,
                 fontFamily = mainFont,
@@ -112,6 +110,7 @@ fun MainButtonToggle(
                 fontSize = 14.sp,
                 color = borderColor
             )
+            Spacer(Modifier.width(14.dp))
         }
     } else {
         TextButton(
@@ -129,6 +128,7 @@ fun MainButtonToggle(
                 .wrapContentHeight()
         )
         {
+            Spacer(Modifier.width(14.dp))
             Text(
                 text = text,
                 color = Color.White,
@@ -136,6 +136,7 @@ fun MainButtonToggle(
                 fontFamily = mainFont,
                 fontWeight = FontWeight.Normal
             )
+            Spacer(Modifier.width(14.dp))
         }
     }
 }

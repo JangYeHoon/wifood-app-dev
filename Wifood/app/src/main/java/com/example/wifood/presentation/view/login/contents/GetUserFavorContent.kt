@@ -58,8 +58,7 @@ fun GetUserFavorContent(
                 .padding(horizontal = sidePaddingValue.dp)
                 .verticalScroll(scrollState)
         ) {
-            Spacer(Modifier.weight(1f))
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(106.dp))
             Icon(
                 ImageVector.vectorResource(id = R.drawable.ic_4by4),
                 contentDescription = "",
