@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import com.example.wifood.WifoodApp
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.SignUpViewModel
@@ -72,16 +73,22 @@ fun GetUserPhoneNumberView(
                 viewModel.onEvent(SignUpEvent.PhoneNumChanged(it))
             },
             onButtonClicked = {
-                when (PackageManager.PERMISSION_GRANTED) {
-                    ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.SEND_SMS
-                    ) -> {
-                        navController.navigate(Route.GetAuthNumber.route)
-                    }
-                    else -> {
-                        permissionLauncher.launch(Manifest.permission.SEND_SMS)
-                    }
+//                when (PackageManager.PERMISSION_GRANTED) {
+//                    ContextCompat.checkSelfPermission(
+//                        context,
+//                        Manifest.permission.SEND_SMS
+//                    ) -> {
+//                        navController.navigate(Route.GetAuthNumber.route)
+//                    }
+//                    else -> {
+//                        permissionLauncher.launch(Manifest.permission.SEND_SMS)
+//                    }
+//                }
+                if (SignUpData.exist) {
+                    WifoodApp.pref.setString("Initial_Flag", "1")
+                    navController.navigate(Route.Main.route)
+                } else {
+                    navController.navigate(Route.Agreement.route)
                 }
             },
             isButtonOn = done
