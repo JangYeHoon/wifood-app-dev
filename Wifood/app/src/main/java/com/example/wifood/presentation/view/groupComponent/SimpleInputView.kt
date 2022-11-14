@@ -2,7 +2,10 @@ package com.example.wifood.presentation.view.groupComponent
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.wifood.R
 import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.login.SignUpEvent
 import com.example.wifood.presentation.view.login.util.phoneFilter
@@ -28,16 +34,17 @@ import com.example.wifood.view.ui.theme.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SimpleInputView(
-    explainText: String,
-    textFieldText: String,
-    onTextFieldValueChanged: (String) -> Unit,
-    placeholderText: String,
+    explainText: String = "",
+    textFieldText: String = "",
+    onTextFieldValueChanged: (String) -> Unit = {},
+    onTextFieldValueReset: () -> Unit = {},
+    placeholderText: String = "placeholder",
     buttonText: String,
     onButtonClick: () -> Unit,
     buttonActivate: Boolean
 ) {
     val scrollState = rememberScrollState()
-
+    val interactionSource = MutableInteractionSource()
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -89,7 +96,34 @@ fun SimpleInputView(
                 visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     //keyboardType = KeyboardType.Phone
-                )
+                ),
+                trailingIcon = {
+                    if (textFieldText.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                            },
+                            modifier = Modifier
+                                .size(30.dp)
+                                .padding(end = 10.dp)
+                        ) {
+                            Icon(
+                                ImageVector.vectorResource(id = R.drawable.ic_reset_text_button),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .wrapContentSize()
+
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = interactionSource
+                                    ) {
+                                        onTextFieldValueReset()
+                                        textFieldText.none()
+                                    },
+                                tint = Color.Unspecified,
+                            )
+                        }
+                    }
+                }
             )
             Spacer(Modifier.weight(1f))
             MainButton(
@@ -101,3 +135,4 @@ fun SimpleInputView(
         }
     }
 }
+

@@ -25,7 +25,6 @@ import com.example.wifood.view.ui.theme.MainColor
 //@Preview(showBackground = true)
 @Composable
 fun JoininCompleteContent(
-
 ){
     val scrollState = rememberScrollState()
     Box(
@@ -34,6 +33,7 @@ fun JoininCompleteContent(
         contentAlignment = Alignment.Center
     ){
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(
                 text = buildAnnotatedString {
