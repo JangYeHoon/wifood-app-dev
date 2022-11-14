@@ -292,7 +292,7 @@ fun CurrentLocationUnion(
                 Spacer(Modifier.height(3.dp))
             }
             Text(
-                text = titleText.substring(0, 5) + "...",
+                text = if (titleText.length >= 5) titleText.substring(0, 5) + "..." else titleText,
                 fontFamily = mainFont,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 11.sp,
@@ -301,7 +301,10 @@ fun CurrentLocationUnion(
             )
             if (explainText.isNotEmpty()) {
                 Text(
-                    text = explainText.substring(0, 5) + "...",
+                    text =
+                    if (explainText.length >= 5)
+                        explainText.substring(0, 5) + "..."
+                    else explainText,
                     fontFamily = mainFont,
                     fontWeight = FontWeight.Normal,
                     fontSize = 10.sp,

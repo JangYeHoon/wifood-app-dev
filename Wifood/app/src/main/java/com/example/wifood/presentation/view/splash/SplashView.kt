@@ -89,7 +89,7 @@ fun SplashView(
                     inactiveColor = EnableColor,
                     spacing = 10.dp
                 )
-                Spacer(Modifier.height(56.dp))
+                Spacer(Modifier.height((56.5).dp))
             } else {
                 AnimatedVisibility(visible = true) {
                     MainButton(

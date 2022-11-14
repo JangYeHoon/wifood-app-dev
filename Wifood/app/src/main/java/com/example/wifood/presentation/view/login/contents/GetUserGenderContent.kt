@@ -45,7 +45,7 @@ fun GetUserGenderContent(
                 .verticalScroll(scrollState)
                 .padding(horizontal = sidePaddingValue.dp)
         ) {
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(106.dp))
             Icon(
                 ImageVector.vectorResource(id = R.drawable.ic_3by4),
                 contentDescription = "",

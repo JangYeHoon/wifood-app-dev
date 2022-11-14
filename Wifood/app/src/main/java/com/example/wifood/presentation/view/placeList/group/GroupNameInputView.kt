@@ -19,6 +19,8 @@ import com.example.wifood.presentation.view.component.MainButton
 import com.example.wifood.presentation.view.component.YOGOTopAppBar
 import com.example.wifood.presentation.view.groupComponent.TextAndInputField
 import com.example.wifood.presentation.util.ValidationEvent
+import com.example.wifood.presentation.view.component.MyPageTopAppBar
+import com.example.wifood.presentation.view.groupComponent.SimpleInputView
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -47,6 +49,38 @@ fun GroupNameInputView(
         }
     }
 
+    Column {
+        MyPageTopAppBar(
+            titleText = "",
+            leftButtonClicked = {
+                navController.popBackStack()
+            },
+            showUnderLine = false
+        )
+        SimpleInputView(
+            explainText = "나만의 맛집\n그룹명을 지정해주세요",
+            textFieldText = state.name,
+            onTextFieldValueChanged = {
+                scope.launch {
+                    viewModel.onEvent(GroupFormEvent.NameChange(it))
+                }
+            },
+            onTextFieldValueReset = {
+                scope.launch {
+                    viewModel.onEvent(GroupFormEvent.ResetNameText)
+                }
+            },
+            placeholderText = "맛집그룹명",
+            buttonText = "다음",
+            onButtonClick = {
+                val groupJson =
+                    Uri.encode(Gson().toJson(GroupDto(name = state.name).toGroup()))
+                navController.navigate("${Route.GroupDescInput.route}/${groupJson}")
+            },
+            buttonActivate = state.name.isNotEmpty()
+        )
+    }
+    /*
     Scaffold(
         topBar = {
             YOGOTopAppBar(
@@ -92,5 +126,6 @@ fun GroupNameInputView(
             )
             Spacer(Modifier.height(50.dp))
         }
-    }
+
+    }*/
 }

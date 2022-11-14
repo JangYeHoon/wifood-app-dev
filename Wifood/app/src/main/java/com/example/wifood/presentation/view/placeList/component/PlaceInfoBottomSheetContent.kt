@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,7 @@ import androidx.navigation.NavController
 import com.example.wifood.domain.model.Place
 import com.example.wifood.presentation.util.Route
 import com.example.wifood.presentation.view.component.BottomSheetListItem
+import com.example.wifood.presentation.view.component.BottomSheetYOGOButton
 import com.example.wifood.presentation.view.placeList.PlaceInfoEvent
 import com.example.wifood.presentation.view.placeList.PlaceInfoViewModel
 import com.google.gson.Gson
@@ -36,6 +38,39 @@ fun PlaceInfoBottomSheetContent(
 ) {
     val scope = rememberCoroutineScope()
     Column {
+        BottomSheetYOGOButton(
+            title = "맛집 수정",
+            onItemClick = {
+                viewModel.onEvent(PlaceInfoEvent.ViewChangeEvent)
+                val placeJson = Uri.encode(Gson().toJson(place))
+                navController.navigate("${Route.EditPlace.route}/${placeJson}")
+            },
+            bottomStart = 0,
+            bottomEnd = 0
+        )
+        Spacer(Modifier.height(1.dp))
+        BottomSheetYOGOButton(
+            title = "맛집 삭제",
+            onItemClick = {
+                viewModel.onEvent(PlaceInfoEvent.PlaceDeleteEvent)
+                navController.popBackStack(
+                    "${Route.Main.route}?placeLat={placeLat}&placeLng={placeLng}",
+                    false
+                )
+            },
+            topStart = 0,
+            topEnd = 0
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        BottomSheetYOGOButton(
+            title = "취소",
+            onItemClick = {
+                scope.launch { modalBottomSheetState.hide() }
+            }
+        )
+
+        /*
+
         BottomSheetListItem(
             icon = Icons.Default.AddCircle,
             title = "맛집 수정"
@@ -54,12 +89,13 @@ fun PlaceInfoBottomSheetContent(
                 false
             )
         }
-        Spacer(modifier = Modifier.height(5.dp))
+
         BottomSheetListItem(
             icon = Icons.Default.Delete,
             title = "취소"
         ) {
             scope.launch { modalBottomSheetState.hide() }
         }
+         */
     }
 }

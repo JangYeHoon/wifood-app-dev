@@ -37,7 +37,7 @@ fun SplashContent(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(81.dp))
+        Spacer(Modifier.weight(1f))
         Text(
             text = buildAnnotatedString {
                 append(title)
