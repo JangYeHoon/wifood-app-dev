@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.wifood",
+  "applicationId": "com.yogo.wifood",
   "variantName": "release",
   "elements": [
     {
