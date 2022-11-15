@@ -13,7 +13,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.wifood"
+        applicationId "com.yogo.wifood"
         minSdk 21   // minSdk 버전 조정(박지훈)
         targetSdk 32
         versionCode 1
